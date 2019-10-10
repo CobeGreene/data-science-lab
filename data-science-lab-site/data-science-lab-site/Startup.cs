@@ -49,6 +49,7 @@ namespace data_science_lab_site
                 app.UseHsts();
             }
 
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
