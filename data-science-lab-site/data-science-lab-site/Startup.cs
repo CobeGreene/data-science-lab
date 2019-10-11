@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using data_science_lab_site.Constants;
 using data_science_lab_site.Data;
 using data_science_lab_site.Data.Models;
+using data_science_lab_site.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -53,6 +54,8 @@ namespace data_science_lab_site
                 options.LogoutPath = "/account/logout";
                 options.AccessDeniedPath = "/account/accessdenied";
             });
+
+            services.AddTransient<IPluginService, PluginService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
