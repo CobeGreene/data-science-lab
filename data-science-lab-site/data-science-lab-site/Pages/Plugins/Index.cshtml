@@ -1,0 +1,43 @@
+﻿@page
+@model data_science_lab_site.Pages.Plugins.IndexModel
+@{
+}
+
+<h1 class="text-info">
+    Your Plugins
+    <span class="float-right">
+        <a class="btn btn-light" asp-page="/Plugins/Create">Create</a>
+    </span>
+</h1>
+<hr />
+@if (Model.Plugins.Count == 0)
+{
+    <p>No plugins yet. Why don't you create <strong>some!</strong></p>
+}
+else
+{
+    @foreach (var plugin in Model.Plugins)
+    {
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h2 class="mb-0">
+                            @plugin.Name
+                        </h2>
+                    </div>
+                    <div>
+                        <a class="card-link" href="@plugin.Url">
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>
+                    Description... to be added.
+                </p>
+            </div>
+        </div>
+    }
+}
