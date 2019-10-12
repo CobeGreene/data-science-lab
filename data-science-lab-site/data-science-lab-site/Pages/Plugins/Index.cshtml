@@ -6,13 +6,13 @@
 <h1 class="text-info">
     Your Plugins
     <span class="float-right">
-        <a class="btn btn-light" asp-page="/Plugins/Create">Create</a>
+        <a class="btn btn-light" asp-page="/Plugins/Publish">Publish</a>
     </span>
 </h1>
 <hr />
 @if (Model.Plugins.Count == 0)
 {
-    <p>No plugins yet. Why don't you create <strong>some!</strong></p>
+    <p>No plugins yet. Why don't you publish <strong>one!</strong></p>
 }
 else
 {
@@ -27,7 +27,7 @@ else
                         </h2>
                     </div>
                     <div>
-                        <a class="card-link" href="@plugin.Url">
+                        <a class="card-link">
                             GitHub
                         </a>
                     </div>

@@ -11,7 +11,11 @@ namespace data_science_lab_site.Data.Models
         public int Id { get; set; }
         [Required, Display(Name = "Plugin's Name")]
         public string Name { get; set; }
-        [Required, Display(Name = "Github Url")]
-        public string Url { get; set; }
+        [Required, Display(Name = "Owner of GitHub Repository"), StringLength(256, MinimumLength = 1, ErrorMessage = "Must be between 1 and 256 characters.")]
+        public string Owner { get; set; }
+        [Required, Display(Name = "Repository Name"), StringLength(256, MinimumLength = 1, ErrorMessage = "Must be between 1 and 256 characters")]
+        public string RepositoryName { get; set; }
+
+
     }
 }
