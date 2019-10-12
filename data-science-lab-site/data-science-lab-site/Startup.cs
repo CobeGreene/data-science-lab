@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using data_science_lab_site.Constants;
 using data_science_lab_site.Data;
 using data_science_lab_site.Data.Models;
+using data_science_lab_site.Options;
 using data_science_lab_site.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,9 +56,16 @@ namespace data_science_lab_site
                 options.AccessDeniedPath = "/account/accessdenied";
             });
 
-            services.AddTransient<IPluginService, PluginService>();
+            ConfigureDependencies(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
+
+        public void ConfigureDependencies(IServiceCollection services)
+        {
+            services.Configure<PackageOptions>(Configuration.GetSection(nameof(PackageOptions)));
+
+            services.AddTransient<IPluginService, PluginService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
