@@ -3,13 +3,16 @@
   "version": "0.0.0",
   "main": "dist/main.js",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "ng build --base-href ./ && tsc --p tsconfig.electron.json && electron ."
+    "build:ang": "ng build --base-href ./",
+    "build:elc": "tsc --p tsconfig.electron.json",
+    "build:all": "npm run build:ang && npm run build:elc",
+    "build:start": "npm run build:all && npm run start",
+    "start": "electron .",
+    "clean": "rmdir /s dist"
   },
   "private": true,
   "dependencies": {
