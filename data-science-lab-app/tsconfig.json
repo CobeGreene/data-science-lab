@@ -12,13 +12,17 @@
     "importHelpers": true,
     "target": "es5",
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "shared/types"
     ],
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
   },
+  "include": [
+    "shared/models"
+  ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
