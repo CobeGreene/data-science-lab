@@ -7,6 +7,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "ang:gc": "ng g c ",
     "build:ang": "ng build --base-href ./",
     "build:elc": "tsc --p tsconfig.electron.json",
     "build:all": "npm run build:ang && npm run build:elc",
