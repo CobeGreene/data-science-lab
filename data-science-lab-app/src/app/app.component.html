@@ -1,7 +1,13 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" routerLink="/">Data Science Lab</a>
+  <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" [routerLink]="['/plugins']" [routerLinkActive]="'active'">Plugins</a></li>
+  </ul>
+</nav>
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <h1 class="text-center">{{ title }}</h1>
+        <router-outlet></router-outlet>
     </div>
   </div>
 </div>
