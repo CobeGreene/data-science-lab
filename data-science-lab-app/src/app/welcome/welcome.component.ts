@@ -10,7 +10,6 @@ export class WelcomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    window.electronIpcSend('send', 'hello from angular');
   }
 
 }

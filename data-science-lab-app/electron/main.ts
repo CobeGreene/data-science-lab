@@ -33,8 +33,3 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
-ipcMain.on('send', (event, arg) => {
-    console.log('Ipc got message');
-    console.log(arg);
-});
