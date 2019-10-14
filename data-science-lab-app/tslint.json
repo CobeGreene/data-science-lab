@@ -1,11 +1,12 @@
 {
-  "extends": "tslint-microsoft-contrib/recommended",
+  "extends": "tslint:latest",
   "rules": {
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {
       "severity": "warning"
     },
+    "no-trailing-whitespace": false,
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,

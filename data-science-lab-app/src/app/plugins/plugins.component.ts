@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { PluginService } from '../services/plugin_services/plugin.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { PluginService } from '../services/plugin-services/plugin.service';
 import { Plugin } from '../../../shared/models/plugin';
 
 @Component({
@@ -7,16 +7,27 @@ import { Plugin } from '../../../shared/models/plugin';
   templateUrl: './plugins.component.html',
   styleUrls: ['./plugins.component.css']
 })
-export class PluginsComponent implements OnInit {
+export class PluginsComponent implements OnInit, OnDestroy {
 
   plugins: Plugin[];
 
   constructor(private pluginService: PluginService) { }
 
   ngOnInit() {
-    this.pluginService.all().then((value: Plugin[]) => {
+    this.plugins = this.pluginService.all();
+    this.pluginService.pluginsChanged.subscribe((value: Plugin[]) => {
       this.plugins = value;
     });
+  }
+
+  ngOnDestroy() {
+    this.pluginService.pluginsChanged.unsubscribe();
+  }
+
+  getInstalledCount(): number {
+    return this.plugins.filter((value: Plugin) => {
+      return value.install;
+    }).length;
   }
 
 }

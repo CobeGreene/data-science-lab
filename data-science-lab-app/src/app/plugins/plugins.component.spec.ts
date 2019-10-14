@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PluginsComponent } from './plugins.component';
-import { PluginService } from '../services/plugin_services/plugin.service';
-import { MockPluginService } from '../services/plugin_services/mock_plugin.service';
+import { PluginService } from '../services/plugin-services/plugin.service';
+import { MockPluginService } from '../services/plugin-services/mock-plugin.service';
 
 describe('PluginsComponent', () => {
   let component: PluginsComponent;
