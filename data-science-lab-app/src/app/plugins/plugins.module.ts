@@ -8,6 +8,7 @@ import { PluginsComponent } from './plugins.component';
 import { PluginsAvailableComponent } from './plugins-available/plugins-available.component';
 import { PluginsInstalledComponent } from './plugins-installed/plugins-installed.component';
 import { PluginCardComponent } from './plugin-card/plugin-card.component';
+import { PluginDetailsComponent } from './plugin-details/plugin-details.component';
 import { CommonModule } from '@angular/common';
 
 const pluginService = MockPluginService.init([
@@ -22,7 +23,8 @@ const pluginService = MockPluginService.init([
         PluginsSidebarComponent,
         PluginsAvailableComponent,
         PluginsInstalledComponent,
-        PluginCardComponent
+        PluginCardComponent,
+        PluginDetailsComponent
     ],
     imports: [
         CommonModule,

@@ -7,4 +7,5 @@ export abstract class PluginService {
 
     abstract all(): Plugin[];
     abstract install(plugin: Plugin): void;
+    abstract get(name: string): Plugin;
 }

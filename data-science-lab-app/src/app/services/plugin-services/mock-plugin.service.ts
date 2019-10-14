@@ -3,6 +3,7 @@ import { Plugin } from '../../../../shared/models/plugin';
 import { Subject } from 'rxjs';
 
 export class MockPluginService implements PluginService {
+    
     public pluginsChanged: Subject<Plugin[]>;
 
     private plugins: Plugin[];
@@ -35,6 +36,16 @@ export class MockPluginService implements PluginService {
             found.install = true;
             this.pluginsChanged.next(this.all());
         }
+    }
+
+    get(name: string): Plugin {
+        const find = this.plugins.find((plugin: Plugin) => {
+            return plugin.name === name;
+        });
+        if (find == null) {
+            throw new Error('Couldn\'t find plugin');
+        }  
+        return find;
     }
     
 }
