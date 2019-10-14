@@ -26,7 +26,7 @@ export class PluginsSidebarComponent implements OnInit, OnDestroy {
         this.pluginService.pluginsChanged.unsubscribe();
     }
 
-    private getInstalledCount(plugins: Plugin[]): number {
+    public getInstalledCount(plugins: Plugin[]): number {
         return plugins.filter((value: Plugin) => {
             return value.install;
           }).length;
