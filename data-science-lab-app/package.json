@@ -10,10 +10,13 @@
     "test:elc": "tsc --p tsconfig.electron.spec.json && jasmine --config=./electron/spec/support/jasmine.json || exit 0",
     "build:ang": "ng build --base-href ./",
     "build:elc": "tsc --p tsconfig.electron.json",
-    "build:all": "npm run build:ang && npm run build:elc",
+    "build:all": "npm run build:elc && npm run build:ang",
     "build:start": "npm run build:all && npm run start",
     "start": "electron .",
-    "clean": "rmdir /s dist"
+    "clean:test": "rmdir /s test",
+    "clean:dist": "rmdir /s dist",
+    "clean:all": "npm run clean:test && npm run clean:dist",
+    "clean": "npm run clean:all"
   },
   "private": true,
   "dependencies": {
