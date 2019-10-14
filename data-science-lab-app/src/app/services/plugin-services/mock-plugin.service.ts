@@ -24,9 +24,9 @@ export class MockPluginService implements PluginService {
         return this.plugins.slice();
     }
 
-    install(plugin: Plugin): void {
+    install(name: string): void {
         const found = this.plugins.find((value: Plugin) => {
-            return value.name === plugin.name && value.owner === plugin.owner;
+            return value.name === name;
         });
         if (!found) {
             throw new Error('Couldn\' find plugin');
@@ -34,6 +34,20 @@ export class MockPluginService implements PluginService {
             throw new Error('Plugin already installed');
         } else {
             found.install = true;
+            this.pluginsChanged.next(this.all());
+        }
+    }
+
+    uninstall(name: string): void {
+        const found = this.plugins.find((value: Plugin) => {
+            return value.name === name;
+        });
+        if (!found) {
+            throw new Error('Couldn\t find plugin');
+        } else if (!found.install) {
+            throw new Error('Plugin already uninstalled');
+        } else {
+            found.install = false;
             this.pluginsChanged.next(this.all());
         }
     }

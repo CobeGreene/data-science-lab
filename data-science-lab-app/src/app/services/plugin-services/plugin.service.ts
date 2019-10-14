@@ -6,6 +6,7 @@ export abstract class PluginService {
     public pluginsChanged: Subject<Plugin[]>;
 
     abstract all(): Plugin[];
-    abstract install(plugin: Plugin): void;
+    abstract install(name: string): void;
+    abstract uninstall(name: string): void;
     abstract get(name: string): Plugin;
 }

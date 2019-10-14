@@ -2,6 +2,9 @@
     <div class="card-header">
         <div class="card-title">
             {{ plugin.name }}
+            <span class="float-right" *ngIf="plugin.install">
+                Installed
+            </span>
         </div>
     </div>
     <div class="card-body">

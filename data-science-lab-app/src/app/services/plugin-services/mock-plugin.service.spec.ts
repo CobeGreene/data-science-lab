@@ -24,13 +24,13 @@ describe('MockPluginService', () => {
             expect(value[0].install).toBeTruthy();
             done();
         });
-        service.install(plugins[0]);
+        service.install(plugins[0].name);
     });
 
     it('install should throw for no plugins', () => {
         const service = new MockPluginService();
         expect(() => {
-            service.install(new Plugin('name', 'owner', 'repo', false));
+            service.install('name');
         }).toThrowError();
     });
 
@@ -41,7 +41,7 @@ describe('MockPluginService', () => {
         ];
         const service = MockPluginService.init(plugins);
         expect(() => {
-            service.install(new Plugin('not found', 'not found', 'not found', false));
+            service.install('not found');
         }).toThrowError();
     });
 
@@ -51,7 +51,47 @@ describe('MockPluginService', () => {
         ];
         const service = MockPluginService.init(plugins);
         expect(() => {
-            service.install(plugins[0]);
+            service.install(plugins[0].name);
+        }).toThrowError();
+    });
+
+    it('uninstall should set uninstall to false for plugin', (done) => {
+        const plugins = [
+            new Plugin('name', 'owner', 'repo', true)
+        ];
+        const service = MockPluginService.init(plugins);
+        service.pluginsChanged.subscribe((value: Plugin[]) => {
+            expect(!value[0].install).toBeTruthy();
+            done();
+        });
+        service.uninstall(plugins[0].name);
+    });
+
+    it('uninstall should throw for no plugins', () => {
+        const service = new MockPluginService();
+        expect(() => {
+            service.uninstall('name');
+        }).toThrowError();
+    });
+
+    it('uninstall should throw if plugin not found', () => {
+        const plugins = [
+            new Plugin('name1', 'owner1', 'repo1', false),
+            new Plugin('name2', 'owner2', 'repo2', false)
+        ];
+        const service = MockPluginService.init(plugins);
+        expect(() => {
+            service.uninstall('not found');
+        }).toThrowError();
+    });
+
+    it('uninstall should throw if not already install', () => {
+        const plugins = [
+            new Plugin('name1', 'owner1', 'repo1')
+        ];
+        const service = MockPluginService.init(plugins);
+        expect(() => {
+            service.uninstall(plugins[0].name);
         }).toThrowError();
     });
 

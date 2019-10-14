@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PluginService } from '../../services/plugin-services/plugin.service';
 import { Plugin } from '../../../../shared/models/plugin';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
@@ -13,9 +13,7 @@ export class PluginDetailsComponent implements OnInit, OnDestroy {
     plugin: Plugin;
 
     constructor(private pluginService: PluginService,
-                private router: Router,
                 private route: ActivatedRoute) {
-
     }
 
     ngOnInit(): void {
@@ -25,6 +23,14 @@ export class PluginDetailsComponent implements OnInit, OnDestroy {
                 const name = params.name;
                 this.plugin = this.pluginService.get(name);
            });
+    }
+
+    onInstall(): void {
+        this.pluginService.install(this.plugin.name);
+    }
+
+    onUninstall(): void {
+        this.pluginService.uninstall(this.plugin.name);
     }
 
     ngOnDestroy(): void {
