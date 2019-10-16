@@ -34,10 +34,7 @@ namespace data_science_lab_site.Pages.Plugins
 
             var user = _context.Users.Single(u => u.Email.Equals(User.Identity.Name));
 
-            await _context.Entry(user).Collection(u => u.Plugins)
-                .LoadAsync();
-
-            if (user.Plugins.FirstOrDefault(p => p.Name.Equals(Plugin.Name)) != null)
+            if (_context.Plugins.FirstOrDefault(p => p.Name.Equals(Plugin.Name)) != null)
             {
                 ModelState.AddModelError(string.Empty, "Must have a unique plugin name.");
                 return Page();
@@ -53,6 +50,9 @@ namespace data_science_lab_site.Pages.Plugins
                 }
                 return Page();
             }
+
+            await _context.Entry(user).Collection(u => u.Plugins)
+                .LoadAsync();
 
             user.Plugins.Add(Plugin);
             _context.Users.Update(user);
