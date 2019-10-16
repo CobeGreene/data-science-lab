@@ -62,5 +62,9 @@ export class MockIpService implements IpService {
         this.listeners[channel] = [];
     }
 
+    removeListenersFromAllChannels(): void {
+        this.onceListeners = {};
+        this.listeners = {};
+    }
 
 }

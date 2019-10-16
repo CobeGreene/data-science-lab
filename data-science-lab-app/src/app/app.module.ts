@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { PluginsModule } from './plugins/plugins.module';
+import { AppIpService } from './services/ip-services/app-ip.service';
+import { IpService } from '../../shared/services/ip.service';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,9 @@ import { PluginsModule } from './plugins/plugins.module';
     AppRoutingModule,
     PluginsModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    { provide: IpService, useClass: AppIpService }
+  ]
 })
 export class AppModule { }

@@ -3,7 +3,7 @@ import { PluginService } from './services/plugin-services/plugin.service';
 import { MockPluginService } from './services/plugin-services/mock-plugin.service';
 import { Plugin } from '../../shared/models/plugin';
 import { Plugins } from '../../shared/models/plugins';
-import { IpService } from './services/app-services/ip.service';
+import { IpService } from '../../shared/services/ip.service';
 import { AppIpService } from './services/app-services/app-ip.service';
 
 export let win: BrowserWindow;
