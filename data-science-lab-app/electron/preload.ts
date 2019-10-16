@@ -3,7 +3,6 @@ import { ipcRenderer } from 'electron';
 console.log('preload.js loaded');
 
 window.electronIpcSend = (channel: string, ...arg: any) => {
-    console.log('sending');
     ipcRenderer.send(channel, arg);
 };
 

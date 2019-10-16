@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as PluginsEvents from '../../../shared/events/plugins-events';
 import { IpService } from '../../../shared/services/ip.service';
 
@@ -11,22 +11,21 @@ export class WelcomeComponent implements OnInit {
 
   text: string;
 
-  constructor(private ipService: IpService) { }
+  constructor(private ipService: IpService, private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
-    // this.text = 'nothing';
-    // // this.ipService.once(PluginsEvents.GetAllListeners, (event, arg) => {
-    // //   console.log(event);
-    // //   console.log(arg);
-    // //   this.text = 'hello world';
-    // //   console.log(this.text);
-    // // });
-    // // this.ipService.send(PluginsEvents.GetAllEvent);
-    // setTimeout(() => {
-    //   this.text = 'hello world';
-    // }, 5000);
+    this.text = 'nothing';
+    console.log('start up');
+    this.ipService.once(PluginsEvents.GetAllListeners, this.getAll);
+    this.ipService.send(PluginsEvents.GetAllEvent);
     
 
+  }
+
+  getAll = (event, arg): void => {
+    this.text = 'hello world';
+    console.log('happen');
+    this.ref.detectChanges();
   }
 
 }
