@@ -35,11 +35,11 @@ export class AppPluginService implements PluginService, OnDestroy {
     }
 
     install(name: string): void {
-        throw new Error("Method not implemented.");
+        this.ipService.send(PluginsEvents.InstallEvent, name);
     }
 
     uninstall(name: string): void {
-        throw new Error("Method not implemented.");
+        this.ipService.send(PluginsEvents.UninstallEvent, name);
     }
 
     get(name: string): Plugin {
