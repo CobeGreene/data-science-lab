@@ -1,5 +1,5 @@
 import { PluginService } from './plugin.service';
-import { Plugin } from '../../../../shared/models/plugin';
+import { Plugin } from '../../../../shared/models';
 import { Subject } from 'rxjs';
 
 export class MockPluginService implements PluginService {

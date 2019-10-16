@@ -10,12 +10,13 @@ import { PluginsInstalledComponent } from './plugins-installed/plugins-installed
 import { PluginCardComponent } from './plugin-card/plugin-card.component';
 import { PluginDetailsComponent } from './plugin-details/plugin-details.component';
 import { CommonModule } from '@angular/common';
+import { AppPluginService } from '../services/plugin-services/app-plugin.service';
 
-const pluginService = MockPluginService.init([
-    new Plugin('name', 'owner', 'repo'),
-    new Plugin('name2', 'owner2', 'repo2'),
-    new Plugin('name3', 'owner', 'repo3', true)
-  ]);
+// const pluginService = MockPluginService.init([
+//     new Plugin('name', 'owner', 'repo'),
+//     new Plugin('name2', 'owner2', 'repo2'),
+//     new Plugin('name3', 'owner', 'repo3', true)
+//   ]);
 
 @NgModule({
     declarations: [
@@ -31,7 +32,7 @@ const pluginService = MockPluginService.init([
         PluginsRoutingModule
     ],
     providers: [
-        {provide: PluginService, useValue: pluginService },
+        {provide: PluginService, useClass: AppPluginService },
       ],
 })
 export class PluginsModule {
