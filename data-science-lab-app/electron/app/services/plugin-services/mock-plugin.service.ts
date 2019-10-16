@@ -1,20 +1,21 @@
 import { PluginService } from './plugin.service';
 import { Plugins } from '../../../../shared/models/plugins';
-import { ipcMain } from 'electron';
 import { serialize } from 'typescript-json-serializer';
 import * as PluginsEvents from '../../../../shared/events/plugins-events';
-import { win } from '../../app';
+import { IpService } from '../app-services/ip.service';
 
 export class MockPluginService implements PluginService {
 
     private plugins: Plugins;
+    private ipService: IpService;
 
-    constructor() {
+    constructor(ipService: IpService) {
         this.plugins = new Plugins();
+        this.ipService = ipService;
     }
 
-    static init(plugins: Plugins): MockPluginService {
-        const service = new MockPluginService();
+    static init(plugins: Plugins, ipService: IpService): MockPluginService {
+        const service = new MockPluginService(ipService);
         service.plugins = plugins;
         return service;
     }
@@ -28,19 +29,16 @@ export class MockPluginService implements PluginService {
     }
 
     private unregisterGetAll(): void {
-        console.log('unregistering');
-        ipcMain.removeListener(PluginsEvents.GetAllEvent, this.getAllEvent);
+        this.ipService.removeListener(PluginsEvents.GetAllEvent, this.getAllEvent);
     }
 
     private registerGetAll(): void {
-        console.log('registering');
-        ipcMain.on(PluginsEvents.GetAllEvent, this.getAllEvent);
+        this.ipService.on(PluginsEvents.GetAllEvent, this.getAllEvent);
     }
 
     private getAllEvent = (event, arg): void => {
         const json = serialize(this.plugins);
-        console.log(json);
-        win.webContents.send(PluginsEvents.GetAllListeners, json);
+        this.ipService.send(PluginsEvents.GetAllListeners, json);
     }
 
 }

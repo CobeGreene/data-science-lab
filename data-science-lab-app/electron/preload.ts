@@ -7,10 +7,6 @@ window.electronIpcSend = (channel: string, ...arg: any) => {
     ipcRenderer.send(channel, arg);
 };
 
-window.electronIpcSendSync = (channel: string, ...arg: any) => {
-    return ipcRenderer.sendSync(channel, arg);
-};
-
 window.electronIpcOn = (channel: string, listener: (event: any, ...arg: any) => void) => {
     ipcRenderer.on(channel, listener);
 };

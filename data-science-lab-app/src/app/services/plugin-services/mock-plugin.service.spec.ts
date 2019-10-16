@@ -1,7 +1,7 @@
 import { MockPluginService } from './mock-plugin.service';
 import { Plugin } from '../../../../shared/models/plugin';
 
-describe('MockPluginService', () => {
+describe('Angular Mock Plugin Service Tests', () => {
     it('should create service with no plugins', () => {
         const service = new MockPluginService();
         expect(service.all().length).toBe(0);

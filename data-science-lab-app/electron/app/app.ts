@@ -3,6 +3,8 @@ import { PluginService } from './services/plugin-services/plugin.service';
 import { MockPluginService } from './services/plugin-services/mock-plugin.service';
 import { Plugin } from '../../shared/models/plugin';
 import { Plugins } from '../../shared/models/plugins';
+import { IpService } from './services/app-services/ip.service';
+import { AppIpService } from './services/app-services/app-ip.service';
 
 export let win: BrowserWindow;
 
@@ -10,7 +12,7 @@ export class App {
 
     private preload: string;
     private indexPage: string;
-
+    private ipService: IpService;
     private pluginService: PluginService;
 
     constructor(preload: string, indexPage: string) {
@@ -19,9 +21,11 @@ export class App {
     }
 
     public initialize() {
+        this.ipService = new AppIpService();
         this.pluginService = MockPluginService.init(new Plugins([
             new Plugin('name', 'owner', 'repo')
-        ]));
+        ]), this.ipService);
+        
     }
 
     public initializeService() {
