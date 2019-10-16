@@ -14,6 +14,7 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit() {
     window.electronIpcOnce(PluginsEvents.GetAllListeners, (event, arg) => {
+      console.log(event);
       console.log(arg);
       this.text = arg[0];
     });

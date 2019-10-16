@@ -9,6 +9,7 @@
     ],
     "include": [
         "electron/**/*.ts",
+        "electron/**/*.spec.ts"
     ],
     "exclude": [
         "./src",

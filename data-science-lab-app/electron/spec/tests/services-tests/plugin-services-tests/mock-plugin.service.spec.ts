@@ -21,10 +21,10 @@ describe('Electron Mock Plugin Service Tests', () => {
         // pluginService = MockPluginService.init(temp, null);
     });
 
-    it('get all should retrieve argument', (done) => {
-        ipcRenderer.once(PluginsEvents.GetAllEvent, (event, arg) => {
-            expect(arg).toBeDefined();
-            done();
-        });
-    });
+    // it('get all should retrieve argument', (done) => {
+    //     ipcRenderer.once(PluginsEvents.GetAllEvent, (event, arg) => {
+    //         expect(arg).toBeDefined();
+    //         done();
+    //     });
+    // });
 });
