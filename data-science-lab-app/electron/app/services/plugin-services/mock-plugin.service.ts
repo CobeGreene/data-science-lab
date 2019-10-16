@@ -24,17 +24,20 @@ export class MockPluginService implements PluginService {
     }
 
     destory(): void {
+        this.unregisterGetAll();
+    }
+
+    private unregisterGetAll(): void {
+        console.log('unregistering');
+        ipcMain.removeListener(PluginsEvents.GetAllEvent, this.getAllEvent);
     }
 
     private registerGetAll(): void {
         console.log('registering');
-        ipcMain.on(PluginsEvents.GetAllEvent, (event, arg) => {
-            console.log('gotten');
-            this.getAllEvent(event, arg);
-        });
+        ipcMain.on(PluginsEvents.GetAllEvent, this.getAllEvent);
     }
-    
-    private getAllEvent(event, arg): void {
+
+    private getAllEvent = (event, arg): void => {
         const json = serialize(this.plugins);
         console.log(json);
         win.webContents.send(PluginsEvents.GetAllListeners, json);

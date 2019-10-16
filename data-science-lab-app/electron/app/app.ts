@@ -22,11 +22,18 @@ export class App {
         this.pluginService = MockPluginService.init(new Plugins([
             new Plugin('name', 'owner', 'repo')
         ]));
-        
+    }
+
+    public initializeService() {
         this.pluginService.inititalize();
     }
 
+    public destory() {
+        this.pluginService.destory();
+    }
+
     private createWindow() {
+        this.initializeService();
         win = new BrowserWindow({
             width: 1500, height: 1000,
             webPreferences: {
@@ -34,12 +41,13 @@ export class App {
             }
         });
         win.loadURL(this.indexPage);
-
+        
         win.on('closed', () => {
+            this.destory();
             win = null;
         });
     }
-
+    
     public start() {
         app.on('ready', () => {
             this.createWindow();
