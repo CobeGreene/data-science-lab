@@ -8,8 +8,9 @@ const angularApp = url.format({
     protocol: 'file:',
     slashes: true
 });
+const plugins = path.join(__dirname, '../plugins_packages');
 
-const app = new App(preload, angularApp);
+const app = new App(plugins, preload, angularApp);
 
 app.initialize();
 

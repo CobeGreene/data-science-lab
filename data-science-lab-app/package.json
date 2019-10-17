@@ -15,6 +15,7 @@
     "start": "electron .",
     "clean:test": "rmdir /s test",
     "clean:dist": "rmdir /s dist",
+    "clean:plugins": "rmdir /s dist\\plugins_packages",
     "clean:all": "npm run clean:test && npm run clean:dist",
     "clean": "npm run clean:all"
   },
