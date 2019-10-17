@@ -12,7 +12,7 @@ export class PluginsAvailableComponent implements OnInit, OnDestroy {
 
     plugins: Plugin[];
 
-    constructor(private pluginService: PluginService, private changeDetectRef: ChangeDetectorRef) {
+    constructor(private pluginService: PluginService) {
 
     }
 
@@ -22,7 +22,6 @@ export class PluginsAvailableComponent implements OnInit, OnDestroy {
             .pipe(untilComponentDestroyed(this))
             .subscribe((plugins: Plugin[]) => {
                 this.plugins = plugins;
-                this.changeDetectRef.detectChanges();
             });
     }
 

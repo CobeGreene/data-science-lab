@@ -25,6 +25,7 @@ describe('Angular Mock Plugin Service Tests', () => {
             done();
         });
         service.install(plugins[0].name);
+
     });
 
     it('install should throw for no plugins', () => {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, NgZone } from '@angular/core';
 
 import { Plugin } from '../../../../shared/models/plugin';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,12 +13,16 @@ export class PluginCardComponent {
     @Input()
     plugin: Plugin;
 
-    constructor(private route: ActivatedRoute, private router: Router) {
+    constructor(private route: ActivatedRoute,
+                private router: Router,
+                private zone: NgZone) {
 
     }
 
     onSeeDetails(): void {
-        this.router.navigate(['/plugins', 'details', this.plugin.name]);
+        this.zone.run(() => {
+            this.router.navigate(['/plugins', 'details', this.plugin.name]);
+        });
     }
 
 }

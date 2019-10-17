@@ -58,7 +58,7 @@ export class MockPluginService implements PluginService {
         try {
             const name = arg[0];
             const find = this.plugins.plugins.findIndex((plugin: Plugin) => {
-                return plugin.name === name;
+                return plugin.name.match(name) != null;
             });
             if (find >= 0) {
                 this.plugins.plugins[find].install = true;
@@ -88,7 +88,7 @@ export class MockPluginService implements PluginService {
         try {
             const name = arg[0];
             const find = this.plugins.plugins.findIndex((plugin: Plugin) => {
-                return plugin.name === name;
+                return plugin.name.match(name) != null;
             });
             if (find >= 0) {
                 this.plugins.plugins[find].install = false;

@@ -2,7 +2,7 @@ import { PluginService } from './plugin.service';
 import { Plugin, Plugins } from '../../../../shared/models';
 import * as PluginsEvents from '../../../../shared/events/plugins-events';
 import * as ErrorEvents from '../../../../shared/events/error-events';
-import { OnInit, OnDestroy, Injectable } from '@angular/core';
+import { OnDestroy, Injectable, NgZone } from '@angular/core';
 import { IpService } from '../../../../shared/services/ip.service';
 import { Subject } from 'rxjs';
 import { deserialize } from 'typescript-json-serializer';
@@ -11,17 +11,15 @@ import { deserialize } from 'typescript-json-serializer';
 export class AppPluginService implements PluginService, OnDestroy {
 
     public pluginsChanged: Subject<Plugin[]>;    
-
     private plugins: Plugin[];
     private retrieve: boolean;  
 
-    constructor(private ipService: IpService) {
+    constructor(private ipService: IpService, private zone: NgZone) {
         this.pluginsChanged = new Subject<Plugin[]>();
         this.plugins = [];
         this.retrieve = false;
         this.registerGetAll();
     }
-
 
     ngOnDestroy(): void {
         this.unregisterGetAll();
@@ -61,18 +59,21 @@ export class AppPluginService implements PluginService, OnDestroy {
     }
 
     private getAllEvent = (event, arg): void => {
-        try {
-            const value = deserialize<Plugins>(arg[0], Plugins);
-            this.plugins = value.plugins;
-            this.retrieve = true;
-            this.pluginsChanged.next(this.all());
-        } catch (exception) {
-            if (exception instanceof Error) {
-                this.ipService.send(ErrorEvents.ExceptionListeners, exception.message);
-            } else {
-                this.ipService.send(ErrorEvents.ExceptionListeners, exception);   
+        this.zone.run(() => {
+            try {
+                const value = deserialize<Plugins>(arg[0], Plugins);
+                this.plugins = value.plugins;
+                this.retrieve = true;
+                this.pluginsChanged.next(this.all());
+            } catch (exception) {
+                if (exception instanceof Error) {
+                    this.ipService.send(ErrorEvents.ExceptionListeners, exception.message);
+                } else {
+                    this.ipService.send(ErrorEvents.ExceptionListeners, exception);   
+                }
             }
-        }
+
+        });
     }
 
 

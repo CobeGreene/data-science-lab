@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PluginService } from '../../services/plugin-services/plugin.service';
 import { Plugin } from '../../../../shared/models/plugin';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
     selector: 'app-plugins-sidebar',
@@ -17,13 +18,14 @@ export class PluginsSidebarComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.installedCount = this.getInstalledCount(this.pluginService.all());
-        this.pluginService.pluginsChanged.subscribe((plugins: Plugin[]) => {
-            this.installedCount = this.getInstalledCount(plugins);
+        this.pluginService.pluginsChanged
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((plugins: Plugin[]) => {
+               this.installedCount = this.getInstalledCount(plugins);
         });
     }
 
     ngOnDestroy(): void {
-        this.pluginService.pluginsChanged.unsubscribe();
     }
 
     public getInstalledCount(plugins: Plugin[]): number {
