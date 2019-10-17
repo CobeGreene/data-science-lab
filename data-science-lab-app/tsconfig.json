@@ -2,23 +2,29 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es5",
     "typeRoots": [
+      "./shared/@types",
       "node_modules/@types"
     ],
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
   },
+  "include": [
+    "shared/models",
+    "shared/events",
+    "shared/services"
+  ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true

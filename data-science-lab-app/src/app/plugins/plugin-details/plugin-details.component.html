@@ -1,0 +1,22 @@
+<h1>{{ plugin.name }}</h1>
+<div *ngIf="!plugin.install; else uninstallButton">
+    <button class="btn btn-success" (click)="onInstall()">
+        Install
+    </button>
+</div>
+<ng-template #uninstallButton>
+    <button class="btn btn-danger" (click)="onUninstall()">
+        Uninstall
+    </button>
+</ng-template>
+<p>
+    Owner {{ plugin.owner }}
+</p>
+<p>
+    Repository Name {{ plugin.repoistoryName }}
+</p>
+
+<hr/>
+<p>
+    Markdown to be added...
+</p>

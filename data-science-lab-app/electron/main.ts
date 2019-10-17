@@ -1,35 +1,20 @@
-import { app, BrowserWindow } from 'electron';
+import { App } from './app/app';
 import * as path from 'path';
 import * as url from 'url';
+const settings = require('electron-settings');
 
-let win: BrowserWindow;
-
-function createWindow() {
-    win = new BrowserWindow({
-        width: 800, height: 600,
-        webPreferences: {
-            preload: path.join(__dirname, `preload.js`),
-        }
-    });
-
-    win.loadURL(
-        url.format({
-            pathname: path.join(__dirname, `./data-science-lab-app/index.html`),
-            protocol: 'file:',
-            slashes: true,
-        })
-    );
-
-    win.on('closed', () => {
-        win = null;
-    });
-}
-
-
-app.on('ready', createWindow);
-
-app.on('activate', () => {
-    if (win === null) {
-        createWindow();
-    }
+settings.setPath(path.join(__dirname, '../custom.json'));
+const preload = path.join(__dirname, 'preload.js');
+const angularApp = url.format({
+    pathname: path.join(__dirname, '../data-science-lab-app/index.html'),
+    protocol: 'file:',
+    slashes: true
 });
+const plugins = path.join(__dirname, '../plugins_packages');
+
+const app = new App(plugins, preload, angularApp);
+
+app.initialize();
+
+app.start();
+
