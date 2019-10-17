@@ -6,10 +6,13 @@ import * as ErrorEvents from '../../../../shared/events/error-events';
 import { IpService } from '../../../../shared/services/ip.service';
 import { net } from 'electron';
 import { PluginManager, IPluginInfo } from 'live-plugin-manager';
+import { timingSafeEqual } from 'crypto';
+const settings = require('electron-settings');
 
 export class AppPluginService implements PluginService {
 
     private plugins: Plugins;
+    private installPlugins: Plugin[];
     private ipService: IpService;
     private fetch: boolean;
     private manager: PluginManager; 
@@ -19,11 +22,20 @@ export class AppPluginService implements PluginService {
         this.ipService = ipService;
         this.manager = manager;
         this.fetch = false;
+        this.installPlugins = [];
     }
-
+    
     inititalize(): void {
+        this.getInstalledPlugins();
         this.registerGetAll();
         this.registerInstall();
+    }
+    
+    private getInstalledPlugins() {
+        this.installPlugins = settings.get('current', []);
+        this.installPlugins.forEach(element => {
+            this.plugins.plugins.push(element);
+        });
     }
 
     destory(): void {
@@ -47,7 +59,14 @@ export class AppPluginService implements PluginService {
                     const obj = JSON.parse(chunk.toString());
                     const temp = new Plugins();
                     obj.forEach(element => {
-                        temp.plugins.push(new Plugin(element.name, element.owner, element.repositoryName));
+                        const find = this.installPlugins.find((value: Plugin) => {
+                            return value.name.match(element.name);
+                        });
+                        if (find == null) {
+                            temp.plugins.push(new Plugin(element.name, element.owner, element.repositoryName));
+                        } else {
+                            temp.plugins.push(new Plugin(element.name, element.owner, element.repositoryName, true));
+                        }
                     });
                     this.plugins = temp;
                     const json = serialize(this.plugins);
@@ -102,6 +121,8 @@ export class AppPluginService implements PluginService {
                 this.manager.installFromGithub(`${plugin.owner}/${plugin.repositoryName}`)
                     .then((value: IPluginInfo) => {
                         plugin.install = true;
+                        this.installPlugins.push(plugin);
+                        settings.set('current', this.installPlugins);
                         const json = serialize(this.plugins);
                         this.ipService.send(PluginsEvents.GetAllListeners, json);
                     })

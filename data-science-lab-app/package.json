@@ -32,6 +32,7 @@
     "@w11k/ngx-componentdestroyed": "^4.1.4",
     "bootstrap": "^4.3.1",
     "electron": "^6.0.10",
+    "electron-settings": "^3.2.0",
     "live-plugin-manager": "^0.13.2",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
