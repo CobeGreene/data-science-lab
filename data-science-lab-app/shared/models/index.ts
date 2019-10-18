@@ -1,2 +1,3 @@
 export { Plugin } from './plugin';
-export { Plugins } from './plugins';
+export { PluginPackage } from './plugin_package';
+export { PluginPackageList } from './plugin_package_list';

@@ -5,16 +5,16 @@ export class Plugin {
     @JsonProperty()
     public name: string;
     @JsonProperty()
-    public owner: string;
+    public className: string;
     @JsonProperty()
-    public repositoryName: string;
+    public description: string;
     @JsonProperty()
-    public install: boolean;
+    public type: string; 
 
-    constructor(name: string, owner: string, repositoryName: string, install: boolean = false) {
+    constructor(name: string, className: string, description: string, type: string) {
         this.name = name;
-        this.owner = owner;
-        this.repositoryName = repositoryName;
-        this.install = install;
+        this.className = className;
+        this.description = description;
+        this.type = type;
     }
 }

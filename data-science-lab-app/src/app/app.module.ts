@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { PluginsModule } from './plugins/plugins.module';
 import { AppIpService } from './services/ip-services/app-ip.service';
 import { IpService } from '../../shared/services/ip.service';
+import { PackagesModule } from './packages/packages.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { IpService } from '../../shared/services/ip.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    PluginsModule
+    PackagesModule
   ],
   bootstrap: [AppComponent],
   providers: [

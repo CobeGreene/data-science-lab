@@ -1,5 +1,5 @@
-import { PluginService } from './plugin.service';
-import { Plugin, Plugins } from '../../../../shared/models';
+import { PackageService } from './package.service';
+import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import * as PluginsEvents from '../../../../shared/events/plugins-events';
 import * as ErrorEvents from '../../../../shared/events/error-events';
 import { OnDestroy, Injectable, NgZone } from '@angular/core';
@@ -8,15 +8,15 @@ import { Subject } from 'rxjs';
 import { deserialize } from 'typescript-json-serializer';
 
 @Injectable()
-export class AppPluginService implements PluginService, OnDestroy {
+export class AppPackageService implements PackageService, OnDestroy {
+    public packagesChanged: Subject<PluginPackageList>;
 
-    public pluginsChanged: Subject<Plugin[]>;    
-    private plugins: Plugin[];
-    private retrieve: boolean;  
+    private packagesList: PluginPackageList;
+    private retrieve: boolean;
 
     constructor(private ipService: IpService, private zone: NgZone) {
-        this.pluginsChanged = new Subject<Plugin[]>();
-        this.plugins = [];
+        this.packagesChanged = new Subject<PluginPackageList>();
+        this.packagesList = new PluginPackageList();
         this.retrieve = false;
         this.registerGetAll();
     }
@@ -25,11 +25,11 @@ export class AppPluginService implements PluginService, OnDestroy {
         this.unregisterGetAll();
     }
     
-    all(): Plugin[] {
+    all(): PluginPackageList {
         if (!this.retrieve) {
             this.ipService.send(PluginsEvents.GetAllEvent);
         }
-        return this.plugins.slice();
+        return this.packagesList;
     }
 
     install(name: string): void {
@@ -40,10 +40,11 @@ export class AppPluginService implements PluginService, OnDestroy {
         this.ipService.send(PluginsEvents.UninstallEvent, name);
     }
 
-    get(name: string): Plugin {
-        const find = this.plugins.find((plugin: Plugin) => {
-            return plugin.name === name;
+    get(name: string): PluginPackage {
+        const find = this.packagesList.packages.find((value: PluginPackage) => {
+            return value.name === name;
         });
+        
         if (find == null) {
             throw new Error('Couldn\'t find plugin');
         }
@@ -61,10 +62,10 @@ export class AppPluginService implements PluginService, OnDestroy {
     private getAllEvent = (event, arg): void => {
         this.zone.run(() => {
             try {
-                const value = deserialize<Plugins>(arg[0], Plugins);
-                this.plugins = value.plugins;
+                const value = deserialize<PluginPackageList>(arg[0], PluginPackageList);
+                this.packagesList = value;
                 this.retrieve = true;
-                this.pluginsChanged.next(this.all());
+                this.packagesChanged.next(this.all());
             } catch (exception) {
                 if (exception instanceof Error) {
                     this.ipService.send(ErrorEvents.ExceptionListeners, exception.message);
@@ -76,5 +77,4 @@ export class AppPluginService implements PluginService, OnDestroy {
         });
     }
 
-
-}
+} 
