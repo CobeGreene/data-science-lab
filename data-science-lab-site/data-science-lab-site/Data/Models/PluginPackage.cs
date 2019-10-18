@@ -18,5 +18,7 @@ namespace data_science_lab_site.Data.Models
         [Required, Display(Name = "Repository Name"), StringLength(256, MinimumLength = 1, ErrorMessage = "Must be between 1 and 256 characters")]
         public string RepositoryName { get; set; }
         public IList<Plugin> Plugins { get; set; } = new List<Plugin>();
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }
