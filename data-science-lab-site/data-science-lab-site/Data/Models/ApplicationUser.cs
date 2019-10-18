@@ -9,7 +9,7 @@ namespace data_science_lab_site.Data.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        [DisplayName("Plugins")]
-        public IList<Plugin> Plugins { get; set; } = new List<Plugin>();
+        [DisplayName("Packages")]
+        public IList<PluginPackage> Packages { get; set; } = new List<PluginPackage>();
     }
 }

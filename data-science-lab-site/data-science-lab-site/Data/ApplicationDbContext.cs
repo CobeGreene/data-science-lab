@@ -12,6 +12,7 @@ namespace data_science_lab_site.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<PluginPackage> Packages { get; set; }
         public DbSet<Plugin> Plugins { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -19,5 +20,12 @@ namespace data_science_lab_site.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<PluginPackage>()
+                .HasAlternateKey(p => p.Name);
+        }
     }
 }

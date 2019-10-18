@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using data_science_lab_site.Data;
 
 namespace data_science_lab_site.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191018012938_PluginPackageAdded")]
+    partial class PluginPackageAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,7 +195,8 @@ namespace data_science_lab_site.Migrations
                     b.Property<string>("ClassName")
                         .IsRequired();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -216,8 +219,6 @@ namespace data_science_lab_site.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -229,11 +230,14 @@ namespace data_science_lab_site.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Name");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Packages");
                 });
@@ -292,9 +296,10 @@ namespace data_science_lab_site.Migrations
 
             modelBuilder.Entity("data_science_lab_site.Data.Models.PluginPackage", b =>
                 {
-                    b.HasOne("data_science_lab_site.Data.Models.ApplicationUser")
+                    b.HasOne("data_science_lab_site.Data.Models.ApplicationUser", "User")
                         .WithMany("Packages")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
