@@ -1,7 +1,7 @@
 import { PackageService } from './package.service';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { serialize } from 'typescript-json-serializer';
-import { IpService } from '../../../../shared/services/ip.service';
+import { IpService } from '../../../../shared/services';
 import { PluginManager, IPluginInfo } from 'live-plugin-manager';
 const settings = require('electron-settings');
 import { net } from 'electron';

@@ -2,7 +2,7 @@ import { MockZone } from '../mock-zone';
 import { AppPackageService } from './app-package.service';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { PackagesEvents } from '../../../../shared/events';
-import { MockIpService } from '../../../../shared/services/mock-ip.service';
+import { MockIpService } from '../../../../shared/services';
 import { serialize } from 'typescript-json-serializer';
 
 describe('Angular App Package Service Tests', () => {

@@ -1,9 +1,7 @@
 import { app, BrowserWindow } from 'electron';
-import { IpService } from '../../shared/services/ip.service';
-import { AppIpService } from './services/app-services/app-ip.service';
-import { AppPackageService } from './services/package-services/app-package.service';
+import { IpService } from '../../shared/services';
+import { AppIpService, AppPackageService, PackageService } from './services';
 import { PluginManager } from 'live-plugin-manager';
-import { PackageService } from './services/package-services/package.service';
 import { ErrorEvents } from '../../shared/events';
 
 export let win: BrowserWindow;

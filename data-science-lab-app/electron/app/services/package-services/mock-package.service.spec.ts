@@ -2,7 +2,7 @@ import { MockPackageService } from './mock-package.service';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import { deserialize } from 'typescript-json-serializer';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
-import { MockIpService } from '../../../../shared/services/mock-ip.service';
+import { MockIpService } from '../../../../shared/services';
 
 describe('Electron Mock Package Service Tests', () => {
     let packageService: MockPackageService; 

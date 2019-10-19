@@ -1,4 +1,4 @@
-import { IpService, Listener } from '../../../../shared/services/ip.service';
+import { IpService, Listener } from '../../../../shared/services';
 
 export class AppIpService implements IpService {
     send(channel: string, ...arg: any[]): void {

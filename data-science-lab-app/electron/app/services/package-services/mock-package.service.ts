@@ -2,7 +2,7 @@ import { PackageService } from './package.service';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import { serialize } from 'typescript-json-serializer';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
-import { IpService } from '../../../../shared/services/ip.service';
+import { IpService } from '../../../../shared/services';
 
 export class MockPackageService implements PackageService {
 

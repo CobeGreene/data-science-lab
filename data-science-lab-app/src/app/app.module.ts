@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { AppIpService } from './services/ip-services/app-ip.service';
-import { IpService } from '../../shared/services/ip.service';
+import { AppIpService } from './services/ip-services';
+import { IpService } from '../../shared/services';
 import { PackagesModule } from './packages/packages.module';
 
 @NgModule({

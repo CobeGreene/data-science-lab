@@ -1,4 +1,4 @@
-import { IpService, Listener } from '../../../../shared/services/ip.service';
+import { IpService, Listener } from '../../../../shared/services';
 import { ipcMain } from 'electron';
 import { win } from '../../app';
 
