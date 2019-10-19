@@ -1,4 +1,4 @@
-import { MockIpService } from '../../../../../shared/services/mock-ip.service';
+import { MockIpService } from '../../../../shared/services/mock-ip.service';
 
 describe('Electron Mock Ip Service Tests', () => {
     let ipService: MockIpService;
