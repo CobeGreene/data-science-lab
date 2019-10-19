@@ -1,23 +1,23 @@
-import { PluginService } from './plugin.service';
-import { Plugins, Plugin } from '../../../../shared/models';
+import { PackageService } from './package.service';
+import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import { serialize } from 'typescript-json-serializer';
 import * as PluginsEvents from '../../../../shared/events/plugins-events';
 import * as ErrorEvents from '../../../../shared/events/error-events';
 import { IpService } from '../../../../shared/services/ip.service';
 
-export class MockPluginService implements PluginService {
+export class MockPackageService implements PackageService {
 
-    private plugins: Plugins;
+    private packagesList: PluginPackageList;
     private ipService: IpService;
 
     constructor(ipService: IpService) {
-        this.plugins = new Plugins();
+        this.packagesList = new PluginPackageList();
         this.ipService = ipService;
     }
 
-    static init(plugins: Plugins, ipService: IpService): MockPluginService {
-        const service = new MockPluginService(ipService);
-        service.plugins = plugins;
+    static init(packagesList: PluginPackageList, ipService: IpService): MockPackageService {
+        const service = new MockPackageService(ipService);
+        service.packagesList = packagesList;
         return service;
     }
 
@@ -26,7 +26,7 @@ export class MockPluginService implements PluginService {
         this.registerInstall();
         this.registerUninstall();
     }
-    
+
     destory(): void {
         this.unregisterGetAll();
         this.unregisterInstall();
@@ -42,7 +42,7 @@ export class MockPluginService implements PluginService {
     }
 
     private getAllEvent = (event, arg): void => {
-        const json = serialize(this.plugins);
+        const json = serialize(this.packagesList);
         this.ipService.send(PluginsEvents.GetAllListeners, json);
     }
 
@@ -57,12 +57,15 @@ export class MockPluginService implements PluginService {
     private installEvent = (event, arg): void => {
         try {
             const name = arg[0];
-            const find = this.plugins.plugins.findIndex((plugin: Plugin) => {
-                return plugin.name.match(name) != null;
+            if (name == null) {
+                throw new Error('No arguments pass to install');
+            }
+            const find = this.packagesList.packages.findIndex((value: PluginPackage) => {
+                return value.name.match(name) != null;
             });
             if (find >= 0) {
-                this.plugins.plugins[find].install = true;
-                const json = serialize(this.plugins);
+                this.packagesList.packages[find].install = true;
+                const json = serialize(this.packagesList);
                 this.ipService.send(PluginsEvents.GetAllListeners, json);
             } else {
                 throw new Error(`Couldn't find plugin with the name ${name}.`);
@@ -79,7 +82,7 @@ export class MockPluginService implements PluginService {
     private registerUninstall(): void {
         this.ipService.on(PluginsEvents.UninstallEvent, this.uninstallEvent);
     }
-    
+
     private unregisterUninstall(): void {
         this.ipService.removeListener(PluginsEvents.UninstallEvent, this.uninstallEvent);
     }
@@ -87,12 +90,15 @@ export class MockPluginService implements PluginService {
     private uninstallEvent = (event, arg): void => {
         try {
             const name = arg[0];
-            const find = this.plugins.plugins.findIndex((plugin: Plugin) => {
-                return plugin.name.match(name) != null;
+            if (name == null) {
+                throw new Error('No arguments pass to uninstall');
+            }
+            const find = this.packagesList.packages.findIndex((value: PluginPackage) => {
+                return value.name.match(name) != null;
             });
             if (find >= 0) {
-                this.plugins.plugins[find].install = false;
-                const json = serialize(this.plugins);
+                this.packagesList.packages[find].install = false;
+                const json = serialize(this.packagesList);
                 this.ipService.send(PluginsEvents.GetAllListeners, json);
             } else {
                 throw new Error(`Couldn't find plugin with the name ${name}.`);
@@ -108,3 +114,4 @@ export class MockPluginService implements PluginService {
     }
 
 }
+
