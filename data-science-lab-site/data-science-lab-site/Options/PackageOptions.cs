@@ -9,5 +9,6 @@ namespace data_science_lab_site.Options
     {
         public string PropertyName { get; set; }
         public string PackageUrl { get; set; }
+        public string[] Types { get; set; } = {};
     }
 }

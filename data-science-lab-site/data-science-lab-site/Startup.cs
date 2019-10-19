@@ -65,7 +65,7 @@ namespace data_science_lab_site
         {
             services.Configure<PackageOptions>(Configuration.GetSection(nameof(PackageOptions)));
 
-            services.AddTransient<IPluginService, PluginService>();
+            services.AddTransient<IPackageService, PackageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

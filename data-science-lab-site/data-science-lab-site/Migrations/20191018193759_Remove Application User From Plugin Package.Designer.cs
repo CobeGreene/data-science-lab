@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using data_science_lab_site.Data;
 
 namespace data_science_lab_site.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191018193759_Remove Application User From Plugin Package")]
+    partial class RemoveApplicationUserFromPluginPackage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,6 +218,8 @@ namespace data_science_lab_site.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -227,13 +231,11 @@ namespace data_science_lab_site.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Name");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Packages");
                 });
@@ -292,9 +294,9 @@ namespace data_science_lab_site.Migrations
 
             modelBuilder.Entity("data_science_lab_site.Data.Models.PluginPackage", b =>
                 {
-                    b.HasOne("data_science_lab_site.Data.Models.ApplicationUser", "User")
+                    b.HasOne("data_science_lab_site.Data.Models.ApplicationUser")
                         .WithMany("Packages")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ApplicationUserId");
                 });
 #pragma warning restore 612, 618
         }

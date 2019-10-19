@@ -6,6 +6,11 @@
     <RootNamespace>data_science_lab_site</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20191018202347_Remove integer id from PluginPackage.cs" />
+    <Compile Remove="Migrations\20191018202347_Remove integer id from PluginPackage.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

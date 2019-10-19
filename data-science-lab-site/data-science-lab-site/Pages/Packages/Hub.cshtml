@@ -1,0 +1,11 @@
+﻿@page
+@model data_science_lab_site.Pages.Packages.HubModel
+@{
+}
+
+<h1 class="text-info text-center">Hub</h1>
+<hr/>
+@foreach (var package in Model.Packages)
+{
+    @await Component.InvokeAsync("PackageCard", package)
+}

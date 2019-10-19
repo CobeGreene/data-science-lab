@@ -1,0 +1,89 @@
+﻿@page
+@model data_science_lab_site.Pages.Packages.PublishModel
+@{
+}
+
+
+<h1 class="text-info">
+    Publish a Plugin
+</h1>
+<hr />
+<form method="post">
+    @if (Model.Stage == PublishModel.Stages.Failed)
+    {
+        <div class="form-group">
+            <p>
+                Go through the API to learn how to publish a plugin.
+            </p>
+            <a class="btn btn-primary" asp-page="/Package/Publish">
+                Restart
+            </a>
+        </div>
+    }
+    <input type="hidden" asp-for="Stage"/>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Package.Name"></label>
+        <input asp-for="Package.Name" class="form-control"/>
+        <span asp-validation-for="Package.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Package.Owner"></label>
+        <input asp-for="Package.Owner" class="form-control"/>
+        <span asp-validation-for="Package.Owner" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Package.RepositoryName"></label>
+        <input asp-for="Package.RepositoryName" class="form-control"/>
+        <span asp-validation-for="Package.RepositoryName" class="text-danger"></span>
+    </div>
+    @for (var index = 0; index < Model.Package.Plugins.Count; ++index)
+    {
+        <input type="hidden" asp-for="Package.Plugins[index].Name"/>
+        <input type="hidden" asp-for="Package.Plugins[index].ClassName"/>
+        <input type="hidden" asp-for="Package.Plugins[index].Description"/>
+        <input type="hidden" asp-for="Package.Plugins[index].Type"/>
+        <div class="card my-3">
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h2 class="mb-0">
+                            @Model.Package.Plugins[index].Name
+                        </h2>
+                    </div>
+                    <div>
+                        @Model.Package.Plugins[index].ClassName
+                    </div>
+                    <div>
+                        @Model.Package.Plugins[index].Type
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    @Model.Package.Plugins[index].Description
+                </div>
+                <span asp-validation-for="Package.Plugins[index].Name" class="text-danger"></span>
+                <span asp-validation-for="Package.Plugins[index].ClassName" class="text-danger"></span>
+                <span asp-validation-for="Package.Plugins[index].Type" class="text-danger"></span>
+                <span asp-validation-for="Package.Plugins[index].Description" class="text-danger"></span>
+            </div>
+        </div>
+    }
+    @if (Model.Stage == PublishModel.Stages.Initial)
+    {
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">
+                Load Plugins
+            </button>
+        </div>
+    }
+    else if (Model.Stage == PublishModel.Stages.Loaded)
+    {
+        <div class="form-group">
+            <button class="btn btn-success" type="submit">
+                Submit Package
+            </button>
+        </div>
+    }
+</form>
