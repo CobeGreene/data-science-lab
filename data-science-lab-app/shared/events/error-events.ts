@@ -1,1 +1,5 @@
-export const ExceptionListeners = 'exception-listeners';
+
+export namespace ErrorEvents {
+    export const ExceptionListeners = 'exception-listeners';
+}
+

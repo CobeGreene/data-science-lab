@@ -1,7 +1,7 @@
 import { MockZone } from '../mock-zone';
 import { AppPackageService } from './app-package.service';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
-import * as PluginsEvents from '../../../../shared/events/plugins-events';
+import { PackagesEvents } from '../../../../shared/events';
 import { MockIpService } from '../../../../shared/services/mock-ip.service';
 import { serialize } from 'typescript-json-serializer';
 
@@ -13,7 +13,7 @@ describe('Angular App Package Service Tests', () => {
 
     const getAllEvent = (event, arg): void => {
         const json = serialize(packagesList);
-        ipService.send(PluginsEvents.GetAllListeners, json);
+        ipService.send(PackagesEvents.GetAllListeners, json);
     };
 
     const installEvent = (event, arg): void => {
@@ -24,7 +24,7 @@ describe('Angular App Package Service Tests', () => {
         if (find >= 0) {
             packagesList.packages[find].install = true;
             const json = serialize(packagesList);
-            ipService.send(PluginsEvents.GetAllListeners, json);
+            ipService.send(PackagesEvents.GetAllListeners, json);
         }
     };
 
@@ -36,7 +36,7 @@ describe('Angular App Package Service Tests', () => {
         if (find >= 0) {
             packagesList.packages[find].install = false;
             const json = serialize(packagesList);
-            ipService.send(PluginsEvents.GetAllListeners, json);
+            ipService.send(PackagesEvents.GetAllListeners, json);
         }
     };
 
@@ -51,9 +51,9 @@ describe('Angular App Package Service Tests', () => {
     });
 
     beforeEach(() => {
-        ipService.on(PluginsEvents.GetAllEvent, getAllEvent);
-        ipService.on(PluginsEvents.InstallEvent, installEvent);
-        ipService.on(PluginsEvents.UninstallEvent, uninstallEvent);
+        ipService.on(PackagesEvents.GetAllEvent, getAllEvent);
+        ipService.on(PackagesEvents.InstallEvent, installEvent);
+        ipService.on(PackagesEvents.UninstallEvent, uninstallEvent);
         packageService = new AppPackageService(ipService, zone);
     });
 

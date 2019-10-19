@@ -5,8 +5,7 @@ import { IpService } from '../../../../shared/services/ip.service';
 import { PluginManager, IPluginInfo } from 'live-plugin-manager';
 const settings = require('electron-settings');
 import { net } from 'electron';
-import * as PluginsEvents from '../../../../shared/events/plugins-events';
-import * as ErrorEvents from '../../../../shared/events/error-events';
+import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 
 export class AppPackageService implements PackageService {
     private packagesList: PluginPackageList;
@@ -86,7 +85,7 @@ export class AppPackageService implements PackageService {
                     });
                     this.packagesList = temp;
                     const json = serialize(this.packagesList);
-                    this.ipService.send(PluginsEvents.GetAllListeners, json);
+                    this.ipService.send(PackagesEvents.GetAllListeners, json);
                 }
                 this.fetch = true;
             });
@@ -103,11 +102,11 @@ export class AppPackageService implements PackageService {
     }
 
     private registerGetAll(): void {
-        this.ipService.on(PluginsEvents.GetAllEvent, this.getAllEvent);
+        this.ipService.on(PackagesEvents.GetAllEvent, this.getAllEvent);
     }
 
     private unregisterGetAll(): void {
-        this.ipService.on(PluginsEvents.GetAllEvent, this.getAllEvent);
+        this.ipService.on(PackagesEvents.GetAllEvent, this.getAllEvent);
     }
 
     private getAllEvent = (_event, _arg): void => {
@@ -115,15 +114,15 @@ export class AppPackageService implements PackageService {
             this.getPackagesFromServer();
         }
         const json = serialize(this.packagesList);
-        this.ipService.send(PluginsEvents.GetAllListeners, json);
+        this.ipService.send(PackagesEvents.GetAllListeners, json);
     }
 
     private registerInstall(): void {
-        this.ipService.on(PluginsEvents.InstallEvent, this.installEvent);
+        this.ipService.on(PackagesEvents.InstallEvent, this.installEvent);
     }
     
     private unregisterInstall(): void {
-        this.ipService.removeListener(PluginsEvents.InstallEvent, this.installEvent);
+        this.ipService.removeListener(PackagesEvents.InstallEvent, this.installEvent);
     }
 
     private installEvent = (_event, arg): void => {
@@ -140,7 +139,7 @@ export class AppPackageService implements PackageService {
                         this.installPackagesList.packages.push(pluginPackage);
                         settings.set('install-packages-list', this.installPackagesList);
                         const json = serialize(this.packagesList);
-                        this.ipService.send(PluginsEvents.GetAllListeners, json);
+                        this.ipService.send(PackagesEvents.GetAllListeners, json);
                     })
                     .catch((_reason: any) => {
                         this.ipService.send(ErrorEvents.ExceptionListeners, `Unable to install packages: ${pluginPackage.name}`);

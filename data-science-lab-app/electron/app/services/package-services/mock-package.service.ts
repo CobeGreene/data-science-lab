@@ -1,8 +1,7 @@
 import { PackageService } from './package.service';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import { serialize } from 'typescript-json-serializer';
-import * as PluginsEvents from '../../../../shared/events/plugins-events';
-import * as ErrorEvents from '../../../../shared/events/error-events';
+import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { IpService } from '../../../../shared/services/ip.service';
 
 export class MockPackageService implements PackageService {
@@ -34,24 +33,24 @@ export class MockPackageService implements PackageService {
     }
 
     private registerGetAll(): void {
-        this.ipService.on(PluginsEvents.GetAllEvent, this.getAllEvent);
+        this.ipService.on(PackagesEvents.GetAllEvent, this.getAllEvent);
     }
 
     private unregisterGetAll(): void {
-        this.ipService.removeListener(PluginsEvents.GetAllEvent, this.getAllEvent);
+        this.ipService.removeListener(PackagesEvents.GetAllEvent, this.getAllEvent);
     }
 
     private getAllEvent = (event, arg): void => {
         const json = serialize(this.packagesList);
-        this.ipService.send(PluginsEvents.GetAllListeners, json);
+        this.ipService.send(PackagesEvents.GetAllListeners, json);
     }
 
     private registerInstall(): void {
-        this.ipService.on(PluginsEvents.InstallEvent, this.installEvent);
+        this.ipService.on(PackagesEvents.InstallEvent, this.installEvent);
     }
 
     private unregisterInstall(): void {
-        this.ipService.removeListener(PluginsEvents.InstallEvent, this.installEvent);
+        this.ipService.removeListener(PackagesEvents.InstallEvent, this.installEvent);
     }
 
     private installEvent = (event, arg): void => {
@@ -66,7 +65,7 @@ export class MockPackageService implements PackageService {
             if (find >= 0) {
                 this.packagesList.packages[find].install = true;
                 const json = serialize(this.packagesList);
-                this.ipService.send(PluginsEvents.GetAllListeners, json);
+                this.ipService.send(PackagesEvents.GetAllListeners, json);
             } else {
                 throw new Error(`Couldn't find plugin with the name ${name}.`);
             }
@@ -80,11 +79,11 @@ export class MockPackageService implements PackageService {
     }
 
     private registerUninstall(): void {
-        this.ipService.on(PluginsEvents.UninstallEvent, this.uninstallEvent);
+        this.ipService.on(PackagesEvents.UninstallEvent, this.uninstallEvent);
     }
 
     private unregisterUninstall(): void {
-        this.ipService.removeListener(PluginsEvents.UninstallEvent, this.uninstallEvent);
+        this.ipService.removeListener(PackagesEvents.UninstallEvent, this.uninstallEvent);
     }
 
     private uninstallEvent = (event, arg): void => {
@@ -99,7 +98,7 @@ export class MockPackageService implements PackageService {
             if (find >= 0) {
                 this.packagesList.packages[find].install = false;
                 const json = serialize(this.packagesList);
-                this.ipService.send(PluginsEvents.GetAllListeners, json);
+                this.ipService.send(PackagesEvents.GetAllListeners, json);
             } else {
                 throw new Error(`Couldn't find plugin with the name ${name}.`);
             }

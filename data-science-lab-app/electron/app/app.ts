@@ -4,7 +4,7 @@ import { AppIpService } from './services/app-services/app-ip.service';
 import { AppPackageService } from './services/package-services/app-package.service';
 import { PluginManager } from 'live-plugin-manager';
 import { PackageService } from './services/package-services/package.service';
-import * as ErrorEvents from '../../shared/events/error-events';
+import { ErrorEvents } from '../../shared/events';
 
 export let win: BrowserWindow;
 
@@ -73,6 +73,6 @@ export class App {
     }
 
     private errorEvent = (event, arg) => {
-        console.log(`Error -\nEvent - ${event}\nArgs - ${arg}`);
+        console.warn(`Error -\nEvent - ${event}\nArgs - ${arg}`);
     } 
 }

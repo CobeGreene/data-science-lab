@@ -1,7 +1,6 @@
 import { PackageService } from './package.service';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
-import * as PluginsEvents from '../../../../shared/events/plugins-events';
-import * as ErrorEvents from '../../../../shared/events/error-events';
+import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { OnDestroy, Injectable, NgZone } from '@angular/core';
 import { IpService } from '../../../../shared/services/ip.service';
 import { Subject } from 'rxjs';
@@ -27,17 +26,17 @@ export class AppPackageService implements PackageService, OnDestroy {
     
     all(): PluginPackageList {
         if (!this.retrieve) {
-            this.ipService.send(PluginsEvents.GetAllEvent);
+            this.ipService.send(PackagesEvents.GetAllEvent);
         }
         return this.packagesList;
     }
 
     install(name: string): void {
-        this.ipService.send(PluginsEvents.InstallEvent, name);
+        this.ipService.send(PackagesEvents.InstallEvent, name);
     }
 
     uninstall(name: string): void {
-        this.ipService.send(PluginsEvents.UninstallEvent, name);
+        this.ipService.send(PackagesEvents.UninstallEvent, name);
     }
 
     get(name: string): PluginPackage {
@@ -46,17 +45,17 @@ export class AppPackageService implements PackageService, OnDestroy {
         });
         
         if (find == null) {
-            throw new Error('Couldn\'t find plugin');
+            throw new Error('Couldn\'t find package');
         }
         return find;
     }
 
     private registerGetAll(): void {
-        this.ipService.on(PluginsEvents.GetAllListeners, this.getAllEvent);
+        this.ipService.on(PackagesEvents.GetAllListeners, this.getAllEvent);
     }   
     
     private unregisterGetAll(): void {
-        this.ipService.removeListener(PluginsEvents.GetAllListeners, this.getAllEvent);
+        this.ipService.removeListener(PackagesEvents.GetAllListeners, this.getAllEvent);
     }
 
     private getAllEvent = (event, arg): void => {

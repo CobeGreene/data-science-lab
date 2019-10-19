@@ -87,7 +87,8 @@
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
     "variable-name": false,
-    "no-internal-module": false
+    "no-internal-module": false,
+    "no-namespace": false
   },
   "rulesDirectory": [
     "codelyzer"
