@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import { IpService } from '../../shared/services';
-import { AppIpService, AppPackageService, PackageService } from './services';
+import { AppIpService, AppPackageService, PackageService, AppSettingService, SettingService } from './services';
 import { PluginManager } from 'live-plugin-manager';
 import { ErrorEvents } from '../../shared/events';
 
@@ -11,25 +11,26 @@ export class App {
     private pluginsDir: string;
     private preload: string;
     private indexPage: string;
+    private settingsPath: string; 
     private ipService: IpService;
     private packageManager: PackageService;
     private pluginManager: PluginManager;
+    private settingsService: SettingService;
 
-    constructor(pluginsDir: string, preload: string, indexPage: string) {
+    constructor(pluginsDir: string, preload: string, indexPage: string, settingsPath: string) {
         this.pluginsDir = pluginsDir;
         this.preload = preload;
         this.indexPage = indexPage;
+        this.settingsPath = settingsPath;
     }
 
     public initialize() {
+        this.settingsService = new AppSettingService(this.settingsPath);
         this.ipService = new AppIpService();
         this.pluginManager = new PluginManager({
             pluginsPath: this.pluginsDir
         });
-        // this.pluginService = MockPluginService.init(new Plugins([
-        //     new Plugin('name', 'owner', 'repo')
-        // ]), this.ipService);
-        this.packageManager = new AppPackageService(this.ipService, this.pluginManager);
+        this.packageManager = new AppPackageService(this.ipService, this.pluginManager, this.settingsService);
 
         this.ipService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }

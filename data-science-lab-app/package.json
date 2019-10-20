@@ -14,6 +14,7 @@
     "build:elc": "tsc --p tsconfig.electron.json",
     "build:all": "npm run build:elc && npm run build:ang",
     "build:start": "npm run build:all && npm run start",
+    "build:settings": "copy default.settings.json dist\\app.settings.json",
     "start": "electron .",
     "clean:test": "rmdir /s test",
     "clean:dist": "rmdir /s dist",
