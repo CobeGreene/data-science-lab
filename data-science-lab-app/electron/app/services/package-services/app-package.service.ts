@@ -6,6 +6,7 @@ import { PluginManager, IPluginInfo } from 'live-plugin-manager';
 const settings = require('electron-settings');
 import { net } from 'electron';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
+import { ApiSettings } from '../../models';
 
 export class AppPackageService implements PackageService {
     private packagesList: PluginPackageList;
@@ -44,12 +45,13 @@ export class AppPackageService implements PackageService {
     }
 
     private getPackagesFromServer(): void {
+        const apiSettings = settings.get('api-settings') as ApiSettings;
         const request = net.request({
             method: 'GET',
-            protocol: 'https:',
-            hostname: 'localhost',
-            port: 44339,
-            path: '/api/packages'
+            protocol: apiSettings.protocol,
+            hostname: apiSettings.hostname,
+            port: apiSettings.port,
+            path: apiSettings.pathPackages
         });
         request.on('response', (response) => {
             response.on('data', (chunk) => {
@@ -87,7 +89,6 @@ export class AppPackageService implements PackageService {
                     const json = serialize(this.packagesList);
                     this.ipService.send(PackagesEvents.GetAllListeners, json);
                 }
-                this.fetch = true;
             });
             response.on('error', () => {
                 console.log(`Error: Couldn't load packages from api.`);
@@ -111,6 +112,7 @@ export class AppPackageService implements PackageService {
 
     private getAllEvent = (_event, _arg): void => {
         if (!this.fetch) {
+            this.fetch = true;
             this.getPackagesFromServer();
         }
         const json = serialize(this.packagesList);
