@@ -14,7 +14,7 @@ export class AppSettingService implements SettingService {
     }
 
     get<T>(path: string, defaultValue?: T): T {
-        return this.get(path, defaultValue);
+        return settings.get(path, defaultValue);
     }
 
     has(path: string): boolean {

@@ -3,10 +3,10 @@ import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { serialize } from 'typescript-json-serializer';
 import { IpService } from '../../../../shared/services';
 import { PluginManager, IPluginInfo } from 'live-plugin-manager';
-const settings = require('electron-settings');
 import { net } from 'electron';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { ApiSettings } from '../../models';
+import { SettingService } from '../setting-services';
 
 export class AppPackageService implements PackageService {
     private packagesList: PluginPackageList;
@@ -14,13 +14,16 @@ export class AppPackageService implements PackageService {
     private ipService: IpService;
     private fetch: boolean;
     private manager: PluginManager;
+    private settingsService: SettingService;
 
-    constructor(ipService: IpService, manager: PluginManager) {
-        this.packagesList = new PluginPackageList();
+    constructor(ipService: IpService, manager: PluginManager, settingsService: SettingService) {
         this.ipService = ipService;
         this.manager = manager;
         this.fetch = false;
+        this.settingsService = settingsService;
+
         this.installPackagesList = new PluginPackageList();
+        this.packagesList = new PluginPackageList();
     }
 
     inititalize(): void {
@@ -38,14 +41,14 @@ export class AppPackageService implements PackageService {
     }
 
     private getInstalledPackages() {
-        this.installPackagesList = settings.get('install-packages-list', new PluginPackageList());
+        this.installPackagesList = this.settingsService.get<PluginPackageList>('install-packages-list', new PluginPackageList());
         this.installPackagesList.packages.forEach(element => {
             this.packagesList.packages.push(element);
         });
     }
 
     private getPackagesFromServer(): void {
-        const apiSettings = settings.get('api-settings') as ApiSettings;
+        const apiSettings = this.settingsService.get<ApiSettings>('api-settings');
         const request = net.request({
             method: 'GET',
             protocol: apiSettings.protocol,
@@ -139,7 +142,7 @@ export class AppPackageService implements PackageService {
                     .then((value: IPluginInfo) => {
                         pluginPackage.install = true;
                         this.installPackagesList.packages.push(pluginPackage);
-                        settings.set('install-packages-list', this.installPackagesList);
+                        this.settingsService.set('install-packages-list', this.installPackagesList);
                         const json = serialize(this.packagesList);
                         this.ipService.send(PackagesEvents.GetAllListeners, json);
                     })
