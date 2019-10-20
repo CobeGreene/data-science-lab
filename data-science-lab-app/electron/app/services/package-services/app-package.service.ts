@@ -8,6 +8,7 @@ import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { ApiSettings } from '../../models';
 import { SettingService } from '../setting-services';
 
+
 export class AppPackageService implements PackageService {
     private packagesList: PluginPackageList;
     private installPackagesList: PluginPackageList;
@@ -57,7 +58,7 @@ export class AppPackageService implements PackageService {
             path: apiSettings.pathPackages
         });
         request.on('response', (response) => {
-            response.on('data', (chunk) => {
+            response.on('data', (chunk: Buffer) => {
                 if (response.statusCode === 200) {
                     const obj = JSON.parse(chunk.toString());
                     const temp = new PluginPackageList();
