@@ -3,7 +3,6 @@ import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { serialize } from 'typescript-json-serializer';
 import { IpService } from '../../../../shared/services';
 import { PluginManager, IPluginInfo } from 'live-plugin-manager';
-import { net } from 'electron';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { ApiSettings } from '../../models';
 import { SettingService } from '../setting-services';
@@ -59,9 +58,6 @@ export class AppPackageService implements PackageService {
             port: apiSettings.port,
             path: apiSettings.pathPackages
         });
-            // 'GET', apiSettings.protocol, apiSettings.hostname,
-            // apiSettings.port, apiSettings.pathPackages);
-
         this.webService.send(request)
             .then((value: Response) => {
                 if (value.statusCode === 200) {
