@@ -3,6 +3,7 @@ import { IpService } from '../../shared/services';
 import { AppIpService, AppPackageService, PackageService, AppSettingService, SettingService } from './services';
 import { PluginManager } from 'live-plugin-manager';
 import { ErrorEvents } from '../../shared/events';
+import { WebService, AppWebService } from './services/web-services';
 
 export let win: BrowserWindow;
 
@@ -16,6 +17,7 @@ export class App {
     private packageManager: PackageService;
     private pluginManager: PluginManager;
     private settingsService: SettingService;
+    private webService: WebService;
 
     constructor(pluginsDir: string, preload: string, indexPage: string, settingsPath: string) {
         this.pluginsDir = pluginsDir;
@@ -26,11 +28,12 @@ export class App {
 
     public initialize() {
         this.settingsService = new AppSettingService(this.settingsPath);
+        this.webService = new AppWebService();
         this.ipService = new AppIpService();
         this.pluginManager = new PluginManager({
             pluginsPath: this.pluginsDir
         });
-        this.packageManager = new AppPackageService(this.ipService, this.pluginManager, this.settingsService);
+        this.packageManager = new AppPackageService(this.ipService, this.pluginManager, this.settingsService, this.webService);
 
         this.ipService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }

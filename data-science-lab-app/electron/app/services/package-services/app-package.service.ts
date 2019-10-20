@@ -7,6 +7,7 @@ import { net } from 'electron';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { ApiSettings } from '../../models';
 import { SettingService } from '../setting-services';
+import { WebService, Request, Response } from '../web-services';
 
 export class AppPackageService implements PackageService {
     private packagesList: PluginPackageList;
@@ -15,12 +16,14 @@ export class AppPackageService implements PackageService {
     private fetch: boolean;
     private manager: PluginManager;
     private settingsService: SettingService;
+    private webService: WebService;
 
-    constructor(ipService: IpService, manager: PluginManager, settingsService: SettingService) {
+    constructor(ipService: IpService, manager: PluginManager, settingsService: SettingService, webService: WebService) {
         this.ipService = ipService;
         this.manager = manager;
         this.fetch = false;
         this.settingsService = settingsService;
+        this.webService = webService;
 
         this.installPackagesList = new PluginPackageList();
         this.packagesList = new PluginPackageList();
@@ -49,62 +52,63 @@ export class AppPackageService implements PackageService {
 
     private getPackagesFromServer(): void {
         const apiSettings = this.settingsService.get<ApiSettings>('api-settings');
-        const request = net.request({
+        const request = new Request({
             method: 'GET',
             protocol: apiSettings.protocol,
             hostname: apiSettings.hostname,
             port: apiSettings.port,
             path: apiSettings.pathPackages
         });
-        request.on('response', (response) => {
-            response.on('data', (chunk) => {
-                if (response.statusCode === 200) {
-                    const obj = JSON.parse(chunk.toString());
-                    const temp = new PluginPackageList();
-                    obj.forEach(element => {
-                        const find = this.installPackagesList.packages.find((value: PluginPackage) => {
-                            return value.name.match(element.name);
-                        });
-                        if (find == null) {
-                            temp.packages
-                                .push(
-                                    new PluginPackage(
-                                        element.name,
-                                        element.owner,
-                                        element.repositoryName,
-                                        element.username,
-                                        element.plugins)
-                                );
-                        } else {
-                            temp.packages
-                                .push(
-                                    new PluginPackage(
-                                        element.name,
-                                        element.owner,
-                                        element.repositoryName,
-                                        element.username,
-                                        element.plugins,
-                                        true)
-                                );
-                        }
-                    });
-                    this.packagesList = temp;
-                    const json = serialize(this.packagesList);
-                    this.ipService.send(PackagesEvents.GetAllListeners, json);
+            // 'GET', apiSettings.protocol, apiSettings.hostname,
+            // apiSettings.port, apiSettings.pathPackages);
+
+        this.webService.send(request)
+            .then((value: Response) => {
+                if (value.statusCode === 200) {
+                    this.gotResponse(value);
                 }
-            });
-            response.on('error', () => {
+            }).catch((_reason) => {
                 console.log(`Error: Couldn't load packages from api.`);
-                this.ipService.send(ErrorEvents.ExceptionListeners, `Couldn't load packages from API.`);
+                this.ipService.send(ErrorEvents.ExceptionListeners, `Couldn't load packages from API.`); 
             });
-        });
-        request.on('error', (error: Error) => {
-            console.log(`Error: ${error.message} from api.`);
-            this.ipService.send(ErrorEvents.ExceptionListeners, error.message);
-        });
-        request.end();
+
     }
 
+    private gotResponse(respones: Response) {
+        const obj = JSON.parse(respones.body.toString());
+        const temp = new PluginPackageList();
+        obj.forEach(element => {
+            const find = this.installPackagesList.packages.find((value: PluginPackage) => {
+                return value.name.match(element.name);
+            });
+            if (find == null) {
+                temp.packages
+                    .push(
+                        new PluginPackage(
+                            element.name,
+                            element.owner,
+                            element.repositoryName,
+                            element.username,
+                            element.plugins)
+                    );
+            } else {
+                temp.packages
+                    .push(
+                        new PluginPackage(
+                            element.name,
+                            element.owner,
+                            element.repositoryName,
+                            element.username,
+                            element.plugins,
+                            true)
+                    );
+            }
+        });
+        this.packagesList = temp;
+        const json = serialize(this.packagesList);
+        this.ipService.send(PackagesEvents.GetAllListeners, json);
+    }
+    
     private registerGetAll(): void {
         this.ipService.on(PackagesEvents.GetAllEvent, this.getAllEvent);
     }
@@ -125,7 +129,7 @@ export class AppPackageService implements PackageService {
     private registerInstall(): void {
         this.ipService.on(PackagesEvents.InstallEvent, this.installEvent);
     }
-    
+
     private unregisterInstall(): void {
         this.ipService.removeListener(PackagesEvents.InstallEvent, this.installEvent);
     }
@@ -135,7 +139,7 @@ export class AppPackageService implements PackageService {
             const name = arg[0];
             const find = this.packagesList.packages.findIndex((value: PluginPackage) => {
                 return value.name.match(name) != null;
-            }); 
+            });
             if (find >= 0) {
                 const pluginPackage = this.packagesList.packages[find];
                 this.manager.installFromGithub(`${pluginPackage.owner}/${pluginPackage.repositoryName}`)
