@@ -52,8 +52,15 @@ export class AppPackageService implements PackageService {
 
     private getPackagesFromServer(): void {
         const apiSettings = this.settingsService.get<ApiSettings>('api-settings');
-        const request = new Request('GET', apiSettings.protocol, apiSettings.hostname,
-            apiSettings.port, apiSettings.pathPackages);
+        const request = new Request({
+            method: 'GET',
+            protocol: apiSettings.protocol,
+            hostname: apiSettings.hostname,
+            port: apiSettings.port,
+            path: apiSettings.pathPackages
+        });
+            // 'GET', apiSettings.protocol, apiSettings.hostname,
+            // apiSettings.port, apiSettings.pathPackages);
 
         this.webService.send(request)
             .then((value: Response) => {
