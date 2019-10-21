@@ -1,7 +1,5 @@
-import { WebService } from './web.service';
-import { Request } from './request';
-import { Response } from './response';
 import { net } from 'electron';
+import { Request, Response, WebService } from 'data-science-lab-core';
 
 export class AppWebService implements WebService {
 
@@ -24,7 +22,10 @@ export class AppWebService implements WebService {
                     }
                 });
                 response.on('end', () => {
-                    const retResponse = new Response(response.statusCode, total);
+                    const retResponse = new Response({
+                        statusCode: response.statusCode,
+                        body: total
+                    });
                     resolve(retResponse);
                 });
 

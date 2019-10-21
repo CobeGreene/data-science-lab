@@ -6,7 +6,7 @@ import { PluginManager, IPluginInfo } from 'live-plugin-manager';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { ApiSettings } from '../../models';
 import { SettingService } from '../setting-services';
-import { WebService, Request, Response } from '../web-services';
+import { WebService, Request, Response } from 'data-science-lab-core';
 
 export class AppPackageService implements PackageService {
     private packagesList: PluginPackageList;

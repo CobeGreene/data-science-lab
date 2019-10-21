@@ -3,7 +3,8 @@ import { IpService } from '../../shared/services';
 import { AppIpService, AppPackageService, PackageService, AppSettingService, SettingService } from './services';
 import { PluginManager } from 'live-plugin-manager';
 import { ErrorEvents } from '../../shared/events';
-import { WebService, AppWebService } from './services/web-services';
+import { AppWebService } from './services/web-services';
+import { WebService } from 'data-science-lab-core';
 
 export let win: BrowserWindow;
 
