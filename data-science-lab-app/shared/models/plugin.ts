@@ -1,5 +1,6 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
 
+
 @Serializable()
 export class Plugin {
     @JsonProperty()

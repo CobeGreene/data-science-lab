@@ -1,8 +1,9 @@
-language: nodejs
+language: node_js
+node_js:
+  - 10
 
-before_scripts:
-  - cd data-science-lab-app
-  - npm run build:test:elc
+before_install: cd ./data-science-lab-app
 
-script:
-  - npm run jasmine:elc
+install: npm install
+
+script: npm run build:elc:test && npm run jasmine:elc
