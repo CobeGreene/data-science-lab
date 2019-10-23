@@ -1,0 +1,7 @@
+language: nodejs
+
+before_scripts:
+  - npm run build:test:elc
+
+script:
+  - npm run jasmine:elc
