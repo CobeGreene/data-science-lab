@@ -1,0 +1,13 @@
+<ul class="list-unstyled">
+    <li>
+        <a [routerLink]="['available']">
+            Available 
+        </a>
+    </li>
+    <li>
+        <a [routerLink]="['installed']">
+            Installed 
+        </a>
+         <span class="badge badge-info">{{ installedCount }}</span>
+    </li>
+</ul>
