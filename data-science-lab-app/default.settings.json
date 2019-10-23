@@ -1,0 +1,8 @@
+{
+    "api-settings": {
+        "protocol": "https:",
+        "hostname": "localhost",
+        "port": 44339,
+        "pathPackages": "/api/packages"
+    }
+}

@@ -11,6 +11,7 @@
         "electron/**/*.ts"
     ],
     "exclude": [
-        "./src"
+        "./src",
+        "./electron/spec"
     ]
 }

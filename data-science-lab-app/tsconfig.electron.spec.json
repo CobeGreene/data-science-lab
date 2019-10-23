@@ -1,0 +1,17 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./test"
+    },
+    "files": [
+        "electron/main.ts",
+        "electron/preload.ts"
+    ],
+    "include": [
+        "electron/**/*.ts",
+        "electron/**/*.spec.ts"
+    ],
+    "exclude": [
+        "./src",
+    ]
+}
