@@ -21,7 +21,6 @@ export class ErrorNotificationsComponent implements OnInit, OnDestroy {
         this.errorService.errorsChanged
             .pipe(untilComponentDestroyed(this))
             .subscribe((value: ErrorExceptionList) => {
-                console.log(`Length: ${value.errors.length}`);
                 this.errorExceptionList = value;
             });
     }
@@ -31,7 +30,6 @@ export class ErrorNotificationsComponent implements OnInit, OnDestroy {
     }
 
     onRemoveNotification(id: number) {
-        console.log(`attempting to remove`);
         this.errorService.remove(id);
     }
 

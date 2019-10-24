@@ -37,14 +37,11 @@ export class AppErrorService implements ErrorService, OnDestroy {
 
     remove(id: number): void {
         this.zone.run(() => {
-            console.log(`Service - Error length ${this.errorsList.errors.length}`);
             const index = this.errorsList.errors.findIndex((value: ErrorException) => {
                 return value.id === id;
             });
-            console.log(`Index ${index}`);
             if (index > -1) {
                 this.errorsList.errors.splice(index, 1);
-                console.log(`Service - Error length ${this.errorsList.errors.length}`);
                 this.errorsChanged.next(this.all());
             } else {
                 throw new Error('Coudn\'t find error exception.');
