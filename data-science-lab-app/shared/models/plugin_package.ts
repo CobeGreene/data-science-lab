@@ -16,13 +16,16 @@ export class PluginPackage {
     @JsonProperty()
     public install: boolean;
 
-    constructor(name: string, owner: string, repositoryName: string,
-                username: string, plugins: Plugin[] = [], install: boolean = false) {
-        this.name = name;
-        this.owner = owner;
-        this.repositoryName = repositoryName;
-        this.username = username;
-        this.plugins = plugins;
-        this.install = install;
+    constructor(pluginPackage:
+        {
+            name: string, owner: string, repositoryName: string,
+            username: string, plugins?: Plugin[], install?: boolean
+        }) {
+        this.name = pluginPackage.name;
+        this.owner = pluginPackage.owner;
+        this.repositoryName = pluginPackage.repositoryName;
+        this.username = pluginPackage.username;
+        this.plugins = pluginPackage.plugins || [];
+        this.install = pluginPackage.install || false;
     }
 }
