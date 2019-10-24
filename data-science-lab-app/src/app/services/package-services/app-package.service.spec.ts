@@ -42,9 +42,9 @@ describe('Angular App Package Service Tests', () => {
 
     beforeAll(() => {
         packagesList = new PluginPackageList([
-            new PluginPackage('first', 'owner1', 'reop1', 'user1'),
-            new PluginPackage('second', 'owner2', 'reop2', 'user2'),
-            new PluginPackage('third', 'owner3', 'reop3', 'user3', [], false)
+            new PluginPackage({ name: 'first', owner: 'owner1', repositoryName: 'reop1', username: 'user1'}),
+            new PluginPackage({ name: 'second', owner: 'owner2', repositoryName: 'reop2',username: 'user2'}),
+            new PluginPackage({ name: 'third', owner: 'owner3', repositoryName: 'reop3', username: 'user3', plugins: [], install: false})
         ]);
         zone = new MockZone({});
         ipService = new MockIpService();

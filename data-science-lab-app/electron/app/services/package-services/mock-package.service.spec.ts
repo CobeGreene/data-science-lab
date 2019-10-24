@@ -11,9 +11,9 @@ describe('Electron Mock Package Service Tests', () => {
 
     beforeAll(() => {
         packagesList = new PluginPackageList([
-            new PluginPackage('first', 'owner1', 'repo1', 'username'),
-            new PluginPackage('second', 'owner2', 'repo2', 'username'),
-            new PluginPackage('tird', 'owner3', 'repo3', 'username', [], true),
+            new PluginPackage({ name: 'first', owner: 'owner1', repositoryName: 'repo1', username: 'username'}),
+            new PluginPackage({ name: 'second', owner: 'owner2', repositoryName: 'repo2', username: 'username'}),
+            new PluginPackage({ name: 'third', owner: 'owner3', repositoryName: 'repo3', username: 'username', plugins: [], install: true}),
         ]);
         ipService = new MockIpService();
     });

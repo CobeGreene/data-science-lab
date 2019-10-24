@@ -80,23 +80,25 @@ export class AppPackageService implements PackageService {
             if (find == null) {
                 temp.packages
                     .push(
-                        new PluginPackage(
-                            element.name,
-                            element.owner,
-                            element.repositoryName,
-                            element.username,
-                            element.plugins)
+                        new PluginPackage({
+                            name: element.name,
+                            owner: element.owner,
+                            repositoryName: element.repositoryName,
+                            username: element.username,
+                            plugins: element.plugins
+                        })
                     );
             } else {
                 temp.packages
                     .push(
-                        new PluginPackage(
-                            element.name,
-                            element.owner,
-                            element.repositoryName,
-                            element.username,
-                            element.plugins,
-                            true)
+                        new PluginPackage({
+                            name: element.name,
+                            owner: element.owner,
+                            repositoryName: element.repositoryName,
+                            username: element.username,
+                            plugins: element.plugins,
+                            install: true
+                        })
                     );
             }
         });

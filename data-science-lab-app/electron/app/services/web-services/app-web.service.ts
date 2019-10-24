@@ -28,7 +28,6 @@ export class AppWebService implements WebService {
                     });
                     resolve(retResponse);
                 });
-
                 response.on('error', (error) => {
                     reject(error);
                 });
