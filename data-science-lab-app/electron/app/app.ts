@@ -5,7 +5,6 @@ import { PluginManager } from 'live-plugin-manager';
 import { ErrorEvents } from '../../shared/events';
 import { AppWebService } from './services/web-services';
 import { WebService } from 'data-science-lab-core';
-
 export let win: BrowserWindow;
 
 export class App {
@@ -72,6 +71,11 @@ export class App {
             if (win == null) {
                 this.createWindow();
             }
+        });
+
+        process.on('uncaughtException', (error) => {
+            console.log(`uncaught exception ${error.name}, ${error.message}`);
+            this.ipService.send(ErrorEvents.ExceptionListeners, `${error.message}`);
         });
     }
 

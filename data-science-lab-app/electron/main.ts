@@ -17,4 +17,3 @@ const app = new App(plugins, preload, angularApp, settingsPath);
 app.initialize();
 
 app.start();
-

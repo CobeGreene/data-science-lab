@@ -32,6 +32,7 @@
     "@angular/platform-browser": "~8.2.5",
     "@angular/platform-browser-dynamic": "~8.2.5",
     "@angular/router": "~8.2.5",
+    "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "@w11k/ngx-componentdestroyed": "^4.1.4",
     "bootstrap": "^4.3.1",
     "data-science-lab-core": "0.0.2",
