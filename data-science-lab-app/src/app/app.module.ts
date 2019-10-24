@@ -6,20 +6,26 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { AppIpService } from './services/ip-services';
 import { IpService } from '../../shared/services';
 import { PackagesModule } from './packages/packages.module';
+import { ErrorService, AppErrorService } from './services/error-services';
+import { ErrorNotificationsComponent } from './error-exceptions/error-notifications/error-notifications.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    ErrorNotificationsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    PackagesModule
+    PackagesModule,
+    NgbModule
   ],
   bootstrap: [AppComponent],
   providers: [
-    { provide: IpService, useClass: AppIpService }
+    { provide: IpService, useClass: AppIpService },
+    { provide: ErrorService, useClass: AppErrorService }
   ]
 })
 export class AppModule { }
