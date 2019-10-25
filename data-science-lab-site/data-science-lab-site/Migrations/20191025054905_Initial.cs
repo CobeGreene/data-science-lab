@@ -154,22 +154,49 @@ namespace data_science_lab_site.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Packages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    Owner = table.Column<string>(maxLength: 256, nullable: false),
+                    RepositoryName = table.Column<string>(maxLength: 256, nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Packages", x => x.Id);
+                    table.UniqueConstraint("AK_Packages_Name", x => x.Name);
+                    table.ForeignKey(
+                        name: "FK_Packages_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Plugins",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ApplicationUserId = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    ClassName = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: false),
+                    PackageId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Plugins", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Plugins_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Plugins_Packages_PackageId",
+                        column: x => x.PackageId,
+                        principalTable: "Packages",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -212,9 +239,14 @@ namespace data_science_lab_site.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Plugins_ApplicationUserId",
+                name: "IX_Packages_UserId",
+                table: "Packages",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plugins_PackageId",
                 table: "Plugins",
-                column: "ApplicationUserId");
+                column: "PackageId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -239,6 +271,9 @@ namespace data_science_lab_site.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
