@@ -16,11 +16,13 @@
     "build:start": "npm run build:all && npm run start",
     "build:settings": "copy default.settings.json dist\\app.settings.json",
     "start": "electron .",
-    "clean:test": "rmdir /s test",
-    "clean:dist": "rmdir /s dist",
-    "clean:plugins": "rmdir /s dist\\plugins_packages",
+    "clean:test": "rmdir /s test || exit 0",
+    "clean:dist": "rmdir /s dist || exit 0",
+    "clean:plugins": "rmdir /s dist\\plugins_packages || exit 0",
     "clean:all": "npm run clean:test && npm run clean:dist",
-    "clean": "npm run clean:all"
+    "clean": "npm run clean:all",
+    "clean:build": "npm run clean:all && npm run build:all && npm run build:settings",
+    "clean:build:start": "npm run clean:build && npm run start"
   },
   "private": true,
   "dependencies": {

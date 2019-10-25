@@ -12,6 +12,7 @@
     ],
     "exclude": [
         "./src",
-        "./electron/spec"
+        "./electron/spec",
+        "./electron/**/*.spec.ts"
     ]
 }
