@@ -10,8 +10,8 @@ using data_science_lab_site.Data;
 namespace data_science_lab_site.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191018202446_Change integer to string UserId from PluginPackage")]
-    partial class ChangeintegertostringUserIdfromPluginPackage
+    [Migration("20191025054905_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -200,14 +200,14 @@ namespace data_science_lab_site.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int?>("PluginPackageId");
+                    b.Property<int>("PackageId");
 
                     b.Property<string>("Type")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PluginPackageId");
+                    b.HasIndex("PackageId");
 
                     b.ToTable("Plugins");
                 });
@@ -287,9 +287,10 @@ namespace data_science_lab_site.Migrations
 
             modelBuilder.Entity("data_science_lab_site.Data.Models.Plugin", b =>
                 {
-                    b.HasOne("data_science_lab_site.Data.Models.PluginPackage")
+                    b.HasOne("data_science_lab_site.Data.Models.PluginPackage", "Package")
                         .WithMany("Plugins")
-                        .HasForeignKey("PluginPackageId");
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("data_science_lab_site.Data.Models.PluginPackage", b =>
