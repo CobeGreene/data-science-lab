@@ -1,7 +1,7 @@
 import { PackageService } from './package.service';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { serialize } from 'typescript-json-serializer';
-import { IpService } from '../../../../shared/services';
+import { IpcService } from '../../../../shared/services';
 import { PluginManager, IPluginInfo } from 'live-plugin-manager';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { ApiSettings } from '../../models';
@@ -11,14 +11,14 @@ import { WebService, Request, Response } from 'data-science-lab-core';
 export class AppPackageService implements PackageService {
     private packagesList: PluginPackageList;
     private installPackagesList: PluginPackageList;
-    private ipService: IpService;
+    private ipcService: IpcService;
     private fetch: boolean;
     private manager: PluginManager;
     private settingsService: SettingService;
     private webService: WebService;
 
-    constructor(ipService: IpService, manager: PluginManager, settingsService: SettingService, webService: WebService) {
-        this.ipService = ipService;
+    constructor(ipcService: IpcService, manager: PluginManager, settingsService: SettingService, webService: WebService) {
+        this.ipcService = ipcService;
         this.manager = manager;
         this.fetch = false;
         this.settingsService = settingsService;
@@ -65,7 +65,7 @@ export class AppPackageService implements PackageService {
                 }
             }).catch((_reason) => {
                 console.log(`Error: Couldn't load packages from api.`);
-                this.ipService.send(ErrorEvents.ExceptionListeners, `Couldn't load packages from API.`); 
+                this.ipcService.send(ErrorEvents.ExceptionListeners, `Couldn't load packages from API.`); 
             });
 
     }
@@ -104,15 +104,15 @@ export class AppPackageService implements PackageService {
         });
         this.packagesList = temp;
         const json = serialize(this.packagesList);
-        this.ipService.send(PackagesEvents.GetAllListeners, json);
+        this.ipcService.send(PackagesEvents.GetAllListeners, json);
     }
     
     private registerGetAll(): void {
-        this.ipService.on(PackagesEvents.GetAllEvent, this.getAllEvent);
+        this.ipcService.on(PackagesEvents.GetAllEvent, this.getAllEvent);
     }
 
     private unregisterGetAll(): void {
-        this.ipService.on(PackagesEvents.GetAllEvent, this.getAllEvent);
+        this.ipcService.on(PackagesEvents.GetAllEvent, this.getAllEvent);
     }
 
     private getAllEvent = (_event, _arg): void => {
@@ -121,15 +121,15 @@ export class AppPackageService implements PackageService {
             this.getPackagesFromServer();
         }
         const json = serialize(this.packagesList);
-        this.ipService.send(PackagesEvents.GetAllListeners, json);
+        this.ipcService.send(PackagesEvents.GetAllListeners, json);
     }
 
     private registerInstall(): void {
-        this.ipService.on(PackagesEvents.InstallEvent, this.installEvent);
+        this.ipcService.on(PackagesEvents.InstallEvent, this.installEvent);
     }
 
     private unregisterInstall(): void {
-        this.ipService.removeListener(PackagesEvents.InstallEvent, this.installEvent);
+        this.ipcService.removeListener(PackagesEvents.InstallEvent, this.installEvent);
     }
 
     private installEvent = (_event, arg): void => {
@@ -146,19 +146,19 @@ export class AppPackageService implements PackageService {
                         this.installPackagesList.packages.push(pluginPackage);
                         this.settingsService.set('install-packages-list', this.installPackagesList);
                         const json = serialize(this.packagesList);
-                        this.ipService.send(PackagesEvents.GetAllListeners, json);
+                        this.ipcService.send(PackagesEvents.GetAllListeners, json);
                     })
                     .catch((_reason: any) => {
-                        this.ipService.send(ErrorEvents.ExceptionListeners, `Unable to install packages: ${pluginPackage.name}`);
+                        this.ipcService.send(ErrorEvents.ExceptionListeners, `Unable to install packages: ${pluginPackage.name}`);
                     });
             } else {
                 throw new Error(`Couldn't find package with the name ${name}.`);
             }
         } catch (exception) {
             if (exception instanceof Error) {
-                this.ipService.send(ErrorEvents.ExceptionListeners, exception.message);
+                this.ipcService.send(ErrorEvents.ExceptionListeners, exception.message);
             } else {
-                this.ipService.send(ErrorEvents.ExceptionListeners, exception);
+                this.ipcService.send(ErrorEvents.ExceptionListeners, exception);
             }
         }
     }

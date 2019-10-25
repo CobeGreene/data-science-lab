@@ -1,5 +1,5 @@
 export type Listener = (event: any, ...arg: any) => void;
-export abstract class IpService {
+export abstract class IpcService {
     
     abstract send(channel: string, ...arg: any[]): void;
 

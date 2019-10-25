@@ -1,6 +1,6 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { ErrorService } from './error-service';
-import { IpService } from '../../../../shared/services/ip.service';
+import { IpcService } from '../../../../shared/services';
 import { ErrorEvents } from '../../../../shared/events';
 import { Subject } from 'rxjs';
 import { ErrorExceptionList, ErrorException } from '../../models';
@@ -11,7 +11,7 @@ export class AppErrorService implements ErrorService, OnDestroy {
     private errorsList: ErrorExceptionList;
     private id: 1;
 
-    constructor(private ipService: IpService, private zone: NgZone) {
+    constructor(private ipcService: IpcService, private zone: NgZone) {
         this.errorsChanged = new Subject<ErrorExceptionList>();
         this.errorsList = new ErrorExceptionList();
         this.registerErrorEvent();
@@ -50,11 +50,11 @@ export class AppErrorService implements ErrorService, OnDestroy {
     }
 
     private registerErrorEvent(): void {
-        this.ipService.on(ErrorEvents.ExceptionListeners, this.exceptionEvent);
+        this.ipcService.on(ErrorEvents.ExceptionListeners, this.exceptionEvent);
     }
 
     private unregisterErrorEvent(): void {
-        this.ipService.removeListener(ErrorEvents.ExceptionListeners, this.exceptionEvent);
+        this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.exceptionEvent);
     }
 
     private exceptionEvent = (event, arg): void => {

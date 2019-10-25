@@ -1,6 +1,6 @@
-import { IpService, Listener } from '../../../../shared/services';
+import { IpcService, Listener } from '../../../../shared/services';
 
-export class AppIpService implements IpService {
+export class AppIpcService implements IpcService {
     send(channel: string, ...arg: any[]): void {
         window.electronIpcSend(channel, arg);
     }    

@@ -2,18 +2,18 @@ import { MockZone } from '../mock-zone';
 import { AppPackageService } from './app-package.service';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { PackagesEvents } from '../../../../shared/events';
-import { MockIpService } from '../../../../shared/services';
+import { MockIpcService } from '../../../../shared/services';
 import { serialize } from 'typescript-json-serializer';
 
 describe('Angular App Package Service Tests', () => {
     let packageService: AppPackageService;
-    let ipService: MockIpService;
+    let ipcService: MockIpcService;
     let packagesList: PluginPackageList;
     let zone: MockZone;
 
     const getAllEvent = (event, arg): void => {
         const json = serialize(packagesList);
-        ipService.send(PackagesEvents.GetAllListeners, json);
+        ipcService.send(PackagesEvents.GetAllListeners, json);
     };
 
     const installEvent = (event, arg): void => {
@@ -24,7 +24,7 @@ describe('Angular App Package Service Tests', () => {
         if (find >= 0) {
             packagesList.packages[find].install = true;
             const json = serialize(packagesList);
-            ipService.send(PackagesEvents.GetAllListeners, json);
+            ipcService.send(PackagesEvents.GetAllListeners, json);
         }
     };
 
@@ -36,7 +36,7 @@ describe('Angular App Package Service Tests', () => {
         if (find >= 0) {
             packagesList.packages[find].install = false;
             const json = serialize(packagesList);
-            ipService.send(PackagesEvents.GetAllListeners, json);
+            ipcService.send(PackagesEvents.GetAllListeners, json);
         }
     };
 
@@ -47,18 +47,18 @@ describe('Angular App Package Service Tests', () => {
             new PluginPackage({ name: 'third', owner: 'owner3', repositoryName: 'reop3', username: 'user3', plugins: [], install: false })
         ]);
         zone = new MockZone({});
-        ipService = new MockIpService();
+        ipcService = new MockIpcService();
     });
 
     beforeEach(() => {
-        ipService.on(PackagesEvents.GetAllEvent, getAllEvent);
-        ipService.on(PackagesEvents.InstallEvent, installEvent);
-        ipService.on(PackagesEvents.UninstallEvent, uninstallEvent);
-        packageService = new AppPackageService(ipService, zone);
+        ipcService.on(PackagesEvents.GetAllEvent, getAllEvent);
+        ipcService.on(PackagesEvents.InstallEvent, installEvent);
+        ipcService.on(PackagesEvents.UninstallEvent, uninstallEvent);
+        packageService = new AppPackageService(ipcService, zone);
     });
 
     afterEach(() => {
-        ipService.removeListenersFromAllChannels();
+        ipcService.removeListenersFromAllChannels();
         packageService.ngOnDestroy();
     });
 

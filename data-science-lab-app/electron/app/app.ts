@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
-import { IpService } from '../../shared/services';
-import { AppIpService, AppPackageService, PackageService, AppSettingService, SettingService } from './services';
+import { IpcService } from '../../shared/services';
+import { AppIpcService, AppPackageService, PackageService, AppSettingService, SettingService } from './services';
 import { PluginManager } from 'live-plugin-manager';
 import { ErrorEvents } from '../../shared/events';
 import { AppWebService } from './services/web-services';
@@ -13,7 +13,7 @@ export class App {
     private preload: string;
     private indexPage: string;
     private settingsPath: string; 
-    private ipService: IpService;
+    private ipcService: IpcService;
     private packageManager: PackageService;
     private pluginManager: PluginManager;
     private settingsService: SettingService;
@@ -29,13 +29,13 @@ export class App {
     public initialize() {
         this.settingsService = new AppSettingService(this.settingsPath);
         this.webService = new AppWebService();
-        this.ipService = new AppIpService();
+        this.ipcService = new AppIpcService();
         this.pluginManager = new PluginManager({
             pluginsPath: this.pluginsDir
         });
-        this.packageManager = new AppPackageService(this.ipService, this.pluginManager, this.settingsService, this.webService);
+        this.packageManager = new AppPackageService(this.ipcService, this.pluginManager, this.settingsService, this.webService);
 
-        this.ipService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
+        this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
     
     public initializeService() {
@@ -44,7 +44,7 @@ export class App {
     
     public destory() {
         this.packageManager.destory();
-        this.ipService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
+        this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
 
     private createWindow() {
@@ -75,7 +75,7 @@ export class App {
 
         process.on('uncaughtException', (error) => {
             console.log(`uncaught exception ${error.name}, ${error.message}`);
-            this.ipService.send(ErrorEvents.ExceptionListeners, `${error.message}`);
+            this.ipcService.send(ErrorEvents.ExceptionListeners, `${error.message}`);
         });
     }
 

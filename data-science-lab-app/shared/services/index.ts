@@ -1,3 +1,3 @@
-export { IpService, Listener } from './ip.service';
-export { MockIpService } from './mock-ip.service';
+export { IpcService, Listener } from './ipc.service';
+export { MockIpcService } from './mock-ipc.service';
 

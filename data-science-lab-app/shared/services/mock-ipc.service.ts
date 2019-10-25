@@ -1,6 +1,6 @@
-import { IpService, Listener } from './ip.service';
+import { IpcService, Listener } from './ipc.service';
 
-export class MockIpService implements IpService {
+export class MockIpcService implements IpcService {
     
     onceListeners: { [channel: string]: Listener[]};
     listeners: { [channel: string]: Listener[] };
