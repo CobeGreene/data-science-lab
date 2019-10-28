@@ -11,11 +11,14 @@ export class Plugin {
     public description: string;
     @JsonProperty()
     public type: string;
+    @JsonProperty()
+    public packageName?: string;
 
-    constructor(plugin: { name: string, className: string, description: string, type: string }) {
+    constructor(plugin: { name: string, className: string, description: string, type: string, packageName?: string }) {
         this.name = plugin.name;
         this.className = plugin.className;
         this.description = plugin.description;
         this.type = plugin.type;
+        this.packageName = plugin.packageName;
     }
 }

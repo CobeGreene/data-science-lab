@@ -4,7 +4,8 @@ import { WebService, Request, Response } from 'data-science-lab-core';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { PackageProducer } from '../../producers/package-producer/package.producer';
 import { ApiSettings } from '../../models';
-import { PluginManager, IPluginInfo } from 'live-plugin-manager' ;
+import { PluginManager, IPluginInfo } from 'live-plugin-manager';
+import { PluginManagerAdapter } from '../../adapters';
 
 export class AppPackageService implements PackageService {
 
@@ -16,11 +17,12 @@ export class AppPackageService implements PackageService {
     private installPackagesList: PluginPackageList;
     private packagesList: PluginPackageList;
     private fetch: boolean;
-    private manager: PluginManager;
+    private manager: PluginManagerAdapter;
 
     constructor(packageProducer: PackageProducer,
                 settingService: SettingService,
-                webService: WebService) {
+                webService: WebService,
+                pluginManagerAdapter: PluginManagerAdapter) {
         this.packageProducer = packageProducer;
         this.settingService = settingService;
         this.webService = webService;
@@ -31,16 +33,12 @@ export class AppPackageService implements PackageService {
             this.packagesList.packages.push(element);
         });
 
-        console.log(`plugins path: ${this.settingService.get('plugins-package')}`);
         this.fetch = false;
-        this.manager = new PluginManager({
-            pluginsPath: this.settingService.get('plugins-package')
-        });
-        
+        this.manager = pluginManagerAdapter;
+
     }
 
     all(): void {
-        console.log('plugins service');
         if (!this.fetch) {
             this.fetch = true;
             this.getPackagesFromServer();
@@ -57,14 +55,11 @@ export class AppPackageService implements PackageService {
             port: apiSettings.port,
             path: apiSettings.pathPackages
         });
-        console.log('sending web request');
         this.webService.send(request)
             .then((value: Response) => {
                 if (value.statusCode === 200) {
                     this.gotResponse(value);
                 }
-            }).catch((_reason) => {
-                // this.ipService.send(ErrorEvents.ExceptionListeners, `Couldn't load packages from API.`);
             });
     }
 
@@ -75,65 +70,39 @@ export class AppPackageService implements PackageService {
             const find = this.installPackagesList.packages.find((value: PluginPackage) => {
                 return value.name.match(element.name);
             });
-            if (find == null) {
-                temp.packages
-                    .push(
-                        new PluginPackage({
-                            name: element.name,
-                            owner: element.owner,
-                            repositoryName: element.repositoryName,
-                            username: element.username,
-                            plugins: element.plugins
-                        })
-                    );
-            } else {
-                temp.packages
-                    .push(
-                        new PluginPackage({
-                            name: element.name,
-                            owner: element.owner,
-                            repositoryName: element.repositoryName,
-                            username: element.username,
-                            plugins: element.plugins,
-                            install: true
-                        })
-                    );
-            }
+            temp.packages.push(
+                new PluginPackage({
+                    name: element.name,
+                    owner: element.owner,
+                    repositoryName: element.repositoryName,
+                    username: element.username,
+                    plugins: element.plugins,
+                    install: find != null
+                })
+            );
         });
         this.packagesList = temp;
         this.packageProducer.all(this.packagesList);
     }
 
     install(name: string): void {
-        try {
-            const find = this.packagesList.packages.findIndex((value: PluginPackage) => {
-                return value.name.match(name) != null;
-            });
-            if (find >= 0) {
-                const pluginPackage = this.packagesList.packages[find];
-                this.manager.installFromGithub(`${pluginPackage.owner}/${pluginPackage.repositoryName}`)
-                    .then((value: IPluginInfo) => {
-                        pluginPackage.install = true;
-                        this.installPackagesList.packages.push(pluginPackage);
-                        this.settingService.set(this.INSTALL_PACKAGES, this.installPackagesList);
-                        // const json = serialize(this.packagesList);
-                        // this.ipService.send(PackagesEvents.GetAllListeners, json);
-                        this.packageProducer.all(this.packagesList);
-                    })
-                    .catch((_reason: any) => {
-                        // this.ipService.send(ErrorEvents.ExceptionListeners, `Unable to install packages: ${pluginPackage.name}`);
-                    });
-            } else {
-                throw new Error(`Couldn't find package with the name ${name}.`);
-            }
-        } catch (exception) {
-            if (exception instanceof Error) {
-                // this.ipService.send(ErrorEvents.ExceptionListeners, exception.message);
-            } else {
-                // this.ipService.send(ErrorEvents.ExceptionListeners, exception);
-            }
+        const find = this.packagesList.packages.findIndex((value: PluginPackage) => {
+            return value.name.match(name) != null;
+        });
+        if (find >= 0) {
+            const pluginPackage = this.packagesList.packages[find];
+            this.manager.install(pluginPackage)
+                .then(() => {
+                    pluginPackage.install = true;
+                    this.installPackagesList.packages.push(pluginPackage);
+                    this.settingService.set(this.INSTALL_PACKAGES, this.installPackagesList);
+                    this.packageProducer.all(this.packagesList);
+                });
+        } else {
+            throw new Error(`Couldn't find package with the name ${name}.`);
         }
     }
+
     uninstall(name: string): void {
         throw new Error('Method not implemented.');
     }

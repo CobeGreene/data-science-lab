@@ -12,7 +12,6 @@ export class AppSettingService implements SettingService {
     }
 
     get<T>(path: string, defaultValue?: T): T {
-        console.log('getting settings');
         return settings.get(path, defaultValue);
     }
 

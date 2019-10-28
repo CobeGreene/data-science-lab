@@ -11,6 +11,7 @@ import { AppSettingService } from '../services/setting-services/app-setting.serv
 import { IpcService } from '../../../shared/services';
 import { AppIpcService } from '../services/app-ipc-service/app-ipc.service';
 import { Consumer } from '../consumers/consumer';
+import { AppPluginManagerAdapter } from '../adapters';
 
 export class ServiceContainer {
 
@@ -22,11 +23,12 @@ export class ServiceContainer {
     }
 
     configure() {
-        console.log('configuring');
-        
 
         this.ipcService = new AppIpcService();
         const settingService = new AppSettingService();
+
+        // Adapters
+        const pluginManagerAdapter = new AppPluginManagerAdapter(settingService.get<string>('plugins-package'));
 
         // Producers
         const packageProducer = new AppPackageProducer(this.ipcService);
@@ -34,7 +36,7 @@ export class ServiceContainer {
         // Services
         const webService = new AppWebService();
 
-        const packageService = new AppPackageService(packageProducer, settingService, webService);
+        const packageService = new AppPackageService(packageProducer, settingService, webService, pluginManagerAdapter);
 
         // Consumers
         this.consumers = [
@@ -42,10 +44,6 @@ export class ServiceContainer {
         ];
 
     }
-
-    // resolve<T>(symbol: string | symbol): T {
-    //     return this.container.get<T>(symbol);
-    // }
 
     public getIpcService(): IpcService {
         return this.ipcService;

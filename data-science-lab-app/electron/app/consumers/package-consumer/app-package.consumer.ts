@@ -17,11 +17,13 @@ export class AppPackageConsumer implements PackageConsumer {
     initialize(): void {
         this.registerGetAll();
         this.registerInstall();
+        this.registerUninstall();
     }
 
     destory(): void {
         this.unregisterGetAll();
         this.unregisterInstall();
+        this.unregisterUninstall();
     }
 
     private registerGetAll() {
@@ -33,7 +35,6 @@ export class AppPackageConsumer implements PackageConsumer {
     }
 
     private getAllEvent = (_event, _arg): void => {
-        console.log('get all event');
         this.packageService.all();
     }
 
@@ -47,6 +48,27 @@ export class AppPackageConsumer implements PackageConsumer {
 
     private installEvent = (_event, args: any[]): void => {
         const name = args[0] as string;
+        if (!name) {
+            throw new Error('Package Install Event - no name given');
+        }
         this.packageService.install(name);
     }
+
+    private registerUninstall() {
+        this.ipcService.on(PackagesEvents.UninstallEvent, this.uninstallEvent);
+    }
+    
+    private unregisterUninstall() {
+        this.ipcService.removeListener(PackagesEvents.UninstallEvent, this.uninstallEvent);
+    }
+
+    private uninstallEvent = (_event, args: any[]): void => {
+        const name = args[0] as string;
+        if (!name) {
+            throw new Error('Package Uninstall Event - no name given');
+        }
+        this.packageService.uninstall(name);
+    }
+
+
 }

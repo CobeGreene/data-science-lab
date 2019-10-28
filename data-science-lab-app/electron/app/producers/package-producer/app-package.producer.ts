@@ -13,7 +13,6 @@ export class AppPackageProducer implements PackageProducer {
     }
 
     all(pluginPackageList: PluginPackageList): void {
-        console.log('producing plugin');
         const json = serialize(pluginPackageList);
         this.ipcService.send(PackagesEvents.GetAllListeners, json);
     }
