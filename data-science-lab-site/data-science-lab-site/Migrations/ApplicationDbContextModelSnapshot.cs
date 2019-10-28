@@ -233,6 +233,8 @@ namespace data_science_lab_site.Migrations
 
                     b.HasAlternateKey("Name");
 
+                    b.HasAlternateKey("RepositoryName");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Packages");

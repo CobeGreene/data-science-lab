@@ -1,8 +1,13 @@
-import { IpService, Listener } from '../../../../shared/services';
+import { IpcService, Listener } from '../../../../shared/services';
 import { ipcMain } from 'electron';
 import { win } from '../../app';
 
-export class AppIpService implements IpService {
+export class AppIpcService implements IpcService {
+
+    constructor() {
+        
+    }
+
     send(channel: string, ...arg: any[]): void {
         win.webContents.send(channel, arg);
     }    

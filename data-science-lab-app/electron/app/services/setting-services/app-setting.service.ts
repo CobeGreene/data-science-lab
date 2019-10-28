@@ -3,10 +3,8 @@ const settings = require('electron-settings');
 
 export class AppSettingService implements SettingService {
 
-    constructor(path?: string) {
-        if (path != null) {
-            settings.setPath(path);
-        }
+    constructor() {
+    
     }
 
     set(path: string, value: any): void {

@@ -1,3 +1,3 @@
 export { MockZone } from './mock-zone';
-export { AppIpService } from './ip-services';
+export { AppIpcService } from './ipc-services';
 export { AppPackageService, MockPackageService, PackageService } from './package-services';

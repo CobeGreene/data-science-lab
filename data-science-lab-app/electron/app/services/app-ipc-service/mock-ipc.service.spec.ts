@@ -1,49 +1,49 @@
-import { MockIpService } from '../../../../shared/services/mock-ip.service';
+import { MockIpcService } from '../../../../shared/services';
 
-describe('Electron Mock Ip Service Tests', () => {
-    let ipService: MockIpService;
+describe('Electron Mock Ipc Service Tests', () => {
+    let ipcService: MockIpcService;
     const channel = 'channel';
     const message = 'message';
 
     beforeAll(() => {
-        ipService = new MockIpService();
+        ipcService = new MockIpcService();
     });
 
     it('once and send should send message to listener on channel', (done) => {
-        ipService.once(channel, (_event, arg) => {
+        ipcService.once(channel, (_event, arg) => {
             const recieve = arg[0];
             expect(recieve).toEqual(message);
             done();
         });
-        ipService.send(channel, message);
+        ipcService.send(channel, message);
     });
 
     it('on and send should send message to listener on channel', (done) => {
-        ipService.on(channel, (_event, arg) => {
+        ipcService.on(channel, (_event, arg) => {
             const recieve = arg[0];
             expect(recieve).toEqual(message);
             done();
         });
-        ipService.send(channel, message);
+        ipcService.send(channel, message);
     });
 
     it('on and send should reieve two message to listener on channel', (done) => {
         let happen = false;
-        ipService.on(channel, (_event, arg) => {
+        ipcService.on(channel, (_event, arg) => {
             const recieve = arg[0];
             if (happen) {
                 expect(recieve).toEqual(message);
                 done();
             } else {
                 happen = true;
-                ipService.send(channel, message);
+                ipcService.send(channel, message);
             }
         });
-        ipService.send(channel, message);
+        ipcService.send(channel, message);
     });
 
     it('send should send without any listeners', () => {
-        ipService.send(channel, message);
+        ipcService.send(channel, message);
         expect().nothing();
     });
 
@@ -51,18 +51,18 @@ describe('Electron Mock Ip Service Tests', () => {
         const listener = (_event) => {
             done.fail('shouldn\'t get any message');
         };
-        ipService.on(channel, listener);
-        ipService.removeListener(channel, listener);
-        ipService.send(channel, message);
+        ipcService.on(channel, listener);
+        ipcService.removeListener(channel, listener);
+        ipcService.send(channel, message);
         done();
     });
 
     it('remove listeners should not recieve after removing all from listeners', (done) => {
-        ipService.on(channel, (_event) => {
+        ipcService.on(channel, (_event) => {
             done.fail('should\'t get any message');
         });
-        ipService.removeAllListeners(channel);
-        ipService.send(channel, message);
+        ipcService.removeAllListeners(channel);
+        ipcService.send(channel, message);
         done();
     });
 
@@ -70,18 +70,18 @@ describe('Electron Mock Ip Service Tests', () => {
         const listener = (_event) => {
             done.fail('shouldn\'t get any message');
         };
-        ipService.once(channel, listener);
-        ipService.removeListener(channel, listener);
-        ipService.send(channel, message);
+        ipcService.once(channel, listener);
+        ipcService.removeListener(channel, listener);
+        ipcService.send(channel, message);
         done();
     });
 
     it('remove listeners should not recieve after removing all from once listeners', (done) => {
-        ipService.once(channel, (_event) => {
+        ipcService.once(channel, (_event) => {
             done.fail('should\'t get any message');
         });
-        ipService.removeAllListeners(channel);
-        ipService.send(channel, message);
+        ipcService.removeAllListeners(channel);
+        ipcService.send(channel, message);
         done();
     });
 

@@ -1,9 +1,11 @@
 import { App } from './app';
 import * as path from 'path';
 import * as url from 'url';
-
-
+const settings = require('electron-settings');
+console.log('start');
 const settingsPath = path.join(__dirname, '../app.settings.json');
+settings.setPath(settingsPath);
+
 const preload = path.join(__dirname, 'preload.js');
 const angularApp = url.format({
     pathname: path.join(__dirname, '../data-science-lab-app/index.html'),
@@ -11,8 +13,9 @@ const angularApp = url.format({
     slashes: true
 });
 const plugins = path.join(__dirname, '../plugins_packages');
+settings.set('plugins-package', plugins);
 
-const app = new App(plugins, preload, angularApp, settingsPath);
+const app = new App(preload, angularApp);
 
 app.initialize();
 

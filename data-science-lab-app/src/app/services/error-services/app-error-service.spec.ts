@@ -1,12 +1,12 @@
 import { MockZone } from '../mock-zone';
 import { AppErrorService } from './app-error-service';
 import { ErrorEvents } from '../../../../shared/events'; 
-import { MockIpService, IpService } from '../../../../shared/services';
+import { MockIpcService } from '../../../../shared/services';
 import { ErrorExceptionList } from '../../models';
 
 describe('Angular App Error Service Tests', () => {
     let errorService: AppErrorService;
-    let ipService: MockIpService;
+    let ipcService: MockIpcService;
     let zone: MockZone;
 
     beforeAll(() => {
@@ -15,8 +15,8 @@ describe('Angular App Error Service Tests', () => {
     
     
     beforeEach(() => {
-        ipService = new MockIpService();
-        errorService = new AppErrorService(ipService, zone);
+        ipcService = new MockIpcService();
+        errorService = new AppErrorService(ipcService, zone);
     });
 
     it('all should return empty list', () => {
@@ -28,7 +28,7 @@ describe('Angular App Error Service Tests', () => {
             expect(value.errors.length).toBe(1);
             done();
         });
-        ipService.send(ErrorEvents.ExceptionListeners, 'message');
+        ipcService.send(ErrorEvents.ExceptionListeners, 'message');
     });
 
     it('get should return message with new error', (done) => {
@@ -37,7 +37,7 @@ describe('Angular App Error Service Tests', () => {
             expect(error.message).toEqual('message');
             done();
         });
-        ipService.send(ErrorEvents.ExceptionListeners, 'message');
+        ipcService.send(ErrorEvents.ExceptionListeners, 'message');
     });
 
     it('get should throw exception for no errors', () => {
@@ -47,15 +47,15 @@ describe('Angular App Error Service Tests', () => {
     });
 
     it('get should throw exception even with errors', () => {
-        ipService.send(ErrorEvents.ExceptionListeners, 'message1');
-        ipService.send(ErrorEvents.ExceptionListeners, 'message2');
+        ipcService.send(ErrorEvents.ExceptionListeners, 'message1');
+        ipcService.send(ErrorEvents.ExceptionListeners, 'message2');
         expect(() => {
             errorService.get(404);
         }).toThrowError();
     });
 
     it('remove should update errors changed with no errors', (done) => {
-        ipService.send(ErrorEvents.ExceptionListeners, 'message');
+        ipcService.send(ErrorEvents.ExceptionListeners, 'message');
         const errorId = errorService.all().errors[0].id;
         errorService.errorsChanged.subscribe((value: ErrorExceptionList) => {
             expect(value.errors.length).toBe(0);
@@ -71,8 +71,8 @@ describe('Angular App Error Service Tests', () => {
     });
 
     it('remove should throw with errors', () => {
-        ipService.send(ErrorEvents.ExceptionListeners, 'message1');
-        ipService.send(ErrorEvents.ExceptionListeners, 'message2');
+        ipcService.send(ErrorEvents.ExceptionListeners, 'message1');
+        ipcService.send(ErrorEvents.ExceptionListeners, 'message2');
         expect(() => {
             errorService.remove(404);
         }).toThrowError();        

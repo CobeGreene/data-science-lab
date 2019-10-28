@@ -26,6 +26,9 @@ namespace data_science_lab_site.Data
 
             builder.Entity<PluginPackage>()
                 .HasAlternateKey(p => p.Name);
+
+            builder.Entity<PluginPackage>()
+                .HasAlternateKey(p => p.RepositoryName);
         }
     }
 }
