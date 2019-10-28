@@ -6,6 +6,10 @@ export class MockPackageProducer implements PackageProducer {
     public all: (list: PluginPackageList) => void;
 
     constructor() {
+        this.reset();
+    }
+    
+    public reset() {
         this.all = (_) => {};
     }
 }

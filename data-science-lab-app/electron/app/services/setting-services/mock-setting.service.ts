@@ -16,7 +16,7 @@ export class MockSettingService implements SettingService {
         if (this.has(path)) {
             return this.settings[path];
         }
-        if (defaultValue == null) {
+        if (typeof defaultValue === 'undefined') {
             throw new Error(`path was not found for ${path}.`);
         }
         this.settings[path] = defaultValue;
@@ -27,5 +27,7 @@ export class MockSettingService implements SettingService {
         return this.settings[path] != null;
     }
 
-
+    reset() {
+        this.settings = new Object();
+    }
 }

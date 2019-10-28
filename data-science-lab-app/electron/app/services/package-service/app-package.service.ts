@@ -8,7 +8,7 @@ import { PluginManagerAdapter } from '../../adapters';
 
 export class AppPackageService implements PackageService {
 
-    private readonly INSTALL_PACKAGES = 'install-packages-list';
+    public static INSTALL_PACKAGES = 'install-packages-list';
 
     private packageProducer: PackageProducer;
     private settingService: SettingService;
@@ -25,7 +25,7 @@ export class AppPackageService implements PackageService {
         this.settingService = settingService;
         this.webService = webService;
 
-        this.packagesList = this.settingService.get<PluginPackageList>('install-packages-list', new PluginPackageList());
+        this.packagesList = this.settingService.get<PluginPackageList>(AppPackageService.INSTALL_PACKAGES, new PluginPackageList());
         this.fetch = false;
         this.manager = pluginManagerAdapter;
 
@@ -96,14 +96,11 @@ export class AppPackageService implements PackageService {
     }
 
     uninstall(name: string): void {
-        console.log('uninstall event');
         const find = this.packagesList.packages.findIndex((value: PluginPackage) => {
             return value.install && value.name.match(name) != null;
         });
         if (find >= 0) {
-            console.log('found uninstall package');
             this.manager.uninstall(this.packagesList.packages[find]).then(() => {
-                console.log('updating install packages');
                 this.packagesList.packages[find].install = false;
                 this.saveInstallPackages();
                 this.packageProducer.all(this.packagesList);
@@ -118,6 +115,6 @@ export class AppPackageService implements PackageService {
         const installPackageList = new PluginPackageList(this.packagesList.packages.filter((value: PluginPackage) => {
             return value.install;
         }));
-        this.settingService.set(this.INSTALL_PACKAGES, installPackageList);
+        this.settingService.set(AppPackageService.INSTALL_PACKAGES, installPackageList);
     }
 }

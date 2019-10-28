@@ -45,7 +45,7 @@ export class AppPluginManagerAdapter implements PluginManagerAdapter {
         });
     }
 
-    deactivate<T>(pluginPackage: PluginPackage): Promise<void> {
+    deactivate<T>(pluginPackage: PluginPackage, plugin: Plugin): Promise<void> {
         throw new Error('Method not implemented.');
     }
     deactivateAll(): Promise<void> {

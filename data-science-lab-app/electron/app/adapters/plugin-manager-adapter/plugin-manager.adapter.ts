@@ -4,6 +4,6 @@ export interface PluginManagerAdapter {
     install(pluginPackage: PluginPackage): Promise<void>;
     uninstall(pluginPackage: PluginPackage): Promise<void>;
     activate<T>(pluginPackage: PluginPackage, plugin: Plugin): Promise<T>;
-    deactivate<T>(pluginPackage: PluginPackage): Promise<void>;
+    deactivate<T>(pluginPackage: PluginPackage, plugin: Plugin): Promise<void>;
     deactivateAll(): Promise<void>;
 }
