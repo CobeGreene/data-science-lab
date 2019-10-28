@@ -3,6 +3,7 @@ import { ipcMain } from 'electron';
 import { win } from '../../app';
 
 export class AppIpcService implements IpcService {
+
     send(channel: string, ...arg: any[]): void {
         win.webContents.send(channel, arg);
     }    

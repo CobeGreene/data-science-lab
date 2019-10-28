@@ -1,54 +1,43 @@
 import { app, BrowserWindow } from 'electron';
 import { IpcService } from '../../shared/services';
-import { AppIpcService, AppPackageService, PackageService, AppSettingService, SettingService } from './services';
-import { PluginManager } from 'live-plugin-manager';
 import { ErrorEvents } from '../../shared/events';
-import { AppWebService } from './services/web-services';
-import { WebService } from 'data-science-lab-core';
+import { ServiceContainer } from './services-container';
 export let win: BrowserWindow;
 
 export class App {
 
-    private pluginsDir: string;
     private preload: string;
     private indexPage: string;
-    private settingsPath: string; 
     private ipcService: IpcService;
-    private packageManager: PackageService;
-    private pluginManager: PluginManager;
-    private settingsService: SettingService;
-    private webService: WebService;
+    private servicesContainer: ServiceContainer;
 
-    constructor(pluginsDir: string, preload: string, indexPage: string, settingsPath: string) {
-        this.pluginsDir = pluginsDir;
+    constructor(preload: string, indexPage: string) {
         this.preload = preload;
         this.indexPage = indexPage;
-        this.settingsPath = settingsPath;
+        this.servicesContainer = new ServiceContainer();
     }
 
     public initialize() {
-        this.settingsService = new AppSettingService(this.settingsPath);
-        this.webService = new AppWebService();
-        this.ipcService = new AppIpcService();
-        this.pluginManager = new PluginManager({
-            pluginsPath: this.pluginsDir
+        this.servicesContainer.configure();
+        this.ipcService = this.servicesContainer.getIpcService();
+    }
+    
+    public initializeConsumers() {
+        this.servicesContainer.getConsumers().forEach((consumer) => {
+            consumer.initialize();
         });
-        this.packageManager = new AppPackageService(this.ipcService, this.pluginManager, this.settingsService, this.webService);
 
         this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
     
-    public initializeService() {
-        this.packageManager.inititalize();
-    }
-    
     public destory() {
-        this.packageManager.destory();
+        this.servicesContainer.getConsumers().forEach((consumer) => {
+            consumer.destory();
+        });
         this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
 
     private createWindow() {
-        this.initializeService();
         win = new BrowserWindow({
             width: 1500, height: 1000,
             webPreferences: {
@@ -61,6 +50,7 @@ export class App {
             this.destory();
             win = null;
         });
+        this.initializeConsumers();
     }
     
     public start() {
