@@ -4,6 +4,7 @@ const settings = require('electron-settings');
 export class AppSettingService implements SettingService {
 
     constructor() {
+    
     }
 
     set(path: string, value: any): void {
@@ -11,6 +12,7 @@ export class AppSettingService implements SettingService {
     }
 
     get<T>(path: string, defaultValue?: T): T {
+        console.log('getting settings');
         return settings.get(path, defaultValue);
     }
 

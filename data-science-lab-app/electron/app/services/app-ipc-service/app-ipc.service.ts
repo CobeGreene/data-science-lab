@@ -4,6 +4,10 @@ import { win } from '../../app';
 
 export class AppIpcService implements IpcService {
 
+    constructor() {
+        
+    }
+
     send(channel: string, ...arg: any[]): void {
         win.webContents.send(channel, arg);
     }    

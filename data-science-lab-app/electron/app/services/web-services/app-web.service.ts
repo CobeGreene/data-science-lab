@@ -3,6 +3,10 @@ import { Request, Response, WebService } from 'data-science-lab-core';
 
 export class AppWebService implements WebService {
 
+    constructor() {
+        
+    }
+
     send(request: Request): Promise<Response> {
         return new Promise<Response>((resolve, reject) => {
             const appRequest = net.request({

@@ -18,6 +18,7 @@ export class ServiceContainer {
     private consumers: Consumer[];
 
     constructor() {
+        this.consumers = [];
     }
 
     configure() {

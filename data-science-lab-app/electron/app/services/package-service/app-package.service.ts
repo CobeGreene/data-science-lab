@@ -25,6 +25,7 @@ export class AppPackageService implements PackageService {
         this.settingService = settingService;
         this.webService = webService;
 
+        this.packagesList = new PluginPackageList();
         this.installPackagesList = this.settingService.get<PluginPackageList>('install-packages-list', new PluginPackageList());
         this.installPackagesList.packages.forEach(element => {
             this.packagesList.packages.push(element);
@@ -35,6 +36,7 @@ export class AppPackageService implements PackageService {
         this.manager = new PluginManager({
             pluginsPath: this.settingService.get('plugins-package')
         });
+        
     }
 
     all(): void {
