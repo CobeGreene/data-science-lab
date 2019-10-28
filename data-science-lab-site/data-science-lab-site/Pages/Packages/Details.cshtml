@@ -1,0 +1,34 @@
+﻿@page "{id}"
+@using data_science_lab_site.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model data_science_lab_site.Pages.Packages.DetailsModel
+@{
+}
+
+<h1 class="text-info">
+    Package Details
+    <span class="float-right">
+        @if (UserManager.GetUserId(User) == Model.Package.UserId)
+        {
+            <a class="btn btn-danger" asp-page="/Packages/Remove" asp-route-id="@Model.Id">
+                Remove Package
+            </a>
+        }
+    </span>
+</h1>
+<hr/>
+<h3>
+    @Model.Package.Name
+</h3>
+<dl>
+    <dt>@Html.DisplayNameFor(model => model.Package.Owner)</dt>
+    <dd>@Html.DisplayTextFor(model => model.Package.Owner)</dd>
+    <dt>@Html.DisplayNameFor(model => model.Package.RepositoryName)</dt>
+    <dd>@Html.DisplayTextFor(model => model.Package.RepositoryName)</dd>
+</dl>
+
+<p>
+    Description to be added...
+</p>

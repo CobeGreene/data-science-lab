@@ -73,8 +73,8 @@ namespace data_science_lab_site.Pages.Packages
 
         private bool InvalidPackage()
         {
-            if (_context.Packages.FirstOrDefault(p => p.Name.Equals(Package.Name)) != null)
-                ModelState.AddModelError(string.Empty, "Must have a unique plugin name");
+            if (_context.Packages.FirstOrDefault(p => p.Name.Equals(Package.Name) || p.RepositoryName.Equals(Package.RepositoryName)) != null)
+                ModelState.AddModelError(string.Empty, "Must have a unique package name and unique repository name");
             return !ModelState.IsValid;
         }
 
