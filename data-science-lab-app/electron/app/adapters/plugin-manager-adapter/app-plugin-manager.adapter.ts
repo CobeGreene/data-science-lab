@@ -25,7 +25,8 @@ export class AppPluginManagerAdapter implements PluginManagerAdapter {
     uninstall(pluginPackage: PluginPackage): Promise<void> {
         return this.manager.uninstall(`${pluginPackage.owner}/${pluginPackage.repositoryName}`);
     }
-    get<T>(pluginPackage: PluginPackage, plugin: Plugin): Promise<T> {
+
+    activate<T>(pluginPackage: PluginPackage, plugin: Plugin): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             const find = this.manager.list().forEach(element => {
                 return element.name === pluginPackage.repositoryName;
@@ -44,5 +45,11 @@ export class AppPluginManagerAdapter implements PluginManagerAdapter {
         });
     }
 
+    deactivate<T>(pluginPackage: PluginPackage): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    deactivateAll(): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
 
 }

@@ -1,8 +1,7 @@
 import { MockIpcService } from '../../../../shared/services';
 import { PackagesEvents } from '../../../../shared/events';
 import { AppPackageProducer } from './app-package.producer';
-import { PluginPackage, PluginPackageList } from '../../../../shared/models';
-import { deserialize } from 'typescript-json-serializer';
+import { PluginPackage, PluginPackageList, Plugin } from '../../../../shared/models';
 
 describe('Electron App Package Producer Tests', () => {
     let ipcService: MockIpcService;
@@ -28,8 +27,8 @@ describe('Electron App Package Producer Tests', () => {
         ]);
         ipcService.on(PackagesEvents.GetAllListeners, (_event, args) => {
             const json = args[0];
-            const list = deserialize<PluginPackageList>(json, PluginPackageList);
-            expect(list.packages.length).toBe(pluginPackageList.packages.length);
+            const list = JSON.parse(json) as PluginPackageList;
+            expect(list.packages.length).toBe(1);
             done();
         });
         appPackageProducer.all(pluginPackageList);

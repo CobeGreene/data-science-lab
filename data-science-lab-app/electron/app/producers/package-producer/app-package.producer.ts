@@ -2,7 +2,6 @@ import { PackageProducer } from './package.producer';
 import { PluginPackageList } from '../../../../shared/models';
 import { IpcService } from '../../../../shared/services';
 import { PackagesEvents } from '../../../../shared/events';
-import { serialize } from 'typescript-json-serializer';
 
 export class AppPackageProducer implements PackageProducer {
 
@@ -13,7 +12,7 @@ export class AppPackageProducer implements PackageProducer {
     }
 
     all(pluginPackageList: PluginPackageList): void {
-        const json = serialize(pluginPackageList);
+        const json = JSON.stringify(pluginPackageList);
         this.ipcService.send(PackagesEvents.GetAllListeners, json);
     }
 

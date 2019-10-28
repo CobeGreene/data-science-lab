@@ -4,7 +4,6 @@ import { WebService, Request, Response } from 'data-science-lab-core';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { PackageProducer } from '../../producers/package-producer/package.producer';
 import { ApiSettings } from '../../models';
-import { PluginManager, IPluginInfo } from 'live-plugin-manager';
 import { PluginManagerAdapter } from '../../adapters';
 
 export class AppPackageService implements PackageService {
@@ -14,7 +13,6 @@ export class AppPackageService implements PackageService {
     private packageProducer: PackageProducer;
     private settingService: SettingService;
     private webService: WebService;
-    private installPackagesList: PluginPackageList;
     private packagesList: PluginPackageList;
     private fetch: boolean;
     private manager: PluginManagerAdapter;
@@ -27,12 +25,7 @@ export class AppPackageService implements PackageService {
         this.settingService = settingService;
         this.webService = webService;
 
-        this.packagesList = new PluginPackageList();
-        this.installPackagesList = this.settingService.get<PluginPackageList>('install-packages-list', new PluginPackageList());
-        this.installPackagesList.packages.forEach(element => {
-            this.packagesList.packages.push(element);
-        });
-
+        this.packagesList = this.settingService.get<PluginPackageList>('install-packages-list', new PluginPackageList());
         this.fetch = false;
         this.manager = pluginManagerAdapter;
 
@@ -59,53 +52,72 @@ export class AppPackageService implements PackageService {
             .then((value: Response) => {
                 if (value.statusCode === 200) {
                     this.gotResponse(value);
+                } else {
+                    throw new Error('Couldn\'t get successful response to the API.');
                 }
             });
     }
 
     private gotResponse(respones: Response) {
         const obj = JSON.parse(respones.body.toString());
-        const temp = new PluginPackageList();
         obj.forEach(element => {
-            const find = this.installPackagesList.packages.find((value: PluginPackage) => {
+            const find = this.packagesList.packages.find((value: PluginPackage) => {
                 return value.name.match(element.name);
             });
-            temp.packages.push(
-                new PluginPackage({
+            if (find == null) {
+                const pluginPackage = new PluginPackage({
                     name: element.name,
                     owner: element.owner,
                     repositoryName: element.repositoryName,
                     username: element.username,
-                    plugins: element.plugins,
-                    install: find != null
-                })
-            );
+                    plugins: element.plugins
+                });
+                this.packagesList.packages.push(pluginPackage);
+            }
         });
-        this.packagesList = temp;
         this.packageProducer.all(this.packagesList);
     }
 
     install(name: string): void {
         const find = this.packagesList.packages.findIndex((value: PluginPackage) => {
-            return value.name.match(name) != null;
+            return !value.install && value.name.match(name) != null;
         });
         if (find >= 0) {
             const pluginPackage = this.packagesList.packages[find];
             this.manager.install(pluginPackage)
                 .then(() => {
                     pluginPackage.install = true;
-                    this.installPackagesList.packages.push(pluginPackage);
-                    this.settingService.set(this.INSTALL_PACKAGES, this.installPackagesList);
+                    this.saveInstallPackages();
                     this.packageProducer.all(this.packagesList);
                 });
         } else {
-            throw new Error(`Couldn't find package with the name ${name}.`);
+            throw new Error(`Couldn't find an uninstall package with the name ${name}.`);
         }
     }
 
     uninstall(name: string): void {
-        throw new Error('Method not implemented.');
+        console.log('uninstall event');
+        const find = this.packagesList.packages.findIndex((value: PluginPackage) => {
+            return value.install && value.name.match(name) != null;
+        });
+        if (find >= 0) {
+            console.log('found uninstall package');
+            this.manager.uninstall(this.packagesList.packages[find]).then(() => {
+                console.log('updating install packages');
+                this.packagesList.packages[find].install = false;
+                this.saveInstallPackages();
+                this.packageProducer.all(this.packagesList);
+            });
+        } else {
+            throw new Error(`Couldn't find an install package with the name ${name}.`);
+        }
     }
 
 
+    private saveInstallPackages(): void {
+        const installPackageList = new PluginPackageList(this.packagesList.packages.filter((value: PluginPackage) => {
+            return value.install;
+        }));
+        this.settingService.set(this.INSTALL_PACKAGES, installPackageList);
+    }
 }

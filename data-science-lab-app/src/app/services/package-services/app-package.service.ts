@@ -4,7 +4,6 @@ import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { OnDestroy, Injectable, NgZone } from '@angular/core';
 import { IpcService } from '../../../../shared/services/ipc.service';
 import { Subject } from 'rxjs';
-import { deserialize } from 'typescript-json-serializer';
 
 @Injectable()
 export class AppPackageService implements PackageService, OnDestroy {
@@ -61,7 +60,7 @@ export class AppPackageService implements PackageService, OnDestroy {
     private getAllEvent = (event, arg): void => {
         this.zone.run(() => {
             try {
-                const value = deserialize<PluginPackageList>(arg[0], PluginPackageList);
+                const value = JSON.parse(arg[0]) as PluginPackageList;
                 this.packagesList = value;
                 this.retrieve = true;
                 this.packagesChanged.next(this.all());

@@ -1,19 +1,11 @@
-import { JsonProperty, Serializable } from 'typescript-json-serializer';
 import { Plugin } from './plugin';
 
-@Serializable()
 export class PluginPackage {
-    @JsonProperty()
     public name: string;
-    @JsonProperty()
     public owner: string;
-    @JsonProperty()
     public repositoryName: string;
-    @JsonProperty()
     public username: string;
-    @JsonProperty()
     public plugins: Plugin[];
-    @JsonProperty()
     public install: boolean;
 
     constructor(pluginPackage:
