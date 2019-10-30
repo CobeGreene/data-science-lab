@@ -3,7 +3,6 @@ import { AppPackageService } from './app-package.service';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { PackagesEvents } from '../../../../shared/events';
 import { MockIpcService } from '../../../../shared/services';
-import { serialize } from 'typescript-json-serializer';
 
 describe('Angular App Package Service Tests', () => {
     let packageService: AppPackageService;
@@ -12,7 +11,7 @@ describe('Angular App Package Service Tests', () => {
     let zone: MockZone;
 
     const getAllEvent = (event, arg): void => {
-        const json = serialize(packagesList);
+        const json = JSON.stringify(packagesList);
         ipcService.send(PackagesEvents.GetAllListeners, json);
     };
 
@@ -23,7 +22,7 @@ describe('Angular App Package Service Tests', () => {
         });
         if (find >= 0) {
             packagesList.packages[find].install = true;
-            const json = serialize(packagesList);
+            const json = JSON.stringify(packagesList);
             ipcService.send(PackagesEvents.GetAllListeners, json);
         }
     };
@@ -35,7 +34,7 @@ describe('Angular App Package Service Tests', () => {
         });
         if (find >= 0) {
             packagesList.packages[find].install = false;
-            const json = serialize(packagesList);
+            const json = JSON.stringify(packagesList);
             ipcService.send(PackagesEvents.GetAllListeners, json);
         }
     };

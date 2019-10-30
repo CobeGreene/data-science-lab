@@ -2,7 +2,7 @@ import { PackageService } from './package.service';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { OnDestroy, Injectable, NgZone } from '@angular/core';
-import { IpcService } from '../../../../shared/services/ipc.service';
+import { IpcService } from '../../../../shared/services';
 import { Subject } from 'rxjs';
 
 @Injectable()
