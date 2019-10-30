@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ExperimentCreatingComponent } from './experiment-creating/experiment-creating';
+import { ExperimentSetupFetchComponent  } from './experiment-setup-fetch/experiment-setup-fetch.component';
 
 const experimentDetailsRoutes: Routes = [
-    { path: 'experiments/details/:id', component: ExperimentCreatingComponent },
+    { path: 'experiments/details/:id/setup-fetch', component: ExperimentSetupFetchComponent },
 ];
 
 @NgModule({

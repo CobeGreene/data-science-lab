@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExperimentDetailsComponent } from './experiment-details';
-import { ExperimentCreatingComponent } from './experiment-creating/experiment-creating';
 import { ExperimentDetailsRoutingModule } from './experiment-details-routing.module';
+import { ExperimentSetupFetchComponent } from './experiment-setup-fetch/experiment-setup-fetch.component';
 
 @NgModule({
     declarations: [
         ExperimentDetailsComponent,
-        ExperimentCreatingComponent 
+        ExperimentSetupFetchComponent
     ],
     imports: [
         CommonModule,
