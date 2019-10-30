@@ -1,31 +1,54 @@
 import { ExperimentService } from './experiment.service';
-import { Experiment, ExperimentList } from '../../../../shared/models';
+import { Experiment, ExperimentList, ExperimentSelectFetchStage, Plugin } from '../../../../shared/models';
 import { Subject } from 'rxjs';
-import { ExperimentStages } from '../../../../shared/models/experiment_stages';
+import { ExperimentAlgorithmPlugins } from '../../models';
 
 export class MockExperimentService implements ExperimentService {
     public experimentsChanged: Subject<ExperimentList>;
     public newExperiment: Subject<Experiment>;
+    public fetchPlugins: Subject<Plugin[]>;
+    public experimentAlgorithmPlugins: Subject<ExperimentAlgorithmPlugins>;
 
     private experimentList: ExperimentList;
+    private fetchPluginList: Plugin[];
+    private experimentAlgorithmPluginsList: ExperimentAlgorithmPlugins[];
 
     constructor() {
         this.experimentsChanged = new Subject<ExperimentList>();
         this.newExperiment = new Subject<Experiment>();
+        this.fetchPlugins = new Subject<Plugin[]>();
+        this.experimentAlgorithmPlugins = new Subject<ExperimentAlgorithmPlugins>();
 
         this.experimentList = new ExperimentList();
+        this.fetchPluginList = [];
+        this.experimentAlgorithmPluginsList = [];
     }
 
-    static init(experimentList: ExperimentList): MockExperimentService {
+    static init(experimentList: ExperimentList,
+                fetchPluginList?: Plugin[],
+                experimentAlgorithmPluginsList?: ExperimentAlgorithmPlugins[]): MockExperimentService {
         const service = new MockExperimentService();
         service.experimentList = experimentList;
+        service.fetchPluginList = fetchPluginList || [];
+        service.experimentAlgorithmPluginsList = experimentAlgorithmPluginsList || [];
         return service;
     }
 
     all(): ExperimentList {
         return this.experimentList;
     }
-    
+
+    getExperimentAlgorithmPlugins(id: number): ExperimentAlgorithmPlugins {
+        const find = this.experimentAlgorithmPluginsList.find((value: ExperimentAlgorithmPlugins) => {
+            return value.id === id;
+        });        
+        return find || new ExperimentAlgorithmPlugins({ id, algorithmPlugins: [] });
+    }
+
+    getFetchPlugins(): Plugin[] {
+        return this.fetchPluginList;
+    }
+
     create(): void {
         let max = 1;
         this.experimentList.experiments.forEach((value: Experiment) => {
@@ -33,18 +56,15 @@ export class MockExperimentService implements ExperimentService {
                 max = value.id + 1;
             }
         });
-        const experiment = new Experiment({
-            id: max,
-            stage: ExperimentStages.Setup_Fetch
-        });
+        const experiment = new ExperimentSelectFetchStage({ id: 1 });
 
         this.experimentList.experiments.push(
             experiment
         );
         this.experimentsChanged.next(this.experimentList);
         this.newExperiment.next(experiment);
-    } 
-    
+    }
+
     get(id: number): Experiment {
         const found = this.experimentList.experiments.find((value: Experiment) => {
             return value.id === id;
@@ -54,5 +74,25 @@ export class MockExperimentService implements ExperimentService {
         } else {
             return found;
         }
+    }
+
+    updateFetchPlugins(pluginList: Plugin[]) {
+        this.fetchPluginList = pluginList;
+        this.fetchPlugins.next(this.fetchPluginList);
+    }
+
+    updateExperimentAlgorithmPlugins(id: number, pluginList: Plugin[]) {
+        let find = this.experimentAlgorithmPluginsList.find((value: ExperimentAlgorithmPlugins) => {
+            return value.id === id;
+        });
+        if (find) {
+            find.algorithmPlugins = pluginList;
+        } else {
+            find = new ExperimentAlgorithmPlugins({
+                id, algorithmPlugins: pluginList
+            });
+            this.experimentAlgorithmPluginsList.push(find);
+        }
+        this.experimentAlgorithmPlugins.next(find);
     }
 }

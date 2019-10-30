@@ -23,7 +23,7 @@ import { PackagesComponent } from './packages.component';
         PackagesRoutingModule
     ],
     providers: [
-        {provide: PackageService, useClass: AppPackageService }
+        { provide: PackageService, useClass: AppPackageService }
     ]
 })
 export class PackagesModule {

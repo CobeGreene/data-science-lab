@@ -1,6 +1,7 @@
 import { MockExperimentService } from './mock-experiment.service';
-import { Experiment, ExperimentList } from '../../../../shared/models';
+import { Experiment, ExperimentList, ExperimentSelectFetchStage, Plugin } from '../../../../shared/models';
 import { ExperimentStages } from '../../../../shared/models/experiment_stages';
+import { ExperimentAlgorithmPlugins } from '../../models';
 
 describe('Angular Mock Experiment Service Tests', () => {
 
@@ -12,7 +13,7 @@ describe('Angular Mock Experiment Service Tests', () => {
     it('init should create service with experiments', () => {
         const experimentsList = new ExperimentList(
             [
-                new Experiment({ id: 1, stage: ExperimentStages.Select_Fetch })
+                new ExperimentSelectFetchStage({ id: 1 })
             ]
         );
         const service = MockExperimentService.init(experimentsList);
@@ -41,7 +42,7 @@ describe('Angular Mock Experiment Service Tests', () => {
     it('get should get experiment in list', () => {
         const experimentsList = new ExperimentList(
             [
-                new Experiment({ id: 1, stage: ExperimentStages.Select_Fetch })
+                new ExperimentSelectFetchStage({ id: 1 })
             ]
         );
         const service = MockExperimentService.init(experimentsList);
@@ -59,8 +60,8 @@ describe('Angular Mock Experiment Service Tests', () => {
     it('get should throw error with experiments', () => {
         const experimentsList = new ExperimentList(
             [
-                new Experiment({ id: 1, stage: ExperimentStages.Select_Fetch }),
-                new Experiment({ id: 2, stage: ExperimentStages.Select_Fetch }),
+                new ExperimentSelectFetchStage({ id: 1 }),
+                new ExperimentSelectFetchStage({ id: 2 }),
             ]
         );
         const service = MockExperimentService.init(experimentsList);
@@ -68,6 +69,70 @@ describe('Angular Mock Experiment Service Tests', () => {
             service.get(404);
         }).toThrowError();
     });
+
+
+    it('get experiment algorithm plugins return first experiment plugins in the list', () => {
+        const experimentAlgorithmPlugins = [
+            new ExperimentAlgorithmPlugins({id: 1, algorithmPlugins: [
+                new Plugin({name: 'name', className: 'className', description: 'desc', type: 'type'})
+            ] 
+        })];
+        const service = MockExperimentService.init(new ExperimentList(), [], experimentAlgorithmPlugins);
+        expect(service.getExperimentAlgorithmPlugins(1).algorithmPlugins.length)
+            .toEqual(experimentAlgorithmPlugins[0].algorithmPlugins.length);
+    });
+
+    
+    it('get experiment algorithm plugins return empty plugins for non-found experiment', () => {
+        const experimentAlgorithmPlugins = [
+            new ExperimentAlgorithmPlugins({id: 1, algorithmPlugins: [
+                new Plugin({name: 'name', className: 'className', description: 'desc', type: 'type'})
+            ] 
+        })];
+        const service = MockExperimentService.init(new ExperimentList(), [], experimentAlgorithmPlugins);
+        expect(service.getExperimentAlgorithmPlugins(404).algorithmPlugins.length)
+            .toEqual(0);
+    });
+
+    it('update experiment algorithm plugins should return 1 plugins', (done) => {
+        const service = new MockExperimentService();
+        service.experimentAlgorithmPlugins.subscribe((value) => {
+            expect(value.algorithmPlugins.length).toEqual(1);
+            done();
+        });
+        service.updateExperimentAlgorithmPlugins(1, [
+            new Plugin({name: 'name', className: 'className', description: 'desci', type: 'type'})
+        ]);
+    });
+
+    it('update experiment algorithm plugins should return 2 plugins for existing plugins', (done) => {
+        const experimentAlgorithmPlugins = [
+            new ExperimentAlgorithmPlugins({id: 1, algorithmPlugins: [
+                new Plugin({name: 'name', className: 'className', description: 'desc', type: 'type'})
+            ] 
+        })];
+        const service = MockExperimentService.init(new ExperimentList(), [], experimentAlgorithmPlugins);
+        service.experimentAlgorithmPlugins.subscribe((value) => {
+            expect(value.algorithmPlugins.length).toEqual(2);
+            done();
+        });
+        service.updateExperimentAlgorithmPlugins(1, [
+            new Plugin({name: 'name', className: 'className', description: 'desci', type: 'type'}),
+            new Plugin({name: 'name', className: 'className', description: 'desci', type: 'type'}),
+        ]);
+    });
+
+    it('update fetch plugins should return 1 plugin', (done) => {
+        const service = new MockExperimentService();
+        service.fetchPlugins.subscribe((value) => {
+            expect(value.length).toEqual(1);
+            done();
+        });
+        service.updateFetchPlugins([
+            new Plugin({name: 'name', className: 'className', description: 'desci', type: 'type'})
+        ]);
+    });
+
 
 
 });

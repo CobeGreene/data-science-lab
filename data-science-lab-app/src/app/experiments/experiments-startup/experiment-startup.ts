@@ -1,4 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { ExperimentService } from '../../services';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Experiment } from '../../../../shared/models';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-experiment-startup',
@@ -7,15 +11,27 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 })
 export class ExperimentStartupComponent implements OnInit, OnDestroy {
 
-    constructor() {
+    creating: boolean;
 
+    constructor(private experimentService: ExperimentService, private router: Router) {
+        this.creating = false;
     }
 
     ngOnInit() {
-
+        this.experimentService.newExperiment
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((value: Experiment) => {
+                this.creating = false;
+                this.router.navigate(['/experiments', 'details', value.id, value.stage]);
+            });
     }
 
     ngOnDestroy() {
 
+    }
+
+    public onCreateExperiment() {
+        this.creating = true;
+        this.experimentService.create();
     }
 }

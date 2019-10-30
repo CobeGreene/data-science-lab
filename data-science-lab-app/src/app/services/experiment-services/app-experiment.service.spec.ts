@@ -1,9 +1,8 @@
 import { MockZone } from '../mock-zone';
 import { AppExperimentService } from './app-experiment.service';
-import { Experiment, ExperimentList } from '../../../../shared/models';
+import { Experiment, ExperimentList, ExperimentSelectFetchStage } from '../../../../shared/models';
 import { ExperimentsEvents } from '../../../../shared/events';
 import { MockIpcService } from '../../../../shared/services';
-import { ExperimentStages } from '../../../../shared/models/experiment_stages';
 
 describe('Angular App Experiment Service Tests', () => {
 
@@ -24,10 +23,7 @@ describe('Angular App Experiment Service Tests', () => {
                 max = element.id + 1;
             }
         });
-        const experiment = new Experiment({
-            id: max,
-            stage: ExperimentStages.Select_Fetch
-        });
+        const experiment = new ExperimentSelectFetchStage({ id: max });
         experimentList.experiments.push(experiment);
         ipcService.send(ExperimentsEvents.GetAllListeners, JSON.stringify(experimentList));
         ipcService.send(ExperimentsEvents.CreateListeners, JSON.stringify(experiment));
@@ -40,13 +36,13 @@ describe('Angular App Experiment Service Tests', () => {
 
     beforeEach(() => {
         experimentList = new ExperimentList([
-            new Experiment({ id: 1, stage: ExperimentStages.Select_Fetch })
+            new ExperimentSelectFetchStage({ id: 1 })
         ]);
         ipcService.on(ExperimentsEvents.GetAllEvent, getAllEvent);
         ipcService.on(ExperimentsEvents.CreateEvent, createEvent);
         experimentService = new AppExperimentService(ipcService, zone);
     });
-    
+
     afterEach(() => {
         ipcService.removeListenersFromAllChannels();
         experimentService.ngOnDestroy();
@@ -68,7 +64,7 @@ describe('Angular App Experiment Service Tests', () => {
         experimentService.create();
     });
 
-    
+
     it('create should call experiments changed', (done) => {
         experimentService.experimentsChanged.subscribe((value: ExperimentList) => {
             expect(value.experiments.length).toBe(experimentList.experiments.length);
@@ -77,8 +73,8 @@ describe('Angular App Experiment Service Tests', () => {
         experimentService.create();
     });
 
-    
-    
+
+
     it('create should call new experiment', (done) => {
         experimentService.newExperiment.subscribe((value: Experiment) => {
             expect(value.id).toBe(2);
@@ -92,7 +88,7 @@ describe('Angular App Experiment Service Tests', () => {
         const experiment = experimentService.get(experimentList.experiments[0].id);
         expect(experiment.stage).toEqual(experimentList.experiments[0].stage);
     });
-    
+
     it('get should throw an error for unknown id', () => {
         experimentService.all();
         expect(() => {

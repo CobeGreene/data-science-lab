@@ -2,14 +2,17 @@ import { Injectable, OnDestroy, NgZone } from '@angular/core';
 import { ExperimentService } from './experiment.service';
 import { IpcService } from '../../../../shared/services';
 import { Subject } from 'rxjs';
-import { ExperimentList, Experiment } from '../../../../shared/models';
+import { ExperimentList, Experiment, Plugin } from '../../../../shared/models';
 import { ExperimentsEvents, ErrorEvents } from '../../../../shared/events';
+import { ExperimentAlgorithmPlugins } from '../../models';
 
 @Injectable()
 export class AppExperimentService implements ExperimentService, OnDestroy {
 
     public experimentsChanged: Subject<ExperimentList>;
     public newExperiment: Subject<Experiment>;
+    public fetchPlugins: Subject<Plugin[]>;
+    public experimentAlgorithmPlugins: Subject<ExperimentAlgorithmPlugins>;
 
     private retrieve: boolean;
     private experimentsList: ExperimentList;
@@ -18,6 +21,8 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
         this.experimentsChanged = new Subject<ExperimentList>();
         this.newExperiment = new Subject<Experiment>();
         this.experimentsList = new ExperimentList();
+        this.fetchPlugins = new Subject<Plugin[]>();
+        this.experimentAlgorithmPlugins = new Subject<ExperimentAlgorithmPlugins>();
         this.retrieve = false;
         this.registerGetAll();
         this.registerCreate();
@@ -34,6 +39,14 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
             this.ipcService.send(ExperimentsEvents.GetAllEvent);
         }
         return this.experimentsList;
+    }
+
+    getExperimentAlgorithmPlugins(id: number): ExperimentAlgorithmPlugins {
+        throw new Error('Not implemented');
+    }
+
+    getFetchPlugins(): Plugin[] {
+        throw new Error('Not implemented');
     }
 
     create(): void {

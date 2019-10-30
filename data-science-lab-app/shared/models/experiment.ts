@@ -1,6 +1,6 @@
 import { ExperimentStages } from './experiment_stages';
 
-export class Experiment {
+export abstract class Experiment {
     public id: number;
     public stage: ExperimentStages;
 
