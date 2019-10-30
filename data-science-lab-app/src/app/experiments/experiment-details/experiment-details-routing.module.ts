@@ -6,14 +6,18 @@ import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorith
 import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/experiment-setup-algorithm.component';
 import { ExperimentTrainAlgorithmComponent } from './experiment-train-algorithm/experiment-train-algorithm.component';
 import { ExperimentTestAlgorithmComponent } from './experiment-test-algorithm/experiment-test-algorithm.component';
+import { ExperimentDetailsComponent } from './experiment-details';
 
 const experimentDetailsRoutes: Routes = [
-    { path: 'experiments/details/:id/select-fetch', component: ExperimentSelectFetchComponent },
-    { path: 'experiments/details/:id/setup-fetch', component: ExperimentSetupFetchComponent },
-    { path: 'experiments/details/:id/select-algorithm', component: ExperimentSelectAlgorithmComponent },
-    { path: 'experiments/details/:id/setup-algorithm', component: ExperimentSetupAlgorithmComponent },
-    { path: 'experiments/details/:id/train-algorithm', component: ExperimentTrainAlgorithmComponent },
-    { path: 'experiments/details/:id/test-algorithm', component: ExperimentTestAlgorithmComponent },
+    { path: 'experiments/details/:id', component: ExperimentDetailsComponent, children: [
+        { path: 'select-fetch', component: ExperimentSelectFetchComponent },
+        { path: 'setup-fetch', component: ExperimentSetupFetchComponent },
+        { path: 'select-algorithm', component: ExperimentSelectAlgorithmComponent },
+        { path: 'setup-algorithm', component: ExperimentSetupAlgorithmComponent },
+        { path: 'train-algorithm', component: ExperimentTrainAlgorithmComponent },
+        { path: 'test-algorithm', component: ExperimentTestAlgorithmComponent },
+    ]},
+
 ];
 
 @NgModule({

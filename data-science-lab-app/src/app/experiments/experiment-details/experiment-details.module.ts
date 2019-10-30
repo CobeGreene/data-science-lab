@@ -8,6 +8,7 @@ import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorith
 import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/experiment-setup-algorithm.component';
 import { ExperimentTrainAlgorithmComponent } from './experiment-train-algorithm/experiment-train-algorithm.component';
 import { ExperimentTestAlgorithmComponent } from './experiment-test-algorithm/experiment-test-algorithm.component';
+import { ExperimentProgressBarComponent } from './experiment-progress-bar/experiment-progress-bar.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ExperimentTestAlgorithmComponent } from './experiment-test-algorithm/ex
         ExperimentSelectAlgorithmComponent,
         ExperimentSetupAlgorithmComponent,
         ExperimentTrainAlgorithmComponent,
-        ExperimentTestAlgorithmComponent
+        ExperimentTestAlgorithmComponent,
+        ExperimentProgressBarComponent
     ],
     imports: [
         CommonModule,
