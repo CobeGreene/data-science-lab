@@ -18,7 +18,7 @@ export class ExperimentDetailsComponent implements OnInit, OnDestroy {
     constructor(private experimentService: ExperimentService,
                 private route: ActivatedRoute,
                 private router: Router) {
-
+    
     }
 
     ngOnInit(): void {

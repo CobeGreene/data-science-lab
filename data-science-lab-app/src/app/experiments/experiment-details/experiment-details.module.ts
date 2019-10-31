@@ -1,3 +1,4 @@
+// tslint:disable: max-line-length
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExperimentDetailsComponent } from './experiment-details';
@@ -9,11 +10,10 @@ import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/
 import { ExperimentTrainAlgorithmComponent } from './experiment-train-algorithm/experiment-train-algorithm.component';
 import { ExperimentTestAlgorithmComponent } from './experiment-test-algorithm/experiment-test-algorithm.component';
 import { ExperimentProgressBarComponent } from './experiment-progress-bar/experiment-progress-bar.component';
-// tslint:disable-next-line: max-line-length
 import { ExperimentSelectFetchInfoComponent } from './experiment-select-fetch/experiment-select-fetch-info/experiment-select-fetch-info.component';
 import { ExperimentFetchPluginsComponent } from './experiment-select-fetch/experiment-fetch-plugins/experiment-fetch-plugins.component'
-// tslint:disable-next-line: max-line-length
 import { ExperimentFetchPluginCardComponent  } from './experiment-select-fetch/experiment-fetch-plugin-card/experiment-fetch-plugin-card.component';
+import { ExperimentSetupFetchInfoComponent } from './experiment-setup-fetch/experiment-setup-fetch-info/experiment-setup-fetch-info.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +27,8 @@ import { ExperimentFetchPluginCardComponent  } from './experiment-select-fetch/e
         ExperimentProgressBarComponent,
         ExperimentSelectFetchInfoComponent,
         ExperimentFetchPluginsComponent,
-        ExperimentFetchPluginCardComponent
+        ExperimentFetchPluginCardComponent,
+        ExperimentSetupFetchInfoComponent
     ],
     imports: [
         CommonModule,

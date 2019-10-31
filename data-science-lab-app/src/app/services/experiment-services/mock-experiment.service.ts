@@ -1,5 +1,7 @@
 import { ExperimentService } from './experiment.service';
-import { Experiment, ExperimentList, ExperimentSelectFetchStage, Plugin, ExperimentSetupFetchStage } from '../../../../shared/models';
+import { Experiment, ExperimentList, ExperimentSelectFetchStage,
+         Plugin, ExperimentSetupFetchStage, OptionList, TextOption,
+         NumberOption, CheckboxOption, CommandOption, ChoicesOption } from '../../../../shared/models';
 import { Subject } from 'rxjs';
 import { ExperimentAlgorithmPlugins } from '../../models';
 
@@ -50,13 +52,28 @@ export class MockExperimentService implements ExperimentService {
     }
 
     selectFetchPlugin(id: number, plugin: Plugin): void {
-        let find = this.experimentList.experiments.findIndex((value: Experiment) => {
+        const find = this.experimentList.experiments.findIndex((value: Experiment) => {
             return value.id === id;
         });
         if (find < 0) {
             throw new Error('Experiment not found.');
         }
-        this.experimentList.experiments[find] = new ExperimentSetupFetchStage({ id });
+        const experiment = new ExperimentSetupFetchStage(
+            { id,
+              optionList: new OptionList([
+                new TextOption({id: 'text', label: 'Some text' }),
+                new TextOption({id: 'text2', label: 'Max length of 5', maxLength: 5 }),
+                new NumberOption({id: 'num', label: 'Some number', min: 5, max: 25, step: 5}),
+                new CheckboxOption({id: 'checkbox', label: 'Yes or No?'}),
+                new CommandOption({id: 'cmd', label: 'Browser file system', methodName: 'method name' }),
+                new ChoicesOption({id: 'choices', label: 'Select the best', choices: [
+                    'Regression',
+                    'Logistic',
+                    'Neural Network'
+                ]})
+            ]),
+              plugin });
+        this.experimentList.experiments[find] = experiment; 
         this.experimentsChanged.next(this.experimentList);
     }
 
