@@ -49,6 +49,10 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
         throw new Error('Not implemented');
     }
 
+    selectFetchPlugin(): void {
+        throw new Error('Not implemented');
+    }
+
     create(): void {
         this.ipcService.send(ExperimentsEvents.CreateEvent);
     } 

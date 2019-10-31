@@ -1,5 +1,5 @@
 import { ExperimentService } from './experiment.service';
-import { Experiment, ExperimentList, ExperimentSelectFetchStage, Plugin } from '../../../../shared/models';
+import { Experiment, ExperimentList, ExperimentSelectFetchStage, Plugin, ExperimentSetupFetchStage } from '../../../../shared/models';
 import { Subject } from 'rxjs';
 import { ExperimentAlgorithmPlugins } from '../../models';
 
@@ -49,14 +49,25 @@ export class MockExperimentService implements ExperimentService {
         return this.fetchPluginList;
     }
 
+    selectFetchPlugin(id: number, plugin: Plugin): void {
+        let find = this.experimentList.experiments.findIndex((value: Experiment) => {
+            return value.id === id;
+        });
+        if (find < 0) {
+            throw new Error('Experiment not found.');
+        }
+        this.experimentList.experiments[find] = new ExperimentSetupFetchStage({ id });
+        this.experimentsChanged.next(this.experimentList);
+    }
+
     create(): void {
         let max = 1;
         this.experimentList.experiments.forEach((value: Experiment) => {
-            if (value.id > max) {
+            if (value.id >= max) {
                 max = value.id + 1;
             }
         });
-        const experiment = new ExperimentSelectFetchStage({ id: 1 });
+        const experiment = new ExperimentSelectFetchStage({ id: max });
 
         this.experimentList.experiments.push(
             experiment

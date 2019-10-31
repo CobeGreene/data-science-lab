@@ -13,7 +13,7 @@ export class ExperimentStartupComponent implements OnInit, OnDestroy {
 
     creating: boolean;
 
-    constructor(private experimentService: ExperimentService, private router: Router) {
+    constructor(private experimentService: ExperimentService, private router: Router, private zone: NgZone) {
         this.creating = false;
     }
 
@@ -22,7 +22,7 @@ export class ExperimentStartupComponent implements OnInit, OnDestroy {
             .pipe(untilComponentDestroyed(this))
             .subscribe((value: Experiment) => {
                 this.creating = false;
-                this.router.navigate(['/experiments', 'details', value.id, value.stage]);
+                this.router.navigate(['/experiments', 'details', `${value.id}`, value.stage]);
             });
     }
 

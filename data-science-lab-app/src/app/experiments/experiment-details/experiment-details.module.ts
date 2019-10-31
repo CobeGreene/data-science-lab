@@ -9,7 +9,11 @@ import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/
 import { ExperimentTrainAlgorithmComponent } from './experiment-train-algorithm/experiment-train-algorithm.component';
 import { ExperimentTestAlgorithmComponent } from './experiment-test-algorithm/experiment-test-algorithm.component';
 import { ExperimentProgressBarComponent } from './experiment-progress-bar/experiment-progress-bar.component';
-
+// tslint:disable-next-line: max-line-length
+import { ExperimentSelectFetchInfoComponent } from './experiment-select-fetch/experiment-select-fetch-info/experiment-select-fetch-info.component';
+import { ExperimentFetchPluginsComponent } from './experiment-select-fetch/experiment-fetch-plugins/experiment-fetch-plugins.component'
+// tslint:disable-next-line: max-line-length
+import { ExperimentFetchPluginCardComponent  } from './experiment-select-fetch/experiment-fetch-plugin-card/experiment-fetch-plugin-card.component';
 
 @NgModule({
     declarations: [
@@ -20,12 +24,15 @@ import { ExperimentProgressBarComponent } from './experiment-progress-bar/experi
         ExperimentSetupAlgorithmComponent,
         ExperimentTrainAlgorithmComponent,
         ExperimentTestAlgorithmComponent,
-        ExperimentProgressBarComponent
+        ExperimentProgressBarComponent,
+        ExperimentSelectFetchInfoComponent,
+        ExperimentFetchPluginsComponent,
+        ExperimentFetchPluginCardComponent
     ],
     imports: [
         CommonModule,
         ExperimentDetailsRoutingModule
-    ], 
+    ],
     providers: [
 
     ]

@@ -13,5 +13,6 @@ export abstract class ExperimentService {
     abstract getExperimentAlgorithmPlugins(id: number): ExperimentAlgorithmPlugins; 
     abstract create(): void; 
     abstract get(id: number): Experiment;
+    abstract selectFetchPlugin(id: number, plugin: Plugin): void;
 }
 

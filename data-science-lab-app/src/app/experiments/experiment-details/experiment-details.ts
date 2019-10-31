@@ -1,4 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ExperimentService } from '../../services';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { ExperimentList, ExperimentStages, Experiment } from '../../../../shared/models';
 
 
 @Component({
@@ -7,15 +11,37 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
     styleUrls: []
 })
 export class ExperimentDetailsComponent implements OnInit, OnDestroy {
-    constructor() {
+
+    private id: number;
+    private stage: ExperimentStages;
+
+    constructor(private experimentService: ExperimentService,
+                private route: ActivatedRoute,
+                private router: Router) {
 
     }
 
     ngOnInit(): void {
+        this.route.params
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((params: Params) => {
+                this.id = +params.id;
+                this.stage = this.experimentService.get(this.id).stage;
+            });
 
+        this.experimentService.experimentsChanged
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((experimentList: ExperimentList) => {
+                const experiment = experimentList.experiments.find((value: Experiment) => {
+                    return this.id === value.id;
+                });
+                if (experiment.stage !== this.stage) {
+                    this.router.navigate(['/experiments', 'details', experiment.id, experiment.stage]);
+                }
+            });
     }
 
     ngOnDestroy(): void {
-        
+
     }
 }

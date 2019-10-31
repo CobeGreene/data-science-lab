@@ -1,7 +1,8 @@
 import { MockExperimentService } from './mock-experiment.service';
-import { Experiment, ExperimentList, ExperimentSelectFetchStage, Plugin } from '../../../../shared/models';
+import { Experiment, ExperimentList, ExperimentSelectFetchStage, Plugin, ExperimentSetupFetchStage } from '../../../../shared/models';
 import { ExperimentStages } from '../../../../shared/models/experiment_stages';
 import { ExperimentAlgorithmPlugins } from '../../models';
+import { ExperimentService } from './experiment.service';
 
 describe('Angular Mock Experiment Service Tests', () => {
 
@@ -133,6 +134,35 @@ describe('Angular Mock Experiment Service Tests', () => {
         ]);
     });
 
+
+    it('select fetch plugin from experiment should throw for experiment not found', () => {
+        const service = new MockExperimentService();
+        expect(() => {
+            service.selectFetchPlugin(404, new Plugin({name: 'name', className: 'className', description: 'desc', type: 'type'}));
+        }).toThrowError();
+    });
+
+    it('select fetch plugin from experiment should throw event with experiments but not found', () => {
+        const service = MockExperimentService.init(new ExperimentList([
+            new ExperimentSelectFetchStage({id: 1}),
+            new ExperimentSelectFetchStage({id: 2}),
+            new ExperimentSelectFetchStage({id: 3}),
+        ]));
+        expect(() => {
+            service.selectFetchPlugin(404, new Plugin({name: 'name', className: 'className', description: 'desc', type: 'type'}));
+        }).toThrowError();
+    });
+
+    it('select fetch plugin from experiment shuld move experiment to the next stage', (done) => {
+        const service = MockExperimentService.init(new ExperimentList([
+            new ExperimentSetupFetchStage({id: 1})
+        ]));
+        service.experimentsChanged.subscribe((value: ExperimentList) => {
+            expect(value.experiments[0].stage).toEqual(ExperimentStages.Setup_Fetch);
+            done();
+        });
+        service.selectFetchPlugin(1, new Plugin({name: 'name', className: 'className', description: 'desc', type: 'type'}));
+    });
 
 
 });
