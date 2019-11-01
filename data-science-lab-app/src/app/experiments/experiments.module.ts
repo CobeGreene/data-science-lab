@@ -7,6 +7,7 @@ import { ExperimentDetailsModule } from './experiment-details/experiment-details
 import { ExperimentService, MockExperimentService } from '../services';
 import { ExperimentList, Plugin } from '../../../shared/models';
 
+
 const fetchPlugins = [
     new Plugin({name: 'name', className: 'className',
                 description: 'desc', type: 'FETCH', packageName: 'packageName'}),
@@ -26,7 +27,7 @@ const experimentService = MockExperimentService.init(new ExperimentList(), fetch
     imports: [
         CommonModule,
         ExperimentsRoutingModule,
-        ExperimentDetailsModule 
+        ExperimentDetailsModule,
     ],
     providers: [
         { provide: ExperimentService, useValue: experimentService  } 

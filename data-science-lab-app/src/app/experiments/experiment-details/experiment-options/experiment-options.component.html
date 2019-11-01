@@ -1,0 +1,43 @@
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div class="row" *ngFor="let option of optionList.options; let i = index">
+        <div class="col">
+            <div class="form-group">
+                <div [ngSwitch]="option.type">
+                    <div *ngSwitchCase="optionType.Text">
+                        <app-experiment-text-option [option]="option" [id]="i" (validChange)="onValidChange($event)">
+
+                        </app-experiment-text-option>
+                    </div>
+                    <div *ngSwitchCase="optionType.Number">
+                        <app-experiment-number-option [option]="option" [id]="i" (validChange)="onValidChange($event)">
+
+                        </app-experiment-number-option>
+                    </div>
+                    <div *ngSwitchCase="optionType.Command">
+                        <app-experiment-command-option [option]="option" [id]="i" (validChange)="onValidChange($event)">
+
+                        </app-experiment-command-option>
+                    </div>
+                    <div *ngSwitchCase="optionType.Checkbox">
+                        <app-experiment-checkbox-option [option]="option" [id]="i" (validChange)="onValidChange($event)">
+
+                        </app-experiment-checkbox-option>
+                    </div>
+                    <div *ngSwitchCase="optionType.Choices">
+                        <app-experiment-choices-option [option]="option" [id]="i" (validChange)="onValidChange($event)">
+
+                        </app-experiment-choices-option>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-success" type="submit" [disabled]="!valid">
+                Prepare Data
+            </button>
+        </div>
+    </div>
+</form>
