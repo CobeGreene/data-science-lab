@@ -10,6 +10,7 @@ import { ExperimentAlgorithmPlugins } from '../../models';
 export class AppExperimentService implements ExperimentService, OnDestroy {
 
     public experimentsChanged: Subject<ExperimentList>;
+    public experimentUpdated: Subject<Experiment>;
     public newExperiment: Subject<Experiment>;
     public fetchPlugins: Subject<Plugin[]>;
     public experimentAlgorithmPlugins: Subject<ExperimentAlgorithmPlugins>;
@@ -20,6 +21,7 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
     constructor(private ipcService: IpcService, private zone: NgZone) {
         this.experimentsChanged = new Subject<ExperimentList>();
         this.newExperiment = new Subject<Experiment>();
+        this.experimentUpdated = new Subject<Experiment>();
         this.experimentsList = new ExperimentList();
         this.fetchPlugins = new Subject<Plugin[]>();
         this.experimentAlgorithmPlugins = new Subject<ExperimentAlgorithmPlugins>();
@@ -50,6 +52,10 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
     }
 
     selectFetchPlugin(): void {
+        throw new Error('Not implemented');
+    }
+
+    executeCommand(id: number, command: string) {
         throw new Error('Not implemented');
     }
 

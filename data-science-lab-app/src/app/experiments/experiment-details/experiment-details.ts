@@ -29,13 +29,10 @@ export class ExperimentDetailsComponent implements OnInit, OnDestroy {
                 this.stage = this.experimentService.get(this.id).stage;
             });
 
-        this.experimentService.experimentsChanged
+        this.experimentService.experimentUpdated
             .pipe(untilComponentDestroyed(this))
-            .subscribe((experimentList: ExperimentList) => {
-                const experiment = experimentList.experiments.find((value: Experiment) => {
-                    return this.id === value.id;
-                });
-                if (experiment.stage !== this.stage) {
+            .subscribe((experiment: Experiment) => {
+                if (experiment.id === this.id && experiment.stage !== this.stage) {
                     this.router.navigate(['/experiments', 'details', experiment.id, experiment.stage]);
                 }
             });

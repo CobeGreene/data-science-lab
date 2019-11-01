@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Plugin } from '../../../../../../shared/models';
-import { ExperimentService } from '../../../../services';
+import { ExperimentSelectFetchService } from '../../../../services';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
@@ -15,7 +15,7 @@ export class ExperimentFetchPluginCardComponent implements OnInit, OnDestroy {
 
     id: number;
 
-    constructor(private experimentService: ExperimentService, private route: ActivatedRoute) {
+    constructor(private experimentSelectFetchService: ExperimentSelectFetchService, private route: ActivatedRoute) {
 
     }
 
@@ -32,6 +32,6 @@ export class ExperimentFetchPluginCardComponent implements OnInit, OnDestroy {
     }
 
     onSelect() {
-        this.experimentService.selectFetchPlugin(this.id, this.plugin);
+        this.experimentSelectFetchService.select(this.id, this.plugin);
     }
 }

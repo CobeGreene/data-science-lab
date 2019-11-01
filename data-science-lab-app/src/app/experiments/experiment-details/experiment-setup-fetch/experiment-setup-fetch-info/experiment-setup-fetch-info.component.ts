@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ExperimentService } from '../../../../services';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Plugin, ExperimentSetupFetchStage, ExperimentList } from '../../../../../../shared/models';
+import { Plugin, ExperimentSetupFetchStage, ExperimentList, Experiment } from '../../../../../../shared/models';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
@@ -27,14 +27,11 @@ export class ExperimentSetupFetchInfoComponent implements OnInit, OnDestroy {
                 this.plugin = experiment.plugin;
             });
 
-        this.experimentService.experimentsChanged
+        this.experimentService.experimentUpdated
             .pipe(untilComponentDestroyed(this))
-            .subscribe((value: ExperimentList) => {
-                const find = value.experiments.find((experiment) => {
-                    return experiment.id === this.id;
-                });
-                if (find) {
-                    this.plugin = (find as ExperimentSetupFetchStage).plugin;
+            .subscribe((value: Experiment) => {
+                if (value.id === this.id) {
+                    this.plugin = (value as ExperimentSetupFetchStage).plugin;
                 }
             });
     }

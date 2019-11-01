@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { OptionList, OptionTypes, TextOption } from '../../../../../shared/models';
 import { NgForm } from '@angular/forms';
+import { ExperimentSetupInputService } from '../../../services';
 
 
 @Component({
@@ -19,6 +20,10 @@ export class ExperimentOptionsComponent implements OnInit, OnDestroy {
     public validInputs: boolean[] = [];
     public valueInputs: any[] = [];
     public valid: boolean;
+
+    constructor(private experimentSetupInputService: ExperimentSetupInputService) {
+        
+    }
 
     ngOnInit() {
         this.optionList.options.forEach(() => {

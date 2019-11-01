@@ -57,8 +57,8 @@ describe('Angular App Package Service Tests', () => {
     });
 
     afterEach(() => {
-        ipcService.removeListenersFromAllChannels();
         packageService.ngOnDestroy();
+        ipcService.removeListenersFromAllChannels();
     });
 
     it('all should send a request to ipc and get back items', (done) => {
