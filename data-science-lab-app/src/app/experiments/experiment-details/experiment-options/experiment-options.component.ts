@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { OptionList, OptionTypes, TextOption } from '../../../../../shared/models';
+import { OptionList, OptionTypes } from 'data-science-lab-core';
 import { NgForm } from '@angular/forms';
 import { ExperimentSetupInputService } from '../../../services';
 

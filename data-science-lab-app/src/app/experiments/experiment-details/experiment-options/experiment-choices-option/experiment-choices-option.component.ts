@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { ChoicesOption } from '../../../../../../shared/models';
+import { ChoicesOption } from 'data-science-lab-core';
 
 
 @Component({

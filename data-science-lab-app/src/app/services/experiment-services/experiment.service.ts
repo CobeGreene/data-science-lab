@@ -1,4 +1,4 @@
-import { Experiment, ExperimentList, Plugin, CommandOption } from '../../../../shared/models';
+import { Experiment, ExperimentList } from '../../../../shared/models';
 import { Subject } from 'rxjs';
 import { ExperimentAlgorithmPlugins } from '../../models';
 

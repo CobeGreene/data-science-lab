@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { NumberOption } from '../../../../../../shared/models';
+import { NumberOption } from 'data-science-lab-core';
 
 
 @Component({

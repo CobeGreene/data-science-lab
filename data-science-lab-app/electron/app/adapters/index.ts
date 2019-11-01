@@ -1,1 +1,2 @@
-export { AppPluginManagerAdapter, PluginManagerAdapter, MockPluginManagerAdapter } from './plugin-manager-adapter';
+// tslint:disable: max-line-length
+export { AppPluginManagerAdapter, PluginManagerAdapter, MockPluginManagerAdapter, AppQueuePluginManagerAdpater } from './plugin-manager-adapter';

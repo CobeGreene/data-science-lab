@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ExperimentService } from '../../services';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { ExperimentList, ExperimentStages, Experiment } from '../../../../shared/models';
+import { ExperimentStages, Experiment } from '../../../../shared/models';
 
 
 @Component({

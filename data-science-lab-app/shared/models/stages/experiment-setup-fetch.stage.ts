@@ -1,6 +1,6 @@
 import { Experiment } from '../experiment';
 import { ExperimentStages } from '../experiment_stages';
-import { OptionList } from '../options';
+import { OptionList } from 'data-science-lab-core';
 import { Plugin } from '../plugin';
 
 export class ExperimentSetupFetchStage extends Experiment {

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { TextOption } from '../../../../../../shared/models';
+import { TextOption } from 'data-science-lab-core';
 
 
 @Component({

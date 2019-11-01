@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { CommandOption } from '../../../../../../shared/models';
+import { CommandOption } from 'data-science-lab-core';
 import { ExperimentSetupInputService } from '../../../../services';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 

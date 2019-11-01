@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ExperimentService } from '../../../services';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Experiment, ExperimentSetupFetchStage, ExperimentList } from '../../../../../shared/models';
+import { Experiment, ExperimentSetupFetchStage } from '../../../../../shared/models';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({

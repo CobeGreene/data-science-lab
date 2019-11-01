@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, Input, Output, EventEmitter,  } from '@angular/core';
-import { CheckboxOption } from '../../../../../../shared/models';
+import { CheckboxOption } from 'data-science-lab-core';
 
 @Component({
     selector: 'app-experiment-checkbox-option',
