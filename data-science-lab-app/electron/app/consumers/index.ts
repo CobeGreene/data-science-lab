@@ -1,2 +1,2 @@
 export { Consumer } from './consumer';
-export { AppPackageConsumer, MockPackageConsumer, PackageConsumer } from './package-consumer';
+export { AppPackageConsumer, PackageConsumer } from './package-consumer';

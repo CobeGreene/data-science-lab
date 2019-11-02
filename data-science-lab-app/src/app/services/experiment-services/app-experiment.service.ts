@@ -2,9 +2,8 @@ import { Injectable, OnDestroy, NgZone } from '@angular/core';
 import { ExperimentService } from './experiment.service';
 import { IpcService } from '../../../../shared/services';
 import { Subject } from 'rxjs';
-import { ExperimentList, Experiment, Plugin } from '../../../../shared/models';
+import { ExperimentList, Experiment } from '../../../../shared/models';
 import { ExperimentsEvents, ErrorEvents } from '../../../../shared/events';
-import { ExperimentAlgorithmPlugins } from '../../models';
 
 @Injectable()
 export class AppExperimentService implements ExperimentService, OnDestroy {
@@ -12,8 +11,6 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
     public experimentsChanged: Subject<ExperimentList>;
     public experimentUpdated: Subject<Experiment>;
     public newExperiment: Subject<Experiment>;
-    public fetchPlugins: Subject<Plugin[]>;
-    public experimentAlgorithmPlugins: Subject<ExperimentAlgorithmPlugins>;
 
     private retrieve: boolean;
     private experimentsList: ExperimentList;
@@ -23,8 +20,6 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
         this.newExperiment = new Subject<Experiment>();
         this.experimentUpdated = new Subject<Experiment>();
         this.experimentsList = new ExperimentList();
-        this.fetchPlugins = new Subject<Plugin[]>();
-        this.experimentAlgorithmPlugins = new Subject<ExperimentAlgorithmPlugins>();
         this.retrieve = false;
         this.registerGetAll();
         this.registerCreate();
@@ -43,21 +38,6 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
         return this.experimentsList;
     }
 
-    getExperimentAlgorithmPlugins(id: number): ExperimentAlgorithmPlugins {
-        throw new Error('Not implemented');
-    }
-
-    getFetchPlugins(): Plugin[] {
-        throw new Error('Not implemented');
-    }
-
-    selectFetchPlugin(): void {
-        throw new Error('Not implemented');
-    }
-
-    executeCommand(id: number, command: string) {
-        throw new Error('Not implemented');
-    }
 
     create(): void {
         this.ipcService.send(ExperimentsEvents.CreateEvent);
@@ -111,12 +91,6 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
         this.zone.run(() => {
             try {
                 const experment = JSON.parse(arg[0]) as Experiment;
-                const find = this.experimentsList.experiments.find((value: Experiment) => {
-                    return experment.id === value.id;
-                });
-                if (find) {
-                    this.experimentsList.experiments.push(experment);
-                }
                 this.newExperiment.next(experment);
             } catch (exception) {
                 if (exception instanceof Error) {
