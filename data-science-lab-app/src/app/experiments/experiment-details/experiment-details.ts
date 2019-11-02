@@ -33,6 +33,7 @@ export class ExperimentDetailsComponent implements OnInit, OnDestroy {
             .pipe(untilComponentDestroyed(this))
             .subscribe((experiment: Experiment) => {
                 if (experiment.id === this.id && experiment.stage !== this.stage) {
+                    console.log(`Details got update: ${JSON.stringify(experiment)}`);
                     this.router.navigate(['/experiments', 'details', experiment.id, experiment.stage]);
                 }
             });

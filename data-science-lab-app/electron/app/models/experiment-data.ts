@@ -1,4 +1,5 @@
-import { ExperimentStages } from '../../../shared/models';
+import { ExperimentStages, Experiment, Plugin } from '../../../shared/models';
+import { FetchPlugin } from 'data-science-lab-core';
 
 export class ExperimentData {
     public id: number;
@@ -8,4 +9,8 @@ export class ExperimentData {
         this.id = data.id;
         this.stage = data.stage;
     }
+
+    public fetchPluginChoice: Plugin;
+    public fetchPlugin: FetchPlugin;
+
 }

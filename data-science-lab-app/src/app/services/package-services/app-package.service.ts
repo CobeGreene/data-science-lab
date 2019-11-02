@@ -60,7 +60,7 @@ export class AppPackageService implements PackageService, OnDestroy {
     private getAllEvent = (event, arg): void => {
         this.zone.run(() => {
             try {
-                const value = JSON.parse(arg[0]) as PluginPackageList;
+                const value = arg[0] as PluginPackageList;
                 this.packagesList = value;
                 this.retrieve = true;
                 this.packagesChanged.next(this.all());

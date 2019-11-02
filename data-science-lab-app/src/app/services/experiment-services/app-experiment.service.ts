@@ -23,11 +23,13 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
         this.retrieve = false;
         this.registerGetAll();
         this.registerCreate();
+        this.registerUpdate();
     }
     
     ngOnDestroy() {
         this.unregisterGetAll();
         this.unregisterCreate();
+        this.unregisterUpdate();
     }
 
 
@@ -65,10 +67,37 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
     private getAllEvent = (event, arg): void => {
         this.zone.run(() => {
             try {
-                const value = JSON.parse(arg[0]) as ExperimentList;
+                const value = arg[0] as ExperimentList;
                 this.experimentsList = value;
                 this.retrieve = true;
                 this.experimentsChanged.next(this.all());
+            } catch (exception) {
+                if (exception instanceof Error) {
+                    this.ipcService.send(ErrorEvents.ExceptionListeners, exception.message);
+                } else {
+                    this.ipcService.send(ErrorEvents.ExceptionListeners, exception);
+                }
+            }
+        });
+    }
+
+    private registerUpdate(): void {
+        this.ipcService.on(ExperimentsEvents.UpdatedListeners, this.updateEvent);
+    }
+    
+    private unregisterUpdate(): void {
+        this.ipcService.removeListener(ExperimentsEvents.UpdatedListeners, this.updateEvent);
+    }
+
+    private updateEvent = (event, arg): void => {
+        this.zone.run(() => {
+            try {
+                const value = arg[0] as Experiment;
+                const findIndex = this.experimentsList.experiments.findIndex((experiment) => {
+                    return value.id === experiment.id;
+                });
+                this.experimentsList.experiments[findIndex] = value;
+                this.experimentUpdated.next(value);
             } catch (exception) {
                 if (exception instanceof Error) {
                     this.ipcService.send(ErrorEvents.ExceptionListeners, exception.message);
@@ -90,7 +119,13 @@ export class AppExperimentService implements ExperimentService, OnDestroy {
     private createEvent = (event, arg): void => {
         this.zone.run(() => {
             try {
-                const experment = JSON.parse(arg[0]) as Experiment;
+                const experment = arg[0] as Experiment;
+                const find = this.experimentsList.experiments.find((value) => {
+                    return value.id === experment.id;
+                });
+                if (!find) {
+                    this.experimentsList.experiments.push(experment);
+                }
                 this.newExperiment.next(experment);
             } catch (exception) {
                 if (exception instanceof Error) {

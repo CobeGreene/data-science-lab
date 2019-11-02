@@ -24,15 +24,18 @@ export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
             .subscribe((params: Params) => {
                 this.id = +params.id;
                 this.experiment = this.experimentService.get(this.id) as ExperimentSetupFetchStage;
+                console.log(`On the route change ${JSON.stringify(this.experiment)}`);
             });
             
         this.experimentService.experimentUpdated
             .pipe(untilComponentDestroyed(this))
             .subscribe((experiment: Experiment) => {
                 if (this.id === experiment.id) {
+                    console.log(`Got the update ${JSON.stringify(experiment)}`);
                     this.experiment = experiment as ExperimentSetupFetchStage;
                 }
             });
+
     }
 
     ngOnDestroy() {

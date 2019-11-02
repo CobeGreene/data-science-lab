@@ -11,8 +11,7 @@ describe('Angular App Package Service Tests', () => {
     let zone: MockZone;
 
     const getAllEvent = (event, arg): void => {
-        const json = JSON.stringify(packagesList);
-        ipcService.send(PackagesEvents.GetAllListeners, json);
+        ipcService.send(PackagesEvents.GetAllListeners, packagesList);
     };
 
     const installEvent = (event, arg): void => {
@@ -22,8 +21,7 @@ describe('Angular App Package Service Tests', () => {
         });
         if (find >= 0) {
             packagesList.packages[find].install = true;
-            const json = JSON.stringify(packagesList);
-            ipcService.send(PackagesEvents.GetAllListeners, json);
+            ipcService.send(PackagesEvents.GetAllListeners, packagesList);
         }
     };
 
@@ -34,8 +32,7 @@ describe('Angular App Package Service Tests', () => {
         });
         if (find >= 0) {
             packagesList.packages[find].install = false;
-            const json = JSON.stringify(packagesList);
-            ipcService.send(PackagesEvents.GetAllListeners, json);
+            ipcService.send(PackagesEvents.GetAllListeners, packagesList);
         }
     };
 

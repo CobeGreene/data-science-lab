@@ -12,8 +12,7 @@ describe('Angular App Experiment Service Tests', () => {
     let zone: MockZone;
 
     const getAllEvent = (event, arg): void => {
-        const json = JSON.stringify(experimentList);
-        ipcService.send(ExperimentsEvents.GetAllListeners, json);
+        ipcService.send(ExperimentsEvents.GetAllListeners, experimentList);
     };
 
     const createEvent = (event, arg): void => {
@@ -25,8 +24,8 @@ describe('Angular App Experiment Service Tests', () => {
         });
         const experiment = new ExperimentSelectFetchStage({ id: max });
         experimentList.experiments.push(experiment);
-        ipcService.send(ExperimentsEvents.GetAllListeners, JSON.stringify(experimentList));
-        ipcService.send(ExperimentsEvents.CreateListeners, JSON.stringify(experiment));
+        ipcService.send(ExperimentsEvents.GetAllListeners, experimentList);
+        ipcService.send(ExperimentsEvents.CreateListeners, experiment);
     };
 
     beforeAll(() => {

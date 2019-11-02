@@ -11,8 +11,7 @@ export class AppPackageProducer extends IpcProducer implements PackageProducer  
     }
 
     all(pluginPackageList: PluginPackageList): void {
-        const json = JSON.stringify(pluginPackageList);
-        this.ipcService.send(PackagesEvents.GetAllListeners, json);
+        this.ipcService.send(PackagesEvents.GetAllListeners, pluginPackageList);
     }
 
 }

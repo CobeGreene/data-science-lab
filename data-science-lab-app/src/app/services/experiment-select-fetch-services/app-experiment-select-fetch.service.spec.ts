@@ -11,8 +11,7 @@ describe('Angular App Experiment Select Fetch Service Tests', () => {
     let zone: MockZone;
 
     const getAllEvent = (event, arg): void => {
-        const json = JSON.stringify(pluginList);
-        ipcService.send(ExperimentsEvents.GetAllFetchPluginsListener, json);
+        ipcService.send(ExperimentsEvents.GetAllFetchPluginsListener, pluginList);
     };
 
     beforeAll(() => {

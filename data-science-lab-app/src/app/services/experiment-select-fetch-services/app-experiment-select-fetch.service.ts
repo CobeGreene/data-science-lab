@@ -33,7 +33,7 @@ export class AppExperimentSelectFetchService implements ExperimentSelectFetchSer
     private getAllEvent = (event, arg): void => {
         this.zone.run(() => {
             try {
-                const value = JSON.parse(arg[0]) as Plugin[];
+                const value = arg[0] as Plugin[];
                 this.pluginList = value;
                 this.retrieve = true;
                 this.fetchPlugins.next(this.pluginList);
@@ -55,8 +55,7 @@ export class AppExperimentSelectFetchService implements ExperimentSelectFetchSer
     }
 
     select(id: number, plugin: Plugin): void {
-        const pluginJson = JSON.stringify(plugin);
-        this.ipcService.send(ExperimentsEvents.SelectFetchEvent, id, pluginJson);
+        this.ipcService.send(ExperimentsEvents.SelectFetchEvent, id, plugin);
     }
 
 }
