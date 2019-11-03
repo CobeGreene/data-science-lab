@@ -35,7 +35,7 @@ export class AppExperimentConverter implements ExperimentConverter {
 
     private toSelectAlgorithm(data: ExperimentData): Experiment {
         return new ExperimentSelectAlgorithmStage({
-            id: data.id,
+            id: data.id, data: data.data
         });
     }
 }

@@ -27,6 +27,7 @@ export class AppExperimentSetupInputService implements ExperimentSetuptInputServ
 
             if (options.noMore()) {
                 experiment.stage = ExperimentStages.Select_Algorithm;
+                experiment.data = experiment.fetchPlugin.fetch();
             }
 
             this.experimentDataService.update(id, experiment);
