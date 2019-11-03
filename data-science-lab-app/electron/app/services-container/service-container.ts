@@ -10,6 +10,8 @@ import { AppExperimentConverter } from '../converters';
 import { AppExperimentProducer, AppExperimentSelectFetchProducer } from '../producers';
 import { AppExperimentService } from '../services/experiment-service';
 import { AppExperimentDataService } from '../services/experiment-data-service';
+import { AppExperimentSetupInputService } from '../services/experiment-setup-input-service';
+import { AppExperimentSetupInputConsumer } from '../consumers/experiment-setup-input-consumer/app-experiment-setup-input.consumer';
 
 export class ServiceContainer {
 
@@ -46,12 +48,15 @@ export class ServiceContainer {
         const experimentSelectFetchService = new AppExerimentSelectFetchService(experimentProducer,
              experimentSelectFetchProducer, settingService, queuePluginManagerAdapter, experimentDataService,
              experimentConverter);
+        const experimentSetupInputService = new AppExperimentSetupInputService(experimentProducer,
+            experimentDataService, experimentConverter);
 
         // Consumers
         this.consumers = [
             new AppPackageConsumer(packageService, this.ipcService),
             new AppExperimentConsumer(experimentService, this.ipcService),
             new AppExperimentSelectFetchConsumer(experimentSelectFetchService, this.ipcService),
+            new AppExperimentSetupInputConsumer(experimentSetupInputService, this.ipcService),
         ];
 
     }

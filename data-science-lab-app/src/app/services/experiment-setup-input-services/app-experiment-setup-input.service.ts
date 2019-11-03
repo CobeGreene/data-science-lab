@@ -13,8 +13,8 @@ export class AppExperimentSetupInputService implements ExperimentSetupInputServi
         this.ipcService.send(ExperimentsEvents.ExecuteCommandEvent, id, command);
     }
 
-    submit(id: number) {
-        this.ipcService.send(ExperimentsEvents.SubmitEvent, id);
+    submit(id: number, inputs: {[id: string]: any}) {
+        this.ipcService.send(ExperimentsEvents.SubmitEvent, id, inputs);
     }
 } 
 

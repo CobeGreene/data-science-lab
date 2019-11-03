@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ExperimentStages, ExperimentList } from '../../../../../shared/models';
+import { ExperimentStages, ExperimentList, Experiment } from '../../../../../shared/models';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ExperimentService } from '../../../services';
@@ -26,14 +26,11 @@ export class ExperimentProgressBarComponent implements OnInit, OnDestroy {
                 const experiment = this.experimentService.get(this.id);
                 this.stage = experiment.stage;
             });
-        this.experimentService.experimentsChanged
+        this.experimentService.experimentUpdated
             .pipe(untilComponentDestroyed(this))
-            .subscribe((value: ExperimentList) => {
-                const find = value.experiments.find((experiment) => {
-                    return experiment.id === this.id;
-                });
-                if (find) {
-                    this.stage = find.stage;
+            .subscribe((value: Experiment) => {
+                if (this.id === value.id) {
+                    this.stage = value.stage;
                 }
             });
             

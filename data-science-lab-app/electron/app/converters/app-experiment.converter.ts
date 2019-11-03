@@ -1,6 +1,7 @@
 import { ExperimentConverter } from './experiment.converter';
 import { ExperimentData } from '../models';
-import { Experiment, ExperimentStages, ExperimentSelectFetchStage, ExperimentSetupFetchStage } from '../../../shared/models';
+import { Experiment, ExperimentStages, ExperimentSelectFetchStage,
+         ExperimentSetupFetchStage, ExperimentSelectAlgorithmStage } from '../../../shared/models';
 
 export class AppExperimentConverter implements ExperimentConverter {
 
@@ -11,6 +12,7 @@ export class AppExperimentConverter implements ExperimentConverter {
             case ExperimentStages.Setup_Fetch:
                 return this.toSetupFetchStage(data);
             case ExperimentStages.Select_Algorithm:
+                return this.toSelectAlgorithm(data);
             case ExperimentStages.Setup_Algorithm:
             case ExperimentStages.Train_Algorithm:
             case ExperimentStages.Test_Algorithm:
@@ -29,6 +31,11 @@ export class AppExperimentConverter implements ExperimentConverter {
             plugin: data.fetchPluginChoice,
             optionList: data.fetchPlugin.getOptions().options()
         });
+    }
 
+    private toSelectAlgorithm(data: ExperimentData): Experiment {
+        return new ExperimentSelectAlgorithmStage({
+            id: data.id,
+        });
     }
 }
