@@ -26,8 +26,7 @@ describe('Electron App Package Producer Tests', () => {
             })
         ]);
         ipcService.on(PackagesEvents.GetAllListeners, (_event, args) => {
-            const json = args[0];
-            const list = JSON.parse(json) as PluginPackageList;
+            const list = args[0] as PluginPackageList;
             expect(list.packages.length).toBe(1);
             done();
         });

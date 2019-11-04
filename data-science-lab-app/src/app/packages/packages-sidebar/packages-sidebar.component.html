@@ -1,11 +1,11 @@
 <ul class="list-unstyled">
     <li>
-        <a [routerLink]="['available']">
+        <a [routerLink]="['/packages', 'available']">
             Available 
         </a>
     </li>
     <li>
-        <a [routerLink]="['installed']">
+        <a [routerLink]="['/packages', 'installed']">
             Installed 
         </a>
          <span class="badge badge-info">{{ installedCount }}</span>

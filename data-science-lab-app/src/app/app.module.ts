@@ -9,6 +9,7 @@ import { PackagesModule } from './packages/packages.module';
 import { ErrorService, AppErrorService } from './services/error-services';
 import { ErrorNotificationsComponent } from './error-exceptions/error-notifications/error-notifications.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ExperimentsModule } from './experiments/experiments.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     BrowserModule,
     AppRoutingModule,
     PackagesModule,
+    ExperimentsModule,
     NgbModule
   ],
   bootstrap: [AppComponent],

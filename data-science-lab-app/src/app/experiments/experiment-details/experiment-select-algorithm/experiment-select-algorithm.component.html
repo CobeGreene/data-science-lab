@@ -1,0 +1,21 @@
+<h1>Select Algorithm</h1>
+<div class="row">
+    <div class="col">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th *ngFor="let vector of experiment.data">
+                        {{ vector.name }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let _ of experiment.data[0].data; let i = index">
+                    <td *ngFor="let vector of experiment.data">
+                        {{ vector.data[i] }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

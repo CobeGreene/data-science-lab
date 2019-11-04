@@ -2,7 +2,7 @@ import { PackageService } from './package.service';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { OnDestroy, Injectable, NgZone } from '@angular/core';
-import { IpcService } from '../../../../shared/services/ipc.service';
+import { IpcService } from '../../../../shared/services';
 import { Subject } from 'rxjs';
 
 @Injectable()
@@ -60,7 +60,7 @@ export class AppPackageService implements PackageService, OnDestroy {
     private getAllEvent = (event, arg): void => {
         this.zone.run(() => {
             try {
-                const value = JSON.parse(arg[0]) as PluginPackageList;
+                const value = arg[0] as PluginPackageList;
                 this.packagesList = value;
                 this.retrieve = true;
                 this.packagesChanged.next(this.all());

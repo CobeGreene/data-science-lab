@@ -1,0 +1,2 @@
+<label for="{{ option.id }}">{{ option.label }}</label>
+<input type="number" class="form-control" [ngModel]="value" (ngModelChange)="onNumberChange($event)" [min]="option.min" [max]="option.max" [step]="option.step">

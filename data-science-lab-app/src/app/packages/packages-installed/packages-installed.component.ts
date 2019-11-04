@@ -17,7 +17,7 @@ export class PackagesInstalledComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.packagesList = this.packageService.all();
+        this.packagesList = this.getInstalledPackages(this.packageService.all());
         this.packageService.packagesChanged
             .pipe(untilComponentDestroyed(this))
             .subscribe((value: PluginPackageList) => {
@@ -31,7 +31,7 @@ export class PackagesInstalledComponent implements OnInit, OnDestroy {
     public getInstalledPackages(value: PluginPackageList) {
         return new PluginPackageList(
             value.packages.filter((pluginPackage: PluginPackage) => {
-                return pluginPackage.install;
+                return pluginPackage.install === true;
             })
         ); 
     }

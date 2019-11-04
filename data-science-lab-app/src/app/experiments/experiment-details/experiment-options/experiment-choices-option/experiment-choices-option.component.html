@@ -1,0 +1,6 @@
+<label for="{{ option.id }}">{{ option.label }}</label>
+<select class="form-control" [ngModel]="value" (ngModelChange)="onCheckChange($event)">
+    <option *ngFor="let choice of option.choices" [value]="choice">
+        {{ choice }}
+    </option>
+</select>

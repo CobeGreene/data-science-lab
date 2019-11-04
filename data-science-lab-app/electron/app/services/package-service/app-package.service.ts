@@ -55,6 +55,8 @@ export class AppPackageService implements PackageService {
                 } else {
                     throw new Error('Couldn\'t get successful response to the API.');
                 }
+            }).catch((reason) => {
+                this.packageProducer.error(reason);
             });
     }
 
@@ -89,7 +91,7 @@ export class AppPackageService implements PackageService {
                     pluginPackage.install = true;
                     this.saveInstallPackages();
                     this.packageProducer.all(this.packagesList);
-                });
+                }).catch((reason) => this.packageProducer.error(reason));
         } else {
             throw new Error(`Couldn't find an uninstall package with the name ${name}.`);
         }
@@ -104,7 +106,7 @@ export class AppPackageService implements PackageService {
                 this.packagesList.packages[find].install = false;
                 this.saveInstallPackages();
                 this.packageProducer.all(this.packagesList);
-            });
+            }).catch((reason) => this.packageProducer.error(reason));
         } else {
             throw new Error(`Couldn't find an install package with the name ${name}.`);
         }

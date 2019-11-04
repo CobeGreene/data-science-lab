@@ -3,7 +3,6 @@ import { AppPackageService } from './app-package.service';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { PackagesEvents } from '../../../../shared/events';
 import { MockIpcService } from '../../../../shared/services';
-import { serialize } from 'typescript-json-serializer';
 
 describe('Angular App Package Service Tests', () => {
     let packageService: AppPackageService;
@@ -12,8 +11,7 @@ describe('Angular App Package Service Tests', () => {
     let zone: MockZone;
 
     const getAllEvent = (event, arg): void => {
-        const json = serialize(packagesList);
-        ipcService.send(PackagesEvents.GetAllListeners, json);
+        ipcService.send(PackagesEvents.GetAllListeners, packagesList);
     };
 
     const installEvent = (event, arg): void => {
@@ -23,8 +21,7 @@ describe('Angular App Package Service Tests', () => {
         });
         if (find >= 0) {
             packagesList.packages[find].install = true;
-            const json = serialize(packagesList);
-            ipcService.send(PackagesEvents.GetAllListeners, json);
+            ipcService.send(PackagesEvents.GetAllListeners, packagesList);
         }
     };
 
@@ -35,8 +32,7 @@ describe('Angular App Package Service Tests', () => {
         });
         if (find >= 0) {
             packagesList.packages[find].install = false;
-            const json = serialize(packagesList);
-            ipcService.send(PackagesEvents.GetAllListeners, json);
+            ipcService.send(PackagesEvents.GetAllListeners, packagesList);
         }
     };
 
@@ -58,8 +54,8 @@ describe('Angular App Package Service Tests', () => {
     });
 
     afterEach(() => {
-        ipcService.removeListenersFromAllChannels();
         packageService.ngOnDestroy();
+        ipcService.removeListenersFromAllChannels();
     });
 
     it('all should send a request to ipc and get back items', (done) => {
