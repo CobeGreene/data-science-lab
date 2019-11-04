@@ -38,7 +38,29 @@ export class AppExperimentSetupInputService implements ExperimentSetuptInputServ
         } else {
             throw new Error('Shouldn\'t be calling on this experiment');
         }
+    }
 
+    executeCommand(id: number, cmd: string) {
+        const experiment = this.experimentDataService.get(id);
+
+        if (experiment.stage === ExperimentStages.Setup_Fetch) {
+            const options = experiment.fetchPlugin.getOptions();
+            options.executeCommand(cmd).then(() => {
+                if (options.noMore()) {
+                    experiment.stage = ExperimentStages.Select_Algorithm;
+                    experiment.data = experiment.fetchPlugin.fetch();
+                }
+                this.experimentDataService.update(id, experiment);
+                const updatedExperiment = this.converter.convert(experiment);
+                this.experimentProducer.update(updatedExperiment);
+            }).catch((reason) => {
+                this.experimentProducer.error(reason);
+            });
+        } else if (experiment.stage === ExperimentStages.Setup_Algorithm) {
+            throw new Error('Error: Not implemented');
+        } else {
+            throw new Error('Shouldn\'t be calling on this experiment');
+        }
     }
 
 }

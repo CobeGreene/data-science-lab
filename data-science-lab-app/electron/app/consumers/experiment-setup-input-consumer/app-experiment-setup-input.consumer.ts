@@ -16,10 +16,12 @@ export class AppExperimentSetupInputConsumer implements ExperimentSetupInputCons
 
     initialize(): void {
         this.registerSubmit();
+        this.registerExecuteCommand();
     }    
     
     destory(): void {
         this.unregisterSubmit();
+        this.unregisterExecuteCommand();
     }
 
     private registerSubmit() {
@@ -40,5 +42,25 @@ export class AppExperimentSetupInputConsumer implements ExperimentSetupInputCons
             throw new Error('Submit Input Event - no input given');
         }
         this.experimentSetupInputService.submit(id, inputs);
+    }
+
+    private registerExecuteCommand() {
+        this.ipcService.on(ExperimentsEvents.ExecuteCommandEvent, this.executeCommandEvent);
+    }
+
+    private unregisterExecuteCommand() {
+        this.ipcService.removeListener(ExperimentsEvents.ExecuteCommandEvent, this.executeCommandEvent);
+    }
+
+    private executeCommandEvent = (event, args) => {
+        const id = args[0][0] as number;
+        if (!id) {
+            throw new Error('Execute Command Event - no id given');
+        }
+        const cmd = args[0][1] as string;
+        if (!cmd) {
+            throw new Error('Execute Command Event - no input given');
+        }
+        this.experimentSetupInputService.executeCommand(id, cmd);
     }
 }

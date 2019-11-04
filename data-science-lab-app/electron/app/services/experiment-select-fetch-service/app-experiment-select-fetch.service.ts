@@ -3,7 +3,7 @@ import { Plugin, PluginPackageList, ExperimentStages } from '../../../../shared/
 import { ExperimentProducer, ExperimentSelectFetchProducer } from '../../producers';
 import { SettingService } from '../setting-services/setting.service';
 import { AppPackageService } from '../package-service/app-package.service';
-import { PluginTypes, FetchPlugin } from 'data-science-lab-core';
+import { PluginTypes, FetchPlugin, FileService } from 'data-science-lab-core';
 import { PluginManagerAdapter } from '../../adapters';
 import { ExperimentDataService } from '../experiment-data-service';
 import { ExperimentConverter } from '../../converters';
@@ -17,19 +17,22 @@ export class AppExerimentSelectFetchService implements ExperimentSelectFetchServ
     private pluginManagerAdapter: PluginManagerAdapter;
     private experimentDataService: ExperimentDataService;
     private experimentConverter: ExperimentConverter;
+    private fileService: FileService;
 
     constructor(experimentProducer: ExperimentProducer,
                 experimentSelectFetchProducer: ExperimentSelectFetchProducer,
                 settingService: SettingService,
                 pluginManagerAdapter: PluginManagerAdapter,
                 experimentDataService: ExperimentDataService,
-                experimentConveter: ExperimentConverter) {
+                experimentConveter: ExperimentConverter,
+                fileService: FileService) {
         this.experimentProducer = experimentProducer;
         this.experimentSelectFetchProducer = experimentSelectFetchProducer;
         this.settingService = settingService;
         this.pluginManagerAdapter = pluginManagerAdapter;
         this.experimentDataService = experimentDataService;
         this.experimentConverter = experimentConveter;
+        this.fileService = fileService;
     }
 
     all(): void {
@@ -49,7 +52,6 @@ export class AppExerimentSelectFetchService implements ExperimentSelectFetchServ
     }
 
     select(id: number, plugin: Plugin) {
-        console.log(`Enter: ${id}`);
         const packageList = this.settingService.get(AppPackageService.INSTALL_PACKAGES, new PluginPackageList());
         const pluginPackage = packageList.packages.find((value) => {
             return plugin.packageName === value.name;
@@ -63,12 +65,11 @@ export class AppExerimentSelectFetchService implements ExperimentSelectFetchServ
         if (experimentData == null) {
             this.experimentProducer.error('Couldn\'t find experiment that was selected.');
         }
-        console.log(`Found experiment and plugin package`);
         this.pluginManagerAdapter.activate<FetchPlugin>(pluginPackage, plugin)
             .then((fetchPlugin: FetchPlugin) => {
-                console.log(`Got fetch plugin`);
                 experimentData.fetchPluginChoice = plugin;
                 experimentData.fetchPlugin = fetchPlugin;
+                fetchPlugin.setFileService(this.fileService);
                 experimentData.stage = ExperimentStages.Setup_Fetch;
                 const experiment = this.experimentConverter.convert(experimentData);
                 this.experimentDataService.update(id, experimentData);

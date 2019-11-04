@@ -5,4 +5,4 @@ export { AppWebService, MockWebService } from './web-services';
 export { AppExperimentDataService, ExperimentDataService } from './experiment-data-service';
 export { AppExperimentService, ExperimentService } from './experiment-service';
 export { ExperimentSelectFetchService, AppExerimentSelectFetchService } from './experiment-select-fetch-service';
-
+export { AppFileService } from './file-services';

@@ -12,6 +12,7 @@ import { AppExperimentService } from '../services/experiment-service';
 import { AppExperimentDataService } from '../services/experiment-data-service';
 import { AppExperimentSetupInputService } from '../services/experiment-setup-input-service';
 import { AppExperimentSetupInputConsumer } from '../consumers/experiment-setup-input-consumer/app-experiment-setup-input.consumer';
+import { AppFileService } from '../services/file-services';
 
 export class ServiceContainer {
 
@@ -42,12 +43,13 @@ export class ServiceContainer {
         // Services
         const webService = new AppWebService();
         const experimentDataService = new AppExperimentDataService();
+        const fileService = new AppFileService();
 
         const packageService = new AppPackageService(packageProducer, settingService, webService, pluginManagerAdapter);
         const experimentService = new AppExperimentService(experimentDataService, experimentProducer, experimentConverter);
         const experimentSelectFetchService = new AppExerimentSelectFetchService(experimentProducer,
              experimentSelectFetchProducer, settingService, queuePluginManagerAdapter, experimentDataService,
-             experimentConverter);
+             experimentConverter, fileService);
         const experimentSetupInputService = new AppExperimentSetupInputService(experimentProducer,
             experimentDataService, experimentConverter);
 
