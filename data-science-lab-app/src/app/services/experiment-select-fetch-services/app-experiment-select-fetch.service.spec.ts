@@ -43,7 +43,7 @@ describe('Angular App Experiment Select Fetch Service Tests', () => {
     it('select should call select event', (done) => {
         ipcService.on(ExperimentsEvents.SelectFetchEvent, (event, args: any[]) => {
             expect(args[0] as number).toBe(1);
-            const plugin = JSON.parse(args[1]) as Plugin;
+            const plugin = args[1] as Plugin;
             expect(plugin.name).toEqual(pluginList[0].name);
             done();
         });
