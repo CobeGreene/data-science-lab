@@ -32,7 +32,7 @@ describe('Angular App Experiment Setup Fetch Service Tests', () => {
             expect(args[0] as number).toBe(1);
             done();
         });
-        experimentService.submit(1);
+        experimentService.submit(1, {});
     });
 
 });

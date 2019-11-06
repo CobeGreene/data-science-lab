@@ -22,7 +22,10 @@
     "clean:all": "npm run clean:test && npm run clean:dist",
     "clean": "npm run clean:all",
     "clean:build": "npm run clean:all && npm run build:all && npm run build:settings",
-    "clean:build:start": "npm run clean:build && npm run start"
+    "clean:build:start": "npm run clean:build && npm run start",
+    "travis": "npm run travis:elc && npm run travis:ang",
+    "travis:elc": "npm run build:elc:test && jasmine --config=./electron/spec/support/jasmine.json",
+    "travis:ang": "ng test --watch=false --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {

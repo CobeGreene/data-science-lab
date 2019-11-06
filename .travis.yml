@@ -6,4 +6,4 @@ before_install: cd ./data-science-lab-app
 
 install: npm install
 
-script: npm run build:elc:test && npm run jasmine:elc
+script: npm run travis
