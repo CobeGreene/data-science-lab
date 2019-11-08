@@ -6,10 +6,10 @@ export class Experiment {
     public stage: ExperimentStages;
 
     constructor(experiment: {
-        id: number, dateCreated?: Date,
+        id?: number, dateCreated?: Date,
         stage?: ExperimentStages
     }) {
-        this.id = experiment.id;
+        this.id = experiment.id || 0;
         this.dateCreated = experiment.dateCreated || new Date();
         this.stage = experiment.stage || ExperimentStages.Data_Workspace;
     }

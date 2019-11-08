@@ -1,14 +1,16 @@
 import { ExperimentFeature } from './experiment-feature';
 
 export class ExperimentDataGroup {
+    public id: number;
     public label: string;
     public examples: number;
     public features: ExperimentFeature[];
     public experimentId: number;
 
     constructor(dataGroup: {
-        label: string, experimentId?: number
+        id?: number, label: string, experimentId?: number
     }) {
+        this.id = dataGroup.id || 0;
         this.label = dataGroup.label;
         this.examples = 0;
         this.features = [];

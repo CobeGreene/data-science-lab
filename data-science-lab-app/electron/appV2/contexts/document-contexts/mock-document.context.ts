@@ -1,6 +1,6 @@
-import { DocumentService } from './document-service';
+import { DocumentContext } from './document.context';
 
-export class MockDocumentService implements DocumentService {
+export class MockDocumentContext implements DocumentContext {
 
     private documents: any;
 

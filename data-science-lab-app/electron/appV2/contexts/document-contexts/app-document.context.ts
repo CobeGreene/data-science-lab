@@ -1,7 +1,7 @@
-import { DocumentService } from './document-service';
+import { DocumentContext } from './document.context';
 const settings = require('electron-settings');
 
-export class AppDocumentService implements DocumentService {
+export class AppDocumentContext implements DocumentContext {
 
     constructor() {
 

@@ -1,10 +1,10 @@
-import { MockDocumentService } from './mock-document-service';
+import { MockDocumentContext } from './mock-document.context';
 
-describe('Electron Mock Documents Service Tests', () => {
-    let documents: MockDocumentService;
+describe('Electron Mock Documents Context Tests', () => {
+    let documents: MockDocumentContext;
 
     beforeEach(() => {
-        documents = new MockDocumentService();
+        documents = new MockDocumentContext();
     });
 
     it('has should return false for empty settings', () => {
