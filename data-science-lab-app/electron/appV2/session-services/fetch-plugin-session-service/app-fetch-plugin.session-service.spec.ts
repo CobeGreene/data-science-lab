@@ -1,17 +1,21 @@
 import { AppFetchPluginSessionService } from './app-fetch-plugin.session-service';
 import { MockPluginContext } from '../../contexts';
-import { FetchSession } from '../../models';
-import { FetchPlugin } from 'data-science-lab-core';
 import { Plugin, PluginPackage } from '../../../../shared/models';
+import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
 
 describe('Electron App Experiment Fetch Plguin Session Service Tests', () => {
 
     let mockPluginContext: MockPluginContext;
+    let serviceContainer: MockServiceContainer;
     let fetchPluginSessionService: AppFetchPluginSessionService;
 
     beforeEach(() => {
         mockPluginContext = new MockPluginContext();
-        fetchPluginSessionService = new AppFetchPluginSessionService(mockPluginContext);
+        serviceContainer = new MockServiceContainer();
+        fetchPluginSessionService = new AppFetchPluginSessionService(serviceContainer);
+        serviceContainer.getType = (type: SERVICE_TYPES) => {
+            return mockPluginContext;
+        };
     });
 
     it('read should throw error for not found', () => {

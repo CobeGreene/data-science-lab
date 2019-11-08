@@ -1,4 +1,4 @@
-import { IpcService, Listener } from '../../../../shared/services';
+import { IpcService, Listener } from '../../../shared/services';
 import { ipcMain } from 'electron';
 import { win } from '../../app';
 

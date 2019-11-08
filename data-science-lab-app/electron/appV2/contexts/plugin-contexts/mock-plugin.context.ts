@@ -17,6 +17,6 @@ export class MockPluginContext implements PluginContext {
         this.uninstall = (_) => new Promise<void>((resolve) => { resolve(); });
         this.activate = <T>(_package, _plugin) => new Promise<T>((resolve, _) => { resolve(new Object() as T); });
         this.deactivate = (_package, _plugin) => new Promise<void>((resolve, _) => { resolve(); });
-        this.deactivateAll = () => new Promise<void>(() => { });
+        this.deactivateAll = () => new Promise<void>((resolve) => { resolve(); });
     }
 }

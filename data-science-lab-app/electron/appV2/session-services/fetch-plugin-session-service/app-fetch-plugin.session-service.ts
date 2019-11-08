@@ -3,12 +3,13 @@ import { FetchSession } from '../../models/fetch-session';
 import { Plugin, PluginPackage } from '../../../../shared/models';
 import { PluginContext } from '../../contexts';
 import { FetchPlugin } from 'data-science-lab-core';
+import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 
 export class AppFetchPluginSessionService implements FetchPluginSessionService {
 
     private fetchSessions: FetchSession[];
     
-    constructor(private pluginContext: PluginContext) {
+    constructor(private serviceContainer: ServiceContainer) {
         this.fetchSessions = [];
     }
     
@@ -47,7 +48,8 @@ export class AppFetchPluginSessionService implements FetchPluginSessionService {
                 reject(new Error(`Fetch session with experiment id ${experimentId} is already selected.`));
             }
             try {
-                const fetchPlugin = await this.pluginContext.activate<FetchPlugin>(pluginPackage, plugin); 
+                const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
+                const fetchPlugin = await pluginContext.activate<FetchPlugin>(pluginPackage, plugin); 
                 this.fetchSessions[findIndex].select(pluginPackage, plugin, fetchPlugin);
                 resolve(this.fetchSessions[findIndex]);
             } catch (error) {
@@ -65,7 +67,8 @@ export class AppFetchPluginSessionService implements FetchPluginSessionService {
         } else if (!this.fetchSessions[findIndex].selected) {
             throw new Error(`Fetch session with experiment id ${experimentId} is not selected.`);
         }
-        this.pluginContext.deactivate(this.fetchSessions[findIndex].pluginPackage, this.fetchSessions[findIndex].plugin);
+        const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
+        pluginContext.deactivate(this.fetchSessions[findIndex].pluginPackage, this.fetchSessions[findIndex].plugin);
         this.fetchSessions[findIndex].deselect();
         return this.fetchSessions[findIndex];
     }
@@ -78,7 +81,8 @@ export class AppFetchPluginSessionService implements FetchPluginSessionService {
             throw new Error(`Couldn't find fetch session with experiment id ${experimentId}`);
         }
         if (this.fetchSessions[findIndex].selected) {
-            this.pluginContext.deactivate(this.fetchSessions[findIndex].pluginPackage, this.fetchSessions[findIndex].plugin);
+            const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
+            pluginContext.deactivate(this.fetchSessions[findIndex].pluginPackage, this.fetchSessions[findIndex].plugin);
         }
         this.fetchSessions.splice(findIndex, 1);
     }

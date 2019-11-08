@@ -10,7 +10,7 @@ export class MockIpcService implements IpcService {
         this.listeners = {};
     }
 
-    send(channel: string, ...arg: any[]): void {
+    send(channel: string, ...arg: any): void {
         if (this.onceListeners[channel] != null) {
             this.onceListeners[channel].forEach(element => {
                 element(channel, arg);

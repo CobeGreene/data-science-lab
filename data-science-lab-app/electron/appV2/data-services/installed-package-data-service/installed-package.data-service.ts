@@ -2,7 +2,7 @@ import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 
 export interface InstalledPackageDataService {
     all(): PluginPackageList;
-    get(name: string): PluginPackage;
-    create(pluginPackage: PluginPackage): void;
-    delete(name: string): void;
+    read(name: string): PluginPackage;
+    install(pluginPackage: PluginPackage): Promise<void>;
+    uninstall(name: string): Promise<void>;
 }

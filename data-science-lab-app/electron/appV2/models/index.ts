@@ -7,3 +7,5 @@ export { ExperimentTextFeature } from './experiment-text-feature';
 export { ExperimentDataGroup } from './experiment-data-group';
 export { ExperimentFeatureTypes } from './experiment-feature-types';
 export { FetchSession } from './fetch-session';
+export { ApiSettings } from './api.settings';
+
