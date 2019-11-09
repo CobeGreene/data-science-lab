@@ -1,8 +1,8 @@
 import { IpcService, Listener } from '../../../../shared/services';
 
 export class AppIpcService implements IpcService {
-    send(channel: string, ...arg: any[]): void {
-        window.electronIpcSend(channel, arg);
+    send(channel: string, ...arg: any): void {
+        window.electronIpcSend(channel, ...arg);
     }    
     
     on(channel: string, listener: Listener): void {

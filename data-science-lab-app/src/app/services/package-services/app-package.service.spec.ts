@@ -85,7 +85,7 @@ describe('Angular App Package Service Tests', () => {
             expect(value.packages[0].install).toBeTruthy();
             done();
         });
-        packageService.install(packagesList.packages[0].name);
+        packageService.install(packagesList.packages[0]);
     });
 
     it('uninstall should set third\'s package install to false when getting packages', (done) => {
@@ -94,7 +94,7 @@ describe('Angular App Package Service Tests', () => {
             expect(value.packages[2].install).toBeFalsy();
             done();
         });
-        packageService.uninstall(packagesList.packages[2].name);
+        packageService.uninstall(packagesList.packages[2]);
     });
 
 

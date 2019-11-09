@@ -1,2 +1,3 @@
-export { AppWebCoreService } from './web-core-service';
+export { AppWebCoreService, MockWebCoreService } from './web-core-service';
+
 

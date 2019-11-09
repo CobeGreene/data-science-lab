@@ -5,13 +5,15 @@ import { FetchPluginSessionService, AppFetchPluginSessionService } from '../sess
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
     ExperimentDataGroupDataService, ExperimentDataService,
-    AppInstalledPackageDataService, InstalledPackageDataService,
-    AppAllPackageDataService, AppSettingsDataService
+    AppPackageDataService, AppSettingsDataService, PackageDataService, SettingsDataService
 } from '../data-services';
 import { AppWebCoreService } from '../core-services';
 import { AppFileCoreService } from '../core-services/file-core-service';
 import { IpcService } from '../../../shared/services';
-import { AppIpcService } from '../../app/services';
+import { AppIpcService  } from '../ipc-services/app-ipc-service'; 
+import { AppPackageService } from '../services';
+import { AppPackageProducer } from '../producers';
+import { AppPackageConsumer } from '../consumers';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -27,7 +29,7 @@ export class AppServiceContainer implements ServiceContainer {
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
     private experimentDataService: ExperimentDataService;
-    private installedPackageDataService: InstalledPackageDataService;
+    private packageDataService: PackageDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -47,10 +49,11 @@ export class AppServiceContainer implements ServiceContainer {
                 return this.documentContext;
 
             case SERVICE_TYPES.PluginContext:
-                if (this.documentContext) {
+                if (this.pluginContext) {
                     return this.pluginContext;
                 }
-                const appPluginContext = new AppPluginContext();
+                const settingsService = this.resolve<SettingsDataService>(SERVICE_TYPES.SettingsDataService);
+                const appPluginContext = new AppPluginContext(settingsService.readPluginPath());
                 this.pluginContext = new AppQueuePluginContext(appPluginContext);
                 return this.pluginContext;
 
@@ -85,15 +88,12 @@ export class AppServiceContainer implements ServiceContainer {
                 this.experimentDataGroupDataService = new AppExperimentDataGroupDataService();
                 return this.experimentDataGroupDataService;
 
-            case SERVICE_TYPES.InstalledPackageDataService:
-                if (this.installedPackageDataService) {
-                    return this.installedPackageDataService;
+            case SERVICE_TYPES.PackageDataService:
+                if (this.packageDataService) {
+                    return this.packageDataService;
                 }
-                this.installedPackageDataService = new AppInstalledPackageDataService(this);
-                return this.installedPackageDataService;
-
-            case SERVICE_TYPES.AllPackageDataService:
-                return new AppAllPackageDataService(this);
+                this.packageDataService = new AppPackageDataService(this);
+                return this.packageDataService;
 
             case SERVICE_TYPES.SettingsDataService:
                 return new AppSettingsDataService(this);
@@ -106,11 +106,17 @@ export class AppServiceContainer implements ServiceContainer {
                 return new AppFileCoreService();
 
             // Services
-
+            case SERVICE_TYPES.PackageService:
+                return new AppPackageService(this);
 
             // Producers
+            case SERVICE_TYPES.PackageProducer:
+                return new AppPackageProducer(this);
 
             // Consumers
+            case SERVICE_TYPES.PackageConsumer:
+                return new AppPackageConsumer(this);
+                
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

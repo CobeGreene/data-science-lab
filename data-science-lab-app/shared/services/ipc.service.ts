@@ -1,4 +1,4 @@
-export type Listener = (event: any, args: any[]) => void;
+export type Listener = (event: any, ...args: any) => void;
 
 export abstract class IpcService {
     

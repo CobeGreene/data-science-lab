@@ -6,8 +6,7 @@ export const enum SERVICE_TYPES {
     // Data Services
     ExperimentDataGroupDataService,
     ExperimentDataService,
-    InstalledPackageDataService,
-    AllPackageDataService,
+    PackageDataService,
     SettingsDataService,
 
     // Session Services
@@ -19,6 +18,15 @@ export const enum SERVICE_TYPES {
     // Core Services
     WebService,
     FileService,
+
+    // Services
+    PackageService,
+
+    // Consumers
+    PackageConsumer,
+
+    // Producers
+    PackageProducer,
 }
 
 

@@ -1,3 +1,2 @@
-export { AppPackageService, PackageService } from './package-service';
-
+export { AppPackageService, PackageService, MockPackageService } from './package-service';
 

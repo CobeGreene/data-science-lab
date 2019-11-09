@@ -1,30 +1,53 @@
-import { AppInstalledPackageDataService } from './app-installed-package.data-service';
+import { AppPackageDataService } from './app-package.data-service';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import { MockDocumentContext, MockPluginContext } from '../../contexts';
 import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
+import { MockSettingsDataService } from '../settings-data-service';
+import { MockWebCoreService } from '../../core-services';
+import { Response } from 'data-science-lab-core';
 
 
-describe('Electron App Installed Package Data Service Tests', () => {
+describe('Electron App Package Data Service Tests', () => {
 
-    let installPackageDataService: AppInstalledPackageDataService;
+    let installPackageDataService: AppPackageDataService;
     let documentContext: MockDocumentContext;
     let serviceContainer: MockServiceContainer;
     let pluginPackageList: PluginPackageList;
     let pluginContext: MockPluginContext;
+    let settingService: MockSettingsDataService;
+    let webService: MockWebCoreService;
+    let packageToInstall: PluginPackage;
 
     const documentGet = (): any => {
         return pluginPackageList;
     };
 
     beforeEach(() => {
+        packageToInstall = new PluginPackage({
+            name: 'new', owner: 'owner', repositoryName: 'repo', username: 'user'
+        });
         pluginPackageList = new PluginPackageList([
             new PluginPackage({ name: 'name1', owner: 'owner1', repositoryName: 'repo1', username: 'user1', install: true }),
             new PluginPackage({ name: 'name2', owner: 'owner2', repositoryName: 'repo2', username: 'user2', install: true }),
         ]);
+        settingService = new MockSettingsDataService();
+        webService = new MockWebCoreService();
+        webService.send = (request) => {
+            return new Promise<Response>((resolve) => {
+                resolve(new Response({
+                    statusCode: 200,
+                    body: Buffer.from(JSON.stringify([
+                        pluginPackageList.packages[0],
+                        pluginPackageList.packages[1],
+                        packageToInstall,
+                    ]))
+                }));
+            });
+        };
         serviceContainer = new MockServiceContainer();
         documentContext = new MockDocumentContext();
         pluginContext = new MockPluginContext();
-        installPackageDataService = new AppInstalledPackageDataService(serviceContainer);
+        installPackageDataService = new AppPackageDataService(serviceContainer);
         documentContext.get = <T>(path: string, defaultValue?: T): T => {
             return documentGet() as T;
         };
@@ -34,6 +57,10 @@ describe('Electron App Installed Package Data Service Tests', () => {
                     return documentContext;
                 case SERVICE_TYPES.PluginContext:
                     return pluginContext;
+                case SERVICE_TYPES.WebService:
+                    return webService;
+                case SERVICE_TYPES.SettingsDataService:
+                    return settingService;
                 default:
                     throw new Error(`Couldn't find type.`);
             }
@@ -66,23 +93,30 @@ describe('Electron App Installed Package Data Service Tests', () => {
             });
     });
 
-    it('install should add to installed package list', async () => {
+    it('install should add to installed package list', (done) => {
         const expected = pluginPackageList.packages.length + 1;
-        const pluginPackage = new PluginPackage({
-            name: 'new', owner: 'owner', repositoryName: 'repo', username: 'user'
+        installPackageDataService.all((list) => {
+            installPackageDataService.install(packageToInstall)
+                .then(() => {
+                    expect(installPackageDataService.all().packages.filter((value) => {
+                        return value.install;
+                    }).length).toBe(expected);
+                    done();
+                });
         });
-        
-        await installPackageDataService.install(pluginPackage);
-        expect(installPackageDataService.all().packages.length).toBe(expected);
     });
 
     it('uninstall should remove from install package list', async () => {
+        installPackageDataService.all();
         const expected = pluginPackageList.packages.length - 1;
         await installPackageDataService.uninstall(pluginPackageList.packages[0].name);
-        expect(installPackageDataService.all().packages.length).toBe(expected);
+        expect(installPackageDataService.all().packages.filter((value) => {
+            return value.install;
+        }).length).toBe(expected);
     });
 
     it('uninstall should reject for not found package', (done) => {
+        installPackageDataService.all();
         installPackageDataService.uninstall('not found')
             .then(() => {
                 done.fail(`Didn't expect successful execution.`);

@@ -1,49 +1,49 @@
 import { PackageService } from './package.service';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
-import { InstalledPackageDataService, AllPackageDataService } from '../../data-services';
+import { PackageDataService } from '../../data-services';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
+import { PackageProducer } from '../../producers';
 
 export class AppPackageService implements PackageService {
 
-    private fetching: boolean;
-
     constructor(private serviceContainer: ServiceContainer) {
-        this.fetching = false;
     }
 
     all(): void {
-        const allDataService = this.serviceContainer.resolve<AllPackageDataService>(SERVICE_TYPES.AllPackageDataService);
-        if (!this.fetching) {
-            this.fetching = true;
-            allDataService.all((pluginPackageList: PluginPackageList) => {
-
-            }, (reason: any) => {
-
-            });
-        } 
-        allDataService.all();
-    }    
-    
-    install(pluginPackage: PluginPackage): void {
-        const installedDataService = this.serviceContainer
-            .resolve<InstalledPackageDataService>(SERVICE_TYPES.InstalledPackageDataService);
-        
-        installedDataService.install(pluginPackage)
-            .then((value) => {
-                this.all();
-            }).catch(() => {
-
-            });
+        const packageDataService = this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
+        this.produceAll(packageDataService.all(this.produceAll, this.produceError));
     }
     
-    uninstall(pluginPackage: PluginPackage): void {
-        const installedDataService = this.serviceContainer
-            .resolve<InstalledPackageDataService>(SERVICE_TYPES.InstalledPackageDataService);
-        installedDataService.uninstall(pluginPackage.name)
-            .then((value) => {
-                this.all();
-            }).catch(() => {
+    private produceAll = (pluginPackageList: PluginPackageList) => {
+        const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
+        producer.all(pluginPackageList);
+    } 
+    
+    private produceError = (reason: any) => {
+        const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
+        producer.error(reason);
+    }
 
-            });
+    install(pluginPackage: PluginPackage): void {
+        const packageDataService = this.serviceContainer
+            .resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
+        const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
+        packageDataService.install(pluginPackage)
+            .then(() => {
+                producer.install(pluginPackage);
+                this.all();
+            }).catch(this.produceError);
+    }
+
+    uninstall(pluginPackage: PluginPackage): void {
+        const packageDataService = this.serviceContainer
+            .resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
+        const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
+
+        packageDataService.uninstall(pluginPackage.name)
+            .then(() => {
+                producer.uninstall(pluginPackage);
+                this.all();
+            }).catch(this.produceError);
     }
 }

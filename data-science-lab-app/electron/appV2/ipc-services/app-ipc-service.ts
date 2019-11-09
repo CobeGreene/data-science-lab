@@ -1,6 +1,6 @@
 import { IpcService, Listener } from '../../../shared/services';
 import { ipcMain } from 'electron';
-import { win } from '../../app';
+import { win } from '../../appV2/app';
 
 export class AppIpcService implements IpcService {
 
@@ -9,7 +9,7 @@ export class AppIpcService implements IpcService {
     }
 
     send(channel: string, ...arg: any): void {
-        win.webContents.send(channel, arg);
+        win.webContents.send(channel, ...arg);
     }    
     
     on(channel: string, listener: Listener): void {
