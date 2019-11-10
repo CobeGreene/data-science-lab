@@ -1,4 +1,4 @@
-import { ExperimentDataGroup } from '../../models';
+import { ExperimentDataGroup } from '../../../../shared/models';
 
 export interface ExperimentDataGroupDataService {
     all(experimentId?: number): ExperimentDataGroup[];

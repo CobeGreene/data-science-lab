@@ -23,7 +23,7 @@
   "include": [
     "shared/models",
     "shared/events",
-    "shared/services"
+    "shared/services", 
   ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

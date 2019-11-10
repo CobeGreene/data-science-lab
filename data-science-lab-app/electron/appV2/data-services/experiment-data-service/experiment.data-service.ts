@@ -1,4 +1,4 @@
-import { Experiment } from '../../models';
+import { Experiment } from '../../../../shared/models';
 
 
 export interface ExperimentDataService {

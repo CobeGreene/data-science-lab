@@ -1,5 +1,5 @@
 import { ExperimentDataGroupDataService } from './experiment-data-group.data-service';
-import { ExperimentDataGroup } from '../../models';
+import { ExperimentDataGroup } from '../../../../shared/models';
 
 export class AppExperimentDataGroupDataService implements ExperimentDataGroupDataService {
     

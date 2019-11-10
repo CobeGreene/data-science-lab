@@ -1,5 +1,5 @@
 import { AppExperimentDataService } from './app-experiment.data-service';
-import { Experiment, ExperimentStages } from '../../models';
+import { Experiment } from '../../../../shared/models';
 
 describe('Electron App Experiment Data Service Tests', () => {
     let experimentDataService: AppExperimentDataService;
@@ -15,10 +15,8 @@ describe('Electron App Experiment Data Service Tests', () => {
 
     it('create should create with id one', () => {
         const experiment = experimentDataService.create(new Experiment({
-            stage: ExperimentStages.Select_Fetch
         }));
         expect(experiment.id).toBe(1);
-        expect(experiment.stage).toEqual(ExperimentStages.Select_Fetch);
     });
 
 
@@ -53,8 +51,9 @@ describe('Electron App Experiment Data Service Tests', () => {
 
     it('update should change experiment list', () => {
         const experiment = experimentDataService.create(new Experiment({}));
-        experiment.stage = ExperimentStages.Test_Algorithm;
+        const date = new Date();
+        experiment.dateCreated = date;
         experimentDataService.update(experiment);
-        expect(experimentDataService.read(experiment.id).stage).toEqual(ExperimentStages.Test_Algorithm);
+        expect(experimentDataService.read(experiment.id).dateCreated).toEqual(date);
     });
 });

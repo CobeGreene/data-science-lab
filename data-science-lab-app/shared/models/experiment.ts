@@ -1,13 +1,11 @@
-import { ExperimentStages } from './experiment_stages';
-
-export abstract class Experiment {
+export class Experiment {
     public id: number;
-    public stage: ExperimentStages;
+    public dateCreated: Date;
 
     constructor(experiment: {
-        id: number, stage: ExperimentStages
+        id?: number, dateCreated?: Date,
     }) {
-        this.id = experiment.id;
-        this.stage = experiment.stage;
+        this.id = experiment.id || 0;
+        this.dateCreated = experiment.dateCreated || new Date();
     }
 }
