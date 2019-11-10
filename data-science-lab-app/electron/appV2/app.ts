@@ -63,7 +63,7 @@ export class AppV2 {
         });
 
         process.on('uncaughtException', (error) => {
-            console.log(`uncaught exception ${error.name}, ${error.message}`);
+            console.warn(`uncaught exception ${error.name}, ${error.message}`);
             this.ipcService.send(ErrorEvents.ExceptionListeners, `${error.message}`);
         });
     }
