@@ -8,27 +8,39 @@ import { BaseProducer } from '../base.producer';
 
 
 export class AppFetchSessionProducer extends BaseProducer implements FetchSessionProducer {
-
+    
     all(fetchSessions: FetchSession[]) {
         const viewModels: FetchSessionViewModel[] = [];
         fetchSessions.forEach(value => {
-            viewModels.push(new FetchSessionViewModel({
-                experimentId: value.experimentId,
-                optionList: value.fetchPlugin.getOptions().options()
-            }));
+            viewModels.push(this.convertToViewModel(value));
         });
         const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         ipc.send(ExperimentsEvents.GetAllFetchSessionsListeners, viewModels);
     }
-
+    
     newSession(fetchSession: FetchSession) {
-        const viewModel = new FetchSessionViewModel({
-            experimentId: fetchSession.experimentId,
-            optionList: fetchSession.fetchPlugin.getOptions().options()
-        });
+        const viewModel = this.convertToViewModel(fetchSession);
         const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         ipc.send(ExperimentsEvents.CreateFetchSessionListeners, viewModel);
     }
+    
+    delete(experimentId: number) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(ExperimentsEvents.DeleteFetchSessionListeners, experimentId);
+    }
 
+
+    updateSession(fetchSession: FetchSession) {
+        const viewModel = this.convertToViewModel(fetchSession);
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(ExperimentsEvents.UpdatedFetchSessionListeners, viewModel);
+    }
+
+    convertToViewModel(fetchSession: FetchSession): FetchSessionViewModel {
+        return new FetchSessionViewModel({
+            experimentId: fetchSession.experimentId,
+            optionList: fetchSession.fetchPlugin.getOptions().options()
+        });
+    }
 
 }

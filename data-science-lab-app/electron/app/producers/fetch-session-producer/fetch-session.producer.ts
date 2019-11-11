@@ -5,4 +5,6 @@ export interface FetchSessionProducer extends Producer {
 
     all(fetchSessions: FetchSession[]);
     newSession(fetchSession: FetchSession);
+    delete(experimentId: number);
+    updateSession(fetchSession: FetchSession);
 }

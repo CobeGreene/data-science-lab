@@ -118,6 +118,25 @@ describe('Electron App Fetch Service Tests', () => {
         }));
     });
 
+    it('delete should tell producer to delete', (done) => {
+        producer.delete = (() => {
+            expect().nothing();
+            done();
+        });
+
+        sessionService.delete = () => {};
+        fetchService.delete(1);
+    });
+
+    it('delete should tell producer to send all message', (done) => {
+        producer.all = (() => {
+            expect().nothing();
+            done();
+        });
+
+        sessionService.delete = () => {};
+        fetchService.delete(1);
+    });
 
 });
 

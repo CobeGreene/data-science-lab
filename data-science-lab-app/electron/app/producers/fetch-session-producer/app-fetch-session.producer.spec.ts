@@ -8,14 +8,14 @@ import { FetchSessionViewModel } from '../../../../shared/view-models';
 
 describe('Electron App Fetch Session Producer Tests', () => {
 
-    class Options {
+    class MockOptions {
         options() {
             return null;
         }
     }
-    class Fetch {
+    class MockFetch {
         getOptions() {
-            const option = new Options();
+            const option = new MockOptions();
             return (option as unknown) as OptionList;
         }
     }
@@ -41,7 +41,7 @@ describe('Electron App Fetch Session Producer Tests', () => {
     });
 
     it('all should convert the sessions to view models', (done) => {
-        const fetch = new Fetch();
+        const fetch = new MockFetch();
         const fetchSessions = [
             new FetchSession({
                 experimentId: 1,
@@ -58,7 +58,7 @@ describe('Electron App Fetch Session Producer Tests', () => {
     });
 
     it('new session should convert it to view model', (done) => {
-        const fetch = new Fetch();
+        const fetch = new MockFetch();
         const fetchSession =
             new FetchSession({
                 experimentId: 1,
@@ -66,12 +66,38 @@ describe('Electron App Fetch Session Producer Tests', () => {
                 pluginPackage: null,
                 fetchPlugin: (fetch as unknown) as FetchPlugin
             });
-        ipcService.on(ExperimentsEvents.CreateFetchSessionListeners, (arg: FetchSessionViewModel) => {
+        ipcService.on(ExperimentsEvents.CreateFetchSessionListeners, (event, arg: FetchSessionViewModel) => {
             expect(arg).toBeDefined();
             done();
         });
         producer.newSession(fetchSession);
     });
+    
+    
+    it('update session should convert it to view model', (done) => {
+        const fetch = new MockFetch();
+        const fetchSession =
+            new FetchSession({
+                experimentId: 1,
+                plugin: null,
+                pluginPackage: null,
+                fetchPlugin: (fetch as unknown) as FetchPlugin
+            });
+        ipcService.on(ExperimentsEvents.UpdatedFetchSessionListeners, (event, arg: FetchSessionViewModel) => {
+            expect(arg).toBeDefined();
+            done();
+        });
+        producer.updateSession(fetchSession);
+    });
+
+    it('delete should send id', (done) => {
+        ipcService.on(ExperimentsEvents.DeleteFetchSessionListeners, (event, arg: number) => {
+            expect(arg).toBe(1);
+            done();
+        });
+        producer.delete(1);
+    });
+
 
     it('error should call error listeners', (done) => {
         ipcService.on(ErrorEvents.ExceptionListeners, () => {

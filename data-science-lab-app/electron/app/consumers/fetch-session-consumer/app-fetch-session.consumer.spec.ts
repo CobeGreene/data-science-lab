@@ -50,5 +50,29 @@ describe('Electron App Fetch Session Consumer Tests', () => {
         }));
     });
 
+    it('delete event should call session service delete', (done) => {
+        sessionService.delete = (id) => {
+            expect(id).toBe(1);
+            done();
+        };
+        ipcService.send(ExperimentsEvents.DeleteFetchSessionEvent, 1);
+    });
+
+    it('submit event should call session serivce submit', (done) => {
+        sessionService.submitOptions = (id, inputs) => {
+            expect(id).toBe(1);
+            done();
+        };
+        ipcService.send(ExperimentsEvents.SubmitOptionsFetchSessionEvent, 1, {});
+    });
+
+    it('execute command should call session service execute command', (done) => {
+        sessionService.executeCommand = (id, cmd) => {
+            expect(id).toBe(1);
+            done();
+        };
+        ipcService.send(ExperimentsEvents.ExecuteCommandFetchSessionEvent, 1, 'cmd');
+    });
+
 });
 
