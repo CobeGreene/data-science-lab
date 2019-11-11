@@ -74,5 +74,25 @@ describe('Angular App Fetch Session Service Tests', () => {
         }));
     });
 
+    it('delete should call delete fetch session event', (done) => {
+        ipcService.on(ExperimentsEvents.DeleteFetchSessionEvent, (event, id, _) => {
+            expect(id).toBe(1);
+            done();
+        });
+        fetchSessionService.delete(1);
+    });
+
+    it('delete listeners should call delete subject', (done) => {
+        fetchSessionService.sessionDeleted.subscribe((value) => {
+            expect(value).toBe(1);
+            done();
+        });
+        ipcService.send(ExperimentsEvents.DeleteFetchSessionListeners, 1);
+    });
+
+    it('update listeners should update subject', (done) => {
+        
+    });
+
 });
 
