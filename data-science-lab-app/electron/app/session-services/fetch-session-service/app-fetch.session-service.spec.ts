@@ -14,7 +14,14 @@ describe('Electron App Experiment Fetch Session Service Tests', () => {
         serviceContainer = new MockServiceContainer();
         fetchSessionService = new AppFetchSessionService(serviceContainer);
         serviceContainer.getType = (type: SERVICE_TYPES) => {
-            return mockPluginContext;
+            switch (type) {
+                case SERVICE_TYPES.PluginContext:
+                    return mockPluginContext;
+                case SERVICE_TYPES.FileService:
+                    return null;
+                default:
+                    throw new Error(`Couldn't resolve type.`);
+            }
         };
     });
 

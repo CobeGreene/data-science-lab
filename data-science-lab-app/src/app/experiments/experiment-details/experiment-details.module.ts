@@ -9,7 +9,12 @@ import { ExperimentSelectFetchComponent } from './experiment-select-fetch/experi
 import { ExperimentSetupFetchComponent } from './experiment-setup-fetch/experiment-setup-fetch.component';
 import { ExperimentFetchPluginsComponent } from './experiment-select-fetch/experiment-fetch-plugins/experiment-fetch-plugins.component';
 import { ExperimentFetchPluginCardComponent } from './experiment-select-fetch/experiment-fetch-plugin-card/experiment-fetch-plugin-card.component';
-
+import { ExperimentOptionsComponent } from './experiment-options/experiment-options.component';
+import { ExperimentCheckboxOptionComponent } from './experiment-options/experiment-checkbox-option/experiment-checkbox-option.component';
+import { ExperimentChoicesOptionComponent } from './experiment-options/experiment-choices-option/experiment-choices-option.component';
+import { ExperimentCommandOptionComponent } from './experiment-options/experiment-command-option/experiment-command-option.component';
+import { ExperimentNumberOptionComponent } from './experiment-options/experiment-number-option/experiment-number-option.component';
+import { ExperimentTextOptionComponent } from './experiment-options/experiment-text-option/experiment-text-option.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +24,12 @@ import { ExperimentFetchPluginCardComponent } from './experiment-select-fetch/ex
         ExperimentSetupFetchComponent,
         ExperimentFetchPluginsComponent,
         ExperimentFetchPluginCardComponent,
+        ExperimentOptionsComponent,
+        ExperimentCheckboxOptionComponent,
+        ExperimentChoicesOptionComponent,
+        ExperimentCommandOptionComponent,
+        ExperimentNumberOptionComponent,
+        ExperimentTextOptionComponent
     ],
     imports: [
         CommonModule,

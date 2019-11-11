@@ -14,31 +14,21 @@ export class ExperimentCommandOptionComponent implements OnInit, OnDestroy {
     @Input() option: CommandOption;
     @Input() id: number;
 
-    @Output() validChange: EventEmitter<{ id: number, valid: boolean, value: any }> =
-        new EventEmitter<{ id: number, valid: boolean, value: any }>();
+    @Output() executeCommand: EventEmitter<string> =
+        new EventEmitter<string>();
 
-    private experimentId: number;
-
-
-    constructor(private route: ActivatedRoute) {
+    constructor() {
     }
 
     ngOnInit() {
-        this.route.parent.params
-            .pipe(untilComponentDestroyed(this))
-            .subscribe((params: Params) => {
-                this.experimentId = +params.id;
-            });
-
     }
 
     ngOnDestroy() {
 
     }
 
-
     onCommandClick() {
-        // this.experimentService.executeCommand(this.experimentId, this.option.command);
+        this.executeCommand.emit(this.option.command);
     }
 
 }

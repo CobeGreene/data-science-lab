@@ -2,7 +2,7 @@ import { FetchSessionService } from './fetch.session-service';
 import { FetchSession } from '../../models/fetch-session';
 import { Plugin, PluginPackage } from '../../../../shared/models';
 import { PluginContext } from '../../contexts';
-import { FetchPlugin } from 'data-science-lab-core';
+import { FetchPlugin, FileService } from 'data-science-lab-core';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 
 export class AppFetchSessionService implements FetchSessionService {
@@ -38,6 +38,7 @@ export class AppFetchSessionService implements FetchSessionService {
             try {
                 const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
                 const fetchPlugin = await pluginContext.activate<FetchPlugin>(pluginPackage, plugin); 
+                fetchPlugin.setFileService(this.serviceContainer.resolve<FileService>(SERVICE_TYPES.FileService));
                 const session = new FetchSession({
                     experimentId,
                     plugin,

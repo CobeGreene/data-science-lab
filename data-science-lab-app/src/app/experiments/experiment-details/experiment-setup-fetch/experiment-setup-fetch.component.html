@@ -1,3 +1,11 @@
-<h1>Experiment Setup Fetch</h1>
-<hr>
-
+<div class="row">
+    <div class="col">
+        <h1>Experiment Setup Fetch</h1>
+        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <app-experiment-options [optionList]="fetchSession.optionList" (emitSubmit)="onSubmit($event)" (emitCommandExecute)="onExecuteCommand($event)"></app-experiment-options>
+    </div>
+</div>
