@@ -6,7 +6,7 @@ import { ErrorEvents } from '../../shared/events';
 export let win: BrowserWindow;
 
 
-export class AppV2 {
+export class App {
     private ipcService: IpcService;
     private consumers: Consumer[];
     private servicesContainer: ServiceContainer;

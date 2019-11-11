@@ -1,4 +1,4 @@
-import { AppV2 } from './appV2/app';
+import { App } from './app/app';
 import * as path from 'path';
 import * as url from 'url';
 const settings = require('electron-settings');
@@ -15,7 +15,7 @@ const angularApp = url.format({
 const plugins = path.join(__dirname, '../plugins_packages');
 settings.set('plugins-package', plugins);
 
-const app = new AppV2(preload, angularApp);
+const app = new App(preload, angularApp);
 
 app.initialize();
 

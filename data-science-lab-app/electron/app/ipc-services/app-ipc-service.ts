@@ -1,6 +1,6 @@
 import { IpcService, Listener } from '../../../shared/services';
 import { ipcMain } from 'electron';
-import { win } from '../../appV2/app';
+import { win } from '../app';
 
 export class AppIpcService implements IpcService {
 
