@@ -25,13 +25,13 @@ describe('Angular App Fetch Session Service Tests', () => {
 
     beforeAll(() => {
         zone = new MockZone({});
-        ipcService = new MockIpcService();  
+        ipcService = new MockIpcService();
     });
 
     beforeEach(() => {
         fetchSessions = [
-            new FetchSessionViewModel({ experimentId: 1, optionList: new OptionList()}),
-            new FetchSessionViewModel({ experimentId: 2, optionList: new OptionList()})
+            new FetchSessionViewModel({ experimentId: 1, optionList: new OptionList() }),
+            new FetchSessionViewModel({ experimentId: 2, optionList: new OptionList() })
         ];
         ipcService.on(ExperimentsEvents.GetAllFetchSessionsEvent, getAllEvent);
         ipcService.on(ExperimentsEvents.CreateFetchSessionEvent, createEvent);
@@ -91,7 +91,29 @@ describe('Angular App Fetch Session Service Tests', () => {
     });
 
     it('update listeners should update subject', (done) => {
-        
+        fetchSessionService.sessionUpdated.subscribe((value) => {
+            expect(value.experimentId).toBe(1);
+            done();
+        });
+        ipcService.send(ExperimentsEvents.UpdatedFetchSessionListeners, new FetchSessionViewModel({
+            experimentId: 1, optionList: new OptionList()
+        }));
+    });
+
+    it('submit should send options', (done) => {
+        ipcService.on(ExperimentsEvents.SubmitOptionsFetchSessionEvent, (event, id, inputs) => {
+            expect(id).toBe(1);
+            done();
+        });
+        fetchSessionService.submitOptions(1, {});
+    });
+
+    it('execute command should send command', (done) => {
+        ipcService.on(ExperimentsEvents.ExecuteCommandFetchSessionEvent, (event, id, command) => {
+            expect(command).toEqual('cmd');
+            done();
+        });
+        fetchSessionService.executeCommand(1, 'cmd');
     });
 
 });
