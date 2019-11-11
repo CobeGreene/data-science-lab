@@ -20,6 +20,8 @@ export class App {
         this.consumers = [
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.PackageConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.ExperimentConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchPluginsConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchSessionConsumer),
         ];
         this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }

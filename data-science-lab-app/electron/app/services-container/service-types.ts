@@ -18,13 +18,17 @@ export const enum SERVICE_TYPES {
     PackageService,
     ExperimentService,
     FetchService,
+    FetchPluginsService,
     // Consumers
     PackageConsumer,
     ExperimentConsumer,
+    FetchPluginsConsumer,
+    FetchSessionConsumer,
     // Producers
     PackageProducer,
     ExperimentProducer,
-    FetchSessionProducer
+    FetchSessionProducer,
+    FetchPluginsProducer
 }
 
 

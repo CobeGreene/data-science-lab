@@ -11,11 +11,9 @@ import { AppWebCoreService } from '../core-services';
 import { AppFileCoreService } from '../core-services/file-core-service';
 import { IpcService } from '../../../shared/services';
 import { AppIpcService  } from '../ipc-services/app-ipc-service'; 
-import { AppPackageService } from '../services';
-import { AppPackageProducer, AppExperimentProducer } from '../producers';
-import { AppPackageConsumer, AppExperimentConsumer } from '../consumers';
-import { AppExperimentService } from '../services/experiment-service';
-import { AppFetchService } from '../services/fetch-service/app-fetch.service';
+import { AppFetchService, AppPackageService, AppExperimentService, AppFetchPluginsService } from '../services';
+import { AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer, AppFetchSessionProducer } from '../producers';
+import { AppPackageConsumer, AppExperimentConsumer , AppFetchPluginsConsumer, AppFetchSessionConsumer} from '../consumers';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -114,19 +112,38 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.ExperimentService:
                 return new AppExperimentService(this);
 
+            case SERVICE_TYPES.FetchPluginsService:
+                return new AppFetchPluginsService(this);
+
+            case SERVICE_TYPES.FetchService:
+                return new AppFetchService(this);
+
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
 
             case SERVICE_TYPES.ExperimentProducer:
                 return new AppExperimentProducer(this);
+                
+            case SERVICE_TYPES.FetchSessionProducer:
+                return new AppFetchSessionProducer(this);
+
+            case SERVICE_TYPES.FetchPluginsProducer:
+                return new AppFetchPluginsProducer(this);
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
                 
             case SERVICE_TYPES.ExperimentConsumer:
-                return new AppExperimentConsumer(this);    
+                return new AppExperimentConsumer(this);  
+                
+            case SERVICE_TYPES.FetchSessionConsumer:
+                return new AppFetchSessionConsumer(this);
+
+            case SERVICE_TYPES.FetchPluginsConsumer:
+                return new AppFetchPluginsConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);
