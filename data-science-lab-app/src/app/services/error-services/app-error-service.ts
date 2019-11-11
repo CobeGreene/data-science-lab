@@ -57,11 +57,11 @@ export class AppErrorService implements ErrorService, OnDestroy {
         this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.exceptionEvent);
     }
 
-    private exceptionEvent = (event, arg): void => {
+    private exceptionEvent = (event, message: string): void => {
         this.zone.run(() => {
             const error = new ErrorException({
                 id: this.id++,
-                message: arg[0]
+                message
             });
             this.errorsList.errors.push(error);
             this.errorsChanged.next(this.all());

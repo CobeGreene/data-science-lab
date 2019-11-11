@@ -4,10 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ExperimentDetailsComponent } from './experiment-details.component';
 import { ExperimentDetailsRoutingModule } from './experiment-details-routing.module';
+import { ExperimentDataWorkspaceComponent } from './experiment-data-workspace/experiment-data-workspace.component';
 
 @NgModule({
     declarations: [
-        ExperimentDetailsComponent
+        ExperimentDetailsComponent,
+        ExperimentDataWorkspaceComponent
     ],
     imports: [
         CommonModule,

@@ -10,8 +10,7 @@ describe('Electron Mock Ipc Service Tests', () => {
     });
 
     it('once and send should send message to listener on channel', (done) => {
-        ipcService.once(channel, (_event, arg) => {
-            const recieve = arg[0];
+        ipcService.once(channel, (_event, recieve: string) => {
             expect(recieve).toEqual(message);
             done();
         });
@@ -19,8 +18,7 @@ describe('Electron Mock Ipc Service Tests', () => {
     });
 
     it('on and send should send message to listener on channel', (done) => {
-        ipcService.on(channel, (_event, arg) => {
-            const recieve = arg[0];
+        ipcService.on(channel, (_event, recieve: string) => {
             expect(recieve).toEqual(message);
             done();
         });
@@ -29,8 +27,7 @@ describe('Electron Mock Ipc Service Tests', () => {
 
     it('on and send should reieve two message to listener on channel', (done) => {
         let happen = false;
-        ipcService.on(channel, (_event, arg) => {
-            const recieve = arg[0];
+        ipcService.on(channel, (_event, recieve) => {
             if (happen) {
                 expect(recieve).toEqual(message);
                 done();

@@ -10,14 +10,13 @@ describe('Angular App Package Service Tests', () => {
     let packagesList: PluginPackageList;
     let zone: MockZone;
 
-    const getAllEvent = (event, arg): void => {
+    const getAllEvent = (event, ...arg): void => {
         ipcService.send(PackagesEvents.GetAllListeners, packagesList);
     };
 
-    const installEvent = (event, arg): void => {
-        const name = arg[0];
+    const installEvent = (event, pluginPackage: PluginPackage): void => {
         const find = packagesList.packages.findIndex((value: PluginPackage) => {
-            return value.name === name;
+            return value.name === pluginPackage.name;
         });
         if (find >= 0) {
             packagesList.packages[find].install = true;
@@ -25,10 +24,9 @@ describe('Angular App Package Service Tests', () => {
         }
     };
 
-    const uninstallEvent = (event, arg): void => {
-        const name = arg[0];
+    const uninstallEvent = (event, pluginPackage: PluginPackage): void => {
         const find = packagesList.packages.findIndex((value: PluginPackage) => {
-            return value.name === name;
+            return value.name === pluginPackage.name;
         });
         if (find >= 0) {
             packagesList.packages[find].install = false;
