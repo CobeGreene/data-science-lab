@@ -1,5 +1,5 @@
 import { AppPackageDataService } from './app-package.data-service';
-import { PluginPackage, PluginPackageList } from '../../../../shared/models';
+import { PluginPackage, PluginPackageList, Plugin } from '../../../../shared/models';
 import { MockDocumentContext, MockPluginContext } from '../../contexts';
 import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { MockSettingsDataService } from '../settings-data-service';
@@ -9,7 +9,7 @@ import { Response } from 'data-science-lab-core';
 
 describe('Electron App Package Data Service Tests', () => {
 
-    let installPackageDataService: AppPackageDataService;
+    let packageDataService: AppPackageDataService;
     let documentContext: MockDocumentContext;
     let serviceContainer: MockServiceContainer;
     let pluginPackageList: PluginPackageList;
@@ -47,7 +47,7 @@ describe('Electron App Package Data Service Tests', () => {
         serviceContainer = new MockServiceContainer();
         documentContext = new MockDocumentContext();
         pluginContext = new MockPluginContext();
-        installPackageDataService = new AppPackageDataService(serviceContainer);
+        packageDataService = new AppPackageDataService(serviceContainer);
         documentContext.get = <T>(path: string, defaultValue?: T): T => {
             return documentGet() as T;
         };
@@ -68,23 +68,23 @@ describe('Electron App Package Data Service Tests', () => {
     });
 
     it('all should return list pf plugins.', () => {
-        const list = installPackageDataService.all();
+        const list = packageDataService.all();
         expect(list.packages.length).toBe(pluginPackageList.packages.length);
     });
 
     it('read should return first package.', () => {
-        const pluginPackage = installPackageDataService.read(pluginPackageList.packages[0].name);
+        const pluginPackage = packageDataService.read(pluginPackageList.packages[0].name);
         expect(pluginPackage.owner).toBe(pluginPackageList.packages[0].owner);
     });
 
     it('read should throw for not found package.', () => {
         expect(() => {
-            installPackageDataService.read('not found');
+            packageDataService.read('not found');
         }).toThrowError();
     });
 
     it('install should throw exception for whats already in list', (done) => {
-        installPackageDataService.install(pluginPackageList.packages[0])
+        packageDataService.install(pluginPackageList.packages[0])
             .then((_) => {
                 done.fail(`Didn't expect successful execution.`);
             }).catch((reason) => {
@@ -95,10 +95,10 @@ describe('Electron App Package Data Service Tests', () => {
 
     it('install should add to installed package list', (done) => {
         const expected = pluginPackageList.packages.length + 1;
-        installPackageDataService.all((list) => {
-            installPackageDataService.install(packageToInstall)
+        packageDataService.all((list) => {
+            packageDataService.install(packageToInstall)
                 .then(() => {
-                    expect(installPackageDataService.all().packages.filter((value) => {
+                    expect(packageDataService.all().packages.filter((value) => {
                         return value.install;
                     }).length).toBe(expected);
                     done();
@@ -107,17 +107,17 @@ describe('Electron App Package Data Service Tests', () => {
     });
 
     it('uninstall should remove from install package list', async () => {
-        installPackageDataService.all();
+        packageDataService.all();
         const expected = pluginPackageList.packages.length - 1;
-        await installPackageDataService.uninstall(pluginPackageList.packages[0].name);
-        expect(installPackageDataService.all().packages.filter((value) => {
+        await packageDataService.uninstall(pluginPackageList.packages[0].name);
+        expect(packageDataService.all().packages.filter((value) => {
             return value.install;
         }).length).toBe(expected);
     });
 
     it('uninstall should reject for not found package', (done) => {
-        installPackageDataService.all();
-        installPackageDataService.uninstall('not found')
+        packageDataService.all();
+        packageDataService.uninstall('not found')
             .then(() => {
                 done.fail(`Didn't expect successful execution.`);
             }).catch((reason) => {
@@ -125,6 +125,33 @@ describe('Electron App Package Data Service Tests', () => {
                 done();
             });
     });
+
+    it('find should get package with plugin that has its name', () => {
+        const plugin = new Plugin({
+            name: 'plugin',
+            className: 'class',
+            description: 'desc',
+            type: 'type',
+            packageName: pluginPackageList.packages[0].name
+        });
+        const find = packageDataService.find(plugin);
+        expect(find.owner).toEqual(pluginPackageList.packages[0].owner);
+    }); 
+
+    
+    it('find should return undefined for not found', () => {
+        const plugin = new Plugin({
+            name: 'plugin',
+            className: 'class',
+            description: 'desc',
+            type: 'type',
+            packageName: 'not found'
+        });
+        const find = packageDataService.find(plugin);
+        expect(find).toBeUndefined();
+    }); 
+
+
 
 });
 

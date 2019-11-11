@@ -1,3 +1,3 @@
-export { AppFetchPluginSessionService, FetchPluginSessionService } from './fetch-plugin-session-service';
+export { AppFetchSessionService, FetchSessionService, MockFetchSessionService } from './fetch-session-service';
 
 

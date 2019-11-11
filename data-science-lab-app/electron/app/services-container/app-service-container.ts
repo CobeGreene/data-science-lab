@@ -1,7 +1,7 @@
 import { ServiceContainer } from './service-container';
 import { SERVICE_TYPES } from './service-types';
 import { AppDocumentContext, DocumentContext, PluginContext, AppPluginContext, AppQueuePluginContext } from '../contexts';
-import { FetchPluginSessionService, AppFetchPluginSessionService } from '../session-services';
+import { AppFetchSessionService, FetchSessionService } from '../session-services';
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
     ExperimentDataGroupDataService, ExperimentDataService,
@@ -15,6 +15,7 @@ import { AppPackageService } from '../services';
 import { AppPackageProducer, AppExperimentProducer } from '../producers';
 import { AppPackageConsumer, AppExperimentConsumer } from '../consumers';
 import { AppExperimentService } from '../services/experiment-service';
+import { AppFetchService } from '../services/fetch-service/app-fetch.service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -25,7 +26,7 @@ export class AppServiceContainer implements ServiceContainer {
     private pluginContext: PluginContext;
 
     // Session Services
-    private fetchPluginSessionService: FetchPluginSessionService;
+    private fetchSessionService: FetchSessionService;
 
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
@@ -59,12 +60,12 @@ export class AppServiceContainer implements ServiceContainer {
                 return this.pluginContext;
 
             // Session Services
-            case SERVICE_TYPES.FetchPluginSessionService:
-                if (this.fetchPluginSessionService) {
-                    return this.fetchPluginSessionService;
+            case SERVICE_TYPES.FetchSessionService:
+                if (this.fetchSessionService) {
+                    return this.fetchSessionService;
                 }
-                this.fetchPluginSessionService = new AppFetchPluginSessionService(this);
-                return this.fetchPluginSessionService;
+                this.fetchSessionService = new AppFetchSessionService(this);
+                return this.fetchSessionService;
 
             // Ipc Services
             case SERVICE_TYPES.IpcService:

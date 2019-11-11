@@ -1,9 +1,8 @@
 import { PackageDataService } from './package.data-service';
-import { PluginPackage, PluginPackageList } from '../../../../shared/models';
+import { PluginPackage, PluginPackageList, Plugin } from '../../../../shared/models';
 
 
 export class MockPackageDataService implements PackageDataService {
-
 
 
     all: (callback?: (pluginPackageList: PluginPackageList) => void, error?: (reason: any) => void) => PluginPackageList;
@@ -14,15 +13,18 @@ export class MockPackageDataService implements PackageDataService {
 
     uninstall: (name: string) => Promise<void>;
 
+    find: (plugin: Plugin) => PluginPackage;
+    
     constructor() {
         this.reset();
     }
-
+    
     reset() {
         this.all = () => new PluginPackageList();
         this.read = () => { throw new Error(`Not found.`); };
         this.install = () => { throw new Error('Not implemented'); };
         this.uninstall = () => { throw new Error('Not implemented'); };
+        this.find = () => { throw new Error('Not implemented'); };
     }
 
 

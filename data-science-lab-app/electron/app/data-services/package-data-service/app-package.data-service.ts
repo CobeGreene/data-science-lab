@@ -1,5 +1,5 @@
 import { PackageDataService } from './package.data-service';
-import { PluginPackage, PluginPackageList } from '../../../../shared/models';
+import { PluginPackage, PluginPackageList, Plugin } from '../../../../shared/models';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { DocumentContext, PluginContext } from '../../contexts';
 import { WebService, Request } from 'data-science-lab-core';
@@ -87,6 +87,14 @@ export class AppPackageDataService implements PackageDataService {
             return find;
         }
         throw new Error(`Couldn't find plugin package with name: ${name}.`);
+    }
+
+    find(plugin: Plugin): PluginPackage {
+        this.initial();
+        const find = this.pluginPackageList.packages.find((value) => {
+            return value.name === plugin.packageName;
+        });
+        return find;
     }
 
     install(pluginPackage: PluginPackage): Promise<void> {
