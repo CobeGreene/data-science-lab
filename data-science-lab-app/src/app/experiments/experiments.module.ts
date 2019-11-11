@@ -5,6 +5,7 @@ import { ExperimentsComponent } from './experiments.component';
 import { ExperimentsRoutingModule } from './experiments-routing.module';
 import { ExperimentStartupComponent } from './experiments-startup/experiments-startup.component';
 import { ExperimentDetailsModule } from './experiment-details/experiment-details.module';
+import { ExperimentService, AppExperimentService } from '../services/experiment-services';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import { ExperimentDetailsModule } from './experiment-details/experiment-details
         ExperimentDetailsModule,
     ],
     providers: [
+        { provide: ExperimentService, useClass: AppExperimentService }
     ]
 })
 export class ExperimentsModule {

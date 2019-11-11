@@ -9,8 +9,8 @@ describe('Electron App Experiment Data Service Tests', () => {
     });
 
     it('all should return empty list', () => {
-        const experiments = experimentDataService.all();
-        expect(experiments.length).toEqual(0);
+        const experimentList = experimentDataService.all();
+        expect(experimentList.experiments.length).toEqual(0);
     });
 
     it('create should create with id one', () => {
@@ -22,7 +22,7 @@ describe('Electron App Experiment Data Service Tests', () => {
 
     it('create should add one to the list', () => {
         experimentDataService.create(new Experiment({}));
-        expect(experimentDataService.all().length).toBe(1);
+        expect(experimentDataService.all().experiments.length).toBe(1);
     });
 
     it('create twice should create experiment with id of 2', () => {
@@ -46,7 +46,7 @@ describe('Electron App Experiment Data Service Tests', () => {
     it('delete should decrement list', () => {
         const experiment = experimentDataService.create(new Experiment({}));
         experimentDataService.delete(experiment.id);
-        expect(experimentDataService.all().length).toBe(0);
+        expect(experimentDataService.all().experiments.length).toBe(0);
     });
 
     it('update should change experiment list', () => {

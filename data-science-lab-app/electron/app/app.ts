@@ -18,7 +18,8 @@ export class App {
     public initialize() {
         this.ipcService = this.servicesContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         this.consumers = [
-            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.PackageConsumer)
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.PackageConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.ExperimentConsumer),
         ];
         this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }

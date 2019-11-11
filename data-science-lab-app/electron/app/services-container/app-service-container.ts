@@ -12,8 +12,9 @@ import { AppFileCoreService } from '../core-services/file-core-service';
 import { IpcService } from '../../../shared/services';
 import { AppIpcService  } from '../ipc-services/app-ipc-service'; 
 import { AppPackageService } from '../services';
-import { AppPackageProducer } from '../producers';
-import { AppPackageConsumer } from '../consumers';
+import { AppPackageProducer, AppExperimentProducer } from '../producers';
+import { AppPackageConsumer, AppExperimentConsumer } from '../consumers';
+import { AppExperimentService } from '../services/experiment-service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -109,14 +110,22 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.PackageService:
                 return new AppPackageService(this);
 
+            case SERVICE_TYPES.ExperimentService:
+                return new AppExperimentService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
+
+            case SERVICE_TYPES.ExperimentProducer:
+                return new AppExperimentProducer(this);
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
                 
+            case SERVICE_TYPES.ExperimentConsumer:
+                return new AppExperimentConsumer(this);    
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

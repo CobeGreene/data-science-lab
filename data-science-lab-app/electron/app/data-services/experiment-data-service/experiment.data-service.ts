@@ -1,8 +1,8 @@
-import { Experiment } from '../../../../shared/models';
+import { Experiment, ExperimentList } from '../../../../shared/models';
 
 
 export interface ExperimentDataService {
-    all(): Experiment[];
+    all(): ExperimentList;
     create(experiment: Experiment): Experiment;
     read(id: number): Experiment;
     update(experiment: Experiment): void;

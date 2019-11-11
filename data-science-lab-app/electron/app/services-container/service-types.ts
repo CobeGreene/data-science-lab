@@ -21,12 +21,15 @@ export const enum SERVICE_TYPES {
 
     // Services
     PackageService,
+    ExperimentService,
 
     // Consumers
     PackageConsumer,
+    ExperimentConsumer,
 
     // Producers
     PackageProducer,
+    ExperimentProducer,
 }
 
 

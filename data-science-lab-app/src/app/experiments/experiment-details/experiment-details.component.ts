@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Experiment } from '../../../../shared/models';
+import { ExperimentService } from '../../services/experiment-services';
 
 @Component({
     selector: 'app-experiment-details',
@@ -10,28 +12,21 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 export class ExperimentDetailsComponent implements OnInit, OnDestroy {
 
     private id: number;
+    private experiment: Experiment;
 
     constructor(private route: ActivatedRoute,
-                private router: Router) {
+                private router: Router,
+                private experimentService: ExperimentService) {
     
     }
 
     ngOnInit(): void {
-        // this.route.params
-        //     .pipe(untilComponentDestroyed(this))
-        //     .subscribe((params: Params) => {
-        //         this.id = +params.id;
-        //         this.stage = this.experimentService.get(this.id).stage;
-        //     });
-
-        // this.experimentService.experimentUpdated
-        //     .pipe(untilComponentDestroyed(this))
-        //     .subscribe((experiment: Experiment) => {
-        //         if (experiment.id === this.id && experiment.stage !== this.stage) {
-        //             console.log(`Details got update: ${JSON.stringify(experiment)}`);
-        //             this.router.navigate(['/experiments', 'details', experiment.id, experiment.stage]);
-        //         }
-        //     });
+        this.route.params
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((params: Params) => {
+                this.id = +params.id;
+                this.experiment = this.experimentService.get(this.id);
+            });
     }
 
     ngOnDestroy(): void {

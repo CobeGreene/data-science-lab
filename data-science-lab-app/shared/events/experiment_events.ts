@@ -5,8 +5,11 @@ export namespace ExperimentsEvents {
     export const GetAllListeners = 'get-all-experiments-listeners';
     export const UpdatedListeners = 'updated-experiment-listeners';
     export const SelectFetchEvent = 'select-fetch-experiment';
-    export const GetAllFetchPluginsEvent = 'get-all-fetch-plugins-event';
-    export const GetAllFetchPluginsListener = 'get-all-fetch-plugins-listener';
     export const ExecuteCommandEvent = 'execute-command-experiment';
     export const SubmitEvent = 'submit-experiment';
+
+    export const GetAllFetchSessionsEvent = 'get-all-fetch-sessions-event';
+    export const GetAllFetchSessionsListeners = 'get-all-fetch-sessions-listener';
+    export const CreateFetchSessionEvent = 'create-fetch-session-event';
+    export const CreateFetchSessionListeners = 'create-fetch-session-listeners';
 }
