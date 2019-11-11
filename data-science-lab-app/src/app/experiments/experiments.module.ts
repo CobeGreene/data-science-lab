@@ -6,7 +6,7 @@ import { ExperimentsRoutingModule } from './experiments-routing.module';
 import { ExperimentStartupComponent } from './experiments-startup/experiments-startup.component';
 import { ExperimentDetailsModule } from './experiment-details/experiment-details.module';
 import { ExperimentService, AppExperimentService } from '../services/experiment-services';
-import { FetchSessionService, AppFetchSessionService } from '../services';
+import { FetchSessionService, AppFetchSessionService, FetchPluginsService, AppFetchPluginsService } from '../services';
 
 @NgModule({
     declarations: [
@@ -20,7 +20,8 @@ import { FetchSessionService, AppFetchSessionService } from '../services';
     ],
     providers: [
         { provide: ExperimentService, useClass: AppExperimentService },
-        { provide: FetchSessionService, useClass: AppFetchSessionService }
+        { provide: FetchSessionService, useClass: AppFetchSessionService },
+        { provide: FetchPluginsService, useClass: AppFetchPluginsService },
     ]
 })
 export class ExperimentsModule {

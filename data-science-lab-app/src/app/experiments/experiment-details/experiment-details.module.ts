@@ -7,6 +7,8 @@ import { ExperimentDetailsRoutingModule } from './experiment-details-routing.mod
 import { ExperimentDataWorkspaceComponent } from './experiment-data-workspace/experiment-data-workspace.component';
 import { ExperimentSelectFetchComponent } from './experiment-select-fetch/experiment-select-fetch.component';
 import { ExperimentSetupFetchComponent } from './experiment-setup-fetch/experiment-setup-fetch.component';
+import { ExperimentFetchPluginsComponent } from './experiment-select-fetch/experiment-fetch-plugins/experiment-fetch-plugins.component';
+import { ExperimentFetchPluginCardComponent } from './experiment-select-fetch/experiment-fetch-plugin-card/experiment-fetch-plugin-card.component';
 
 
 @NgModule({
@@ -15,6 +17,8 @@ import { ExperimentSetupFetchComponent } from './experiment-setup-fetch/experime
         ExperimentDataWorkspaceComponent,
         ExperimentSelectFetchComponent,
         ExperimentSetupFetchComponent,
+        ExperimentFetchPluginsComponent,
+        ExperimentFetchPluginCardComponent,
     ],
     imports: [
         CommonModule,
