@@ -16,6 +16,7 @@ export namespace ExperimentsEvents {
     export const SubmitOptionsFetchSessionEvent = 'submit-options-fetch-session-event';
     export const ExecuteCommandFetchSessionEvent = 'execute-command-fetch-session-event';
     export const UpdatedFetchSessionListeners = 'updated-fetch-session-listeners';
+    export const FinishedFetchSessionListeners = 'finished-fetch-session-listeners';
 
     // Fetch Plugins
     export const GetAllFetchPluginsEvent = 'get-all-fetch-plugins-event';

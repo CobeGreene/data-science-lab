@@ -3,6 +3,7 @@ import { FetchSession } from '../../models';
 
 
 export class MockFetchSessionProducer implements FetchSessionProducer {
+    
     all: (fetchSessions: FetchSession[])  => void;
     
     newSession: (fetchSession: FetchSession) => void;
@@ -10,9 +11,11 @@ export class MockFetchSessionProducer implements FetchSessionProducer {
     error: (reason: any) => void;
     
     delete: (experimentId: number) => void;
-
+    
     updateSession: (fetchSession: FetchSession) => void;
-
+    
+    finish: (experimentId: number) => void;
+    
     constructor() {
         this.reset();
     }
@@ -23,5 +26,6 @@ export class MockFetchSessionProducer implements FetchSessionProducer {
         this.error = () => {};
         this.delete = () => {};
         this.updateSession = () => {};
+        this.finish = () => {};
     }
 } 

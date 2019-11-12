@@ -9,6 +9,11 @@ import { BaseProducer } from '../base.producer';
 
 export class AppFetchSessionProducer extends BaseProducer implements FetchSessionProducer {
     
+    finish(experimentId: number) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(ExperimentsEvents.FinishedFetchSessionListeners, experimentId);
+    }
+    
     all(fetchSessions: FetchSession[]) {
         const viewModels: FetchSessionViewModel[] = [];
         fetchSessions.forEach(value => {

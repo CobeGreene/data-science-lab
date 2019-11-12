@@ -3,7 +3,9 @@ import { FetchService } from './fetch.service';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { FetchSessionService } from '../../session-services';
 import { FetchSessionProducer } from '../../producers';
-import { PackageDataService } from '../../data-services';
+import { PackageDataService, ExperimentDataGroupDataService } from '../../data-services';
+import { FetchSession } from '../../models';
+import { FetchPluginDataConverter } from '../../converters/fetch-plugin-data-converter';
 
 export class AppFetchService implements FetchService {
 
@@ -38,39 +40,58 @@ export class AppFetchService implements FetchService {
         }
     }
 
-    executeCommand(experimentId: number, command: string) {
+    async executeCommand(experimentId: number, command: string) {
         const fetchSessionService = this.serviceContainer.resolve<FetchSessionService>(SERVICE_TYPES.FetchSessionService);
         const session = fetchSessionService.read(experimentId);
         const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
         const options = session.fetchPlugin.getOptions();
-        options.executeCommand(command)
-            .then(() => {
-                if (options.noMore()) {
-                    // TODO Fetching
-                } else {
-                    fetchSessionProducer.updateSession(session);
-                }
-            })
-            .catch(fetchSessionProducer.error);
+        try {
+            await options.executeCommand(command);
+            if (options.noMore()) {
+                this.sessionFinish(session);
+            } else {
+                fetchSessionProducer.updateSession(session);
+            }
+        } catch (reason) {
+            fetchSessionProducer.error(reason);
+        }
     }
     submitOptions(experimentId: number, inputs: { [id: string]: any; }): void {
         const fetchSessionService = this.serviceContainer.resolve<FetchSessionService>(SERVICE_TYPES.FetchSessionService);
         const session = fetchSessionService.read(experimentId);
         const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
-        const options = session.fetchPlugin.getOptions(); 
+        const options = session.fetchPlugin.getOptions();
         options.submit(inputs);
         if (options.noMore()) {
-            // TODO Fetching.
+            this.sessionFinish(session);
         } else {
             fetchSessionProducer.updateSession(session);
         }
     }
     delete(experimentId: number) {
         const fetchSessionService = this.serviceContainer.resolve<FetchSessionService>(SERVICE_TYPES.FetchSessionService);
-        fetchSessionService.delete(experimentId);  
+        fetchSessionService.delete(experimentId);
         const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
         fetchSessionProducer.delete(experimentId);
         fetchSessionProducer.all(fetchSessionService.all());
+    }
+
+    private sessionFinish(session: FetchSession) {
+        const fetchPluginData = session.fetchPlugin.fetch();
+        const converter = this.serviceContainer.resolve<FetchPluginDataConverter>(SERVICE_TYPES.FetchPluginDataConverter);
+        const dataGroups = converter.toDataGroups(fetchPluginData);
+        const dataGroupDataService = this.serviceContainer
+            .resolve<ExperimentDataGroupDataService>(SERVICE_TYPES.ExperimentDataGroupDataService);
+
+        for (const group of dataGroups) {
+            group.experimentId = session.experimentId;
+            dataGroupDataService.create(group);
+        }
+        const fetchSessionService = this.serviceContainer.resolve<FetchSessionService>(SERVICE_TYPES.FetchSessionService);
+        const expermentId = session.experimentId;
+        fetchSessionService.delete(expermentId);
+        const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
+        fetchSessionProducer.finish(expermentId);
     }
 
 

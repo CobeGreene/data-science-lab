@@ -1,5 +1,5 @@
 import { AppExperimentDataGroupDataService } from './app-experiment-data-group.data-service';
-import { ExperimentDataGroup } from '../../../../shared/models';
+import { ExperimentDataGroup } from '../../models';
 
 
 describe('Electron App Experiment Data Group Data Serivice Tests', () => {

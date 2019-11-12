@@ -2,6 +2,8 @@ export const enum SERVICE_TYPES {
     // Contexts
     DocumentContext,
     PluginContext,
+    // Converters,
+    FetchPluginDataConverter,
     // Data Services
     ExperimentDataGroupDataService,
     ExperimentDataService,

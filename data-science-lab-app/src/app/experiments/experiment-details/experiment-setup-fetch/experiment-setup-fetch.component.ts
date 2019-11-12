@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FetchSessionViewModel } from '../../../../../shared/view-models';
 import { FetchSessionService } from '../../../services';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -29,16 +29,27 @@ export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
             });
 
         this.fetchSessionService.sessionUpdated
+            .pipe(untilComponentDestroyed(this))
             .subscribe((session: FetchSessionViewModel) => {
                 if (session.experimentId === this.fetchSession.experimentId) {
+                    console.log('session update');
                     this.fetchSession = session;
                 }
             });
 
         this.fetchSessionService.sessionDeleted
+            .pipe(untilComponentDestroyed(this))
             .subscribe((experimentId: number) => {
                 if (this.fetchSession.experimentId === experimentId) {
                     this.router.navigate(['/experiments', 'details', this.fetchSession.experimentId, 'select-fetch']);
+                }
+            });
+
+        this.fetchSessionService.sessionFinished
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((experimentId: number) => {
+                if (this.fetchSession.experimentId === experimentId) {
+                    this.router.navigate(['/experiments', 'details', this.fetchSession.experimentId, 'data-workspace']);
                 }
             });
 
@@ -48,7 +59,7 @@ export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
 
     }
 
-    onSubmit(inputs: {[id: string]: any}) {
+    onSubmit(inputs: { [id: string]: any }) {
         this.fetchSessionService.submitOptions(this.fetchSession.experimentId, inputs);
     }
 

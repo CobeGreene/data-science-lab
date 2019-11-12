@@ -14,6 +14,7 @@ import { AppIpcService  } from '../ipc-services/app-ipc-service';
 import { AppFetchService, AppPackageService, AppExperimentService, AppFetchPluginsService } from '../services';
 import { AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer, AppFetchSessionProducer } from '../producers';
 import { AppPackageConsumer, AppExperimentConsumer , AppFetchPluginsConsumer, AppFetchSessionConsumer} from '../consumers';
+import { AppFetchPluginDataConverter } from '../converters/fetch-plugin-data-converter';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -56,6 +57,10 @@ export class AppServiceContainer implements ServiceContainer {
                 const appPluginContext = new AppPluginContext(settingsService.readPluginPath());
                 this.pluginContext = new AppQueuePluginContext(appPluginContext);
                 return this.pluginContext;
+
+            // Converter
+            case SERVICE_TYPES.FetchPluginDataConverter:
+                return new AppFetchPluginDataConverter();
 
             // Session Services
             case SERVICE_TYPES.FetchSessionService:

@@ -10,7 +10,8 @@ export class AppFileCoreService implements FileService {
             filters,
         }, (filenames) => {
             if (!filenames) { return; }
-            callback(fs.readFileSync(filenames[0]));
+            const file = fs.readFileSync(filenames[0]);
+            callback(file);
         });
     }
 }

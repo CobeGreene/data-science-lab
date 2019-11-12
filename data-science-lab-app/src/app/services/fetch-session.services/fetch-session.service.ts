@@ -7,11 +7,13 @@ export abstract class FetchSessionService {
     public newSession: Subject<FetchSessionViewModel>;
     public sessionDeleted: Subject<number>;
     public sessionUpdated: Subject<FetchSessionViewModel>;
+    public sessionFinished: Subject<number>;
 
     constructor() {
         this.newSession = new Subject<FetchSessionViewModel>();
         this.sessionDeleted = new Subject<number>();
         this.sessionUpdated = new Subject<FetchSessionViewModel>();
+        this.sessionFinished = new Subject<number>();
     }
 
     abstract get(experimentId: number): FetchSessionViewModel;

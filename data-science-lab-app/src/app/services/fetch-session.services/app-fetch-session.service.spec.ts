@@ -90,6 +90,14 @@ describe('Angular App Fetch Session Service Tests', () => {
         ipcService.send(ExperimentsEvents.DeleteFetchSessionListeners, 1);
     });
 
+    it('finish listeners should call session finish subject', (done) => {
+        fetchSessionService.sessionFinished.subscribe((value) => {
+            expect(value).toBe(1);
+            done();
+        });
+        ipcService.send(ExperimentsEvents.FinishedFetchSessionListeners, 1);
+    });
+
     it('update listeners should update subject', (done) => {
         fetchSessionService.sessionUpdated.subscribe((value) => {
             expect(value.experimentId).toBe(1);

@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" #f="ngForm">
     <div class="row" *ngFor="let option of optionList.options; let i = index">
         <div class="col">
             <div class="form-group">

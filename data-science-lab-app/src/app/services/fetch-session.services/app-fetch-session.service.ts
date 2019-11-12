@@ -24,6 +24,20 @@ export class AppFetchSessionService extends FetchSessionService implements OnDes
         this.ipcService.on(ExperimentsEvents.CreateFetchSessionListeners, this.createEvent);
         this.ipcService.on(ExperimentsEvents.DeleteFetchSessionListeners, this.deleteEvent);
         this.ipcService.on(ExperimentsEvents.UpdatedFetchSessionListeners, this.updateEvent);
+        this.ipcService.on(ExperimentsEvents.FinishedFetchSessionListeners, this.finishEvent);
+    }
+
+
+    private finishEvent = (event: string, experimentId: number): void => {
+        this.zone.run(() => {
+            const findIndex = this.fetchSessions.findIndex((value) => {
+                return value.experimentId === experimentId;
+            });
+            if (findIndex >= 0) {
+                this.fetchSessions.splice(findIndex, 1);
+            }
+            this.sessionFinished.next(experimentId);
+        });
     }
 
     private updateEvent = (event: string, fetchSession: FetchSessionViewModel): void => {
@@ -71,6 +85,7 @@ export class AppFetchSessionService extends FetchSessionService implements OnDes
         this.ipcService.removeListener(ExperimentsEvents.CreateFetchSessionListeners, this.createEvent);
         this.ipcService.removeListener(ExperimentsEvents.DeleteFetchSessionListeners, this.deleteEvent);
         this.ipcService.removeListener(ExperimentsEvents.UpdatedFetchSessionListeners, this.updateEvent);
+        this.ipcService.removeListener(ExperimentsEvents.FinishedFetchSessionListeners, this.finishEvent);
     }
     
     get(experimentId: number): FetchSessionViewModel {

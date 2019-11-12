@@ -5,6 +5,10 @@ import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
 
 describe('Electron App Experiment Fetch Session Service Tests', () => {
 
+    class MockFetch {
+        setFileService = () => {};
+    }
+
     let mockPluginContext: MockPluginContext;
     let serviceContainer: MockServiceContainer;
     let fetchSessionService: AppFetchSessionService;
@@ -38,7 +42,7 @@ describe('Electron App Experiment Fetch Session Service Tests', () => {
     it('create a fetch session with a fetch plugin', (done) => {
         mockPluginContext.activate = <T>(_package, _plugin) => {
             return new Promise<T>((resolve, reject) => {
-                const obj = new Object();
+                const obj = new MockFetch() as unknown;
                 resolve(obj as T);
             }); 
         };

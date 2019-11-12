@@ -98,6 +98,14 @@ describe('Electron App Fetch Session Producer Tests', () => {
         producer.delete(1);
     });
 
+    it('finish should send id', (done) => {
+        ipcService.on(ExperimentsEvents.FinishedFetchSessionListeners, (event, arg: number) => {
+            expect(arg).toBe(1);
+            done();
+        });
+        producer.finish(1);
+    });
+
 
     it('error should call error listeners', (done) => {
         ipcService.on(ErrorEvents.ExceptionListeners, () => {

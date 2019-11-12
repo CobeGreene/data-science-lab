@@ -35,7 +35,7 @@ export class AppQueuePluginContext implements PluginContext {
                 resolve();
             });
         } else {
-            this.pluginContext.deactivate(pluginPackage, plugin);
+            return this.pluginContext.deactivate(pluginPackage, plugin);
         }
     }
 

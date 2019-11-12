@@ -12,7 +12,25 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 })
 export class ExperimentOptionsComponent implements OnInit, OnDestroy {
 
-    @Input() optionList: OptionList;
+    @ViewChild('f', { static: false }) experimentOptionForm: NgForm;
+
+    private _optionList: OptionList;
+
+    @Input() set optionList(optionList: OptionList) {
+        this._optionList = optionList;
+        this.validInputs = [];
+        this.valueInputs = [];
+        this.optionList.options.forEach(() => {
+            this.validInputs.push(false);
+            this.valueInputs.push(null);
+        });
+        this.valid = this.validInputs.length === 0;
+    }
+
+    get optionList(): OptionList {
+        return this._optionList;
+    }
+
     @Output() emitSubmit: EventEmitter<{ [id: string]: any }> = new EventEmitter<{ [id: string]: any }>();
     @Output() emitCommandExecute: EventEmitter<string> = new EventEmitter<string>();
 
@@ -27,11 +45,6 @@ export class ExperimentOptionsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        this.optionList.options.forEach(() => {
-            this.validInputs.push(false);
-            this.valueInputs.push(null);
-        });
-        this.valid = this.validInputs.length === 0;
     }
 
     ngOnDestroy() {
@@ -52,10 +65,10 @@ export class ExperimentOptionsComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() {
-        const inputs: {[id: string]: any} = {};
+        const inputs: { [id: string]: any } = {};
         for (let i = 0; i < this.optionList.options.length; ++i) {
             inputs[this.optionList.options[i].id] = this.valueInputs[i];
-        }   
+        }
         this.emitSubmit.emit(inputs);
     }
 
