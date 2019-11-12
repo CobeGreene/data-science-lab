@@ -1,40 +1,42 @@
 import { app, BrowserWindow } from 'electron';
 import { IpcService } from '../../shared/services';
+import { ServiceContainer, AppServiceContainer, SERVICE_TYPES } from './services-container';
+import { Consumer } from './consumers';
 import { ErrorEvents } from '../../shared/events';
-import { ServiceContainer } from './services-container';
 export let win: BrowserWindow;
 
-export class App {
 
-    private preload: string;
-    private indexPage: string;
+export class App {
     private ipcService: IpcService;
+    private consumers: Consumer[];
     private servicesContainer: ServiceContainer;
 
-    constructor(preload: string, indexPage: string) {
-        this.preload = preload;
-        this.indexPage = indexPage;
-        this.servicesContainer = new ServiceContainer();
+    constructor(private preload: string, private indexPage: string) {
+        this.servicesContainer = new AppServiceContainer();
     }
 
     public initialize() {
-        this.servicesContainer.configure();
-        this.ipcService = this.servicesContainer.getIpcService();
-    }
-    
-    public initializeConsumers() {
-        this.servicesContainer.getConsumers().forEach((consumer) => {
-            consumer.initialize();
-        });
-
+        this.ipcService = this.servicesContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        this.consumers = [
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.PackageConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.ExperimentConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchPluginsConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchSessionConsumer),
+        ];
         this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
-    
-    public destory() {
-        this.servicesContainer.getConsumers().forEach((consumer) => {
-            consumer.destory();
+
+    public initializeConsumers() {
+        this.consumers.forEach((consumer) => {
+            consumer.initialize();
         });
         this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
+    }
+
+    public destory() {
+        this.consumers.forEach((consumer) => {
+            consumer.destory();
+        });
     }
 
     private createWindow() {
@@ -64,7 +66,7 @@ export class App {
         });
 
         process.on('uncaughtException', (error) => {
-            console.log(`uncaught exception ${error.name}, ${error.message}`);
+            console.warn(`uncaught exception ${error.name}, ${error.message}`);
             this.ipcService.send(ErrorEvents.ExceptionListeners, `${error.message}`);
         });
     }

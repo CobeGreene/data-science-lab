@@ -1,19 +1,24 @@
 import { PackageProducer } from './package.producer';
-import { PluginPackageList } from '../../../../shared/models';
-import { IpcService } from '../../../../shared/services';
+import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 
 export class MockPackageProducer implements PackageProducer {
+    all: (pluginPackageList: PluginPackageList) => void;
 
-    public all: (list: PluginPackageList) => void;
-    public error: (reason: any) => void;
+    install: (pluginPackage: PluginPackage) => void;
+
+    uninstall: (pluginPackage: PluginPackage) => void;
+
+    error: (reason: any) => void;
 
     constructor() {
         this.reset();
     }
-    
-    public reset() {
-        this.all = (_) => {};
-        this.error = (_) => {};
+
+    reset() {
+        this.all = () => {};
+        this.install = () => {};
+        this.uninstall = () => {};
+        this.error = () => {};
     }
 
 }

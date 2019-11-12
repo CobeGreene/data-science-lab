@@ -1,62 +1,64 @@
-import { MockIpcService } from '../../../../shared/services';
-import { PackagesEvents } from '../../../../shared/events';
 import { AppPackageConsumer } from './app-package.consumer';
+import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
+import { MockIpcService } from '../../../../shared/services';
 import { MockPackageService } from '../../services';
+import { PackagesEvents } from '../../../../shared/events';
+import { PluginPackage } from '../../../../shared/models';
 
 
 describe('Electron App Package Consumer Tests', () => {
-    let ipcService: MockIpcService;
-    let appPackageConsumer: AppPackageConsumer;
-    let mockPackageService: MockPackageService;
 
-    beforeAll(() => {
-        ipcService = new MockIpcService();
-        mockPackageService = new MockPackageService();
-        appPackageConsumer = new AppPackageConsumer(mockPackageService, ipcService);
-        appPackageConsumer.initialize();
-    });
+    let consumer: AppPackageConsumer;
+    let serviceContainer: MockServiceContainer;
+    let ipcService: MockIpcService;
+    let packageService: MockPackageService;
 
     beforeEach(() => {
-        mockPackageService.all = () => { };
-        mockPackageService.install = (_) => { };
-        mockPackageService.uninstall = (_) => { };
+        packageService = new MockPackageService();
+        ipcService = new MockIpcService();
+        serviceContainer = new MockServiceContainer();
+        serviceContainer.getType = (type: SERVICE_TYPES) => {
+            switch (type) {
+                case SERVICE_TYPES.PackageService:
+                    return packageService;
+                case SERVICE_TYPES.IpcService:
+                    return ipcService;
+                default:
+                    throw new Error(`Couldn't find type.`);
+            }
+        };
+        consumer = new AppPackageConsumer(serviceContainer);
+        consumer.initialize();
     });
 
-    it('get all event should call all on package service', (done) => {
-        mockPackageService.all = () => {
+    it('get all event should call package service all', (done) => {
+        packageService.all = () => {
+            expect().nothing();
             done();
         };
         ipcService.send(PackagesEvents.GetAllEvent);
     });
 
-    it('install event should call install on package service', (done) => {
-        mockPackageService.install = (name: string) => {
-            expect(name).toEqual('name');
+    it('install event should call package service install', (done) => {
+        packageService.install = () => {
+            expect().nothing();
             done();
         };
-        ipcService.send(PackagesEvents.InstallEvent, 'name');
+        ipcService.send(PackagesEvents.InstallEvent, new PluginPackage({
+            name: 'name', repositoryName: 'repo', username: 'username',
+            owner: 'owner'
+        }));
     });
 
-    it('install event should throw error on package service', () => {
-        expect(() => {
-            ipcService.send(PackagesEvents.InstallEvent);
-        }).toThrowError();
-    });
-    
-    it('uninstall event should call uninstall on package service', (done) => {
-        mockPackageService.uninstall = (name: string) => {
-            expect(name).toEqual('name');
+    it('uninstall event should call package service uninstall', (done) => {
+        packageService.uninstall = () => {
+            expect().nothing();
             done();
         };
-        ipcService.send(PackagesEvents.UninstallEvent, 'name');
+        ipcService.send(PackagesEvents.UninstallEvent, new PluginPackage({
+            name: 'name', repositoryName: 'repo', username: 'username',
+            owner: 'owner'
+        }));
     });
-
-    it('uninstall event should throw error on package service', () => {
-        expect(() => {
-            ipcService.send(PackagesEvents.UninstallEvent);
-        }).toThrowError();
-    });
-
-
 
 });

@@ -1,9 +1,8 @@
+import { Producer } from '../producer';
 import { Experiment, ExperimentList } from '../../../../shared/models';
 
-export abstract class ExperimentProducer {
+export interface ExperimentProducer extends Producer {
 
-    abstract error(reason: any): void;
-    abstract all(experiments: ExperimentList): void;
-    abstract create(experiment: Experiment): void;
-    abstract update(experiment: Experiment): void;
+    all(experimentList: ExperimentList);
+    newExperiment(experiment: Experiment);
 }

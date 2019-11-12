@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Plugin } from '../../../../../../shared/models';
-import { ExperimentSelectFetchService } from '../../../../services';
+import { FetchSessionService } from '../../../../services';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
@@ -10,12 +10,13 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
     styleUrls: []
 })
 export class ExperimentFetchPluginCardComponent implements OnInit, OnDestroy {
+
     @Input()
     plugin: Plugin;
 
-    id: number;
+    experimentId: number;
 
-    constructor(private experimentSelectFetchService: ExperimentSelectFetchService, private route: ActivatedRoute) {
+    constructor(private fetchSessionService: FetchSessionService, private route: ActivatedRoute) {
 
     }
 
@@ -23,7 +24,7 @@ export class ExperimentFetchPluginCardComponent implements OnInit, OnDestroy {
         this.route.parent.params
             .pipe(untilComponentDestroyed(this))
             .subscribe((params: Params) => {
-                this.id = +params.id;
+                this.experimentId = +params.id;
             });
     }
 
@@ -32,6 +33,6 @@ export class ExperimentFetchPluginCardComponent implements OnInit, OnDestroy {
     }
 
     onSelect() {
-        this.experimentSelectFetchService.select(this.id, this.plugin);
+        this.fetchSessionService.create(this.experimentId, this.plugin);
     }
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ExperimentService } from '../../../services';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Experiment, ExperimentSetupFetchStage } from '../../../../../shared/models';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { FetchSessionViewModel } from '../../../../../shared/view-models';
+import { FetchSessionService } from '../../../services';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+
 
 @Component({
     selector: 'app-experiment-setup-fetch',
@@ -11,10 +12,11 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 })
 export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
 
-    id: number;
-    experiment: ExperimentSetupFetchStage;
+    fetchSession: FetchSessionViewModel;
 
-    constructor(private experimentService: ExperimentService, private route: ActivatedRoute) {
+    constructor(private fetchSessionService: FetchSessionService,
+                private route: ActivatedRoute,
+                private router: Router) {
 
     }
 
@@ -22,15 +24,32 @@ export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
         this.route.parent.params
             .pipe(untilComponentDestroyed(this))
             .subscribe((params: Params) => {
-                this.id = +params.id;
-                this.experiment = this.experimentService.get(this.id) as ExperimentSetupFetchStage;
+                const id = +params.id;
+                this.fetchSession = this.fetchSessionService.get(id);
             });
-            
-        this.experimentService.experimentUpdated
+
+        this.fetchSessionService.sessionUpdated
             .pipe(untilComponentDestroyed(this))
-            .subscribe((experiment: Experiment) => {
-                if (this.id === experiment.id) {
-                    this.experiment = experiment as ExperimentSetupFetchStage;
+            .subscribe((session: FetchSessionViewModel) => {
+                if (session.experimentId === this.fetchSession.experimentId) {
+                    console.log('session update');
+                    this.fetchSession = session;
+                }
+            });
+
+        this.fetchSessionService.sessionDeleted
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((experimentId: number) => {
+                if (this.fetchSession.experimentId === experimentId) {
+                    this.router.navigate(['/experiments', 'details', this.fetchSession.experimentId, 'select-fetch']);
+                }
+            });
+
+        this.fetchSessionService.sessionFinished
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((experimentId: number) => {
+                if (this.fetchSession.experimentId === experimentId) {
+                    this.router.navigate(['/experiments', 'details', this.fetchSession.experimentId, 'data-workspace']);
                 }
             });
 
@@ -40,5 +59,11 @@ export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
 
     }
 
+    onSubmit(inputs: { [id: string]: any }) {
+        this.fetchSessionService.submitOptions(this.fetchSession.experimentId, inputs);
+    }
 
-} 
+    onExecuteCommand(cmd: string) {
+        this.fetchSessionService.executeCommand(this.fetchSession.experimentId, cmd);
+    }
+}

@@ -5,8 +5,8 @@ export abstract class PackageService {
     public packagesChanged: Subject<PluginPackageList>;
 
     abstract all(): PluginPackageList;
-    abstract install(name: string): void;
-    abstract uninstall(name: string): void;
+    abstract install(pluginPackage: PluginPackage): void;
+    abstract uninstall(pluginPackage: PluginPackage): void;
     abstract get(name: string): PluginPackage;
 }
 

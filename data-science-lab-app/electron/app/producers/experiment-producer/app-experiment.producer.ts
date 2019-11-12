@@ -1,25 +1,21 @@
-import { IpcProducer } from '../ipc.producer';
 import { ExperimentProducer } from './experiment.producer';
-import { IpcService } from '../../../../shared/services';
 import { Experiment, ExperimentList } from '../../../../shared/models';
+import { IpcService } from '../../../../shared/services';
+import { SERVICE_TYPES } from '../../services-container';
 import { ExperimentsEvents } from '../../../../shared/events';
+import { BaseProducer } from '../base.producer';
 
-export class AppExperimentProducer extends IpcProducer implements ExperimentProducer {
 
-    constructor(ipcService: IpcService) {
-        super(ipcService);
-    }
-
-    all(experiments: ExperimentList) {
-        this.ipcService.send(ExperimentsEvents.GetAllListeners, experiments);
-    }
-
-    create(experiment: Experiment) {
-        this.ipcService.send(ExperimentsEvents.CreateListeners, experiment);
-    }
-
-    update(experiment: Experiment) {
-        this.ipcService.send(ExperimentsEvents.UpdatedListeners, experiment);
+export class AppExperimentProducer extends BaseProducer implements ExperimentProducer {
+    all(experimentList: ExperimentList) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(ExperimentsEvents.GetAllListeners, experimentList);
+    }    
+    
+    newExperiment(experiment: Experiment) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(ExperimentsEvents.CreateListeners, experiment);
     }
 
 }
+

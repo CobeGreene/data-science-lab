@@ -1,9 +1,9 @@
-import { PluginPackageList } from '../../../../shared/models';
-import { IpcProducer } from '../ipc.producer';
-import { IpcService } from '../../../../shared/services';
+import { Producer } from '../producer';
+import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 
-export abstract class PackageProducer {
+export interface PackageProducer extends Producer {
 
-    abstract error(reason: any): void;
-    abstract all(pluginPackageList: PluginPackageList): void;
+    all(pluginPackageList: PluginPackageList);
+    install(pluginPackage: PluginPackage);
+    uninstall(pluginPackage: PluginPackage);
 }

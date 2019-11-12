@@ -30,12 +30,12 @@ export class AppPackageService implements PackageService, OnDestroy {
         return this.packagesList;
     }
 
-    install(name: string): void {
-        this.ipcService.send(PackagesEvents.InstallEvent, name);
+    install(pluginPackage: PluginPackage): void {
+        this.ipcService.send(PackagesEvents.InstallEvent, pluginPackage);
     }
 
-    uninstall(name: string): void {
-        this.ipcService.send(PackagesEvents.UninstallEvent, name);
+    uninstall(pluginPackage: PluginPackage): void {
+        this.ipcService.send(PackagesEvents.UninstallEvent, pluginPackage);
     }
 
     get(name: string): PluginPackage {
@@ -57,11 +57,10 @@ export class AppPackageService implements PackageService, OnDestroy {
         this.ipcService.removeListener(PackagesEvents.GetAllListeners, this.getAllEvent);
     }
 
-    private getAllEvent = (event, arg): void => {
+    private getAllEvent = (event, pluginPackageList: PluginPackageList): void => {
         this.zone.run(() => {
             try {
-                const value = arg[0] as PluginPackageList;
-                this.packagesList = value;
+                this.packagesList = pluginPackageList;
                 this.retrieve = true;
                 this.packagesChanged.next(this.all());
             } catch (exception) {

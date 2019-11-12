@@ -1,17 +1,24 @@
 import { PackageProducer } from './package.producer';
-import { PluginPackageList } from '../../../../shared/models';
+import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { IpcService } from '../../../../shared/services';
+import { SERVICE_TYPES } from '../../services-container';
 import { PackagesEvents } from '../../../../shared/events';
-import { IpcProducer } from '../ipc.producer';
+import { BaseProducer } from '../base.producer';
 
-export class AppPackageProducer extends IpcProducer implements PackageProducer  {
-
-    constructor(ipcService: IpcService) {
-        super(ipcService);
+export class AppPackageProducer extends BaseProducer implements PackageProducer {
+    all(pluginPackageList: PluginPackageList) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(PackagesEvents.GetAllListeners, pluginPackageList);
+    }    
+    
+    install(pluginPackage: PluginPackage) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(PackagesEvents.InstallListeners, pluginPackage);
     }
-
-    all(pluginPackageList: PluginPackageList): void {
-        this.ipcService.send(PackagesEvents.GetAllListeners, pluginPackageList);
+    
+    uninstall(pluginPackage: PluginPackage) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(PackagesEvents.UninstallListeners, pluginPackage);
     }
-
 }
+

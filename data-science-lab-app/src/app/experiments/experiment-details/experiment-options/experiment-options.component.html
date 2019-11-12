@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+<form (ngSubmit)="onSubmit()" #f="ngForm">
     <div class="row" *ngFor="let option of optionList.options; let i = index">
         <div class="col">
             <div class="form-group">
@@ -14,7 +14,7 @@
                         </app-experiment-number-option>
                     </div>
                     <div *ngSwitchCase="optionType.Command">
-                        <app-experiment-command-option [option]="option" [id]="i" (validChange)="onValidChange($event)">
+                        <app-experiment-command-option [option]="option" [id]="i" (executeCommand)="onExecuteComamnd($event)">
 
                         </app-experiment-command-option>
                     </div>

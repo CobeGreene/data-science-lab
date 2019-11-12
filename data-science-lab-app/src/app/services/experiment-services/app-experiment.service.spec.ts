@@ -1,6 +1,6 @@
 import { MockZone } from '../mock-zone';
 import { AppExperimentService } from './app-experiment.service';
-import { Experiment, ExperimentList, ExperimentSelectFetchStage } from '../../../../shared/models';
+import { Experiment, ExperimentList } from '../../../../shared/models';
 import { ExperimentsEvents } from '../../../../shared/events';
 import { MockIpcService } from '../../../../shared/services';
 
@@ -11,18 +11,18 @@ describe('Angular App Experiment Service Tests', () => {
     let experimentList: ExperimentList;
     let zone: MockZone;
 
-    const getAllEvent = (event, arg): void => {
+    const getAllEvent = (event, ...args): void => {
         ipcService.send(ExperimentsEvents.GetAllListeners, experimentList);
     };
 
-    const createEvent = (event, arg): void => {
+    const createEvent = (event, ...args): void => {
         let max = 1;
         experimentList.experiments.forEach((element) => {
             if (element.id >= max) {
                 max = element.id + 1;
             }
         });
-        const experiment = new ExperimentSelectFetchStage({ id: max });
+        const experiment = new Experiment({ id: max });
         experimentList.experiments.push(experiment);
         ipcService.send(ExperimentsEvents.GetAllListeners, experimentList);
         ipcService.send(ExperimentsEvents.CreateListeners, experiment);
@@ -35,7 +35,7 @@ describe('Angular App Experiment Service Tests', () => {
 
     beforeEach(() => {
         experimentList = new ExperimentList([
-            new ExperimentSelectFetchStage({ id: 1 })
+            new Experiment({ id: 1 })
         ]);
         ipcService.on(ExperimentsEvents.GetAllEvent, getAllEvent);
         ipcService.on(ExperimentsEvents.CreateEvent, createEvent);
@@ -85,7 +85,7 @@ describe('Angular App Experiment Service Tests', () => {
     it('get should return first experiment', () => {
         experimentService.all();
         const experiment = experimentService.get(experimentList.experiments[0].id);
-        expect(experiment.stage).toEqual(experimentList.experiments[0].stage);
+        expect(experiment.dateCreated).toEqual(experimentList.experiments[0].dateCreated);
     });
 
     it('get should throw an error for unknown id', () => {

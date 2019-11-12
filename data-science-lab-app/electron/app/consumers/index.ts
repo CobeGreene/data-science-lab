@@ -1,6 +1,7 @@
 export { Consumer } from './consumer';
-export { AppPackageConsumer, PackageConsumer } from './package-consumer';
-export { AppExperimentConsumer, ExperimentConsumer } from './experiment-consumer';
-export { AppExperimentSelectFetchConsumer, ExperimentSelectFetchConsumer } from './experiment-select-fetch-consumer';
+export { AppPackageConsumer } from './package-consumer';
+export { AppExperimentConsumer } from './experiment-consumer';
+export { AppFetchPluginsConsumer } from './fetch-plugins-consumer';
+export { AppFetchSessionConsumer } from './fetch-session-consumer';
 
 

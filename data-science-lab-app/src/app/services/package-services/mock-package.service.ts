@@ -23,9 +23,9 @@ export class MockPackageService implements PackageService {
         return this.packageList;
     }
 
-    install(name: string): void {
+    install(pluginPackage: PluginPackage): void {
         const found = this.packageList.packages.find((value: PluginPackage) => {
-            return value.name === name;
+            return value.name === pluginPackage.name;
         });
         if (!found) {
             throw new Error('Couldn\'t find package');
@@ -37,9 +37,9 @@ export class MockPackageService implements PackageService {
         }
     }
 
-    uninstall(name: string): void {
+    uninstall(pluginPackage: PluginPackage): void {
         const found = this.packageList.packages.find((value: PluginPackage) => {
-            return value.name === name;
+            return value.name === pluginPackage.name;
         });
         if (!found) {
             throw new Error('Couldn\t find package');

@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExperimentsComponent } from './experiments.component';
 import { ExperimentsRoutingModule } from './experiments-routing.module';
-import { ExperimentStartupComponent } from './experiments-startup/experiment-startup';
+import { ExperimentStartupComponent } from './experiments-startup/experiments-startup.component';
 import { ExperimentDetailsModule } from './experiment-details/experiment-details.module';
-import { ExperimentService, AppExperimentService, AppExperimentSelectFetchService, ExperimentSelectFetchService, ExperimentSetupInputService, AppExperimentSetupInputService } from '../services';
-
+import { ExperimentService, AppExperimentService } from '../services/experiment-services';
+import { FetchSessionService, AppFetchSessionService, FetchPluginsService, AppFetchPluginsService } from '../services';
 
 @NgModule({
     declarations: [
@@ -19,9 +19,9 @@ import { ExperimentService, AppExperimentService, AppExperimentSelectFetchServic
         ExperimentDetailsModule,
     ],
     providers: [
-        { provide: ExperimentService, useClass: AppExperimentService  },
-        { provide: ExperimentSelectFetchService, useClass: AppExperimentSelectFetchService },
-        { provide: ExperimentSetupInputService, useClass: AppExperimentSetupInputService },
+        { provide: ExperimentService, useClass: AppExperimentService },
+        { provide: FetchSessionService, useClass: AppFetchSessionService },
+        { provide: FetchPluginsService, useClass: AppFetchPluginsService },
     ]
 })
 export class ExperimentsModule {

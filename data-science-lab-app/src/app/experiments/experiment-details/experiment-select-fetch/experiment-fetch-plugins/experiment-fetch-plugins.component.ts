@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Plugin } from '../../../../../../shared/models';
-import { ExperimentSelectFetchService } from '../../../../services';
+import { FetchPluginsService } from '../../../../services';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
     selector: 'app-experiment-fetch-plugins',
@@ -13,15 +13,16 @@ export class ExperimentFetchPluginsComponent implements OnInit, OnDestroy {
 
     plugins: Plugin[];
 
-    constructor(private experimentSelectFetchService: ExperimentSelectFetchService, private route: ActivatedRoute) {
+    constructor(private fetchPluginsService: FetchPluginsService) {
 
     }
 
+
     ngOnInit() {
-        this.plugins = this.experimentSelectFetchService.all();
-        this.experimentSelectFetchService.fetchPlugins
+        this.plugins = this.fetchPluginsService.all();
+        this.fetchPluginsService.fetchPluginsChanged
             .pipe(untilComponentDestroyed(this))
-            .subscribe((value: Plugin[]) => {
+            .subscribe((value) => {
                 this.plugins = value;
             });
     }
@@ -29,4 +30,4 @@ export class ExperimentFetchPluginsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
 
     }
-} 
+}

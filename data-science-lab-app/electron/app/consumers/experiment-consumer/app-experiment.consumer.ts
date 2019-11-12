@@ -1,53 +1,37 @@
-import { ExperimentConsumer } from './experiment.consumer';
-import { ExperimentService } from '../../services';
+import { Consumer } from '../consumer';
+import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { IpcService } from '../../../../shared/services';
 import { ExperimentsEvents } from '../../../../shared/events';
+import { ExperimentService } from '../../services';
 
-export class AppExperimentConsumer implements ExperimentConsumer {
+export class AppExperimentConsumer implements Consumer {
 
-    experimentService: ExperimentService;
-    ipcService: IpcService;
+    constructor(private serviceContainer: ServiceContainer) {
 
-    constructor(experimentService: ExperimentService,
-                ipcService: IpcService) {
-            this.experimentService = experimentService;
-            this.ipcService = ipcService;
     }
 
     initialize(): void {
-        this.registerGetAll();
-        this.registerCreate();
-    }
-    
-    destory(): void {
-        this.unregisterGetAll();
-        this.unregisterCreate();
-    }
+        const ipcService = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipcService.on(ExperimentsEvents.GetAllEvent, this.getAllEvent);
+        ipcService.on(ExperimentsEvents.CreateEvent, this.createEvent);
+    }    
 
-    private registerGetAll() {
-        this.ipcService.on(ExperimentsEvents.GetAllEvent, this.getAllEvent);
-    }
-    
-    private unregisterGetAll() {
-        this.ipcService.removeListener(ExperimentsEvents.GetAllEvent, this.getAllEvent);
+    destory() {
+        const ipcService = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipcService.removeListener(ExperimentsEvents.GetAllEvent, this.getAllEvent);
+        ipcService.removeListener(ExperimentsEvents.CreateEvent, this.createEvent);
     }
 
     private getAllEvent = (_event, _arg): void => {
-        this.experimentService.all();
-    }
-
-    private registerCreate() {
-        this.ipcService.on(ExperimentsEvents.CreateEvent, this.createEvent);
-    }
-    
-    private unregisterCreate() {
-        this.ipcService.removeListener(ExperimentsEvents.CreateEvent, this.createEvent);
+        const experimentService = this.serviceContainer.resolve<ExperimentService>(SERVICE_TYPES.ExperimentService);
+        experimentService.all();
     }
 
     private createEvent = (_event, _arg): void => {
-        this.experimentService.create();
+        const experimentService = this.serviceContainer.resolve<ExperimentService>(SERVICE_TYPES.ExperimentService);
+        experimentService.create();
     }
 
-
-
 }
+
+

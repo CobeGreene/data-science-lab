@@ -30,14 +30,14 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
     }
 
     onInstall(): void {
-        this.packageService.install(this.pluginPackage.name);
+        this.packageService.install(this.pluginPackage);
         this.zone.run(() => {
             this.router.navigate(['/packages', 'installed']);
         });
     }
 
     onUninstall(): void {
-        this.packageService.uninstall(this.pluginPackage.name);
+        this.packageService.uninstall(this.pluginPackage);
         this.zone.run(() => {
             this.router.navigate(['/packages', 'available']);
         });

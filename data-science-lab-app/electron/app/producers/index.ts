@@ -1,5 +1,5 @@
-export { AppPackageProducer, MockPackageProducer, PackageProducer } from './package-producer';
-export { IpcProducer } from './ipc.producer';
-export { ExperimentProducer, AppExperimentProducer } from './experiment-producer';
-export { AppExperimentSelectFetchProducer, ExperimentSelectFetchProducer } from './experiment-select-fetch-producer';
-
+export { Producer } from './producer';
+export { PackageProducer, AppPackageProducer, MockPackageProducer } from './package-producer';
+export { AppExperimentProducer, ExperimentProducer, MockExperimentProducer } from './experiment-producer';
+export { AppFetchSessionProducer, FetchSessionProducer, MockFetchSessionProducer } from './fetch-session-producer';
+export { AppFetchPluginsProducer, FetchPluginsProducer, MockFetchPluginsProducer } from './fetch-plugins.producer';

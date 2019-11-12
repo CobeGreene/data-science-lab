@@ -1,3 +1,3 @@
-export { ExperimentConverter } from './experiment.converter';
-export { AppExperimentConverter } from './app-experiment.converter';
+export { FetchPluginDataConverter, AppFetchPluginDataConverter } from './fetch-plugin-data-converter';
+
 

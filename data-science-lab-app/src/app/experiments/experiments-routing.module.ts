@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ExperimentsComponent } from './experiments.component';
-import { ExperimentStartupComponent } from './experiments-startup/experiment-startup';
-import { ExperimentDetailsComponent } from './experiment-details/experiment-details';
+import { ExperimentStartupComponent } from './experiments-startup/experiments-startup.component';
 
 const experimentsRoutes: Routes = [
     {
@@ -11,6 +10,7 @@ const experimentsRoutes: Routes = [
         ]
     }
 ];
+
 
 @NgModule({
     imports: [
@@ -23,3 +23,5 @@ const experimentsRoutes: Routes = [
 export class ExperimentsRoutingModule {
 
 }
+
+

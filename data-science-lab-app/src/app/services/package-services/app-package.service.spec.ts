@@ -10,14 +10,13 @@ describe('Angular App Package Service Tests', () => {
     let packagesList: PluginPackageList;
     let zone: MockZone;
 
-    const getAllEvent = (event, arg): void => {
+    const getAllEvent = (event, ...arg): void => {
         ipcService.send(PackagesEvents.GetAllListeners, packagesList);
     };
 
-    const installEvent = (event, arg): void => {
-        const name = arg[0];
+    const installEvent = (event, pluginPackage: PluginPackage): void => {
         const find = packagesList.packages.findIndex((value: PluginPackage) => {
-            return value.name === name;
+            return value.name === pluginPackage.name;
         });
         if (find >= 0) {
             packagesList.packages[find].install = true;
@@ -25,10 +24,9 @@ describe('Angular App Package Service Tests', () => {
         }
     };
 
-    const uninstallEvent = (event, arg): void => {
-        const name = arg[0];
+    const uninstallEvent = (event, pluginPackage: PluginPackage): void => {
         const find = packagesList.packages.findIndex((value: PluginPackage) => {
-            return value.name === name;
+            return value.name === pluginPackage.name;
         });
         if (find >= 0) {
             packagesList.packages[find].install = false;
@@ -85,7 +83,7 @@ describe('Angular App Package Service Tests', () => {
             expect(value.packages[0].install).toBeTruthy();
             done();
         });
-        packageService.install(packagesList.packages[0].name);
+        packageService.install(packagesList.packages[0]);
     });
 
     it('uninstall should set third\'s package install to false when getting packages', (done) => {
@@ -94,7 +92,7 @@ describe('Angular App Package Service Tests', () => {
             expect(value.packages[2].install).toBeFalsy();
             done();
         });
-        packageService.uninstall(packagesList.packages[2].name);
+        packageService.uninstall(packagesList.packages[2]);
     });
 
 

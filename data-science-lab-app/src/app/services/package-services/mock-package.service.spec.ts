@@ -29,14 +29,16 @@ describe('Angular Mock Package Service Tests', () => {
             expect(value.packages[0].install).toBeTruthy();
             done();
         });
-        service.install(packagesList.packages[0].name);
-
+        service.install(packagesList.packages[0]);
     });
 
     it('install should throw for no packages', () => {
         const service = new MockPackageService();
         expect(() => {
-            service.install('name');
+            service.install(new PluginPackage({
+                name: 'not found', owner: 'owner', repositoryName: 'repop',
+                username: 'user'
+            }));
         }).toThrowError();
     });
 
@@ -49,7 +51,10 @@ describe('Angular Mock Package Service Tests', () => {
         );
         const service = MockPackageService.init(packagesList);
         expect(() => {
-            service.install('not found');
+            service.install(new PluginPackage({
+                name: 'not found', owner: 'owner', repositoryName: 'repop',
+                username: 'user'
+            }));
         }).toThrowError();
     });
 
@@ -61,7 +66,7 @@ describe('Angular Mock Package Service Tests', () => {
         );
         const service = MockPackageService.init(packagesList);
         expect(() => {
-            service.install(packagesList.packages[0].name);
+            service.install(packagesList.packages[0]);
         }).toThrowError();
     });
 
@@ -76,13 +81,16 @@ describe('Angular Mock Package Service Tests', () => {
             expect(!value.packages[0].install).toBeTruthy();
             done();
         });
-        service.uninstall(packagesList.packages[0].name);
+        service.uninstall(packagesList.packages[0]);
     });
 
     it('uninstall should throw for no packages', () => {
         const service = new MockPackageService();
         expect(() => {
-            service.uninstall('name');
+            service.uninstall(new PluginPackage({
+                name: 'not found', owner: 'owner', repositoryName: 'repop',
+                username: 'user'
+            }));
         }).toThrowError();
     });
 
@@ -95,7 +103,10 @@ describe('Angular Mock Package Service Tests', () => {
         );
         const service = MockPackageService.init(packagesList);
         expect(() => {
-            service.uninstall('not found');
+            service.uninstall(new PluginPackage({
+                name: 'not found', owner: 'owner', repositoryName: 'repop',
+                username: 'user'
+            }));
         }).toThrowError();
     });
 
@@ -107,7 +118,7 @@ describe('Angular Mock Package Service Tests', () => {
         );
         const service = MockPackageService.init(packagesList);
         expect(() => {
-            service.uninstall(packagesList.packages[0].name);
+            service.uninstall(packagesList.packages[0]);
         }).toThrowError();
     });
 

@@ -1,4 +1,4 @@
-import { App } from './app';
+import { App } from './app/app';
 import * as path from 'path';
 import * as url from 'url';
 const settings = require('electron-settings');
