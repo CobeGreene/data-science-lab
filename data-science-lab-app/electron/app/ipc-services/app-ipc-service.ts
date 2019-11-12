@@ -10,6 +10,7 @@ export class AppIpcService implements IpcService {
 
     send(channel: string, ...arg: any): void {
         win.webContents.send(channel, ...arg);
+        ipcMain.emit(channel, ...arg);
     }    
     
     on(channel: string, listener: Listener): void {

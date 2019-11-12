@@ -13,12 +13,12 @@ export class AppPackageService implements PackageService {
         const packageDataService = this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
         this.produceAll(packageDataService.all(this.produceAll, this.produceError));
     }
-    
+
     private produceAll = (pluginPackageList: PluginPackageList) => {
         const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
         producer.all(pluginPackageList);
-    } 
-    
+    }
+
     private produceError = (reason: any) => {
         const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
         producer.error(reason);
@@ -27,9 +27,9 @@ export class AppPackageService implements PackageService {
     install(pluginPackage: PluginPackage): void {
         const packageDataService = this.serviceContainer
             .resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
-        const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
         packageDataService.install(pluginPackage)
             .then(() => {
+                const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
                 producer.install(pluginPackage);
                 this.all();
             }).catch(this.produceError);
@@ -38,10 +38,9 @@ export class AppPackageService implements PackageService {
     uninstall(pluginPackage: PluginPackage): void {
         const packageDataService = this.serviceContainer
             .resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
-        const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
-
         packageDataService.uninstall(pluginPackage.name)
             .then(() => {
+                const producer = this.serviceContainer.resolve<PackageProducer>(SERVICE_TYPES.PackageProducer);
                 producer.uninstall(pluginPackage);
                 this.all();
             }).catch(this.produceError);

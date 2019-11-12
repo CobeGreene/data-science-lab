@@ -43,7 +43,7 @@ describe('Electron App Fetch Plugins Consumer Tests', () => {
             expect().nothing();
             done();
         };
-        ipcService.send(PackagesEvents.InstallEvent);
+        ipcService.send(PackagesEvents.InstallListeners);
     });
     
     it('package uninstall should call all on service', (done) => {
@@ -51,7 +51,7 @@ describe('Electron App Fetch Plugins Consumer Tests', () => {
             expect().nothing();
             done();
         };
-        ipcService.send(PackagesEvents.UninstallEvent);
+        ipcService.send(PackagesEvents.UninstallListeners);
     });
 
 });
