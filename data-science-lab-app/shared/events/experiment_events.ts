@@ -22,5 +22,12 @@ export namespace ExperimentsEvents {
     export const GetAllFetchPluginsEvent = 'get-all-fetch-plugins-event';
     export const GetAllFetchPluginsListeners = 'get-all-fetch-plugins-listeners';
     
+    // Data Groups
+    export const GetAllDataGroupsEvent = 'get-all-data-groups-event';
+    export const GetAllDataGroupsListeners = 'get-all-data-groups-listeners';
+    export const NewDataGroupListeners = 'new-data-group-listeners';
+    export const DeleteDataGroupEvent = 'delete-data-group-event';
+    export const DeleteDataGroupListeners = 'delete-data-group-listeners';
+    export const UpdatedDataGroupListeners = 'updated-data-group-listeners';
     
 }
