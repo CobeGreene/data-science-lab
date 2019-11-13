@@ -106,7 +106,7 @@ describe('Electron App Fetch Session Producer Tests', () => {
     it('new data group should send data group', (done) => {
         converter.toViewModel = () => {
             return new DataGroupViewModel({
-                id: 1, experimentId: 1, numOfExamples: 40, numOfFeatures: 40
+                id: 1, experimentId: 1, numOfExamples: 40, numOfFeatures: 40, label: 'label'
             });
         };
         ipcService.on(ExperimentsEvents.NewDataGroupListeners, (event, arg: ExperimentDataGroup) => {
