@@ -84,7 +84,6 @@ export class AppFetchService implements FetchService {
         const dataGroups = converter.toDataGroups(fetchPluginData);
         const dataGroupDataService = this.serviceContainer
             .resolve<ExperimentDataGroupDataService>(SERVICE_TYPES.ExperimentDataGroupDataService);
-        
         const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
         const settingsDataService = this.serviceContainer.resolve<SettingsDataService>(SERVICE_TYPES.SettingsDataService);
         const dataGroupSettings = settingsDataService.readDataGroupSettings();

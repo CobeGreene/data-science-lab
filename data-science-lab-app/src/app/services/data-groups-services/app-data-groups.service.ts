@@ -19,9 +19,18 @@ export class AppDataGroupsService extends DataGroupsService implements OnDestroy
     }
 
     registerEvents() {
-        this.ipcService.on(ExperimentsEvents.GetAllDataGroupsListeners, this.getAllEvent);    
+        this.ipcService.on(ExperimentsEvents.GetAllDataGroupsListeners, this.getAllEvent);
+        this.ipcService.on(ExperimentsEvents.NewDataGroupListeners, this.newEvent);    
         this.ipcService.on(ExperimentsEvents.DeleteDataGroupListeners, this.deletedEvent);
         this.ipcService.on(ExperimentsEvents.UpdatedDataGroupListeners, this.updatedEvent);
+    }
+
+
+    newEvent = (event, dataGroup: DataGroupViewModel) => {
+        this.zone.run(() => {
+            this.dataGroups.push(dataGroup);
+            this.newDataGroup.next(dataGroup);
+        });
     }
 
 

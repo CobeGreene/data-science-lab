@@ -3,6 +3,7 @@
 export class DataGroupViewModel {
 
     public id: number;
+    public label: string;
     public experimentId: number;
     public numOfExamples: number;
     public numOfFeatures: number;
@@ -14,6 +15,7 @@ export class DataGroupViewModel {
     constructor(dataGroup: {
         id: number,
         experimentId: number,
+        label: string,
         numOfExamples: number,
         numOfFeatures: number,
         previewFeatures?: string[],
@@ -21,6 +23,7 @@ export class DataGroupViewModel {
         previewExamples?: any[][]
     }) {
         this.id = dataGroup.id;
+        this.label = dataGroup.label;
         this.experimentId = dataGroup.experimentId;
         this.numOfExamples = dataGroup.numOfExamples;
         this.numOfFeatures = dataGroup.numOfFeatures;

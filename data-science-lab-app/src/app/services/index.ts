@@ -4,3 +4,5 @@ export { AppPackageService, MockPackageService, PackageService } from './package
 export { AppExperimentService, ExperimentService } from './experiment-services';
 export { AppFetchSessionService, FetchSessionService } from './fetch-session.services';
 export { AppFetchPluginsService, FetchPluginsService } from './fetch-plugins.services';
+export { AppDataGroupsService, DataGroupsService } from './data-groups-services';
+

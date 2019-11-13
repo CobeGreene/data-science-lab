@@ -12,12 +12,13 @@ export class AppDataGroupConverter implements DataGroupConverter {
         const maxExamples = dataGroup.examples < settings.numOfExamples ? dataGroup.examples : settings.numOfExamples;
         for (let example = 0; example < maxExamples; ++example) {
             previewExamples.push([]);
-            for (let feature = 0; previewFeatures.length; ++feature) {
+            for (let feature = 0; feature < previewFeatures.length; ++feature) {
                 previewExamples[example].push(dataGroup.features[feature].examples[example]);
             }
         }
         return new DataGroupViewModel({
             id: dataGroup.id,
+            label: dataGroup.label,
             experimentId: dataGroup.experimentId,
             numOfExamples: dataGroup.examples,
             numOfFeatures: dataGroup.features.length,

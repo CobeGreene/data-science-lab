@@ -24,13 +24,13 @@ describe('Angular App Data Groups Service Tests', () => {
     beforeEach(() => {
         dataGroups = [
             new DataGroupViewModel({
-                id: 1, experimentId: 1, numOfExamples: 50, numOfFeatures: 50
+                id: 1, experimentId: 1, numOfExamples: 50, numOfFeatures: 50, label: '3'
             }),
             new DataGroupViewModel({
-                id: 2, experimentId: 2, numOfExamples: 50, numOfFeatures: 50
+                id: 2, experimentId: 2, numOfExamples: 50, numOfFeatures: 50, label: '1',
             }),
             new DataGroupViewModel({
-                id: 3, experimentId: 1, numOfExamples: 50, numOfFeatures: 50
+                id: 3, experimentId: 1, numOfExamples: 50, numOfFeatures: 50, label: '2',
             }),
         ];
         ipcService.on(ExperimentsEvents.GetAllDataGroupsEvent, getAllEvent);
@@ -81,6 +81,16 @@ describe('Angular App Data Groups Service Tests', () => {
     it('all should return a subset of data groups', () => {
         const groups = dataGroupService.all(1);
         expect(groups.length).toBe(2);
+    });
+
+    it('new listener should new the subject', (done) => {
+        dataGroupService.newDataGroup.subscribe((dataGroup) => {
+            expect(dataGroup.id).toBe(5);
+            done();
+        });
+        ipcService.send(ExperimentsEvents.NewDataGroupListeners, new DataGroupViewModel({
+            id: 5, experimentId: 3, label: 'label', numOfExamples: 1, numOfFeatures: 5
+        }));
     });
 
 });
