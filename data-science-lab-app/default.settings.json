@@ -4,5 +4,9 @@
         "hostname": "localhost",
         "port": 44339,
         "pathPackages": "/api/packages"
+    },
+    "data-group-settings": {
+        "numOfExamples": 20,
+        "numOfFeatures": 5
     }
 }

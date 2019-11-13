@@ -1,5 +1,5 @@
 import { Producer } from '../producer';
-import { FetchSession } from '../../models';
+import { FetchSession, ExperimentDataGroup, DataGroupSettings } from '../../models';
 
 export interface FetchSessionProducer extends Producer {
 
@@ -7,5 +7,6 @@ export interface FetchSessionProducer extends Producer {
     newSession(fetchSession: FetchSession);
     delete(experimentId: number);
     updateSession(fetchSession: FetchSession);
+    newDataGroup(dataGroup: ExperimentDataGroup, settings: DataGroupSettings);
     finish(experimentId: number);
 }

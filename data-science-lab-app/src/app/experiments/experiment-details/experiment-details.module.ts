@@ -15,6 +15,8 @@ import { ExperimentChoicesOptionComponent } from './experiment-options/experimen
 import { ExperimentCommandOptionComponent } from './experiment-options/experiment-command-option/experiment-command-option.component';
 import { ExperimentNumberOptionComponent } from './experiment-options/experiment-number-option/experiment-number-option.component';
 import { ExperimentTextOptionComponent } from './experiment-options/experiment-text-option/experiment-text-option.component';
+import { ExperimentDataGroupListComponent } from './experiment-data-workspace/experiment-data-group-list/experiment-data-group-list.component';
+import { ExperimentPreviewDataGroupComponent } from './experiment-data-workspace/experiment-preview-data-group/experiment-preview-data-group.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +31,9 @@ import { ExperimentTextOptionComponent } from './experiment-options/experiment-t
         ExperimentChoicesOptionComponent,
         ExperimentCommandOptionComponent,
         ExperimentNumberOptionComponent,
-        ExperimentTextOptionComponent
+        ExperimentTextOptionComponent,
+        ExperimentDataGroupListComponent,
+        ExperimentPreviewDataGroupComponent
     ],
     imports: [
         CommonModule,

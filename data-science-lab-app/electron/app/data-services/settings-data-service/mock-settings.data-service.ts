@@ -1,10 +1,11 @@
 import { SettingsDataService } from './settings.data-service';
-import { ApiSettings } from '../../models';
+import { ApiSettings, DataGroupSettings } from '../../models';
 
 export class MockSettingsDataService implements SettingsDataService {
 
     readApiSettings: () => ApiSettings;
     readPluginPath: () => string;
+    readDataGroupSettings: () => DataGroupSettings;
 
     constructor() {
         this.reset();
@@ -15,6 +16,9 @@ export class MockSettingsDataService implements SettingsDataService {
             return new ApiSettings();
         };
         this.readPluginPath = () => '';
+        this.readDataGroupSettings = () => {
+            return new DataGroupSettings();
+        }
     }
 
 

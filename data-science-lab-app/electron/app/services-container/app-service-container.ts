@@ -10,11 +10,18 @@ import {
 import { AppWebCoreService } from '../core-services';
 import { AppFileCoreService } from '../core-services/file-core-service';
 import { IpcService } from '../../../shared/services';
-import { AppIpcService  } from '../ipc-services/app-ipc-service'; 
+import { AppIpcService } from '../ipc-services/app-ipc-service';
 import { AppFetchService, AppPackageService, AppExperimentService, AppFetchPluginsService } from '../services';
-import { AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer, AppFetchSessionProducer } from '../producers';
-import { AppPackageConsumer, AppExperimentConsumer , AppFetchPluginsConsumer, AppFetchSessionConsumer} from '../consumers';
-import { AppFetchPluginDataConverter } from '../converters/fetch-plugin-data-converter';
+import {
+    AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
+    AppFetchSessionProducer, AppDataGroupsProducer
+} from '../producers';
+import {
+    AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
+    AppFetchSessionConsumer, AppDataGroupsConsumer
+} from '../consumers';
+import { AppFetchPluginDataConverter, AppDataGroupConverter } from '../converters';
+import { AppDataGroupsService } from '../services/data-groups-service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -61,6 +68,9 @@ export class AppServiceContainer implements ServiceContainer {
             // Converter
             case SERVICE_TYPES.FetchPluginDataConverter:
                 return new AppFetchPluginDataConverter();
+
+            case SERVICE_TYPES.DataGroupConverter:
+                return new AppDataGroupConverter();
 
             // Session Services
             case SERVICE_TYPES.FetchSessionService:
@@ -123,6 +133,8 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.FetchService:
                 return new AppFetchService(this);
 
+            case SERVICE_TYPES.DataGroupsService:
+                return new AppDataGroupsService(this);
 
             // Producers
             case SERVICE_TYPES.PackageProducer:
@@ -130,25 +142,31 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.ExperimentProducer:
                 return new AppExperimentProducer(this);
-                
+
             case SERVICE_TYPES.FetchSessionProducer:
                 return new AppFetchSessionProducer(this);
 
             case SERVICE_TYPES.FetchPluginsProducer:
                 return new AppFetchPluginsProducer(this);
 
+            case SERVICE_TYPES.DataGroupsProducer:
+                return new AppDataGroupsProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
-                
+
             case SERVICE_TYPES.ExperimentConsumer:
-                return new AppExperimentConsumer(this);  
-                
+                return new AppExperimentConsumer(this);
+
             case SERVICE_TYPES.FetchSessionConsumer:
                 return new AppFetchSessionConsumer(this);
 
             case SERVICE_TYPES.FetchPluginsConsumer:
                 return new AppFetchPluginsConsumer(this);
+
+            case SERVICE_TYPES.DataGroupsConsumer:
+                return new AppDataGroupsConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

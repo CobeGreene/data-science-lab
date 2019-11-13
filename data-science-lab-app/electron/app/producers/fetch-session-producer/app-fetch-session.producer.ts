@@ -1,17 +1,20 @@
 import { FetchSessionProducer } from './fetch-session.producer';
-import { FetchSessionViewModel } from '../../../../shared/view-models';
-import { FetchSession } from '../../models';
+import { FetchSessionViewModel, DataGroupViewModel } from '../../../../shared/view-models';
+import { FetchSession, ExperimentDataGroup, ApiSettings, DataGroupSettings } from '../../models';
 import { IpcService } from '../../../../shared/services';
 import { SERVICE_TYPES } from '../../services-container';
 import { ExperimentsEvents } from '../../../../shared/events';
 import { BaseProducer } from '../base.producer';
+import { DataGroupConverter } from '../../converters';
 
 
 export class AppFetchSessionProducer extends BaseProducer implements FetchSessionProducer {
-    
-    finish(experimentId: number) {
+
+    newDataGroup(dataGroup: ExperimentDataGroup, settings: DataGroupSettings) {
         const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
-        ipc.send(ExperimentsEvents.FinishedFetchSessionListeners, experimentId);
+        const converter = this.serviceContainer.resolve<DataGroupConverter>(SERVICE_TYPES.DataGroupConverter);
+        const viewModel = converter.toViewModel(dataGroup, settings);
+        ipc.send(ExperimentsEvents.NewDataGroupListeners, viewModel);        
     }
     
     all(fetchSessions: FetchSession[]) {
@@ -46,6 +49,11 @@ export class AppFetchSessionProducer extends BaseProducer implements FetchSessio
             experimentId: fetchSession.experimentId,
             optionList: fetchSession.fetchPlugin.getOptions().options()
         });
+    }
+
+    finish(experimendId: number): void {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(ExperimentsEvents.FinishedFetchSessionListeners, experimendId);
     }
 
 }

@@ -4,6 +4,7 @@ export const enum SERVICE_TYPES {
     PluginContext,
     // Converters,
     FetchPluginDataConverter,
+    DataGroupConverter,
     // Data Services
     ExperimentDataGroupDataService,
     ExperimentDataService,
@@ -21,16 +22,19 @@ export const enum SERVICE_TYPES {
     ExperimentService,
     FetchService,
     FetchPluginsService,
+    DataGroupsService,
     // Consumers
     PackageConsumer,
     ExperimentConsumer,
     FetchPluginsConsumer,
     FetchSessionConsumer,
+    DataGroupsConsumer,
     // Producers
     PackageProducer,
     ExperimentProducer,
     FetchSessionProducer,
-    FetchPluginsProducer
+    FetchPluginsProducer,
+    DataGroupsProducer,
 }
 
 
