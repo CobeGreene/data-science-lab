@@ -3,7 +3,7 @@ import { FetchService } from './fetch.service';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { FetchSessionService } from '../../session-services';
 import { FetchSessionProducer } from '../../producers';
-import { PackageDataService, ExperimentDataGroupDataService } from '../../data-services';
+import { PackageDataService, ExperimentDataGroupDataService, SettingsDataService } from '../../data-services';
 import { FetchSession } from '../../models';
 import { FetchPluginDataConverter } from '../../converters/fetch-plugin-data-converter';
 
@@ -76,21 +76,28 @@ export class AppFetchService implements FetchService {
         fetchSessionProducer.all(fetchSessionService.all());
     }
 
+    
+
     private sessionFinish(session: FetchSession) {
         const fetchPluginData = session.fetchPlugin.fetch();
         const converter = this.serviceContainer.resolve<FetchPluginDataConverter>(SERVICE_TYPES.FetchPluginDataConverter);
         const dataGroups = converter.toDataGroups(fetchPluginData);
         const dataGroupDataService = this.serviceContainer
             .resolve<ExperimentDataGroupDataService>(SERVICE_TYPES.ExperimentDataGroupDataService);
-
+        
+        const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
+        const settingsDataService = this.serviceContainer.resolve<SettingsDataService>(SERVICE_TYPES.SettingsDataService);
+        const dataGroupSettings = settingsDataService.readDataGroupSettings();
+        
         for (const group of dataGroups) {
             group.experimentId = session.experimentId;
             dataGroupDataService.create(group);
+            fetchSessionProducer.newDataGroup(group, dataGroupSettings);
         }
+
         const fetchSessionService = this.serviceContainer.resolve<FetchSessionService>(SERVICE_TYPES.FetchSessionService);
         const expermentId = session.experimentId;
         fetchSessionService.delete(expermentId);
-        const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
         fetchSessionProducer.finish(expermentId);
     }
 

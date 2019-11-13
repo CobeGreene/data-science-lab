@@ -8,6 +8,7 @@ export class DataGroupViewModel {
     public numOfFeatures: number;
 
     public previewFeatures: string[];
+    public previewFeautureTypes: string[];
     public previewExamples: any[][];
 
     constructor(dataGroup: {
@@ -16,6 +17,7 @@ export class DataGroupViewModel {
         numOfExamples: number,
         numOfFeatures: number,
         previewFeatures?: string[],
+        previewFeatureTypes?: string[],
         previewExamples?: any[][]
     }) {
         this.id = dataGroup.id;
@@ -25,6 +27,7 @@ export class DataGroupViewModel {
 
         this.previewExamples = dataGroup.previewExamples || [];
         this.previewFeatures = dataGroup.previewFeatures || [];
+        this.previewFeautureTypes = dataGroup.previewFeatureTypes || [];
     }
 }
 
