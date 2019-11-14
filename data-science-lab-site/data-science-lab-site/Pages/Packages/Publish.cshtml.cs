@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using data_science_lab_site.Constants;
 using data_science_lab_site.Data;
 using data_science_lab_site.Data.Models;
-using data_science_lab_site.Data.ViewModels;
 using data_science_lab_site.Options;
 using data_science_lab_site.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -73,8 +72,8 @@ namespace data_science_lab_site.Pages.Packages
 
         private bool InvalidPackage()
         {
-            if (_context.Packages.FirstOrDefault(p => p.Name.Equals(Package.Name)) != null)
-                ModelState.AddModelError(string.Empty, "Must have a unique plugin name");
+            if (_context.Packages.FirstOrDefault(p => p.Name.Equals(Package.Name) || p.RepositoryName.Equals(Package.RepositoryName)) != null)
+                ModelState.AddModelError(string.Empty, "Must have a unique package name and unique repository name");
             return !ModelState.IsValid;
         }
 

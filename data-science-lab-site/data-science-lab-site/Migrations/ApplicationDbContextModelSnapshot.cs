@@ -198,14 +198,14 @@ namespace data_science_lab_site.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int?>("PluginPackageId");
+                    b.Property<int>("PackageId");
 
                     b.Property<string>("Type")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PluginPackageId");
+                    b.HasIndex("PackageId");
 
                     b.ToTable("Plugins");
                 });
@@ -232,6 +232,8 @@ namespace data_science_lab_site.Migrations
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Name");
+
+                    b.HasAlternateKey("RepositoryName");
 
                     b.HasIndex("UserId");
 
@@ -285,9 +287,10 @@ namespace data_science_lab_site.Migrations
 
             modelBuilder.Entity("data_science_lab_site.Data.Models.Plugin", b =>
                 {
-                    b.HasOne("data_science_lab_site.Data.Models.PluginPackage")
+                    b.HasOne("data_science_lab_site.Data.Models.PluginPackage", "Package")
                         .WithMany("Plugins")
-                        .HasForeignKey("PluginPackageId");
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("data_science_lab_site.Data.Models.PluginPackage", b =>

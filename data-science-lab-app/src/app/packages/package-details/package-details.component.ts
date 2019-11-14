@@ -20,25 +20,27 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.route.params
-            .pipe(untilComponentDestroyed(this))
-            .subscribe((params: Params) => {
-                const name = params.name;
-                this.pluginPackage = this.packageService.get(name);
-           });
+        .pipe(untilComponentDestroyed(this))
+        .subscribe((params: Params) => {
+            const name = params.name;
+            this.pluginPackage = this.packageService.get(name);
+        });
+        const current = this.route.snapshot.paramMap.get('name');
+        this.pluginPackage = this.packageService.get(current);
     }
 
     onInstall(): void {
-        this.packageService.install(this.pluginPackage.name);
+        this.packageService.install(this.pluginPackage);
         this.zone.run(() => {
-           this.router.navigate(['/packages', 'installed']); 
+            this.router.navigate(['/packages', 'installed']);
         });
     }
 
     onUninstall(): void {
-        this.packageService.uninstall(this.pluginPackage.name);
+        this.packageService.uninstall(this.pluginPackage);
         this.zone.run(() => {
-            this.router.navigate(['/packages', 'available']); 
-         });
+            this.router.navigate(['/packages', 'available']);
+        });
     }
 
     ngOnDestroy(): void {

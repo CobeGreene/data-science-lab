@@ -10,7 +10,7 @@ describe('Angular Mock Package Service Tests', () => {
     it('init should create service with packages', () => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name', 'owner', 'repo', 'username')
+                new PluginPackage({name: 'name', owner: 'owner', repositoryName: 'repo', username: 'username'})
             ]
         );
         const service = MockPackageService.init(packagesList);
@@ -21,7 +21,7 @@ describe('Angular Mock Package Service Tests', () => {
     it('install should set intall to true for package', (done) => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name', 'owner', 'repo', 'username')
+                new PluginPackage({name: 'name', owner: 'owner', repositoryName: 'repo', username: 'username'})
             ]
         );
         const service = MockPackageService.init(packagesList);
@@ -29,46 +29,51 @@ describe('Angular Mock Package Service Tests', () => {
             expect(value.packages[0].install).toBeTruthy();
             done();
         });
-        service.install(packagesList.packages[0].name);
-
+        service.install(packagesList.packages[0]);
     });
 
     it('install should throw for no packages', () => {
         const service = new MockPackageService();
         expect(() => {
-            service.install('name');
+            service.install(new PluginPackage({
+                name: 'not found', owner: 'owner', repositoryName: 'repop',
+                username: 'user'
+            }));
         }).toThrowError();
     });
 
     it('install should throw if package not found', () => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name1', 'owner1', 'repo1', 'username1'),
-                new PluginPackage('name2', 'owner2', 'repo2', 'username2')
+                new PluginPackage({name: 'name1', owner: 'owner1', repositoryName: 'repo1', username: 'username1'}),
+                new PluginPackage({name: 'name2', owner: 'owner2', repositoryName: 'repo2', username: 'username2'})
             ]
         );
         const service = MockPackageService.init(packagesList);
         expect(() => {
-            service.install('not found');
+            service.install(new PluginPackage({
+                name: 'not found', owner: 'owner', repositoryName: 'repop',
+                username: 'user'
+            }));
         }).toThrowError();
     });
 
     it('install should throw if already install', () => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name', 'owner', 'repo', 'username', [], true)
+                new PluginPackage({name: 'name', owner: 'owner', repositoryName: 'repo', username: 'username', plugins: [], install: true})
             ]
         );
         const service = MockPackageService.init(packagesList);
         expect(() => {
-            service.install(packagesList.packages[0].name);
+            service.install(packagesList.packages[0]);
         }).toThrowError();
     });
 
     it('uninstall should set uninstall to false for package', (done) => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name', 'owner', 'repo', 'username', [], true)
+                new PluginPackage({name: 'name', owner: 'owner', repositoryName: 'repo', username: 'username', plugins: [], install: true}),
             ]
         );
         const service = MockPackageService.init(packagesList);
@@ -76,47 +81,53 @@ describe('Angular Mock Package Service Tests', () => {
             expect(!value.packages[0].install).toBeTruthy();
             done();
         });
-        service.uninstall(packagesList.packages[0].name);
+        service.uninstall(packagesList.packages[0]);
     });
 
     it('uninstall should throw for no packages', () => {
         const service = new MockPackageService();
         expect(() => {
-            service.uninstall('name');
+            service.uninstall(new PluginPackage({
+                name: 'not found', owner: 'owner', repositoryName: 'repop',
+                username: 'user'
+            }));
         }).toThrowError();
     });
 
     it('uninstall should throw if packages not found', () => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name1', 'owner1', 'repo1', 'username1'),
-                new PluginPackage('name2', 'owner2', 'repo2', 'username2')
+                new PluginPackage({name: 'name1', owner: 'owner1', repositoryName: 'repo1', username: 'username1'}),
+                new PluginPackage({name: 'name2', owner: 'owner2', repositoryName: 'repo2', username: 'username2'})
             ]
         );
         const service = MockPackageService.init(packagesList);
         expect(() => {
-            service.uninstall('not found');
+            service.uninstall(new PluginPackage({
+                name: 'not found', owner: 'owner', repositoryName: 'repop',
+                username: 'user'
+            }));
         }).toThrowError();
     });
 
     it('uninstall should throw if not already install', () => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name', 'owner', 'repo', 'username')
+                new PluginPackage({name: 'name', owner: 'owner', repositoryName: 'repo', username: 'username'})
             ]
         );
         const service = MockPackageService.init(packagesList);
         expect(() => {
-            service.uninstall(packagesList.packages[0].name);
+            service.uninstall(packagesList.packages[0]);
         }).toThrowError();
     });
 
     it('get should retrieve package by name', () => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name1', 'owner1', 'repo1', 'username1'),
-                new PluginPackage('plugin', 'owner', 'repo', 'username'),
-                new PluginPackage('name2', 'owner2', 'repo2', 'username2'),
+                new PluginPackage({name: 'name1', owner: 'owner1', repositoryName: 'repo1', username: 'username1'}),
+                new PluginPackage({name: 'plugin', owner: 'owner', repositoryName: 'repo', username: 'username'}),
+                new PluginPackage({name: 'name2', owner: 'owner2', repositoryName: 'repo2', username: 'username2'})
             ]
         );
         const service = MockPackageService.init(packagesList);
@@ -134,9 +145,9 @@ describe('Angular Mock Package Service Tests', () => {
     it('get should throw error even with packages', () => {
         const packagesList = new PluginPackageList(
             [
-                new PluginPackage('name1', 'owner1', 'repo1', 'username1'),
-                new PluginPackage('plugin', 'owner', 'repo', 'username'),
-                new PluginPackage('name2', 'owner2', 'repo2', 'username2'),
+                new PluginPackage({name: 'name1', owner: 'owner1', repositoryName: 'repo1', username: 'username1'}),
+                new PluginPackage({name: 'plugin', owner: 'owner', repositoryName: 'repo', username: 'username'}),
+                new PluginPackage({name: 'name2', owner: 'owner2', repositoryName: 'repo2', username: 'username2'})
             ]
         );
         const service = MockPackageService.init(packagesList);

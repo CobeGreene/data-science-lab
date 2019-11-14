@@ -1,0 +1,10 @@
+<div class="row">
+    <div class="col">
+        <label>Search</label>
+        <input type="text" class="form-control" [(ngModel)]="searchFilter">
+    </div>
+</div>
+<hr>
+<div class="mt-3" *ngFor="let pluginPackage of packagesList.packages | packageFilter:searchFilter | installOnlyPackage:installOnly ">
+    <app-package-card [pluginPackage]="pluginPackage"></app-package-card>
+</div>

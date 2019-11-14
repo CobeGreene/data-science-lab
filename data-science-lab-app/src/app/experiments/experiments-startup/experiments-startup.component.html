@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col text-center">
+        <h1>Startup</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col align-content-center">
+        <div>
+            <ul class="list-unstyled">
+                <li class="list-inline-item"><a class="nav-link" (click)="onCreateExperiment()">Create</a></li>
+                <li class="list-inline-item"><a class="nav-link disabled">Load</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="creating">
+    <div class="col text-center">
+        <p>Creating ...</p>
+        <p class="text-dark">Give it a second.</p>
+    </div>
+</div>

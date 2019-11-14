@@ -1,3 +1,8 @@
 export { MockZone } from './mock-zone';
-export { AppIpService } from './ip-services';
+export { AppIpcService } from './ipc-services';
 export { AppPackageService, MockPackageService, PackageService } from './package-services';
+export { AppExperimentService, ExperimentService } from './experiment-services';
+export { AppFetchSessionService, FetchSessionService } from './fetch-session.services';
+export { AppFetchPluginsService, FetchPluginsService } from './fetch-plugins.services';
+export { AppDataGroupsService, DataGroupsService } from './data-groups-services';
+

@@ -1,55 +1,46 @@
 import { app, BrowserWindow } from 'electron';
-import { IpService } from '../../shared/services';
-import { AppIpService, AppPackageService, PackageService, AppSettingService, SettingService } from './services';
-import { PluginManager } from 'live-plugin-manager';
+import { IpcService } from '../../shared/services';
+import { ServiceContainer, AppServiceContainer, SERVICE_TYPES } from './services-container';
+import { Consumer } from './consumers';
 import { ErrorEvents } from '../../shared/events';
-import { AppWebService } from './services/web-services';
-import { WebService } from 'data-science-lab-core';
-
 export let win: BrowserWindow;
 
+
 export class App {
+    private ipcService: IpcService;
+    private consumers: Consumer[];
+    private servicesContainer: ServiceContainer;
 
-    private pluginsDir: string;
-    private preload: string;
-    private indexPage: string;
-    private settingsPath: string; 
-    private ipService: IpService;
-    private packageManager: PackageService;
-    private pluginManager: PluginManager;
-    private settingsService: SettingService;
-    private webService: WebService;
-
-    constructor(pluginsDir: string, preload: string, indexPage: string, settingsPath: string) {
-        this.pluginsDir = pluginsDir;
-        this.preload = preload;
-        this.indexPage = indexPage;
-        this.settingsPath = settingsPath;
+    constructor(private preload: string, private indexPage: string) {
+        this.servicesContainer = new AppServiceContainer();
     }
 
     public initialize() {
-        this.settingsService = new AppSettingService(this.settingsPath);
-        this.webService = new AppWebService();
-        this.ipService = new AppIpService();
-        this.pluginManager = new PluginManager({
-            pluginsPath: this.pluginsDir
-        });
-        this.packageManager = new AppPackageService(this.ipService, this.pluginManager, this.settingsService, this.webService);
+        this.ipcService = this.servicesContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        this.consumers = [
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.PackageConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.ExperimentConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchPluginsConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchSessionConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.DataGroupsConsumer),
+        ];
+        this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
+    }
 
-        this.ipService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
+    public initializeConsumers() {
+        this.consumers.forEach((consumer) => {
+            consumer.initialize();
+        });
+        this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
-    
-    public initializeService() {
-        this.packageManager.inititalize();
-    }
-    
+
     public destory() {
-        this.packageManager.destory();
-        this.ipService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
+        this.consumers.forEach((consumer) => {
+            consumer.destory();
+        });
     }
 
     private createWindow() {
-        this.initializeService();
         win = new BrowserWindow({
             width: 1500, height: 1000,
             webPreferences: {
@@ -62,6 +53,7 @@ export class App {
             this.destory();
             win = null;
         });
+        this.initializeConsumers();
     }
     
     public start() {
@@ -72,6 +64,11 @@ export class App {
             if (win == null) {
                 this.createWindow();
             }
+        });
+
+        process.on('uncaughtException', (error) => {
+            console.warn(`uncaught exception ${error.name}, ${error.message}`);
+            this.ipcService.send(ErrorEvents.ExceptionListeners, `${error.message}`);
         });
     }
 

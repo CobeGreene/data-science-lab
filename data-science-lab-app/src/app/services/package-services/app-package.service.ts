@@ -2,9 +2,8 @@ import { PackageService } from './package.service';
 import { PluginPackage, PluginPackageList } from '../../../../shared/models';
 import { PackagesEvents, ErrorEvents } from '../../../../shared/events';
 import { OnDestroy, Injectable, NgZone } from '@angular/core';
-import { IpService } from '../../../../shared/services/ip.service';
+import { IpcService } from '../../../../shared/services';
 import { Subject } from 'rxjs';
-import { deserialize } from 'typescript-json-serializer';
 
 @Injectable()
 export class AppPackageService implements PackageService, OnDestroy {
@@ -13,7 +12,7 @@ export class AppPackageService implements PackageService, OnDestroy {
     private packagesList: PluginPackageList;
     private retrieve: boolean;
 
-    constructor(private ipService: IpService, private zone: NgZone) {
+    constructor(private ipcService: IpcService, private zone: NgZone) {
         this.packagesChanged = new Subject<PluginPackageList>();
         this.packagesList = new PluginPackageList();
         this.retrieve = false;
@@ -26,17 +25,17 @@ export class AppPackageService implements PackageService, OnDestroy {
     
     all(): PluginPackageList {
         if (!this.retrieve) {
-            this.ipService.send(PackagesEvents.GetAllEvent);
+            this.ipcService.send(PackagesEvents.GetAllEvent);
         }
         return this.packagesList;
     }
 
-    install(name: string): void {
-        this.ipService.send(PackagesEvents.InstallEvent, name);
+    install(pluginPackage: PluginPackage): void {
+        this.ipcService.send(PackagesEvents.InstallEvent, pluginPackage);
     }
 
-    uninstall(name: string): void {
-        this.ipService.send(PackagesEvents.UninstallEvent, name);
+    uninstall(pluginPackage: PluginPackage): void {
+        this.ipcService.send(PackagesEvents.UninstallEvent, pluginPackage);
     }
 
     get(name: string): PluginPackage {
@@ -51,25 +50,24 @@ export class AppPackageService implements PackageService, OnDestroy {
     }
 
     private registerGetAll(): void {
-        this.ipService.on(PackagesEvents.GetAllListeners, this.getAllEvent);
+        this.ipcService.on(PackagesEvents.GetAllListeners, this.getAllEvent);
     }   
     
     private unregisterGetAll(): void {
-        this.ipService.removeListener(PackagesEvents.GetAllListeners, this.getAllEvent);
+        this.ipcService.removeListener(PackagesEvents.GetAllListeners, this.getAllEvent);
     }
 
-    private getAllEvent = (event, arg): void => {
+    private getAllEvent = (event, pluginPackageList: PluginPackageList): void => {
         this.zone.run(() => {
             try {
-                const value = deserialize<PluginPackageList>(arg[0], PluginPackageList);
-                this.packagesList = value;
+                this.packagesList = pluginPackageList;
                 this.retrieve = true;
                 this.packagesChanged.next(this.all());
             } catch (exception) {
                 if (exception instanceof Error) {
-                    this.ipService.send(ErrorEvents.ExceptionListeners, exception.message);
+                    this.ipcService.send(ErrorEvents.ExceptionListeners, exception.message);
                 } else {
-                    this.ipService.send(ErrorEvents.ExceptionListeners, exception);   
+                    this.ipcService.send(ErrorEvents.ExceptionListeners, exception);   
                 }
             }
 

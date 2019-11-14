@@ -17,5 +17,8 @@ namespace data_science_lab_site.Data.Models
         public string Description { get; set; }
         [Required, Display(Name = "Plugin's Type")]
         public string Type { get; set; }
+
+        public int PackageId { get; set; }
+        public virtual PluginPackage Package { get; set; }
     }
 }

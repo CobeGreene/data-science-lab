@@ -2,64 +2,58 @@ import { MockZone } from '../mock-zone';
 import { AppPackageService } from './app-package.service';
 import { PluginPackageList, PluginPackage } from '../../../../shared/models';
 import { PackagesEvents } from '../../../../shared/events';
-import { MockIpService } from '../../../../shared/services';
-import { serialize } from 'typescript-json-serializer';
+import { MockIpcService } from '../../../../shared/services';
 
 describe('Angular App Package Service Tests', () => {
     let packageService: AppPackageService;
-    let ipService: MockIpService;
+    let ipcService: MockIpcService;
     let packagesList: PluginPackageList;
     let zone: MockZone;
 
-    const getAllEvent = (event, arg): void => {
-        const json = serialize(packagesList);
-        ipService.send(PackagesEvents.GetAllListeners, json);
+    const getAllEvent = (event, ...arg): void => {
+        ipcService.send(PackagesEvents.GetAllListeners, packagesList);
     };
 
-    const installEvent = (event, arg): void => {
-        const name = arg[0];
+    const installEvent = (event, pluginPackage: PluginPackage): void => {
         const find = packagesList.packages.findIndex((value: PluginPackage) => {
-            return value.name === name;
+            return value.name === pluginPackage.name;
         });
         if (find >= 0) {
             packagesList.packages[find].install = true;
-            const json = serialize(packagesList);
-            ipService.send(PackagesEvents.GetAllListeners, json);
+            ipcService.send(PackagesEvents.GetAllListeners, packagesList);
         }
     };
 
-    const uninstallEvent = (event, arg): void => {
-        const name = arg[0];
+    const uninstallEvent = (event, pluginPackage: PluginPackage): void => {
         const find = packagesList.packages.findIndex((value: PluginPackage) => {
-            return value.name === name;
+            return value.name === pluginPackage.name;
         });
         if (find >= 0) {
             packagesList.packages[find].install = false;
-            const json = serialize(packagesList);
-            ipService.send(PackagesEvents.GetAllListeners, json);
+            ipcService.send(PackagesEvents.GetAllListeners, packagesList);
         }
     };
 
     beforeAll(() => {
         packagesList = new PluginPackageList([
-            new PluginPackage('first', 'owner1', 'reop1', 'user1'),
-            new PluginPackage('second', 'owner2', 'reop2', 'user2'),
-            new PluginPackage('third', 'owner3', 'reop3', 'user3', [], false)
+            new PluginPackage({ name: 'first', owner: 'owner1', repositoryName: 'reop1', username: 'user1' }),
+            new PluginPackage({ name: 'second', owner: 'owner2', repositoryName: 'reop2', username: 'user2' }),
+            new PluginPackage({ name: 'third', owner: 'owner3', repositoryName: 'reop3', username: 'user3', plugins: [], install: false })
         ]);
         zone = new MockZone({});
-        ipService = new MockIpService();
+        ipcService = new MockIpcService();
     });
 
     beforeEach(() => {
-        ipService.on(PackagesEvents.GetAllEvent, getAllEvent);
-        ipService.on(PackagesEvents.InstallEvent, installEvent);
-        ipService.on(PackagesEvents.UninstallEvent, uninstallEvent);
-        packageService = new AppPackageService(ipService, zone);
+        ipcService.on(PackagesEvents.GetAllEvent, getAllEvent);
+        ipcService.on(PackagesEvents.InstallEvent, installEvent);
+        ipcService.on(PackagesEvents.UninstallEvent, uninstallEvent);
+        packageService = new AppPackageService(ipcService, zone);
     });
 
     afterEach(() => {
-        ipService.removeListenersFromAllChannels();
         packageService.ngOnDestroy();
+        ipcService.removeListenersFromAllChannels();
     });
 
     it('all should send a request to ipc and get back items', (done) => {
@@ -89,7 +83,7 @@ describe('Angular App Package Service Tests', () => {
             expect(value.packages[0].install).toBeTruthy();
             done();
         });
-        packageService.install(packagesList.packages[0].name);
+        packageService.install(packagesList.packages[0]);
     });
 
     it('uninstall should set third\'s package install to false when getting packages', (done) => {
@@ -98,7 +92,7 @@ describe('Angular App Package Service Tests', () => {
             expect(value.packages[2].install).toBeFalsy();
             done();
         });
-        packageService.uninstall(packagesList.packages[2].name);
+        packageService.uninstall(packagesList.packages[2]);
     });
 
 
