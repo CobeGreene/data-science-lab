@@ -15,7 +15,7 @@ import { ExperimentsModule } from './experiments/experiments.module';
   declarations: [
     AppComponent,
     WelcomeComponent,
-    ErrorNotificationsComponent
+    ErrorNotificationsComponent,
   ],
   imports: [
     BrowserModule,
