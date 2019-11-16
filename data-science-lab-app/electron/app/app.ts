@@ -23,6 +23,7 @@ export class App {
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchPluginsConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchSessionConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.DataGroupsConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.SelectTransformPluginsConsumer)
         ];
         this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }

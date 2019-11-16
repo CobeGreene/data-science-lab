@@ -20,7 +20,7 @@ import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
     AppFetchSessionConsumer, AppDataGroupsConsumer
 } from '../consumers';
-import { AppFetchPluginDataConverter, AppDataGroupConverter } from '../converters';
+import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 import { AppDataGroupsService } from '../services/data-groups-service';
 
 export class AppServiceContainer implements ServiceContainer {
@@ -66,8 +66,8 @@ export class AppServiceContainer implements ServiceContainer {
                 return this.pluginContext;
 
             // Converter
-            case SERVICE_TYPES.FetchPluginDataConverter:
-                return new AppFetchPluginDataConverter();
+            case SERVICE_TYPES.PluginDataConverter:
+                return new AppPluginDataConverter();
 
             case SERVICE_TYPES.DataGroupConverter:
                 return new AppDataGroupConverter();

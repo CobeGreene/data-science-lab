@@ -1,15 +1,13 @@
-import { FetchPluginData } from 'data-science-lab-core';
+import { PluginData } from 'data-science-lab-core';
 import { ExperimentDataGroup } from '../../models';
-import { AppFetchPluginDataConverter } from './app-fetch-plugin-data.converter';
+import { AppPluginDataConverter } from './app-plugin-data.converter';
 
+describe('Electron App Plugin Data Converter Tests', () => {
 
-
-describe('Electron App Fetch Plugin Data Converter Tests', () => {
-
-    let converter: AppFetchPluginDataConverter;
+    let converter: AppPluginDataConverter;
 
     beforeAll(() => {
-        converter = new AppFetchPluginDataConverter();
+        converter = new AppPluginDataConverter();
     });
 
     it('get type should return number for 1', () => {
@@ -53,7 +51,7 @@ describe('Electron App Fetch Plugin Data Converter Tests', () => {
 
 
     it('single example with one feature should a group data with a number feature', () => {
-        const fetchPluginData = new FetchPluginData({
+        const fetchPluginData = new PluginData({
             features: ['foo'],
             examples: [[1]]
         });
@@ -64,7 +62,7 @@ describe('Electron App Fetch Plugin Data Converter Tests', () => {
     });
 
     it('single example with no feature should return a group data with a number feature', () => {
-        const fetchPluginData = new FetchPluginData({
+        const fetchPluginData = new PluginData({
             features: [],
             examples: [[1]]
         });
@@ -75,7 +73,7 @@ describe('Electron App Fetch Plugin Data Converter Tests', () => {
     });
 
     it('single example with many feature should return a group with a number feature', () => {
-        const fetchPluginData = new FetchPluginData({
+        const fetchPluginData = new PluginData({
             features: ['one', 'two'],
             examples: [[1]]
         });
@@ -87,7 +85,7 @@ describe('Electron App Fetch Plugin Data Converter Tests', () => {
     });
 
     it('multiple example with many feature should return a single group data', () => {
-        const fetchPluginData = new FetchPluginData({
+        const fetchPluginData = new PluginData({
             features: ['one', 'two', 'three'],
             examples: [[1, true, '3'], [1, false, '3'], [1, true, '3']]
         });
@@ -102,7 +100,7 @@ describe('Electron App Fetch Plugin Data Converter Tests', () => {
     });
 
     it('multiple examples with different sizes should return multiple group datas', () => {
-        const fetchPluginData = new FetchPluginData({
+        const fetchPluginData = new PluginData({
             features: ['one', 'two', 'three'],
             examples: [[1, true, '3'], [1, false, '3'], [1, true, '3'], [1]]
         });
