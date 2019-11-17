@@ -46,7 +46,6 @@ export class AppSelectTransformPluginsDataService implements SelectTransformPlug
                     })) {
                         plugin.packageName = pluginPackage.name;
                         const transformPlugin = await pluginContext.activate<TransformPlugin>(pluginPackage, plugin);
-
                         const inputs = transformPlugin.getInputs().inputs();
                         const selectTransformPlugin = new SelectTransformPlugin({
                             plugin,
@@ -60,7 +59,7 @@ export class AppSelectTransformPluginsDataService implements SelectTransformPlug
                                 });
                             })
                         });
-
+                        
                         await pluginContext.deactivate(pluginPackage, plugin);
                         transformPlugins.push(selectTransformPlugin);
                     }
@@ -83,6 +82,11 @@ export class AppSelectTransformPluginsDataService implements SelectTransformPlug
                 await this.getAllTransformPlugins();
             }   
 
+            if (this.plugins.find((value) => {
+                return value.plugin.packageName === pluginPackage.name;
+            })) {
+                resolve(this.plugins);
+            }
             const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
             try {
                 for (const plugin of pluginPackage.plugins.filter((value) => {
