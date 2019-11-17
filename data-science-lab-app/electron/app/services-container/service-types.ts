@@ -10,6 +10,7 @@ export const enum SERVICE_TYPES {
     ExperimentDataService,
     PackageDataService,
     SettingsDataService,
+    SelectTransformPluginsDataService,
     // Session Services
     FetchSessionService,
     // Ipc Services
