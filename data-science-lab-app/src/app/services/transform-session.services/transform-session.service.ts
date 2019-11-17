@@ -5,23 +5,23 @@ import { Plugin, SelectTransformPlugin } from '../../../../shared/models';
 export abstract class TransformSessionService {
 
     public newSession: Subject<TransformSessionViewModel>;
-    public sessionDeleted: Subject<{ experimentId: number, dataGroupId: number}>;
+    public sessionDeleted: Subject<number>;
     public sessionUpdated: Subject<TransformSessionViewModel>;
-    public sessionFinished: Subject<{ experimentId: number, dataGroupId: number}>;
+    public sessionFinished: Subject<number>;
 
     constructor() {
         this.newSession = new Subject<TransformSessionViewModel>();
-        this.sessionDeleted = new Subject<{ experimentId: number, dataGroupId: number}>();
+        this.sessionDeleted = new Subject<number>();
         this.sessionUpdated = new Subject<TransformSessionViewModel>();
-        this.sessionFinished = new Subject<{ experimentId: number, dataGroupId: number}>();
+        this.sessionFinished = new Subject<number>();
     }
 
-    abstract get(experimentId: number, dataGroupId: number): TransformSessionViewModel;
-    abstract hasSession(experimentId: number, dataGroupId: number): boolean;
-    abstract create(experimentId: number, dataGroupId: number, plugin: SelectTransformPlugin): void;
-    abstract delete(experimentId: number, dataGroupId: number): void;
+    abstract get(dataGroupId: number): TransformSessionViewModel;
+    abstract hasSession(dataGroupId: number): boolean;
+    abstract create(dataGroupId: number, plugin: SelectTransformPlugin): void;
+    abstract delete(dataGroupId: number): void;
 
-    abstract submitOptions(experimentId: number, dataGroupId: number, inputs: {[id: string]: any}): void;
-    abstract executeCommand(experimentId: number, dataGroupId: number, command: string): void;
+    abstract submitOptions(dataGroupId: number, inputs: {[id: string]: any}): void;
+    abstract executeCommand(dataGroupId: number, command: string): void;
 
 } 

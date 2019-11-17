@@ -5,15 +5,19 @@ import { ExperimentDataWorkspaceComponent } from './experiment-data-workspace/ex
 import { ExperimentSelectFetchComponent } from './experiment-select-fetch/experiment-select-fetch.component';
 import { ExperimentSetupFetchComponent } from './experiment-setup-fetch/experiment-setup-fetch.component';
 import { ExperimentSelectTransformComponent } from './experiment-select-transform/experiment-select-transform.component';
+import { ExperimentInputTransformComponent } from './experiment-input-transform/experiment-input-transform.component';
 
 const experimentDetailsRoutes: Routes = [
-    { path: 'experiments/details/:id', component: ExperimentDetailsComponent, children: [
-        { path: '', component: ExperimentDataWorkspaceComponent, pathMatch: 'full' },
-        { path: 'data-workspace', component: ExperimentDataWorkspaceComponent },
-        { path: 'select-fetch', component: ExperimentSelectFetchComponent },
-        { path: 'setup-fetch', component: ExperimentSetupFetchComponent },
-        { path: 'select-transform/:dataGroupId', component: ExperimentSelectTransformComponent  }
-    ]}
+    {
+        path: 'experiments/details/:id', component: ExperimentDetailsComponent, children: [
+            { path: '', component: ExperimentDataWorkspaceComponent, pathMatch: 'full' },
+            { path: 'data-workspace', component: ExperimentDataWorkspaceComponent },
+            { path: 'select-fetch', component: ExperimentSelectFetchComponent },
+            { path: 'setup-fetch', component: ExperimentSetupFetchComponent },
+            { path: 'select-transform/:dataGroupId', component: ExperimentSelectTransformComponent },
+            { path: 'input-transform/:dataGroupId', component: ExperimentInputTransformComponent }
+        ]
+    }
 ];
 
 @NgModule({

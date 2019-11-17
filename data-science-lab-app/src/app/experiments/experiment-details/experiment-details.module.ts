@@ -20,6 +20,8 @@ import { ExperimentPreviewDataGroupComponent } from './experiment-data-workspace
 import { ExperimentSelectTransformComponent } from './experiment-select-transform/experiment-select-transform.component';
 import { ExperimentSelectTransformPluginsComponent } from './experiment-select-transform/experiment-select-transform-plugins/experiment-select-transform-plugins.component';
 import { ExperimentSelectTransformPluginCardComponent } from './experiment-select-transform/experiment-select-transform-plugin-card/experiment-select-transform-plugin-card.component';
+import { ExperimentInputTransformComponent } from './experiment-input-transform/experiment-input-transform.component';
+import { ExperimentInputsComponent } from './experiment-inputs/experiment-inputs.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +41,9 @@ import { ExperimentSelectTransformPluginCardComponent } from './experiment-selec
         ExperimentPreviewDataGroupComponent,
         ExperimentSelectTransformComponent,
         ExperimentSelectTransformPluginsComponent,
-        ExperimentSelectTransformPluginCardComponent
+        ExperimentSelectTransformPluginCardComponent,
+        ExperimentInputTransformComponent,
+        ExperimentInputsComponent,
     ],
     imports: [
         CommonModule,

@@ -27,47 +27,46 @@ export class AppTransformSessionService extends TransformSessionService implemen
         this.ipcService.on(ExperimentsEvents.FinishedTransformSessionListeners, this.finishedEvent);
     }
 
-    private findSessionIndex(experimentId: number, dataGroupId: number) {
+    private findSessionIndex(dataGroupId: number) {
         return this.transformSessions.findIndex((value) => {
-            return value.experimentId === experimentId &&
-                value.dataGroupId === dataGroupId;
+            return value.dataGroupId === dataGroupId;
         });
     }
 
 
-    private finishedEvent = (event: string, experimentId: number, dataGroupId: number): void => {
+    private finishedEvent = (event: string, dataGroupId: number): void => {
         this.zone.run(() => {
-            const findIndex = this.findSessionIndex(experimentId, dataGroupId);
+            const findIndex = this.findSessionIndex(dataGroupId);
             if (findIndex >= 0) {
                 this.transformSessions.splice(findIndex, 1);
             }            
-            this.sessionFinished.next({experimentId, dataGroupId});
+            this.sessionFinished.next(dataGroupId);
         });
     }
 
 
     private updatedEvent = (event: string, session: TransformSessionViewModel) => {
         this.zone.run(() => {
-            const findIndex = this.findSessionIndex(session.experimentId, session.dataGroupId);
+            const findIndex = this.findSessionIndex(session.dataGroupId);
             if (findIndex >= 0) {
                 this.transformSessions[findIndex] = session;
             }
             this.sessionUpdated.next(session);
         });
     }
-    private deleteEvent = (event: string, experimentId: number, dataGroupId: number): void => {
+    private deleteEvent = (event: string, dataGroupId: number): void => {
         this.zone.run(() => {
-            const findIndex = this.findSessionIndex(experimentId, dataGroupId);
+            const findIndex = this.findSessionIndex(dataGroupId);
             if (findIndex >= 0) {
                 this.transformSessions.splice(findIndex, 1);
             }
-            this.sessionDeleted.next({experimentId, dataGroupId});
+            this.sessionDeleted.next(dataGroupId);
         });
     }
 
     private createEvent = (event: string, session: TransformSessionViewModel) => {
         this.zone.run(() => {
-            if (!this.hasSession(session.experimentId, session.dataGroupId)) {
+            if (!this.hasSession(session.dataGroupId)) {
                 this.transformSessions.push(session);
             }
             this.newSession.next(session);
@@ -88,31 +87,31 @@ export class AppTransformSessionService extends TransformSessionService implemen
         this.ipcService.removeListener(ExperimentsEvents.FinishedTransformSessionListeners, this.finishedEvent);
     }
 
-    get(experimentId: number, dataGroupId: number): TransformSessionViewModel {
-        const findIndex = this.findSessionIndex(experimentId, dataGroupId);
+    get(dataGroupId: number): TransformSessionViewModel {
+        const findIndex = this.findSessionIndex(dataGroupId);
         if (findIndex >= 0) {
             return this.transformSessions[findIndex];
         }
-        throw new Error(`Couldn't find transform session with experiment id ${experimentId} and data group id ${dataGroupId}`);
+        throw new Error(`Couldn't find transform session with data group id ${dataGroupId}`);
     }
 
-    hasSession(experimentId: number, dataGroupId: number): boolean {
-        return this.findSessionIndex(experimentId, dataGroupId) >= 0;
+    hasSession(dataGroupId: number): boolean {
+        return this.findSessionIndex(dataGroupId) >= 0;
     }
     
-    create(experimentId: number, dataGroupId: number, plugin: SelectTransformPlugin): void {
-        this.ipcService.send(ExperimentsEvents.CreateTransformSessionEvent, experimentId, dataGroupId, plugin);
+    create(dataGroupId: number, plugin: SelectTransformPlugin): void {
+        this.ipcService.send(ExperimentsEvents.CreateTransformSessionEvent, dataGroupId, plugin);
     }
 
-    delete(experimentId: number, dataGroupId: number): void {
-        this.ipcService.send(ExperimentsEvents.DeleteTransformSessionEvent, experimentId, dataGroupId);
+    delete(dataGroupId: number): void {
+        this.ipcService.send(ExperimentsEvents.DeleteTransformSessionEvent, dataGroupId);
     }
 
-    submitOptions(experimentId: number, dataGroupId: number, inputs: { [id: string]: any; }): void {
-        this.ipcService.send(ExperimentsEvents.SubmitOptionsTransformSessionEvent, experimentId, dataGroupId, inputs);
+    submitOptions(dataGroupId: number, inputs: { [id: string]: any; }): void {
+        this.ipcService.send(ExperimentsEvents.SubmitOptionsTransformSessionEvent, dataGroupId, inputs);
     }
 
-    executeCommand(experimentId: number, dataGroupId: number, command: string): void {
-        this.ipcService.send(ExperimentsEvents.ExecuteCommandTransformSessionEvent, experimentId, dataGroupId, command);
+    executeCommand(dataGroupId: number, command: string): void {
+        this.ipcService.send(ExperimentsEvents.ExecuteCommandTransformSessionEvent, dataGroupId, command);
     }
 }

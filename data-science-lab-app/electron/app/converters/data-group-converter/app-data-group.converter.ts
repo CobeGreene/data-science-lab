@@ -7,7 +7,6 @@ export class AppDataGroupConverter implements DataGroupConverter {
     
     toViewModel(dataGroup: ExperimentDataGroup, settings: DataGroupSettings): DataGroupViewModel {
         const previewFeatures = dataGroup.features.map(value => value.name).slice(0, settings.numOfFeatures);
-        const previewFeatureTypes = dataGroup.features.map(value => value.type).slice(0, settings.numOfFeatures);
         const previewExamples: any[][] = [];
         const maxExamples = dataGroup.examples < settings.numOfExamples ? dataGroup.examples : settings.numOfExamples;
         for (let example = 0; example < maxExamples; ++example) {
@@ -23,8 +22,8 @@ export class AppDataGroupConverter implements DataGroupConverter {
             numOfExamples: dataGroup.examples,
             numOfFeatures: dataGroup.features.length,
             previewExamples,
-            previewFeatures,
-            previewFeatureTypes,
+            features: dataGroup.features.map(value => value.name),
+            featureTypes: dataGroup.features.map(value => value.type)
         });
     }
     

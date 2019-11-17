@@ -1,0 +1,40 @@
+<form (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group" *ngFor="let feature of dataGroup.features; let i = index">
+                <label>{{ feature }}</label>
+                <br/>
+                <label>Type: {{ dataGroup.featureTypes[i] }}</label>
+                <select class="form-control">
+                    <option [value]="-1">
+                        None
+                    </option>
+                    <option *ngFor="let choice of inputList; let i = index" [value]="i">
+                        {{ choice.id }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <h3>
+                Input Descriptions
+            </h3>
+            <p *ngFor="let input of inputList">
+                {{ input.id }}: {{ input.label }}
+                <br />
+                Type: {{ input.type }}
+                <br />
+                Min: {{ input.min }}
+                <br />
+                {{ input.max ? 'Max: ' + input.max.toString() : '' }}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-success" type="submit" [disabled]="!valid">
+                Next
+            </button>
+        </div>
+    </div>
+</form>

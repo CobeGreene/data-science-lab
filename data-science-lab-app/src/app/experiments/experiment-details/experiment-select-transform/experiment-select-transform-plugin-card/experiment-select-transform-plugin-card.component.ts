@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { SelectTransformPlugin } from '../../../../../../shared/models';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { TransformPluginsService } from '../../../../services';
 
 @Component({
     selector: 'app-experiment-select-transform-plugin-card',
@@ -16,7 +17,8 @@ export class ExperimentSelectTransformPluginCardComponent implements OnInit, OnD
     experimentId: number;
     dataGroupId: number;
 
-    constructor(private route: ActivatedRoute, private router: Router) {
+    constructor(private route: ActivatedRoute, private router: Router,
+                private service: TransformPluginsService) {
         
     }
 
@@ -39,7 +41,8 @@ export class ExperimentSelectTransformPluginCardComponent implements OnInit, OnD
     }
 
     onSelect() {
-
+        this.service.select(this.dataGroupId, this.transformPlugin);
+        this.router.navigate(['/experiments', 'details', this.experimentId, 'input-transform', this.dataGroupId]);
     }
 
 }
