@@ -26,12 +26,12 @@ export class AppSelectTransformPluginsConsumer implements Consumer {
         ipcService.removeListener(PackagesEvents.UninstallListeners, this.uninstallEvent);
     }
 
-    private uninstallEvent = (event: string, pluginPackage: PluginPackage) => {
+    private uninstallEvent = (event, pluginPackage: PluginPackage) => {
         const service = this.serviceContainer.resolve<SelectTransformPluginsService>(SERVICE_TYPES.SelectTransformPluginsService);
         service.uninstall(pluginPackage);
     }
 
-    private installEvent = (InstallListeners: string, pluginPackage: PluginPackage) => {
+    private installEvent = (event, pluginPackage: PluginPackage) => {
         const service = this.serviceContainer.resolve<SelectTransformPluginsService>(SERVICE_TYPES.SelectTransformPluginsService);
         service.install(pluginPackage);
     }

@@ -10,5 +10,7 @@ export abstract class TransformPluginsService {
     }
 
     abstract all(): SelectTransformPlugin[];
+
+    // TODO: Get and Select plugin to store inputs check. by groupid and experiment id.
 }
 

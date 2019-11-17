@@ -88,6 +88,7 @@ export class AppSelectTransformPluginsDataService implements SelectTransformPlug
                 for (const plugin of pluginPackage.plugins.filter((value) => {
                     return value.type === PluginTypes.Transform;
                 })) {
+
                     plugin.packageName = pluginPackage.name;
                     const transformPlugin = await pluginContext.activate<TransformPlugin>(pluginPackage, plugin);
 
