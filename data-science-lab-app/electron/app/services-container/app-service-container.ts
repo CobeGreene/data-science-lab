@@ -5,23 +5,26 @@ import { AppFetchSessionService, FetchSessionService } from '../session-services
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
     ExperimentDataGroupDataService, ExperimentDataService,
-    AppPackageDataService, AppSettingsDataService, PackageDataService, SettingsDataService
+    AppPackageDataService, AppSettingsDataService, PackageDataService,
+    SettingsDataService, SelectTransformPluginsDataService, AppSelectTransformPluginsDataService
 } from '../data-services';
 import { AppWebCoreService } from '../core-services';
 import { AppFileCoreService } from '../core-services/file-core-service';
 import { IpcService } from '../../../shared/services';
 import { AppIpcService } from '../ipc-services/app-ipc-service';
-import { AppFetchService, AppPackageService, AppExperimentService, AppFetchPluginsService } from '../services';
+import {
+    AppFetchService, AppPackageService, AppSelectTransformPluginsService,
+    AppExperimentService, AppFetchPluginsService, AppDataGroupsService
+} from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
-    AppFetchSessionProducer, AppDataGroupsProducer
+    AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
-    AppFetchSessionConsumer, AppDataGroupsConsumer
+    AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
-import { AppDataGroupsService } from '../services/data-groups-service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -38,6 +41,7 @@ export class AppServiceContainer implements ServiceContainer {
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
     private experimentDataService: ExperimentDataService;
     private packageDataService: PackageDataService;
+    private selectTransformPluginsDataService: SelectTransformPluginsDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -110,6 +114,13 @@ export class AppServiceContainer implements ServiceContainer {
                 this.packageDataService = new AppPackageDataService(this);
                 return this.packageDataService;
 
+            case SERVICE_TYPES.SelectTransformPluginsDataService:
+                if (this.selectTransformPluginsDataService) {
+                    return this.selectTransformPluginsDataService;
+                }
+                this.selectTransformPluginsDataService = new AppSelectTransformPluginsDataService(this);
+                return this.selectTransformPluginsDataService;
+
             case SERVICE_TYPES.SettingsDataService:
                 return new AppSettingsDataService(this);
 
@@ -136,6 +147,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.DataGroupsService:
                 return new AppDataGroupsService(this);
 
+            case SERVICE_TYPES.SelectTransformPluginsService:
+                return new AppSelectTransformPluginsService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -152,6 +166,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.DataGroupsProducer:
                 return new AppDataGroupsProducer(this);
 
+            case SERVICE_TYPES.SelectTransformPluginsProducer:
+                return new AppSelectTransformPluginsProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
@@ -167,6 +184,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.DataGroupsConsumer:
                 return new AppDataGroupsConsumer(this);
+
+            case SERVICE_TYPES.SelectTransformPluginsConsumer:
+                return new AppSelectTransformPluginsConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);
