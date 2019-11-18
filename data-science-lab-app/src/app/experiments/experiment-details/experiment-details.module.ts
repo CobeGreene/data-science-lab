@@ -23,6 +23,7 @@ import { ExperimentSelectTransformPluginCardComponent } from './experiment-selec
 import { ExperimentInputTransformComponent } from './experiment-input-transform/experiment-input-transform.component';
 import { ExperimentInputsComponent } from './experiment-inputs/experiment-inputs.component';
 import { SelectTransformTypePipe } from '../../pipes/select-transfrom-type.pipe';
+import { ExperimentSetupTransformComponent } from './experiment-setup-transform/experiment-setup-transform.component';
 
 @NgModule({
     declarations: [
@@ -45,6 +46,7 @@ import { SelectTransformTypePipe } from '../../pipes/select-transfrom-type.pipe'
         ExperimentSelectTransformPluginCardComponent,
         ExperimentInputTransformComponent,
         ExperimentInputsComponent,
+        ExperimentSetupTransformComponent,
         SelectTransformTypePipe,
     ],
     imports: [

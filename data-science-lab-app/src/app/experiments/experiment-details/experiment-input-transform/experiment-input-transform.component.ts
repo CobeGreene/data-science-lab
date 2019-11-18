@@ -38,7 +38,7 @@ export class ExperimentInputTransformComponent implements OnInit, OnDestroy {
             .pipe(untilComponentDestroyed(this))
             .subscribe((value) => {
                 if (value.dataGroupId === this.dataGroupId) {
-                    this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-transform']);
+                    this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-transform', this.dataGroupId]);
                 }
             });
     }    

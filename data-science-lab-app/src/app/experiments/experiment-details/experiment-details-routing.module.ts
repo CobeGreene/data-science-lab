@@ -6,6 +6,7 @@ import { ExperimentSelectFetchComponent } from './experiment-select-fetch/experi
 import { ExperimentSetupFetchComponent } from './experiment-setup-fetch/experiment-setup-fetch.component';
 import { ExperimentSelectTransformComponent } from './experiment-select-transform/experiment-select-transform.component';
 import { ExperimentInputTransformComponent } from './experiment-input-transform/experiment-input-transform.component';
+import { ExperimentSetupTransformComponent } from './experiment-setup-transform/experiment-setup-transform.component';
 
 const experimentDetailsRoutes: Routes = [
     {
@@ -15,7 +16,8 @@ const experimentDetailsRoutes: Routes = [
             { path: 'select-fetch', component: ExperimentSelectFetchComponent },
             { path: 'setup-fetch', component: ExperimentSetupFetchComponent },
             { path: 'select-transform/:dataGroupId', component: ExperimentSelectTransformComponent },
-            { path: 'input-transform/:dataGroupId', component: ExperimentInputTransformComponent }
+            { path: 'input-transform/:dataGroupId', component: ExperimentInputTransformComponent },
+            { path: 'setup-transform/:dataGroupId', component: ExperimentSetupTransformComponent }
         ]
     }
 ];

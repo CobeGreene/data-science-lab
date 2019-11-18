@@ -77,7 +77,6 @@ export class AppTransformService implements TransformService {
 
     private getPluginData(dataGroup: ExperimentDataGroup, inputs: { [id: string]: number[]; }): { [id: string]: PluginData } {
         const pluginData: { [id: string]: PluginData } = {};
-
         for (const key in inputs) {
             if (inputs[key]) {
                 const features: string[] = [];
@@ -92,8 +91,8 @@ export class AppTransformService implements TransformService {
 
                 for (let j = 0; j < inputs[key].length; ++j) {
                     features.push(dataGroup.features[inputs[key][j]].name);
-                    for (let i = 0; i < dataGroup.examples[inputs[key][j]].length; ++i) {
-                        examples[i][j] = dataGroup.examples[inputs[key][j]][i];
+                    for (let i = 0; i < dataGroup.features[inputs[key][j]].examples.length; ++i) {
+                        examples[i][j] = dataGroup.features[inputs[key][j]].examples[i];
                     }
                 }
 
