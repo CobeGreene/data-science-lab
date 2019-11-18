@@ -6,6 +6,7 @@ import { TransformSessionViewModel } from '../../../../shared/view-models';
 import { IpcService } from '../../../../shared/services';
 import { SERVICE_TYPES } from '../../services-container';
 import { ExperimentsEvents } from '../../../../shared/events';
+import { DataGroupConverter } from '../../converters';
 
 export class AppTransformSessionProducer extends BaseProducer implements TransformSessionProducer {
     
@@ -46,12 +47,18 @@ export class AppTransformSessionProducer extends BaseProducer implements Transfo
     }
 
 
-    updateDataGroup(dataGroup: ExperimentDataGroup, setings: DataGroupSettings) {
-        throw new Error("Method not implemented.");
+    updateDataGroup(dataGroup: ExperimentDataGroup, settings: DataGroupSettings) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        const converter = this.serviceContainer.resolve<DataGroupConverter>(SERVICE_TYPES.DataGroupConverter);
+        const viewModel = converter.toViewModel(dataGroup, settings);
+        ipc.send(ExperimentsEvents.UpdatedDataGroupListeners, viewModel);  
     }
 
-    newDataGroup(dataGroup: ExperimentDataGroup, setings: DataGroupSettings) {
-        throw new Error("Method not implemented.");
+    newDataGroup(dataGroup: ExperimentDataGroup, settings: DataGroupSettings) {
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        const converter = this.serviceContainer.resolve<DataGroupConverter>(SERVICE_TYPES.DataGroupConverter);
+        const viewModel = converter.toViewModel(dataGroup, settings);
+        ipc.send(ExperimentsEvents.NewDataGroupListeners, viewModel);  
     }
 
     finish(dataGroupId: number): void {

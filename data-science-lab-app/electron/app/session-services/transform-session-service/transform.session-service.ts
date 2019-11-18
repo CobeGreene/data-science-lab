@@ -10,7 +10,8 @@ export interface TransformSessionService {
     delete(dataGroupId: number): void;
     create(dataGroupId: number, pluginPackage: PluginPackage,
            plugin: Plugin,
-           inputs: {[id: string]: PluginData}): Promise<TransformSession>;
+           inputs: {[id: string]: PluginData},
+           featuresEditing: number[]): Promise<TransformSession>;
 
 
 }

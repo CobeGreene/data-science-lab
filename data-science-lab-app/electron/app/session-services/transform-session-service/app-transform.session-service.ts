@@ -46,7 +46,8 @@ export class AppTransformSessionService implements TransformSessionService {
 
     create(dataGroupId: number, pluginPackage: PluginPackage,
            plugin: Plugin,
-           inputs: { [id: string]: PluginData; }): Promise<TransformSession> {
+           inputs: { [id: string]: PluginData; },
+           featuresEditing: number[]): Promise<TransformSession> {
         return new Promise<TransformSession>(async (resolve, reject) => {
             const findIndex = this.transformSessions.findIndex((value) => {
                 return value.dataGroupId === dataGroupId;
@@ -65,7 +66,8 @@ export class AppTransformSessionService implements TransformSessionService {
                     dataGroupId,
                     plugin,
                     pluginPackage,
-                    transformPlugin
+                    transformPlugin,
+                    featuresEditing
                 });
                 this.transformSessions.push(session);
                 resolve(session);

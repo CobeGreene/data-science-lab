@@ -53,7 +53,7 @@ describe('Electron App Transform Session Service Tests', () => {
         };
         const plugin = new Plugin({ className: 'class', name: 'name', type: 'type', description: 'description' });
         const pluginPackage = new PluginPackage({ name: 'name', repositoryName: 'repo', username: 'username', owner: 'owner' });
-        sessionService.create(1, pluginPackage, plugin, {})
+        sessionService.create(1, pluginPackage, plugin, {}, [])
             .then((value) => {
                 expect(value.transformPlugin).toBeDefined();
                 done();
