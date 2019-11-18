@@ -1,7 +1,7 @@
 import { ServiceContainer } from './service-container';
 import { SERVICE_TYPES } from './service-types';
 import { AppDocumentContext, DocumentContext, PluginContext, AppPluginContext, AppQueuePluginContext } from '../contexts';
-import { AppFetchSessionService, FetchSessionService } from '../session-services';
+import { AppFetchSessionService, FetchSessionService, TransformSessionService, AppTransformSessionService } from '../session-services';
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
     ExperimentDataGroupDataService, ExperimentDataService,
@@ -22,9 +22,10 @@ import {
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
-    AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer
+    AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer, AppTransformSessionConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
+import { AppTransformService } from '../services/transform-service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -36,6 +37,7 @@ export class AppServiceContainer implements ServiceContainer {
 
     // Session Services
     private fetchSessionService: FetchSessionService;
+    private transformSessionService: TransformSessionService;
 
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
@@ -83,6 +85,13 @@ export class AppServiceContainer implements ServiceContainer {
                 }
                 this.fetchSessionService = new AppFetchSessionService(this);
                 return this.fetchSessionService;
+
+            case SERVICE_TYPES.TransformSessionService:
+                if (this.transformSessionService) {
+                    return this.transformSessionService;
+                }
+                this.transformSessionService = new AppTransformSessionService(this);
+                return this.transformSessionService;
 
             // Ipc Services
             case SERVICE_TYPES.IpcService:
@@ -150,6 +159,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.SelectTransformPluginsService:
                 return new AppSelectTransformPluginsService(this);
 
+            case SERVICE_TYPES.TransformService:
+                return new AppTransformService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -168,6 +180,8 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.SelectTransformPluginsProducer:
                 return new AppSelectTransformPluginsProducer(this);
+            
+            
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
@@ -187,6 +201,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.SelectTransformPluginsConsumer:
                 return new AppSelectTransformPluginsConsumer(this);
+
+            case SERVICE_TYPES.TransformSessionConsumer:
+                return new AppTransformSessionConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

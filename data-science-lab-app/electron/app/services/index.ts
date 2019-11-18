@@ -7,3 +7,8 @@ export {
     MockSelectTransformPluginsService,
     SelectTransformPluginsService, AppSelectTransformPluginsService
 } from './select-transform-plugins-service';
+export {
+    TransformService, MockTransformService,
+    AppTransformService
+} from './transform-service';
+

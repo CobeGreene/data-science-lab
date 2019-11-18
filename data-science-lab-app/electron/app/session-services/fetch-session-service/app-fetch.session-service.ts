@@ -33,7 +33,7 @@ export class AppFetchSessionService implements FetchSessionService {
                 return value.experimentId === experimentId;
             });
             if (findIndex >= 0) {
-                reject(Error(`Experiment with id ${experimentId} already has a fetch session.`));
+                reject(new Error(`Experiment with id ${experimentId} already has a fetch session.`));
             }
             try {
                 const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
