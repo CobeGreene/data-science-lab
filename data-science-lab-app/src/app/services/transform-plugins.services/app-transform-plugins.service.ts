@@ -66,6 +66,15 @@ export class AppTransformPluginsService extends TransformPluginsService implemen
         this.transformPluginSelected.next(find);
     }
 
+    deselect(dataGroupId: number) {
+        const findIndex = this.selectedPlugins.findIndex((value) => {
+            return value.dataGroupId === dataGroupId;
+        });
+        if (findIndex >= 0) {
+            this.selectedPlugins.splice(findIndex, 1);
+        }
+    }
+
     ngOnDestroy(): void {
         this.ipcService.removeListener(ExperimentsEvents.GetAllTransformPluginsEvent, this.getAllEvent);
     }

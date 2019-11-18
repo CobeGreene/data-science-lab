@@ -16,5 +16,7 @@ export abstract class TransformPluginsService {
     abstract get(dataGroupId: number): SelectTransformPlugin;
 
     abstract select(dataGroupId: number, plugin: SelectTransformPlugin): void;
+
+    abstract deselect(dataGroupId: number): void;
 }
 

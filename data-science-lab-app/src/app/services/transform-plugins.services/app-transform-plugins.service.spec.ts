@@ -88,4 +88,15 @@ describe('Angular App Transform Plugins Service Tests', () => {
         expect(transformPlugin.plugin.name).toBe('name');
     });
 
+    it('deselect should throw for get after deselected', () => {
+        transformPluginsService.select(1,
+            new SelectTransformPlugin({
+                plugin: new Plugin({ name: 'name', className: 'class', type: 'type', description: 'desc' }),
+            }));
+        transformPluginsService.deselect(1);
+        expect(() => {
+            transformPluginsService.get(1);
+        }).toThrowError();
+    });
+
 });

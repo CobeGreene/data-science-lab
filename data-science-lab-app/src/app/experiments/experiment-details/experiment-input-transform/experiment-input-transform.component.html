@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <app-experiment-inputs [inputList]="transformPlugin.inputs" [dataGroup]="dataGroup">
+        <app-experiment-inputs [inputList]="transformPlugin.inputs" [dataGroup]="dataGroup" (emitSubmit)="onSumit($event)">
             
         </app-experiment-inputs>
     </div>

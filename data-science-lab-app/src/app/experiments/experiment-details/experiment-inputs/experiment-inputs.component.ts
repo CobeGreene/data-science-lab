@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { SelectTransformPluginInput } from '../../../../../shared/models';
 import { DataGroupViewModel } from '../../../../../shared/view-models';
+import { timingSafeEqual } from 'crypto';
 
 @Component({
     selector: 'app-experiment-inputs',
@@ -20,7 +21,6 @@ export class ExperimentInputsComponent implements OnInit, OnDestroy {
             this.indices[value.id] = [];
         });
         this.valid = this.isValid();
-        this.__inputList[0].id
     }
 
     get inputList(): SelectTransformPluginInput[] {
@@ -44,11 +44,38 @@ export class ExperimentInputsComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() {
+        this.emitSubmit.emit(this.indices);
+    }
 
+    onChange(featureIndex: number, id: string) {
+        for (const key in this.indices) {
+            if (this.indices[key]) {
+                for (let i = 0; i < this.indices[key].length; ++i) {
+                    if (this.indices[key][i] === featureIndex) {
+                        this.indices[key].splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        }
+        if (this.indices[id]) {
+            this.indices[id].push(featureIndex);
+        }
+        this.valid = this.isValid();
     }
 
     isValid(): boolean {
-        return false;
+        for (const input of this.inputList) {
+            const length = this.indices[input.id].length;
+            if (length < input.min) {
+                return false;
+            }
+            if (input.max && length > input.max) {
+                return false;
+            } 
+        }
+        return true;
+
     }
 }
 

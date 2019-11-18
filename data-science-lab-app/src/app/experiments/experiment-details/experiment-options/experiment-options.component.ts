@@ -25,6 +25,7 @@ export class ExperimentOptionsComponent implements OnInit, OnDestroy {
             this.valueInputs.push(null);
         });
         this.valid = this.validInputs.length === 0;
+        
     }
 
     get optionList(): OptionList {

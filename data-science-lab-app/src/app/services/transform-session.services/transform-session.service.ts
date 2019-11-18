@@ -18,7 +18,7 @@ export abstract class TransformSessionService {
 
     abstract get(dataGroupId: number): TransformSessionViewModel;
     abstract hasSession(dataGroupId: number): boolean;
-    abstract create(dataGroupId: number, plugin: SelectTransformPlugin): void;
+    abstract create(dataGroupId: number, plugin: SelectTransformPlugin, inputs: {[id: string]: number[]}): void;
     abstract delete(dataGroupId: number): void;
 
     abstract submitOptions(dataGroupId: number, inputs: {[id: string]: any}): void;

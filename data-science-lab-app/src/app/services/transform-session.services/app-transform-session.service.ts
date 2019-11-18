@@ -99,8 +99,8 @@ export class AppTransformSessionService extends TransformSessionService implemen
         return this.findSessionIndex(dataGroupId) >= 0;
     }
     
-    create(dataGroupId: number, plugin: SelectTransformPlugin): void {
-        this.ipcService.send(ExperimentsEvents.CreateTransformSessionEvent, dataGroupId, plugin);
+    create(dataGroupId: number, plugin: SelectTransformPlugin, inputs: {[id: string]: number[]}): void {
+        this.ipcService.send(ExperimentsEvents.CreateTransformSessionEvent, dataGroupId, plugin, inputs);
     }
 
     delete(dataGroupId: number): void {

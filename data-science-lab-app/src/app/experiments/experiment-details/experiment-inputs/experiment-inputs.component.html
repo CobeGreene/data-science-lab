@@ -5,11 +5,11 @@
                 <label>{{ feature }}</label>
                 <br/>
                 <label>Type: {{ dataGroup.featureTypes[i] }}</label>
-                <select class="form-control">
-                    <option [value]="-1">
+                <select class="form-control" [ngModel]=null (ngModelChange)="onChange(i,$event)" [ngModelOptions]="{standalone: true}">
+                    <option [value]=null selected>
                         None
                     </option>
-                    <option *ngFor="let choice of inputList; let i = index" [value]="i">
+                    <option *ngFor="let choice of inputList | selectTransformType:dataGroup.featureTypes[i]" [value]="choice.id">
                         {{ choice.id }}
                     </option>
                 </select>

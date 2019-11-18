@@ -88,8 +88,8 @@ describe('Angular App Transform Session Service Tests', () => {
                 plugin: new Plugin({
                     name: 'name', className: 'classname', description: 'descrption',
                     type: 'fetch',
-                })
-            })
+                }),
+            }), {}
         );
     });
 

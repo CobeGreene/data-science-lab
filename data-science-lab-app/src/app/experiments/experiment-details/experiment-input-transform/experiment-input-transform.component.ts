@@ -21,6 +21,7 @@ export class ExperimentInputTransformComponent implements OnInit, OnDestroy {
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private pluginsService: TransformPluginsService,
+                private sessionService: TransformSessionService,
                 private dataGroupService: DataGroupsService) {
     }
     
@@ -32,13 +33,22 @@ export class ExperimentInputTransformComponent implements OnInit, OnDestroy {
                 this.transformPlugin = this.pluginsService.get(this.dataGroupId);
                 this.dataGroup = this.dataGroupService.get(this.dataGroupId);
             });
-    
+
+        this.sessionService.newSession
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((value) => {
+                if (value.dataGroupId === this.dataGroupId) {
+                    this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-transform']);
+                }
+            });
     }    
     
     ngOnDestroy(): void {
     }
 
-
+    onSubmit(inputs: {[id: string]: number[]}) {
+        this.sessionService.create(this.dataGroupId, this.transformPlugin, inputs);
+    }
 
 
 }
