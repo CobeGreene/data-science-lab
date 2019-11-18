@@ -18,7 +18,7 @@ import {
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
-    AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer
+    AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer, AppTransformSessionProducer
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
@@ -181,7 +181,8 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.SelectTransformPluginsProducer:
                 return new AppSelectTransformPluginsProducer(this);
             
-            
+            case SERVICE_TYPES.TransformSessionProducer:
+                return new AppTransformSessionProducer(this);
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:

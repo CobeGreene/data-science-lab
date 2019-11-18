@@ -8,5 +8,5 @@ export {
     SelectTransformPluginsProducer, MockSelectTransformPluginsProducer,
     AppSelectTransformPluginsProducer
 } from './select-transform-plugins-producer';
-export { TransformSessionProducer } from './transform-session-producer';
+export { TransformSessionProducer, AppTransformSessionProducer } from './transform-session-producer';
 
