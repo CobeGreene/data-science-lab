@@ -4,4 +4,9 @@ export { AppExperimentProducer, ExperimentProducer, MockExperimentProducer } fro
 export { AppFetchSessionProducer, FetchSessionProducer, MockFetchSessionProducer } from './fetch-session-producer';
 export { AppFetchPluginsProducer, FetchPluginsProducer, MockFetchPluginsProducer } from './fetch-plugins.producer';
 export { AppDataGroupsProducer, DataGroupsProducers, MockDataGroupsProducer } from './data-groups-producer';
+export {
+    SelectTransformPluginsProducer, MockSelectTransformPluginsProducer,
+    AppSelectTransformPluginsProducer
+} from './select-transform-plugins-producer';
+export { TransformSessionProducer, AppTransformSessionProducer } from './transform-session-producer';
 

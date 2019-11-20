@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FetchSessionViewModel } from '../../../../../shared/view-models';
 import { FetchSessionService } from '../../../services';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -32,7 +32,6 @@ export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
             .pipe(untilComponentDestroyed(this))
             .subscribe((session: FetchSessionViewModel) => {
                 if (session.experimentId === this.fetchSession.experimentId) {
-                    console.log('session update');
                     this.fetchSession = session;
                 }
             });

@@ -26,16 +26,19 @@ export class AppPluginContext implements PluginContext {
     }
 
     activate<T>(pluginPackage: PluginPackage, plugin: Plugin): Promise<T> {
-        return new Promise<T>((resolve, reject) => {
+        return new Promise<T>(async (resolve, reject) => {
             const find = this.manager.list().forEach(element => {
                 return element.name === pluginPackage.repositoryName;
             });
             if (find == null) {
-                this.install(pluginPackage).then(() => {
+                try {
+                    await this.install(pluginPackage);
                     const main = this.manager.require(pluginPackage.repositoryName);
                     // tslint:disable-next-line: new-parens
                     resolve(new main[`${plugin.className}`] as T);
-                }).catch(reject);
+                } catch (reason) {
+                    reject(reason);
+                }
             } else {
                 const main = this.manager.require(pluginPackage.repositoryName);
                 // tslint:disable-next-line: new-parens

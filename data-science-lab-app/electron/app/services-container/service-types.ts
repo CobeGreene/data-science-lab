@@ -3,15 +3,17 @@ export const enum SERVICE_TYPES {
     DocumentContext,
     PluginContext,
     // Converters,
-    FetchPluginDataConverter,
+    PluginDataConverter,
     DataGroupConverter,
     // Data Services
     ExperimentDataGroupDataService,
     ExperimentDataService,
     PackageDataService,
     SettingsDataService,
+    SelectTransformPluginsDataService,
     // Session Services
     FetchSessionService,
+    TransformSessionService,
     // Ipc Services
     IpcService,
     // Core Services
@@ -23,18 +25,24 @@ export const enum SERVICE_TYPES {
     FetchService,
     FetchPluginsService,
     DataGroupsService,
+    SelectTransformPluginsService,
+    TransformService,
     // Consumers
     PackageConsumer,
     ExperimentConsumer,
     FetchPluginsConsumer,
     FetchSessionConsumer,
     DataGroupsConsumer,
+    SelectTransformPluginsConsumer,
+    TransformSessionConsumer,
     // Producers
     PackageProducer,
     ExperimentProducer,
     FetchSessionProducer,
     FetchPluginsProducer,
     DataGroupsProducer,
+    SelectTransformPluginsProducer,
+    TransformSessionProducer,
 }
 
 

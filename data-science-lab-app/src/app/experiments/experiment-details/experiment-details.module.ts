@@ -17,6 +17,13 @@ import { ExperimentNumberOptionComponent } from './experiment-options/experiment
 import { ExperimentTextOptionComponent } from './experiment-options/experiment-text-option/experiment-text-option.component';
 import { ExperimentDataGroupListComponent } from './experiment-data-workspace/experiment-data-group-list/experiment-data-group-list.component';
 import { ExperimentPreviewDataGroupComponent } from './experiment-data-workspace/experiment-preview-data-group/experiment-preview-data-group.component';
+import { ExperimentSelectTransformComponent } from './experiment-select-transform/experiment-select-transform.component';
+import { ExperimentSelectTransformPluginsComponent } from './experiment-select-transform/experiment-select-transform-plugins/experiment-select-transform-plugins.component';
+import { ExperimentSelectTransformPluginCardComponent } from './experiment-select-transform/experiment-select-transform-plugin-card/experiment-select-transform-plugin-card.component';
+import { ExperimentInputTransformComponent } from './experiment-input-transform/experiment-input-transform.component';
+import { ExperimentInputsComponent } from './experiment-inputs/experiment-inputs.component';
+import { SelectTransformTypePipe } from '../../pipes/select-transfrom-type.pipe';
+import { ExperimentSetupTransformComponent } from './experiment-setup-transform/experiment-setup-transform.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +40,14 @@ import { ExperimentPreviewDataGroupComponent } from './experiment-data-workspace
         ExperimentNumberOptionComponent,
         ExperimentTextOptionComponent,
         ExperimentDataGroupListComponent,
-        ExperimentPreviewDataGroupComponent
+        ExperimentPreviewDataGroupComponent,
+        ExperimentSelectTransformComponent,
+        ExperimentSelectTransformPluginsComponent,
+        ExperimentSelectTransformPluginCardComponent,
+        ExperimentInputTransformComponent,
+        ExperimentInputsComponent,
+        ExperimentSetupTransformComponent,
+        SelectTransformTypePipe,
     ],
     imports: [
         CommonModule,

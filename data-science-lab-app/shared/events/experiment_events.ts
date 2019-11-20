@@ -18,6 +18,22 @@ export namespace ExperimentsEvents {
     export const UpdatedFetchSessionListeners = 'updated-fetch-session-listeners';
     export const FinishedFetchSessionListeners = 'finished-fetch-session-listeners';
 
+    // Transform Session
+    export const GetAllTransformSessionsEvent = 'get-all-transform-sessions-event';
+    export const GetAllTransformSessionsListeners = 'get-all-transform-sessions-listener';
+    export const CreateTransformSessionEvent = 'create-transform-session-event';
+    export const CreateTransformSessionListeners = 'create-transform-session-listeners';
+    export const DeleteTransformSessionEvent = 'delete-transform-session-event';
+    export const DeleteTransformSessionListeners = 'delete-transform-session-listeners';
+    export const SubmitOptionsTransformSessionEvent = 'submit-options-transform-session-event';
+    export const ExecuteCommandTransformSessionEvent = 'execute-command-transform-session-event';
+    export const UpdatedTransformSessionListeners = 'updated-transform-session-listeners';
+    export const FinishedTransformSessionListeners = 'finished-transform-session-listeners';
+
+    // Transform Plugins
+    export const GetAllTransformPluginsEvent = 'get-all-transform-plugins-event';
+    export const GetAllTransformPluginsListeners = 'get-all-transform-plugins-listeners';
+
     // Fetch Plugins
     export const GetAllFetchPluginsEvent = 'get-all-fetch-plugins-event';
     export const GetAllFetchPluginsListeners = 'get-all-fetch-plugins-listeners';

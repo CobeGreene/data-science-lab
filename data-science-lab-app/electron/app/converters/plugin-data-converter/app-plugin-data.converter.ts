@@ -1,8 +1,8 @@
-import { FetchPluginDataConverter } from './fetch-plugin-data.converter';
-import { FetchPluginData } from 'data-science-lab-core';
+import { PluginDataConverter } from './plugin-data.converter';
+import { PluginData } from 'data-science-lab-core';
 import { ExperimentDataGroup, ExperimentFeature } from '../../models';
 
-export class AppFetchPluginDataConverter implements FetchPluginDataConverter {
+export class AppPluginDataConverter implements PluginDataConverter {
 
     constructor() {
 
@@ -17,7 +17,7 @@ export class AppFetchPluginDataConverter implements FetchPluginDataConverter {
         }
     };
 
-    toDataGroups(data: FetchPluginData): ExperimentDataGroup[] {
+    toDataGroups(data: PluginData): ExperimentDataGroup[] {
 
         const features: ExperimentFeature[] = [];
         
