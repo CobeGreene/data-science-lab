@@ -3,7 +3,7 @@ import { PluginPackageList } from '../../../../shared/models';
 import { PackageService } from '../../services';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ActivatedRoute, Params } from '@angular/router';
-
+import { PluginTypes } from 'data-science-lab-core';
 
 @Component({
     selector: 'app-packages-list',
@@ -13,6 +13,7 @@ export class PackagesListComponent implements OnInit, OnDestroy {
     
     packagesList: PluginPackageList;
     installOnly: boolean;
+    type = '';
 
     constructor(private packageService: PackageService,
                 private route: ActivatedRoute) {
@@ -36,6 +37,10 @@ export class PackagesListComponent implements OnInit, OnDestroy {
     }    
     
     ngOnDestroy(): void {
+    }
+
+    pluginTypes(): string[] {
+        return Object.keys(PluginTypes);
     }
 
 
