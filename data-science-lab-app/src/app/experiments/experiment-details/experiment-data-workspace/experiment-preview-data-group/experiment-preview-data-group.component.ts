@@ -36,7 +36,7 @@ export class ExperimentPreviewDataGroupComponent implements OnInit, OnDestroy {
 
     onTransform(): void {
         if (this.service.hasSession(this.dataGroup.id)) {
-
+            this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-transform', this.dataGroup.id]);
         } else {
             this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'select-transform', this.dataGroup.id]);
         }

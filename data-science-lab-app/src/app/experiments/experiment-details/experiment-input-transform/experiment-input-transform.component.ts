@@ -50,6 +50,10 @@ export class ExperimentInputTransformComponent implements OnInit, OnDestroy {
         this.sessionService.create(this.dataGroupId, this.transformPlugin, inputs);
     }
 
+    onBack() {
+        this.pluginsService.deselect(this.dataGroupId);
+        this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'select-transform', this.dataGroup.id]);        
+    }
 
 }
 
