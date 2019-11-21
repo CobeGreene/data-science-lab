@@ -36,8 +36,12 @@ export class AppTransformService implements TransformService {
             sessionService.create(dataGroupId, pluginPackage, transformPlugin.plugin, pluginData, this.getFeatureEditing(dataGroup, inputs))
                 .then((session) => {
                     const producer = this.serviceContainer.resolve<TransformSessionProducer>(SERVICE_TYPES.TransformSessionProducer);
-                    producer.all(sessionService.all());
-                    producer.newSession(session);
+                    if (session.transformPlugin.getOptions().noMore()) {
+                        this.sessionFinish(session);
+                    } else {
+                        producer.all(sessionService.all());
+                        producer.newSession(session);
+                    }
                 }).catch((reason) => {
                     const producer = this.serviceContainer.resolve<TransformSessionProducer>(SERVICE_TYPES.TransformSessionProducer);
                     producer.error(reason);

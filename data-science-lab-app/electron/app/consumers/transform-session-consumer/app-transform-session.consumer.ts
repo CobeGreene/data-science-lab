@@ -15,7 +15,7 @@ export class AppTransformSessionConsumer implements Consumer {
     initialize(): void {
         const ipcService = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         ipcService.on(ExperimentsEvents.GetAllTransformSessionsEvent, this.getAllEvent);
-        ipcService.on(ExperimentsEvents.ExecuteCommandFetchSessionEvent, this.executeCommandEvent);
+        ipcService.on(ExperimentsEvents.ExecuteCommandTransformSessionEvent, this.executeCommandEvent);
         ipcService.on(ExperimentsEvents.SubmitOptionsTransformSessionEvent, this.submitEvent);
         ipcService.on(ExperimentsEvents.DeleteTransformSessionEvent, this.deleteEvent);
         ipcService.on(ExperimentsEvents.CreateTransformSessionEvent, this.createEvent);

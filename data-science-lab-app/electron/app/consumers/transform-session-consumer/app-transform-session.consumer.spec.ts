@@ -72,7 +72,7 @@ describe('Electron App Transform Session Consumer Tests', () => {
             expect(id).toBe(1);
             done();
         };
-        ipcService.send(ExperimentsEvents.ExecuteCommandFetchSessionEvent, 1, 'cmd');
+        ipcService.send(ExperimentsEvents.ExecuteCommandTransformSessionEvent, 1, 'cmd');
     });
 
 });

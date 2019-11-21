@@ -41,6 +41,14 @@ export class ExperimentInputTransformComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-transform', this.dataGroupId]);
                 }
             });
+        
+        this.sessionService.sessionFinished
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((value) => {
+                if (value === this.dataGroupId) {
+                    this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'data-workspace']);
+                }
+            });
     }    
     
     ngOnDestroy(): void {
