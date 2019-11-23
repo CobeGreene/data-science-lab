@@ -24,6 +24,8 @@ import { ExperimentInputTransformComponent } from './experiment-input-transform/
 import { ExperimentInputsComponent } from './experiment-inputs/experiment-inputs.component';
 import { SelectTransformTypePipe } from '../../pipes/select-transfrom-type.pipe';
 import { ExperimentSetupTransformComponent } from './experiment-setup-transform/experiment-setup-transform.component';
+import { ExperimentAlgorithmWorkspaceComponent } from './experiment-algorithm-workspace/experiment-algorithm-workspace.component';
+import { ExperimentNavigateWorkspaceComponent } from './experiment-navigate-workspace/experiment-navigate-workspace.component';
 
 @NgModule({
     declarations: [
@@ -48,6 +50,8 @@ import { ExperimentSetupTransformComponent } from './experiment-setup-transform/
         ExperimentInputsComponent,
         ExperimentSetupTransformComponent,
         SelectTransformTypePipe,
+        ExperimentAlgorithmWorkspaceComponent,
+        ExperimentNavigateWorkspaceComponent,
     ],
     imports: [
         CommonModule,

@@ -6,7 +6,7 @@
         "pathPackages": "/api/packages"
     },
     "data-group-settings": {
-        "numOfExamples": 20,
+        "numOfExamples": 10,
         "numOfFeatures": 5
     }
 }
