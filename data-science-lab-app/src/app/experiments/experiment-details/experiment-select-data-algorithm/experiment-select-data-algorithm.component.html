@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col">
+        <h1>
+            Select Data Group for Algorithm Training
+            <span class="float-right">
+                <button class="btn btn-primary" type="button" (click)="onBack()">
+                    Back
+                </button>
+            </span>
+        </h1>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="mt-3" *ngFor="let dataGroup of dataGroups">
+            <app-experiment-select-data-group [dataGroup]="dataGroup">
+            </app-experiment-select-data-group>
+        </div>
+    </div>
+</div>

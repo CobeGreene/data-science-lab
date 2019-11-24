@@ -30,7 +30,7 @@ export class ExperimentAlgorithmWorkspaceComponent implements OnInit, OnDestroy 
     }
 
     onTrainAlgorithm() {
-        // route
+        this.router.navigate(['/experiments', 'details', this.experimentId, 'select-data-algorithm']);
     }    
 
 }

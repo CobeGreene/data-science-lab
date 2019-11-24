@@ -26,6 +26,8 @@ import { SelectTransformTypePipe } from '../../pipes/select-transfrom-type.pipe'
 import { ExperimentSetupTransformComponent } from './experiment-setup-transform/experiment-setup-transform.component';
 import { ExperimentAlgorithmWorkspaceComponent } from './experiment-algorithm-workspace/experiment-algorithm-workspace.component';
 import { ExperimentNavigateWorkspaceComponent } from './experiment-navigate-workspace/experiment-navigate-workspace.component';
+import { ExperimentSelectDataAlgorithmComponent } from './experiment-select-data-algorithm/experiment-select-data-algorithm.component';
+import { ExperimentSelectDataGroupComponent } from './experiment-select-data-algorithm/experiment-select-data-group/experiment-select-data-group.component';
 
 @NgModule({
     declarations: [
@@ -52,6 +54,8 @@ import { ExperimentNavigateWorkspaceComponent } from './experiment-navigate-work
         SelectTransformTypePipe,
         ExperimentAlgorithmWorkspaceComponent,
         ExperimentNavigateWorkspaceComponent,
+        ExperimentSelectDataAlgorithmComponent,
+        ExperimentSelectDataGroupComponent,
     ],
     imports: [
         CommonModule,
