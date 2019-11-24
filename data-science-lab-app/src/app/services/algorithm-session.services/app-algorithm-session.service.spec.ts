@@ -14,7 +14,6 @@ describe('Angular App Algorithm Session Service Tests', () => {
     let zone: MockZone;
     let createAlgorithmSession: AlgorithmSessionViewModel;
 
-
     const getAllEvent = (event, ...args): void => {
         ipcService.send(ExperimentsEvents.GetAllAlgorithmSessionsListeners, algorithmSessions);
     };

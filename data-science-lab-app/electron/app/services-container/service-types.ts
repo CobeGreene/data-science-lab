@@ -11,6 +11,7 @@ export const enum SERVICE_TYPES {
     PackageDataService,
     SettingsDataService,
     SelectTransformPluginsDataService,
+    AlgorithmPluginsDataService,
     // Session Services
     FetchSessionService,
     TransformSessionService,
@@ -27,6 +28,7 @@ export const enum SERVICE_TYPES {
     DataGroupsService,
     SelectTransformPluginsService,
     TransformService,
+    AlgorithmPluginsService,
     // Consumers
     PackageConsumer,
     ExperimentConsumer,
@@ -35,6 +37,7 @@ export const enum SERVICE_TYPES {
     DataGroupsConsumer,
     SelectTransformPluginsConsumer,
     TransformSessionConsumer,
+    AlgorithmPluginsConsumer,
     // Producers
     PackageProducer,
     ExperimentProducer,

@@ -6,7 +6,9 @@ import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
     ExperimentDataGroupDataService, ExperimentDataService,
     AppPackageDataService, AppSettingsDataService, PackageDataService,
-    SettingsDataService, SelectTransformPluginsDataService, AppSelectTransformPluginsDataService
+    SettingsDataService, SelectTransformPluginsDataService,
+    AppSelectTransformPluginsDataService, AlgorithmPluginsDataService,
+    AppAlgorithmPluginsDataService
 } from '../data-services';
 import { AppWebCoreService } from '../core-services';
 import { AppFileCoreService } from '../core-services/file-core-service';
@@ -22,7 +24,8 @@ import {
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
-    AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer, AppTransformSessionConsumer
+    AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
+    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 import { AppTransformService } from '../services/transform-service';
@@ -44,6 +47,7 @@ export class AppServiceContainer implements ServiceContainer {
     private experimentDataService: ExperimentDataService;
     private packageDataService: PackageDataService;
     private selectTransformPluginsDataService: SelectTransformPluginsDataService;
+    private algorithmPluginsDataService: AlgorithmPluginsDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -133,6 +137,13 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.SettingsDataService:
                 return new AppSettingsDataService(this);
 
+            case SERVICE_TYPES.AlgorithmPluginsDataService:
+                if (this.algorithmPluginsDataService) {
+                    return this.algorithmPluginsDataService;
+                }
+                this.algorithmPluginsDataService = new AppAlgorithmPluginsDataService(this);
+                return this.algorithmPluginsDataService;
+
             // Core Services
             case SERVICE_TYPES.WebService:
                 return new AppWebCoreService();
@@ -180,7 +191,7 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.SelectTransformPluginsProducer:
                 return new AppSelectTransformPluginsProducer(this);
-            
+
             case SERVICE_TYPES.TransformSessionProducer:
                 return new AppTransformSessionProducer(this);
 
@@ -205,6 +216,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.TransformSessionConsumer:
                 return new AppTransformSessionConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmPluginsConsumer:
+                return new AppAlgorithmPluginsConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

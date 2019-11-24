@@ -9,3 +9,8 @@ export {
     SelectTransformPluginsDataService, AppSelectTransformPluginsDataService,
     MockSelectTransformPluginsDataService
 } from './select-transform-plugins-data-service';
+export {
+    AlgorithmPluginsDataService, AppAlgorithmPluginsDataService,
+    MockAlgorithmPluginsDataService
+} from './algorithm-plugins-data-service';
+
