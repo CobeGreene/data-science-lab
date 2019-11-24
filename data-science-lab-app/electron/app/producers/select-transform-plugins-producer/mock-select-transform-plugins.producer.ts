@@ -1,9 +1,9 @@
 import { SelectTransformPluginsProducer } from './select-transform-plugins.producer';
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 
 
 export class MockSelectTransformPluginsProducer implements SelectTransformPluginsProducer {
-    all: (plugins: SelectTransformPlugin[]) => void;
+    all: (plugins: TransformPluginViewModel[]) => void;
     
     error: (reason: any) => void;
 

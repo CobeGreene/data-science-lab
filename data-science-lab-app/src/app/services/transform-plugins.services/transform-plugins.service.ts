@@ -1,21 +1,21 @@
 import { Subject } from 'rxjs';
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 
 export abstract class TransformPluginsService {
-    
-    public transformPluginsChanged: Subject<SelectTransformPlugin[]>;
-    public transformPluginSelected: Subject<{dataGroupId: number, plugin: SelectTransformPlugin}>;
+
+    public transformPluginsChanged: Subject<TransformPluginViewModel[]>;
+    public transformPluginSelected: Subject<{ dataGroupId: number, plugin: TransformPluginViewModel }>;
 
     constructor() {
-        this.transformPluginsChanged = new Subject<SelectTransformPlugin[]>();
-        this.transformPluginSelected = new Subject<{dataGroupId: number, plugin: SelectTransformPlugin}>();
+        this.transformPluginsChanged = new Subject<TransformPluginViewModel[]>();
+        this.transformPluginSelected = new Subject<{ dataGroupId: number, plugin: TransformPluginViewModel }>();
     }
 
-    abstract all(): SelectTransformPlugin[];
+    abstract all(): TransformPluginViewModel[];
 
-    abstract get(dataGroupId: number): SelectTransformPlugin;
+    abstract get(dataGroupId: number): TransformPluginViewModel;
 
-    abstract select(dataGroupId: number, plugin: SelectTransformPlugin): void;
+    abstract select(dataGroupId: number, plugin: TransformPluginViewModel): void;
 
     abstract deselect(dataGroupId: number): void;
 }

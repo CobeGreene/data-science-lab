@@ -1,20 +1,20 @@
 import { MockZone } from '../mock-zone';
-import { AppTransformPluginsService } from './app-transform-plugins.service';
+import { AppAlgorithmPluginsService } from './app-algorithm-plugins.service';
 import { Plugin } from '../../../../shared/models';
-import { TransformPluginViewModel } from '../../../../shared/view-models';
+import { AlgorithmPluginViewModel } from '../../../../shared/view-models';
 import { ExperimentsEvents } from '../../../../shared/events';
 import { MockIpcService } from '../../../../shared/services';
 
 
-describe('Angular App Transform Plugins Service Tests', () => {
+describe('Angular App Algorithm Plugins Service Tests', () => {
 
-    let transformPluginsService: AppTransformPluginsService;
+    let pluginsService: AppAlgorithmPluginsService;
     let ipcService: MockIpcService;
-    let transformPlugins: TransformPluginViewModel[];
+    let plugins: AlgorithmPluginViewModel[];
     let zone: MockZone;
 
     const getAllEvent = (event, ...arg): void => {
-        ipcService.send(ExperimentsEvents.GetAllTransformPluginsListeners, transformPlugins);
+        ipcService.send(ExperimentsEvents.GetAllAlgorithmPluginsListeners, plugins);
     };
 
     beforeAll(() => {
@@ -23,80 +23,80 @@ describe('Angular App Transform Plugins Service Tests', () => {
     });
 
     beforeEach(() => {
-        transformPlugins = [
-            new TransformPluginViewModel({
+        plugins = [
+            new AlgorithmPluginViewModel({
                 plugin: new Plugin({ name: 'name', className: 'class', type: 'type', description: 'desc' }),
             }),
-            new TransformPluginViewModel({
+            new AlgorithmPluginViewModel({
                 plugin: new Plugin({ name: 'name', className: 'class', type: 'type', description: 'desc' }),
             }),
         ];
-        ipcService.on(ExperimentsEvents.GetAllTransformPluginsEvent, getAllEvent);
-        transformPluginsService = new AppTransformPluginsService(ipcService, zone);
+        ipcService.on(ExperimentsEvents.GetAllAlgorithmPluginsEvent, getAllEvent);
+        pluginsService = new AppAlgorithmPluginsService(ipcService, zone);
     });
 
     afterEach(() => {
         ipcService.removeListenersFromAllChannels();
-        transformPluginsService.ngOnDestroy();
+        pluginsService.ngOnDestroy();
     });
 
     it('all should call plugins changed', (done) => {
-        transformPluginsService.transformPluginsChanged.subscribe((value) => {
-            expect(value.length).toBe(transformPlugins.length);
+        pluginsService.algorithmPluginsChanged.subscribe((value) => {
+            expect(value.length).toBe(plugins.length);
             done();
         });
-        transformPluginsService.all();
+        pluginsService.all();
     });
 
     it('get should throw for not found', () => {
         expect(() => {
-            transformPluginsService.get(404);
+            pluginsService.get(404);
         }).toThrowError();
     });
 
     it('select should add the selected subject', (done) => {
-        transformPluginsService.transformPluginSelected.subscribe((value) => {
+        pluginsService.algorithmPluginSelected.subscribe((value) => {
             expect(value.dataGroupId).toBe(1);
             done();
         });
-        transformPluginsService.select(1,
-            new TransformPluginViewModel({
+        pluginsService.select(1,
+            new AlgorithmPluginViewModel({
                 plugin: new Plugin({ name: 'name', className: 'class', type: 'type', description: 'desc' }),
             }));
     });
     
     it('select should update the selected subject', (done) => {
-        transformPluginsService.select(1, 
-            new TransformPluginViewModel({
+        pluginsService.select(1, 
+            new AlgorithmPluginViewModel({
                 plugin: new Plugin({ name: 'name', className: 'class', type: 'type', description: 'desc' }),
             }));
-        transformPluginsService.transformPluginSelected.subscribe((value) => {
+        pluginsService.algorithmPluginSelected.subscribe((value) => {
             expect(value.dataGroupId).toBe(1);
             done();
         });
-        transformPluginsService.select(1, 
-            new TransformPluginViewModel({
+        pluginsService.select(1, 
+            new AlgorithmPluginViewModel({
                 plugin: new Plugin({ name: 'name', className: 'class', type: 'type', description: 'desc' }),
             }));
     });
 
     it('get should return plugin after selected', () => {
-        transformPluginsService.select(1,
-            new TransformPluginViewModel({
+        pluginsService.select(1,
+            new AlgorithmPluginViewModel({
                 plugin: new Plugin({ name: 'name', className: 'class', type: 'type', description: 'desc' }),
             }));
-        const transformPlugin = transformPluginsService.get(1);
+        const transformPlugin = pluginsService.get(1);
         expect(transformPlugin.plugin.name).toBe('name');
     });
 
     it('deselect should throw for get after deselected', () => {
-        transformPluginsService.select(1,
-            new TransformPluginViewModel({
+        pluginsService.select(1,
+            new AlgorithmPluginViewModel({
                 plugin: new Plugin({ name: 'name', className: 'class', type: 'type', description: 'desc' }),
             }));
-        transformPluginsService.deselect(1);
+        pluginsService.deselect(1);
         expect(() => {
-            transformPluginsService.get(1);
+            pluginsService.get(1);
         }).toThrowError();
     });
 

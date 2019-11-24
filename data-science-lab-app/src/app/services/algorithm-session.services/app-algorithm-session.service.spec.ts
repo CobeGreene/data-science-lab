@@ -1,27 +1,27 @@
 import { MockZone } from '../mock-zone';
-import { AppTransformSessionService } from './app-transform-session.service';
-import { TransformSessionViewModel, TransformPluginViewModel } from '../../../../shared/view-models';
+import { AppAlgorithmSessionService } from './app-algorithm-session.service';
+import { AlgorithmPluginViewModel, AlgorithmSessionViewModel } from '../../../../shared/view-models';
 import { ExperimentsEvents } from '../../../../shared/events';
 import { MockIpcService } from '../../../../shared/services';
 import { OptionList } from 'data-science-lab-core';
 import { Plugin } from '../../../../shared/models';
 
-describe('Angular App Transform Session Service Tests', () => {
+describe('Angular App Algorithm Session Service Tests', () => {
 
-    let transformSessionService: AppTransformSessionService;
+    let algorithmSessionService: AppAlgorithmSessionService;
     let ipcService: MockIpcService;
-    let transformSessions: TransformSessionViewModel[];
+    let algorithmSessions: AlgorithmSessionViewModel[];
     let zone: MockZone;
-    let createTransformSession: TransformSessionViewModel;
+    let createAlgorithmSession: AlgorithmSessionViewModel;
 
 
     const getAllEvent = (event, ...args): void => {
-        ipcService.send(ExperimentsEvents.GetAllTransformSessionsListeners, transformSessions);
+        ipcService.send(ExperimentsEvents.GetAllAlgorithmSessionsListeners, algorithmSessions);
     };
 
     const createEvent = (event, ...args): void => {
-        ipcService.send(ExperimentsEvents.CreateTransformSessionListeners,
-            createTransformSession);
+        ipcService.send(ExperimentsEvents.CreateAlgorithmSessionListeners,
+            createAlgorithmSession);
     };
 
     beforeAll(() => {
@@ -30,114 +30,114 @@ describe('Angular App Transform Session Service Tests', () => {
     });
 
     beforeEach(() => {
-        transformSessions = [
-            new TransformSessionViewModel({
+        algorithmSessions = [
+            new AlgorithmSessionViewModel({
                 dataGroupId: 1, optionList: new OptionList()
             }),
-            new TransformSessionViewModel({
+            new AlgorithmSessionViewModel({
                 dataGroupId: 2, optionList: new OptionList()
             }),
-            new TransformSessionViewModel({
+            new AlgorithmSessionViewModel({
                 dataGroupId: 3, optionList: new OptionList()
             }),
-            new TransformSessionViewModel({
+            new AlgorithmSessionViewModel({
                 dataGroupId: 4, optionList: new OptionList()
             }),
         ];
-        ipcService.on(ExperimentsEvents.GetAllTransformSessionsEvent, getAllEvent);
-        ipcService.on(ExperimentsEvents.CreateTransformSessionEvent, createEvent);
-        transformSessionService = new AppTransformSessionService(ipcService, zone);
+        ipcService.on(ExperimentsEvents.GetAllAlgorithmSessionsEvent, getAllEvent);
+        ipcService.on(ExperimentsEvents.CreateAlgorithmSessionEvent, createEvent);
+        algorithmSessionService = new AppAlgorithmSessionService(ipcService, zone);
     });
 
     afterEach(() => {
         ipcService.removeListenersFromAllChannels();
-        transformSessionService.ngOnDestroy();
+        algorithmSessionService.ngOnDestroy();
     });
 
     it('get should throw for not found', () => {
         expect(() => {
-            transformSessionService.get(404);
+            algorithmSessionService.get(404);
         }).toThrowError();
     });
 
     it('get should return first session', () => {
-        const session = transformSessionService.get(1);
+        const session = algorithmSessionService.get(1);
         expect(session.dataGroupId).toBe(1);
     });
 
     it('has session should return false for not found', () => {
-        expect(transformSessionService.hasSession(404)).toBeFalsy();
+        expect(algorithmSessionService.hasSession(404)).toBeFalsy();
     });
 
     it('has session should return true for first session', () => {
-        expect(transformSessionService
+        expect(algorithmSessionService
             .hasSession(
-                transformSessions[0].dataGroupId)).toBeTruthy();
+                algorithmSessions[0].dataGroupId)).toBeTruthy();
     });
 
     it('create session should updated new session', (done) => {
-        createTransformSession = new TransformSessionViewModel({
+        createAlgorithmSession = new AlgorithmSessionViewModel({
             dataGroupId: 3, optionList: new OptionList()
         });
-        transformSessionService.newSession.subscribe((value) => {
+        algorithmSessionService.newSession.subscribe((value) => {
             expect(value.dataGroupId).toBe(3);
             done();
         });
-        transformSessionService.create(3,
-            new TransformPluginViewModel({
+        algorithmSessionService.create(3,
+            new AlgorithmPluginViewModel({
                 plugin: new Plugin({ name: 'name', className: 'classname', description: 'descrption',
                                      type: 'fetch'})
             }), {});
     });
 
     it('delete should call delete fetch session event', (done) => {
-        ipcService.on(ExperimentsEvents.DeleteTransformSessionEvent, (event, dataGroupId) => {
+        ipcService.on(ExperimentsEvents.DeleteAlgorithmSessionEvent, (event, dataGroupId) => {
             expect(dataGroupId).toBe(1);
             done();
         });
-        transformSessionService.delete(1);
+        algorithmSessionService.delete(1);
     });
 
     it('delete listeners should call delete subject', (done) => {
-        transformSessionService.sessionDeleted.subscribe((dataGroupId) => {
+        algorithmSessionService.sessionDeleted.subscribe((dataGroupId) => {
             expect(dataGroupId).toBe(1);
             done();
         });
-        ipcService.send(ExperimentsEvents.DeleteTransformSessionListeners, 1);
+        ipcService.send(ExperimentsEvents.DeleteAlgorithmSessionListeners, 1);
     });
 
     it('finish listeners should call session finish subject', (done) => {
-        transformSessionService.sessionFinished.subscribe((value) => {
+        algorithmSessionService.sessionFinished.subscribe((value) => {
             expect(value).toBe(1);
             done();
         });
-        ipcService.send(ExperimentsEvents.FinishedTransformSessionListeners, 1);
+        ipcService.send(ExperimentsEvents.FinishedAlgorithmSessionListeners, 1);
     });
 
     it('update listeners should update subject', (done) => {
-        transformSessionService.sessionUpdated.subscribe((value) => {
+        algorithmSessionService.sessionUpdated.subscribe((value) => {
             expect(value.dataGroupId).toBe(1);
             done();
         });
-        ipcService.send(ExperimentsEvents.UpdatedTransformSessionListeners, new TransformSessionViewModel({
+        ipcService.send(ExperimentsEvents.UpdatedAlgorithmSessionListeners, new AlgorithmSessionViewModel({
             dataGroupId: 1, optionList: new OptionList()
         }));
     });
 
     it('submit should send options', (done) => {
-        ipcService.on(ExperimentsEvents.SubmitOptionsTransformSessionEvent, (event, dataGroupId, inputs) => {
+        ipcService.on(ExperimentsEvents.SubmitOptionsAlgorithmSessionEvent, (event, dataGroupId, inputs) => {
             expect(dataGroupId).toBe(1);
             done();
         });
-        transformSessionService.submitOptions(1, {});
+        algorithmSessionService.submitOptions(1, {});
     });
 
     it('execute command should send command', (done) => {
-        ipcService.on(ExperimentsEvents.ExecuteCommandTransformSessionEvent, (event, dataGroupId, command) => {
+        ipcService.on(ExperimentsEvents.ExecuteCommandAlgorithmSessionEvent, (event, dataGroupId, command) => {
             expect(command).toEqual('cmd');
             done();
         });
-        transformSessionService.executeCommand(1, 'cmd');
+        algorithmSessionService.executeCommand(1, 'cmd');
     });
 
 

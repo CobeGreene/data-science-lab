@@ -1,8 +1,8 @@
 import { Producer } from '../producer';
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 
 export interface SelectTransformPluginsProducer extends Producer {
 
-    all(plugins: SelectTransformPlugin[]);
+    all(plugins: TransformPluginViewModel[]);
 }
 

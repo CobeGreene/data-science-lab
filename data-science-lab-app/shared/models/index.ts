@@ -3,5 +3,3 @@ export { PluginPackage } from './plugin_package';
 export { PluginPackageList } from './plugin_package_list';
 export { Experiment } from './experiment';
 export { ExperimentList } from './experiment_list';
-export { SelectTransformPlugin } from './select-transform-plugin';
-export { SelectTransformPluginInput } from './select-transform-plugin.input';

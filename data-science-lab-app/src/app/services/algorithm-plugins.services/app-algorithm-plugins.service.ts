@@ -1,46 +1,47 @@
+import { AlgorithmPluginsService } from './algorithm-plugins.service';
 import { Injectable, OnDestroy, NgZone } from '@angular/core';
-import { TransformPluginsService } from './transform-plugins.service';
-import { TransformPluginViewModel } from '../../../../shared/view-models';
+import { AlgorithmPluginViewModel } from '../../../../shared/view-models';
 import { IpcService } from '../../../../shared/services';
 import { ExperimentsEvents } from '../../../../shared/events';
 
+
 @Injectable()
-export class AppTransformPluginsService extends TransformPluginsService implements OnDestroy {
+export class AppAlgorithmPluginsService extends AlgorithmPluginsService implements OnDestroy {
 
     private retrive: boolean;
-    private transformPlugins: TransformPluginViewModel[];
-    private selectedPlugins: { dataGroupId: number, plugin: TransformPluginViewModel }[];
+    private algorithmPlugins: AlgorithmPluginViewModel[];
+    private selectedPlugins: { dataGroupId: number, plugin: AlgorithmPluginViewModel }[];
 
     constructor(private ipcService: IpcService, private zone: NgZone) {
         super();
 
         this.retrive = false;
-        this.transformPlugins = [];
+        this.algorithmPlugins = [];
         this.selectedPlugins = [];
 
         this.registerEvents();
     }
 
     registerEvents() {
-        this.ipcService.on(ExperimentsEvents.GetAllTransformPluginsListeners, this.getAllEvent);
+        this.ipcService.on(ExperimentsEvents.GetAllAlgorithmPluginsListeners, this.getAllEvent);
     }
 
-    private getAllEvent = (event, plugins: TransformPluginViewModel[]) => {
+    private getAllEvent = (event, plugins: AlgorithmPluginViewModel[]) => {
         this.zone.run(() => {
             this.retrive = true;
-            this.transformPlugins = plugins;
-            this.transformPluginsChanged.next(this.transformPlugins);
+            this.algorithmPlugins = plugins;
+            this.algorithmPluginsChanged.next(this.algorithmPlugins);
         });
     }
 
-    all(): TransformPluginViewModel[] {
-        if (!this.retrive) {
-            this.ipcService.send(ExperimentsEvents.GetAllTransformPluginsEvent);
-        }
-        return this.transformPlugins;
-    }
 
-    get(dataGroupId: number): TransformPluginViewModel {
+    all(): AlgorithmPluginViewModel[] {
+        if (!this.retrive) {
+            this.ipcService.send(ExperimentsEvents.GetAllAlgorithmPluginsEvent);
+        }
+        return this.algorithmPlugins;
+    }
+    get(dataGroupId: number): AlgorithmPluginViewModel {
         const find = this.selectedPlugins.find((value) => {
             return value.dataGroupId === dataGroupId;
         });
@@ -50,7 +51,7 @@ export class AppTransformPluginsService extends TransformPluginsService implemen
         throw new Error(`Couldn't find selected plugin with data group id ${dataGroupId}`);
     }
 
-    select(dataGroupId: number, plugin: TransformPluginViewModel) {
+    select(dataGroupId: number, plugin: AlgorithmPluginViewModel): void {
         let find = this.selectedPlugins.find((value) => {
             return value.dataGroupId === dataGroupId;
         });
@@ -63,10 +64,9 @@ export class AppTransformPluginsService extends TransformPluginsService implemen
             };
             this.selectedPlugins.push(find);
         }
-        this.transformPluginSelected.next(find);
+        this.algorithmPluginSelected.next(find);
     }
-
-    deselect(dataGroupId: number) {
+    deselect(dataGroupId: number): void {
         const findIndex = this.selectedPlugins.findIndex((value) => {
             return value.dataGroupId === dataGroupId;
         });
@@ -74,9 +74,9 @@ export class AppTransformPluginsService extends TransformPluginsService implemen
             this.selectedPlugins.splice(findIndex, 1);
         }
     }
-
     ngOnDestroy(): void {
-        this.ipcService.removeListener(ExperimentsEvents.GetAllTransformPluginsListeners, this.getAllEvent);
+        this.ipcService.removeListener(ExperimentsEvents.GetAllAlgorithmPluginsListeners, this.getAllEvent);
     }
 
 }
+

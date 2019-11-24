@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { SelectTransformPluginInput } from '../../../../../shared/models';
-import { DataGroupViewModel } from '../../../../../shared/view-models';
-import { timingSafeEqual } from 'crypto';
+import { PluginInputViewModel, DataGroupViewModel } from '../../../../../shared/view-models';
 
 @Component({
     selector: 'app-experiment-inputs',
@@ -10,11 +8,11 @@ import { timingSafeEqual } from 'crypto';
 })
 export class ExperimentInputsComponent implements OnInit, OnDestroy {
 
-    private __inputList: SelectTransformPluginInput[];
+    private __inputList: PluginInputViewModel[];
     private indices: {[id: string]: number[]};
     private valid: boolean;
 
-    @Input() set inputList(inputList: SelectTransformPluginInput[]) {
+    @Input() set inputList(inputList: PluginInputViewModel[]) {
         this.__inputList = inputList;
         this.indices = {};
         inputList.forEach((value) => {
@@ -23,7 +21,7 @@ export class ExperimentInputsComponent implements OnInit, OnDestroy {
         this.valid = this.isValid();
     }
 
-    get inputList(): SelectTransformPluginInput[] {
+    get inputList(): PluginInputViewModel[] {
         return this.__inputList;
     }
 

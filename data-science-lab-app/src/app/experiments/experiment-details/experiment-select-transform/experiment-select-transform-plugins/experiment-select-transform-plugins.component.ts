@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SelectTransformPlugin } from '../../../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../../../shared/view-models';
 import { TransformPluginsService } from '../../../../services';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
@@ -11,7 +11,7 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 })
 export class ExperimentSelectTransformPluginsComponent implements OnInit, OnDestroy {
 
-    plugins: SelectTransformPlugin[];
+    plugins: TransformPluginViewModel[];
 
     constructor(private service: TransformPluginsService) {
 

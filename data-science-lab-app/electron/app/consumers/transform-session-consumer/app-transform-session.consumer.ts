@@ -2,7 +2,7 @@ import { Consumer } from '../consumer';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { IpcService } from '../../../../shared/services';
 import { ExperimentsEvents } from '../../../../shared/events';
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 import { TransformService } from '../../services';
 
 
@@ -26,7 +26,7 @@ export class AppTransformSessionConsumer implements Consumer {
         service.all();
     }
 
-    private createEvent = (_event, dataGroupId: number, plugin: SelectTransformPlugin, inputs: {[id: string]: number[]}): void => {
+    private createEvent = (_event, dataGroupId: number, plugin: TransformPluginViewModel, inputs: { [id: string]: number[] }): void => {
         const service = this.serviceContainer.resolve<TransformService>(SERVICE_TYPES.TransformService);
         service.create(dataGroupId, plugin, inputs);
     }
@@ -36,7 +36,7 @@ export class AppTransformSessionConsumer implements Consumer {
         service.delete(dataGroupId);
     }
 
-    private submitEvent = (_event, dataGroupId: number, inputs: {[id: string]: any}): void => {
+    private submitEvent = (_event, dataGroupId: number, inputs: { [id: string]: any }): void => {
         const service = this.serviceContainer.resolve<TransformService>(SERVICE_TYPES.TransformService);
         service.submitOptions(dataGroupId, inputs);
     }

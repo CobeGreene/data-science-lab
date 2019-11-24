@@ -1,6 +1,6 @@
-import { TransformSessionViewModel } from '../../../../shared/view-models';
+import { TransformSessionViewModel, TransformPluginViewModel } from '../../../../shared/view-models';
 import { Subject } from 'rxjs';
-import { Plugin, SelectTransformPlugin } from '../../../../shared/models';
+import { Plugin } from '../../../../shared/models';
 
 export abstract class TransformSessionService {
 
@@ -18,7 +18,7 @@ export abstract class TransformSessionService {
 
     abstract get(dataGroupId: number): TransformSessionViewModel;
     abstract hasSession(dataGroupId: number): boolean;
-    abstract create(dataGroupId: number, plugin: SelectTransformPlugin, inputs: {[id: string]: number[]}): void;
+    abstract create(dataGroupId: number, plugin: TransformPluginViewModel, inputs: {[id: string]: number[]}): void;
     abstract delete(dataGroupId: number): void;
 
     abstract submitOptions(dataGroupId: number, inputs: {[id: string]: any}): void;

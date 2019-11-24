@@ -1,4 +1,4 @@
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 import { TransformService } from './transform.service';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { TransformSessionService } from '../../session-services';
@@ -20,7 +20,7 @@ export class AppTransformService implements TransformService {
         producer.all(sessionService.all());
     }
 
-    create(dataGroupId: number, transformPlugin: SelectTransformPlugin, inputs: { [id: string]: number[]; }): void {
+    create(dataGroupId: number, transformPlugin: TransformPluginViewModel, inputs: { [id: string]: number[]; }): void {
         const dataService = this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
         const pluginPackage = dataService.find(transformPlugin.plugin);
         if (!pluginPackage) {

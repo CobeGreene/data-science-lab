@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy, NgZone } from '@angular/core';
 import { TransformSessionService } from './transform-session.service';
-import { TransformSessionViewModel } from '../../../../shared/view-models';
+import { TransformSessionViewModel, TransformPluginViewModel } from '../../../../shared/view-models';
 import { IpcService } from '../../../../shared/services';
-import { Plugin, SelectTransformPlugin } from '../../../../shared/models';
+import { Plugin } from '../../../../shared/models';
 import { ExperimentsEvents } from '../../../../shared/events';
 
 @Injectable()
@@ -99,7 +99,7 @@ export class AppTransformSessionService extends TransformSessionService implemen
         return this.findSessionIndex(dataGroupId) >= 0;
     }
     
-    create(dataGroupId: number, plugin: SelectTransformPlugin, inputs: {[id: string]: number[]}): void {
+    create(dataGroupId: number, plugin: TransformPluginViewModel, inputs: {[id: string]: number[]}): void {
         this.ipcService.send(ExperimentsEvents.CreateTransformSessionEvent, dataGroupId, plugin, inputs);
     }
 

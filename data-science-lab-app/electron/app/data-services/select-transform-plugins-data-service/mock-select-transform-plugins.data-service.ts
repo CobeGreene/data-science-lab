@@ -1,17 +1,18 @@
 import { SelectTransformPluginsDataService } from './select-transform-plugins.data-service';
-import { SelectTransformPlugin, PluginPackage, Plugin, SelectTransformPluginInput } from '../../../../shared/models';
+import { PluginPackage, Plugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { PackageDataService } from '../package-data-service';
 import { PluginTypes, TransformPlugin } from 'data-science-lab-core';
 import { PluginContext } from '../../contexts';
 
 export class MockSelectTransformPluginsDataService implements SelectTransformPluginsDataService {
-    all: (callback?: (plugins: SelectTransformPlugin[]) => void, error?: (reason: any) => void) => SelectTransformPlugin[];
+    all: (callback?: (plugins: TransformPluginViewModel[]) => void, error?: (reason: any) => void) => TransformPluginViewModel[];
 
 
-    install: (pluginPackage: PluginPackage) => Promise<SelectTransformPlugin[]>;
+    install: (pluginPackage: PluginPackage) => Promise<TransformPluginViewModel[]>;
 
-    uninstall: (pluginPackage: PluginPackage) => Promise<SelectTransformPlugin[]>;
+    uninstall: (pluginPackage: PluginPackage) => Promise<TransformPluginViewModel[]>;
 
     constructor() {
         this.reset();

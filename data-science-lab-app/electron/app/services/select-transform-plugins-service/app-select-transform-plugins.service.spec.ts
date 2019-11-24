@@ -2,7 +2,8 @@ import { AppSelectTransformPluginsService } from './app-select-transform-plugins
 import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { MockSelectTransformPluginsDataService } from '../../data-services';
 import { MockSelectTransformPluginsProducer } from '../../producers';
-import { PluginPackage, SelectTransformPlugin } from '../../../../shared/models';
+import { PluginPackage } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 
 
 describe('Electron App Select Transform Plugins Service Tests', () => {
@@ -66,7 +67,7 @@ describe('Electron App Select Transform Plugins Service Tests', () => {
 
 
     it('install should call producer all', (done) => {
-        dataService.install = (_) => new Promise<SelectTransformPlugin[]>((resolve, reject) => {
+        dataService.install = (_) => new Promise<TransformPluginViewModel[]>((resolve, reject) => {
             resolve([]);
         });
         producer.all = () => {
@@ -81,7 +82,7 @@ describe('Electron App Select Transform Plugins Service Tests', () => {
     
     
     it('install should call producer error', (done) => {
-        dataService.install = (_) => new Promise<SelectTransformPlugin[]>((resolve, reject) => {
+        dataService.install = (_) => new Promise<TransformPluginViewModel[]>((resolve, reject) => {
             reject('error');
         });
         producer.error = () => {
@@ -96,7 +97,7 @@ describe('Electron App Select Transform Plugins Service Tests', () => {
 
 
     it('uninstall should call producer all', (done) => {
-        dataService.uninstall = (_) => new Promise<SelectTransformPlugin[]>((resolve, reject) => {
+        dataService.uninstall = (_) => new Promise<TransformPluginViewModel[]>((resolve, reject) => {
             resolve([]);
         });
         producer.all = () => {
@@ -111,7 +112,7 @@ describe('Electron App Select Transform Plugins Service Tests', () => {
     
     
     it('uninstall should call producer error', (done) => {
-        dataService.uninstall = (_) => new Promise<SelectTransformPlugin[]>((resolve, reject) => {
+        dataService.uninstall = (_) => new Promise<TransformPluginViewModel[]>((resolve, reject) => {
             reject('error');
         });
         producer.error = () => {

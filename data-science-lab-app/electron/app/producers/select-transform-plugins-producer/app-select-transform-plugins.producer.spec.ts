@@ -1,6 +1,6 @@
 import { BaseProducer } from '../base.producer';
 import { AppSelectTransformPluginsProducer } from './app-select-transform-plugins.producer';
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 import { SERVICE_TYPES, MockServiceContainer } from '../../services-container';
 import { ExperimentsEvents } from '../../../../shared/events';
 import { IpcService, MockIpcService } from '../../../../shared/services';
