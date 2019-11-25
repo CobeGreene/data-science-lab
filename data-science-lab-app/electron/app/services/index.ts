@@ -14,4 +14,6 @@ export {
 export {
     AlgorithmPluginsService, MockAlgorithmPluginsService, AppAlgorithmPluginsService
 } from './algorithm-plugins-service';
-
+export {
+    AlgorithmSessionOptionsService, MockAlgorithmSessionOptionsService
+} from './algorithm-session-options-service';

@@ -1,11 +1,11 @@
-import { TransformService } from './transform.service';
-import { TransformPluginViewModel } from '../../../../shared/view-models';
+import { AlgorithmSessionOptionsService  } from './algorithm-session-options.service';
+import { AlgorithmPluginViewModel } from '../../../../shared/view-models';
 
 
-export class MockTransformService implements TransformService {
+export class MockAlgorithmSessionOptionsService implements AlgorithmSessionOptionsService {
     all: () => void;
     
-    create: (dataGroupId: number, plugin: TransformPluginViewModel, inputs: { [id: string]: number[]; }) => void;
+    create: (dataGroupId: number, plugin: AlgorithmPluginViewModel, inputs: { [id: string]: number[]; }) => void;
 
     executeCommand: (dataGroupId: number, command: string) => void;
 
@@ -13,8 +13,6 @@ export class MockTransformService implements TransformService {
     submitOptions: (dataGroupId: number, inputs: { [id: string]: any; }) => void;
 
     delete: (dataGroupId: number) => void;
-
-    
 
     constructor() {
         this.reset();

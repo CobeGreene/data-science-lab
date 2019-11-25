@@ -15,8 +15,7 @@ import {
     ExperimentAlgorithmDataService,
     AppAlgorithmDataService
 } from '../data-services';
-import { AppWebCoreService } from '../core-services';
-import { AppFileCoreService } from '../core-services/file-core-service';
+import { AppWebCoreService, AppFileCoreService } from '../core-services';
 import { IpcService } from '../../../shared/services';
 import { AppIpcService } from '../ipc-services/app-ipc-service';
 import {
@@ -32,7 +31,7 @@ import {
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
     AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
-    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer
+    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 
@@ -248,6 +247,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmPluginsConsumer:
                 return new AppAlgorithmPluginsConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmSessionConsumer:
+                return new AppAlgorithmSessionConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

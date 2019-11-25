@@ -10,4 +10,5 @@ export {
 } from './select-transform-plugins-producer';
 export { TransformSessionProducer, AppTransformSessionProducer } from './transform-session-producer';
 export { AlgorithmPluginsProducer, MockAlgorithmPluginsProducer, AppAlgorithmPluginsProducer } from './algorithm-plugins-producer';
+export { AlgorithmSessionProducer } from './algorithm-session-producer';
 
