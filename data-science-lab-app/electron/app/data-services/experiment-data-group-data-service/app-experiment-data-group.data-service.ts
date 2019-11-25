@@ -55,7 +55,7 @@ export class AppExperimentDataGroupDataService implements ExperimentDataGroupDat
         if (findIndex >= 0) {
             this.dataGroups.splice(findIndex, 1);
         } else {
-            throw new Error(`Couldn't findexperiment data group with id ${id}.`);
+            throw new Error(`Couldn't find experiment data group with id ${id}.`);
         }
     }
     

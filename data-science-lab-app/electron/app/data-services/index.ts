@@ -13,4 +13,8 @@ export {
     AlgorithmPluginsDataService, AppAlgorithmPluginsDataService,
     MockAlgorithmPluginsDataService
 } from './algorithm-plugins-data-service';
-
+export {
+    AppAlgorithmDataService,
+    ExperimentAlgorithmDataService,
+    MockExperimentAlgorithmDataService
+} from './algorithm-data-service';

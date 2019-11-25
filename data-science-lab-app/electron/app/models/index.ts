@@ -5,4 +5,6 @@ export { ExperimentDataGroup } from './experiment-data-group';
 export { ExperimentFeature } from './experiment-feature';
 export { TransformSession } from './transform-session';
 export { AlgorithmSession } from './algorithm-session';
+export { ExperimentAlgorithm } from './experiment-algorithm';
+
 

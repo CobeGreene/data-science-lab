@@ -1,14 +1,19 @@
 import { ServiceContainer } from './service-container';
 import { SERVICE_TYPES } from './service-types';
 import { AppDocumentContext, DocumentContext, PluginContext, AppPluginContext, AppQueuePluginContext } from '../contexts';
-import { AppFetchSessionService, FetchSessionService, TransformSessionService, AppTransformSessionService } from '../session-services';
+import {
+    AppFetchSessionService, FetchSessionService, TransformSessionService,
+    AppTransformSessionService, AlgorithmSessionService, AppAlgorithmSessionService
+} from '../session-services';
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
     ExperimentDataGroupDataService, ExperimentDataService,
     AppPackageDataService, AppSettingsDataService, PackageDataService,
     SettingsDataService, SelectTransformPluginsDataService,
     AppSelectTransformPluginsDataService, AlgorithmPluginsDataService,
-    AppAlgorithmPluginsDataService
+    AppAlgorithmPluginsDataService,
+    ExperimentAlgorithmDataService,
+    AppAlgorithmDataService
 } from '../data-services';
 import { AppWebCoreService } from '../core-services';
 import { AppFileCoreService } from '../core-services/file-core-service';
@@ -42,6 +47,7 @@ export class AppServiceContainer implements ServiceContainer {
     // Session Services
     private fetchSessionService: FetchSessionService;
     private transformSessionService: TransformSessionService;
+    private algorithmSessionService: AlgorithmSessionService;
 
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
@@ -49,6 +55,7 @@ export class AppServiceContainer implements ServiceContainer {
     private packageDataService: PackageDataService;
     private selectTransformPluginsDataService: SelectTransformPluginsDataService;
     private algorithmPluginsDataService: AlgorithmPluginsDataService;
+    private algorithmDataService: ExperimentAlgorithmDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -98,6 +105,13 @@ export class AppServiceContainer implements ServiceContainer {
                 this.transformSessionService = new AppTransformSessionService(this);
                 return this.transformSessionService;
 
+            case SERVICE_TYPES.AlgorithmSessionService:
+                if (this.algorithmSessionService) {
+                    return this.algorithmSessionService;
+                }
+                this.algorithmSessionService = new AppAlgorithmSessionService(this);
+                return this.algorithmSessionService;
+
             // Ipc Services
             case SERVICE_TYPES.IpcService:
                 if (this.ipcService) {
@@ -134,6 +148,13 @@ export class AppServiceContainer implements ServiceContainer {
                 }
                 this.selectTransformPluginsDataService = new AppSelectTransformPluginsDataService(this);
                 return this.selectTransformPluginsDataService;
+
+            case SERVICE_TYPES.AlgorithmDataService:
+                if (this.algorithmDataService) {
+                    return this.algorithmDataService;
+                }
+                this.algorithmDataService = new AppAlgorithmDataService(this);
+                return this.algorithmDataService;
 
             case SERVICE_TYPES.SettingsDataService:
                 return new AppSettingsDataService(this);

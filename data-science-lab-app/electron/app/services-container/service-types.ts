@@ -12,9 +12,11 @@ export const enum SERVICE_TYPES {
     SettingsDataService,
     SelectTransformPluginsDataService,
     AlgorithmPluginsDataService,
+    AlgorithmDataService,
     // Session Services
     FetchSessionService,
     TransformSessionService,
+    AlgorithmSessionService,
     // Ipc Services
     IpcService,
     // Core Services
