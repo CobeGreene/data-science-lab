@@ -12,6 +12,6 @@ export {
     AppTransformService
 } from './transform-service';
 export {
-    AlgorithmPluginsService, MockAlgorithmPluginsService
+    AlgorithmPluginsService, MockAlgorithmPluginsService, AppAlgorithmPluginsService
 } from './algorithm-plugins-service';
 

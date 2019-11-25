@@ -16,11 +16,13 @@ import { IpcService } from '../../../shared/services';
 import { AppIpcService } from '../ipc-services/app-ipc-service';
 import {
     AppFetchService, AppPackageService, AppSelectTransformPluginsService,
-    AppExperimentService, AppFetchPluginsService, AppDataGroupsService
+    AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
+    AppAlgorithmPluginsService, AppTransformService
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
-    AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer, AppTransformSessionProducer
+    AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer,
+    AppTransformSessionProducer, AppAlgorithmPluginsProducer
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
@@ -28,7 +30,6 @@ import {
     AppTransformSessionConsumer, AppAlgorithmPluginsConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
-import { AppTransformService } from '../services/transform-service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -173,6 +174,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.TransformService:
                 return new AppTransformService(this);
 
+            case SERVICE_TYPES.AlgorithmPluginsService:
+                return new AppAlgorithmPluginsService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -194,6 +198,10 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.TransformSessionProducer:
                 return new AppTransformSessionProducer(this);
+
+            case SERVICE_TYPES.AlgorithmPluginsProducer:
+                return new AppAlgorithmPluginsProducer(this);
+
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:

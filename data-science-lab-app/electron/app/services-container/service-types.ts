@@ -46,6 +46,7 @@ export const enum SERVICE_TYPES {
     DataGroupsProducer,
     SelectTransformPluginsProducer,
     TransformSessionProducer,
+    AlgorithmPluginsProducer
 }
 
 
