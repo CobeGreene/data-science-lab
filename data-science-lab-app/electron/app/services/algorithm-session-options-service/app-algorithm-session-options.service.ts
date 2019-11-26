@@ -1,12 +1,10 @@
 import { AlgorithmPluginViewModel } from '../../../../shared/view-models';
 import { AlgorithmSessionOptionsService } from './algorithm-session-options.service';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
-import { TransformSessionService, AlgorithmSessionService } from '../../session-services';
-import { TransformSessionProducer, AlgorithmSessionProducer } from '../../producers';
-import { PackageDataService, ExperimentDataGroupDataService, SettingsDataService } from '../../data-services';
-import { ExperimentDataGroup, AlgorithmSession } from '../../models';
-import { PluginData } from 'data-science-lab-core';
-
+import { AlgorithmSessionService } from '../../session-services';
+import { AlgorithmSessionProducer } from '../../producers';
+import { PackageDataService, ExperimentDataGroupDataService, ExperimentAlgorithmDataService } from '../../data-services';
+import { AlgorithmSession, ExperimentAlgorithm } from '../../models';
 
 export class AppAlgorithmSessionOptionsService implements AlgorithmSessionOptionsService {
 
@@ -29,7 +27,7 @@ export class AppAlgorithmSessionOptionsService implements AlgorithmSessionOption
         } else {
             const dataGroupService = this.serviceContainer
                 .resolve<ExperimentDataGroupDataService>(SERVICE_TYPES.ExperimentDataGroupDataService);
-                
+
             const sessionService = this.serviceContainer.resolve<AlgorithmSessionService>(SERVICE_TYPES.AlgorithmSessionService);
             const features = dataGroupService.getFeatures(dataGroupId, inputs);
             const pluginData = dataGroupService.getPluginData(dataGroupId, inputs);
@@ -51,18 +49,68 @@ export class AppAlgorithmSessionOptionsService implements AlgorithmSessionOption
     }
 
     private sessionFinish(session: AlgorithmSession) {
+        const dataService = this.serviceContainer.resolve<ExperimentAlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService);
+        const sessionService = this.serviceContainer.resolve<AlgorithmSessionService>(SERVICE_TYPES.AlgorithmSessionService);
+        const dataGroupService = this.serviceContainer
+            .resolve<ExperimentDataGroupDataService>(SERVICE_TYPES.ExperimentDataGroupDataService);
 
+        const dataGroup = dataGroupService.read(session.dataGroupId);
+
+        const algorithm = new ExperimentAlgorithm({
+            label: 'New Algorithm',
+            dataGroupTrainId: session.dataGroupId,
+            algorithmPlugin: session.algorithmPlugin,
+            dataGroupFeatures: session.dataGroupFeatures,
+            plugin: session.plugin,
+            pluginPackage: session.pluginPackage,
+            experimentId: dataGroup.experimentId
+        });
+
+        sessionService.removeFromService(session.dataGroupId);
+        dataService.create(algorithm);
+        
+        const producer = this.serviceContainer.resolve<AlgorithmSessionProducer>(SERVICE_TYPES.AlgorithmSessionProducer);
+        producer.finish(session.dataGroupId);
+        producer.newAlgorithm(algorithm);
     }
 
 
-    executeCommand(dataGroupId: number, command: string): void {
-        throw new Error('Method not implemented.');
+    async executeCommand(dataGroupId: number, command: string) {
+        const sessionService = this.serviceContainer.resolve<AlgorithmSessionService>(SERVICE_TYPES.AlgorithmSessionService);
+        const session = sessionService.read(dataGroupId);
+        const producer = this.serviceContainer.resolve<AlgorithmSessionProducer>(SERVICE_TYPES.AlgorithmSessionProducer);
+        const options = session.algorithmPlugin.getOptions();
+        try {
+            await options.executeCommand(command);
+            if (options.noMore()) {
+                this.sessionFinish(session);
+            } else {
+                producer.updateSession(session);
+            }
+        } catch (reason) {
+            producer.error(reason);
+        }
     }
+
     submitOptions(dataGroupId: number, inputs: { [id: string]: any; }): void {
-        throw new Error('Method not implemented.');
+        const sessionService = this.serviceContainer.resolve<AlgorithmSessionService>(SERVICE_TYPES.AlgorithmSessionService);
+        const session = sessionService.read(dataGroupId);
+        const producer = this.serviceContainer.resolve<AlgorithmSessionProducer>(SERVICE_TYPES.AlgorithmSessionProducer);
+        const options = session.algorithmPlugin.getOptions();
+        options.submit(inputs);
+        if (options.noMore()) {
+            this.sessionFinish(session);
+        } else {
+            producer.updateSession(session);
+        }
     }
+
     delete(dataGroupId: number): void {
-        throw new Error('Method not implemented.');
+        const sessionService = this.serviceContainer.resolve<AlgorithmSessionService>(SERVICE_TYPES.AlgorithmSessionService);
+        sessionService.delete(dataGroupId);
+        const producer = this.serviceContainer.resolve<AlgorithmSessionProducer>(SERVICE_TYPES.AlgorithmSessionProducer);
+        producer.delete(dataGroupId);
+        producer.all(sessionService.all());
     }
 
 

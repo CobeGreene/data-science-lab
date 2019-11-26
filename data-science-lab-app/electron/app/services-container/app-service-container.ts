@@ -21,12 +21,12 @@ import { AppIpcService } from '../ipc-services/app-ipc-service';
 import {
     AppFetchService, AppPackageService, AppSelectTransformPluginsService,
     AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
-    AppAlgorithmPluginsService, AppTransformService
+    AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
     AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer,
-    AppTransformSessionProducer, AppAlgorithmPluginsProducer
+    AppTransformSessionProducer, AppAlgorithmPluginsProducer, AppAlgorithmSessionProducer
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
@@ -197,6 +197,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.AlgorithmPluginsService:
                 return new AppAlgorithmPluginsService(this);
 
+            case SERVICE_TYPES.AlgorithmSessionOptionsService:
+                return new AppAlgorithmSessionOptionsService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -222,6 +225,8 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.AlgorithmPluginsProducer:
                 return new AppAlgorithmPluginsProducer(this);
 
+            case SERVICE_TYPES.AlgorithmSessionProducer:
+                return new AppAlgorithmPluginsProducer(this);
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
@@ -250,6 +255,7 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmSessionConsumer:
                 return new AppAlgorithmSessionConsumer(this);
+            
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

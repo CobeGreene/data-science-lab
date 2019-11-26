@@ -1,5 +1,5 @@
 import { Producer } from '../producer';
-import { AlgorithmSession } from '../../models';
+import { AlgorithmSession, ExperimentAlgorithm } from '../../models';
 
 
 export interface AlgorithmSessionProducer extends Producer {
@@ -8,7 +8,7 @@ export interface AlgorithmSessionProducer extends Producer {
     newSession(sessions: AlgorithmSession): void;
     delete(dataGroupId: number): void;
     updateSession(sessions: AlgorithmSession): void;
-    newAlgorithm(): void;
+    newAlgorithm(alg: ExperimentAlgorithm): void;
     finish(dataGroupId: number): void;
 
 }
