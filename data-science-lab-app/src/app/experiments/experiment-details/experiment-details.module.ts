@@ -32,6 +32,7 @@ import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorith
 import { ExperimentSelectAlgorithmPluginsComponent } from './experiment-select-algorithm/experiment-select-algorithm-plugins/experiment-select-algorithm-plugins.component';
 import { ExperimentSelectAlgorithmPluginCardComponent } from './experiment-select-algorithm/experiment-select-algorithm-plugin-card/experiment-select-algorithm-plugin-card.component';
 import { ExperimentInputAlgorithmComponent } from './experiment-input-algorithm/experiment-input-algorithm.component';
+import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/experiment-setup-algorithm.component';
 
 @NgModule({
     declarations: [
@@ -64,6 +65,7 @@ import { ExperimentInputAlgorithmComponent } from './experiment-input-algorithm/
         ExperimentSelectAlgorithmPluginsComponent,
         ExperimentSelectAlgorithmPluginCardComponent,
         ExperimentInputAlgorithmComponent,
+        ExperimentSetupAlgorithmComponent
     ],
     imports: [
         CommonModule,

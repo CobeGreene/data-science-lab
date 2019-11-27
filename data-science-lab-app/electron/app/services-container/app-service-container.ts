@@ -226,7 +226,7 @@ export class AppServiceContainer implements ServiceContainer {
                 return new AppAlgorithmPluginsProducer(this);
 
             case SERVICE_TYPES.AlgorithmSessionProducer:
-                return new AppAlgorithmPluginsProducer(this);
+                return new AppAlgorithmSessionProducer(this);
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
