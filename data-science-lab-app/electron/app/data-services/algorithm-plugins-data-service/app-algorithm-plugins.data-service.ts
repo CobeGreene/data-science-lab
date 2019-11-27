@@ -46,9 +46,9 @@ export class AppAlgorithmPluginsDataService implements AlgorithmPluginsDataServi
                         return value.type === PluginTypes.Algorithm;
                     })) {
                         plugin.packageName = pluginPackage.name;
-                        const transformPlugin = await pluginContext.activate<AlgorithmPlugin>(pluginPackage, plugin);
-                        const inputs = transformPlugin.getInputs().inputs();
-                        const selectTransformPlugin = new AlgorithmPluginViewModel({
+                        const algorithmPlugin = await pluginContext.activate<AlgorithmPlugin>(pluginPackage, plugin);
+                        const inputs = algorithmPlugin.getInputs().inputs();
+                        const selectAlgorithmPlugin = new AlgorithmPluginViewModel({
                             plugin,
                             inputs: inputs.map((input) => {
                                 return new PluginInputViewModel({
@@ -60,9 +60,8 @@ export class AppAlgorithmPluginsDataService implements AlgorithmPluginsDataServi
                                 });
                             })
                         });
-                        
                         await pluginContext.deactivate(pluginPackage, plugin);
-                        algorithmPlugins.push(selectTransformPlugin);
+                        algorithmPlugins.push(selectAlgorithmPlugin);
                     }
                 } catch (reason) {
                     if (error) {

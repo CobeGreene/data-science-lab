@@ -28,6 +28,10 @@ import { ExperimentAlgorithmWorkspaceComponent } from './experiment-algorithm-wo
 import { ExperimentNavigateWorkspaceComponent } from './experiment-navigate-workspace/experiment-navigate-workspace.component';
 import { ExperimentSelectDataAlgorithmComponent } from './experiment-select-data-algorithm/experiment-select-data-algorithm.component';
 import { ExperimentSelectDataGroupComponent } from './experiment-select-data-algorithm/experiment-select-data-group/experiment-select-data-group.component';
+import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorithm/experiment-select-algorithm.component';
+import { ExperimentSelectAlgorithmPluginsComponent } from './experiment-select-algorithm/experiment-select-algorithm-plugins/experiment-select-algorithm-plugins.component';
+import { ExperimentSelectAlgorithmPluginCardComponent } from './experiment-select-algorithm/experiment-select-algorithm-plugin-card/experiment-select-algorithm-plugin-card.component';
+import { ExperimentInputAlgorithmComponent } from './experiment-input-algorithm/experiment-input-algorithm.component';
 
 @NgModule({
     declarations: [
@@ -56,6 +60,10 @@ import { ExperimentSelectDataGroupComponent } from './experiment-select-data-alg
         ExperimentNavigateWorkspaceComponent,
         ExperimentSelectDataAlgorithmComponent,
         ExperimentSelectDataGroupComponent,
+        ExperimentSelectAlgorithmComponent,
+        ExperimentSelectAlgorithmPluginsComponent,
+        ExperimentSelectAlgorithmPluginCardComponent,
+        ExperimentInputAlgorithmComponent,
     ],
     imports: [
         CommonModule,

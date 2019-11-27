@@ -28,6 +28,7 @@ export class AppAlgorithmSessionOptionsService implements AlgorithmSessionOption
             const dataGroupService = this.serviceContainer
                 .resolve<ExperimentDataGroupDataService>(SERVICE_TYPES.ExperimentDataGroupDataService);
 
+            
             const sessionService = this.serviceContainer.resolve<AlgorithmSessionService>(SERVICE_TYPES.AlgorithmSessionService);
             const features = dataGroupService.getFeatures(dataGroupId, inputs);
             const pluginData = dataGroupService.getPluginData(dataGroupId, inputs);

@@ -19,7 +19,9 @@ export class ExperimentSelectDataGroupComponent implements OnInit, OnDestroy {
     ngOnInit() { }
     ngOnDestroy() { }
 
-    
+    onSelect() {
+        this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'select-algorithm', this.dataGroup.id ]);
+    }    
 
 }
 

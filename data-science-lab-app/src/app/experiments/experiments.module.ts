@@ -7,7 +7,7 @@ import { ExperimentStartupComponent } from './experiments-startup/experiments-st
 import { ExperimentDetailsModule } from './experiment-details/experiment-details.module';
 import { ExperimentService, AppExperimentService } from '../services/experiment-services';
 import { FetchSessionService, AppFetchSessionService, FetchPluginsService,
-    AppFetchPluginsService, AppDataGroupsService, DataGroupsService, TransformPluginsService, AppTransformPluginsService, TransformSessionService, AppTransformSessionService } from '../services';
+    AppFetchPluginsService, AppDataGroupsService, DataGroupsService, TransformPluginsService, AppTransformPluginsService, TransformSessionService, AppTransformSessionService, AlgorithmPluginsService, AppAlgorithmPluginsService, AlgorithmSessionService, AppAlgorithmSessionService } from '../services';
 
 @NgModule({
     declarations: [
@@ -26,6 +26,8 @@ import { FetchSessionService, AppFetchSessionService, FetchPluginsService,
         { provide: DataGroupsService, useClass: AppDataGroupsService },
         { provide: TransformPluginsService, useClass: AppTransformPluginsService },
         { provide: TransformSessionService, useClass: AppTransformSessionService },
+        { provide: AlgorithmPluginsService, useClass: AppAlgorithmPluginsService },
+        { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService }
     ]
 })
 export class ExperimentsModule {
