@@ -9,3 +9,8 @@ export { TransformSessionService, AppTransformSessionService } from './transform
 export { AppTransformPluginsService, TransformPluginsService } from './transform-plugins.services';
 export { AlgorithmPluginsService, AppAlgorithmPluginsService } from './algorithm-plugins.services';
 export { AlgorithmSessionService, AppAlgorithmSessionService } from './algorithm-session.services';
+export { AlgorithmService, AppAlgorithmService } from './algorithm.services';
+
+
+
+

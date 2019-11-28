@@ -1,6 +1,6 @@
 import { AlgorithmSessionProducer } from './algorithm-session.producer';
 import { AlgorithmSession, ExperimentAlgorithm } from '../../models';
-import { AlgorithmSessionViewModel } from '../../../../shared/view-models';
+import { AlgorithmSessionViewModel, AlgorithmViewModel } from '../../../../shared/view-models';
 import { BaseProducer } from '../base.producer';
 import { IpcService } from '../../../../shared/services';
 import { SERVICE_TYPES } from '../../services-container';
@@ -44,7 +44,13 @@ export class AppAlgorithmSessionProducer extends BaseProducer implements Algorit
     }
     
     newAlgorithm(alg: ExperimentAlgorithm): void {
-        throw new Error(`Not implemented`);   
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.send(ExperimentsEvents.NewAlgorithmListeners, new AlgorithmViewModel({
+            experimentId: alg.experimentId,
+            id: alg.id,
+            hasStarted: alg.hasStarted,
+            iteration: alg.iteration
+        }));
     }
     
     finish(dataGroupId: number): void {

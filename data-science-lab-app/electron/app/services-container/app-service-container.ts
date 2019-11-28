@@ -15,7 +15,7 @@ import {
     ExperimentAlgorithmDataService,
     AppAlgorithmDataService
 } from '../data-services';
-import { AppWebCoreService, AppFileCoreService } from '../core-services';
+import { AppWebCoreService, AppFileCoreService, AppRecorderService } from '../core-services';
 import { IpcService } from '../../../shared/services';
 import { AppIpcService } from '../ipc-services/app-ipc-service';
 import {
@@ -171,6 +171,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.FileService:
                 return new AppFileCoreService();
+
+            case SERVICE_TYPES.RecorderService:
+                return new AppRecorderService();
 
             // Services
             case SERVICE_TYPES.PackageService:
