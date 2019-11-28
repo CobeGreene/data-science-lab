@@ -17,3 +17,7 @@ export {
 export {
     AlgorithmSessionOptionsService, MockAlgorithmSessionOptionsService, AppAlgorithmSessionOptionsService
 } from './algorithm-session-options-service';
+export {
+    AlgorithmService, MockAlgorithmService
+} from './algorithm-service';
+

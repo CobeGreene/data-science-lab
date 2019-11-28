@@ -4,7 +4,7 @@ import { DataGroupsService } from './data-groups.service';
 export class MockDataGroupsService implements DataGroupsService {
     all: () => void;
     
-    delete: (experimentId: number) => void;
+    delete: (id: number) => void;
 
     constructor() {
         this.reset();

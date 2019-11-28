@@ -62,4 +62,13 @@ export namespace ExperimentsEvents {
     export const DeleteDataGroupListeners = 'delete-data-group-listeners';
     export const UpdatedDataGroupListeners = 'updated-data-group-listeners';
     
+    // Algorithm
+    export const GetAllAlgorithmsEvent = 'get-all-algorithms-event';
+    export const GetAllAlgorithmsListeners = 'get-all-algorithms-listeners';
+    export const NewAlgorithmListeners = 'new-algorithm-listeners';
+    export const DeleteAlgorithmEvent = 'delete-algorithm-event';
+    export const DeleteAlgorithmListeners = 'delete-algorithm-listeners';
+    export const UpdatedAlgorithmListeners = 'updated-algorithm-listeners';
+    export const StartAlgorithmEvent = 'start-algorithm-event';
+    export const StopAlgorithmEvent = 'stop-algorithm-event';
 }

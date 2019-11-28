@@ -22,6 +22,7 @@ export const enum SERVICE_TYPES {
     // Core Services
     WebService,
     FileService,
+    RecorderService,
     // Services
     PackageService,
     ExperimentService,
@@ -32,6 +33,7 @@ export const enum SERVICE_TYPES {
     TransformService,
     AlgorithmPluginsService,
     AlgorithmSessionOptionsService,
+    AlgorithmService,
     // Consumers
     PackageConsumer,
     ExperimentConsumer,
@@ -42,6 +44,7 @@ export const enum SERVICE_TYPES {
     TransformSessionConsumer,
     AlgorithmPluginsConsumer,
     AlgorithmSessionConsumer,
+    AlgorithmConsumer,
     // Producers
     PackageProducer,
     ExperimentProducer,
@@ -51,7 +54,8 @@ export const enum SERVICE_TYPES {
     SelectTransformPluginsProducer,
     TransformSessionProducer,
     AlgorithmPluginsProducer,
-    AlgorithmSessionProducer
+    AlgorithmSessionProducer,
+    AlgorithmProducer,
 }
 
 

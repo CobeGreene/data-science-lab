@@ -1,5 +1,6 @@
 import { PluginPackage, Plugin } from '../../../shared/models';
-import { AlgorithmPlugin } from 'data-science-lab-core';
+import { AlgorithmPlugin, RecorderService } from 'data-science-lab-core';
+import { setInterval } from 'timers';
 
 export class ExperimentAlgorithm {
     public id: number;
@@ -12,6 +13,11 @@ export class ExperimentAlgorithm {
     public pluginPackage: PluginPackage;
     public plugin: Plugin;
     public algorithmPlugin: AlgorithmPlugin;
+
+    public hasInitialize: boolean;
+    public hasStarted: boolean;
+    public trainTimer: NodeJS.Timer;
+    public iteration: number;
 
     constructor(alg: {
         id?: number, label: string, experimentId?: number,
@@ -28,6 +34,30 @@ export class ExperimentAlgorithm {
         this.pluginPackage = alg.pluginPackage;
         this.plugin = alg.plugin;
         this.algorithmPlugin = alg.algorithmPlugin;
+        this.hasInitialize = false;
+        this.hasStarted = false;
+        this.trainTimer = undefined;
+        this.iteration = 0;
+    }
+
+    start(recorder: RecorderService) {
+        if (this.hasInitialize) {
+            this.algorithmPlugin.initialize();
+            this.hasInitialize = true;
+        }
+        this.hasStarted = true;
+        this.algorithmPlugin.setRecorderService(recorder);
+        this.trainTimer = setInterval(this.step, 1000);
+    }
+
+    step = () => {
+        this.algorithmPlugin.step();
+        ++this.iteration;
+    }
+
+    stop() {
+        clearInterval(this.trainTimer);
+        this.hasStarted = false;
     }
 
 }

@@ -31,7 +31,7 @@ import {
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
     AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
-    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer
+    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, AppAlgorithmConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 
@@ -227,6 +227,7 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmSessionProducer:
                 return new AppAlgorithmSessionProducer(this);
+                
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
@@ -255,6 +256,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmSessionConsumer:
                 return new AppAlgorithmSessionConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmConsumer:
+                return new AppAlgorithmConsumer(this);
             
 
             default:
