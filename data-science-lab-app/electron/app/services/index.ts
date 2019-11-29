@@ -18,6 +18,6 @@ export {
     AlgorithmSessionOptionsService, MockAlgorithmSessionOptionsService, AppAlgorithmSessionOptionsService
 } from './algorithm-session-options-service';
 export {
-    AlgorithmService, MockAlgorithmService
+    AlgorithmService, MockAlgorithmService, AppAlgorithmService
 } from './algorithm-service';
 

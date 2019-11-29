@@ -12,6 +12,7 @@ import { ExperimentSelectDataAlgorithmComponent } from './experiment-select-data
 import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorithm/experiment-select-algorithm.component';
 import { ExperimentInputAlgorithmComponent } from './experiment-input-algorithm/experiment-input-algorithm.component';
 import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/experiment-setup-algorithm.component';
+import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-details/experiment-algorithm-details.component';
 
 const experimentDetailsRoutes: Routes = [
     {
@@ -28,6 +29,7 @@ const experimentDetailsRoutes: Routes = [
             { path: 'select-algorithm/:dataGroupId', component: ExperimentSelectAlgorithmComponent },
             { path: 'input-algorithm/:dataGroupId', component: ExperimentInputAlgorithmComponent },
             { path: 'setup-algorithm/:dataGroupId', component: ExperimentSetupAlgorithmComponent },
+            { path: 'algorithm/:algorithmId', component: ExperimentAlgorithmDetailsComponent }
         ]
     }
 ];

@@ -35,7 +35,7 @@ export class ExperimentAlgorithmCardComponent implements OnInit, OnDestroy {
     }
 
     onDetails() {
-        
+        this.router.navigate(['/experiments', 'details', this.algorithm.experimentId, 'algorithm', this.algorithm.id]);
     }
 
 

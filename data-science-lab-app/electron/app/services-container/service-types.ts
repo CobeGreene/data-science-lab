@@ -56,6 +56,7 @@ export const enum SERVICE_TYPES {
     AlgorithmPluginsProducer,
     AlgorithmSessionProducer,
     AlgorithmProducer,
+    AlgorithmUpdateProducer,
 }
 
 

@@ -35,7 +35,6 @@ export class ExperimentInputAlgorithmComponent implements OnInit, OnDestroy {
         this.sessionService.newSession
             .pipe(untilComponentDestroyed(this))
             .subscribe((value) => {
-                console.log(`New session`);
                 if (value.dataGroupId === this.dataGroupId) {
                     this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-algorithm', this.dataGroupId]);
                 }
@@ -54,7 +53,6 @@ export class ExperimentInputAlgorithmComponent implements OnInit, OnDestroy {
     }
 
     onSubmit(inputs: {[id: string]: number[]}) {
-        console.log(`Submitting to create session`);
         this.sessionService.create(this.dataGroupId, this.algorithmPlugin, inputs);
     }
 

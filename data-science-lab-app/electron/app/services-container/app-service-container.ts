@@ -21,12 +21,15 @@ import { AppIpcService } from '../ipc-services/app-ipc-service';
 import {
     AppFetchService, AppPackageService, AppSelectTransformPluginsService,
     AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
-    AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService
+    AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService,
+    AppAlgorithmService
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
     AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer,
-    AppTransformSessionProducer, AppAlgorithmPluginsProducer, AppAlgorithmSessionProducer
+    AppTransformSessionProducer, AppAlgorithmPluginsProducer, AppAlgorithmSessionProducer,
+    AppAlgorithmProducer,
+    AppAlgorithmUpdateProducer
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
@@ -173,7 +176,7 @@ export class AppServiceContainer implements ServiceContainer {
                 return new AppFileCoreService();
 
             case SERVICE_TYPES.RecorderService:
-                return new AppRecorderService();
+                return new AppRecorderService(this);
 
             // Services
             case SERVICE_TYPES.PackageService:
@@ -203,6 +206,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.AlgorithmSessionOptionsService:
                 return new AppAlgorithmSessionOptionsService(this);
 
+            case SERVICE_TYPES.AlgorithmService:
+                return new AppAlgorithmService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -230,7 +236,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmSessionProducer:
                 return new AppAlgorithmSessionProducer(this);
-                
+
+            case SERVICE_TYPES.AlgorithmProducer:
+                return new AppAlgorithmProducer(this);
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
@@ -262,7 +270,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmConsumer:
                 return new AppAlgorithmConsumer(this);
-            
+
+            case SERVICE_TYPES.AlgorithmUpdateProducer:
+                return new AppAlgorithmUpdateProducer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

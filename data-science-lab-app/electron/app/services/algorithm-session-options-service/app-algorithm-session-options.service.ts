@@ -2,7 +2,7 @@ import { AlgorithmPluginViewModel } from '../../../../shared/view-models';
 import { AlgorithmSessionOptionsService } from './algorithm-session-options.service';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { AlgorithmSessionService } from '../../session-services';
-import { AlgorithmSessionProducer } from '../../producers';
+import { AlgorithmSessionProducer, AlgorithmUpdateProducer } from '../../producers';
 import { PackageDataService, ExperimentDataGroupDataService, ExperimentAlgorithmDataService } from '../../data-services';
 import { AlgorithmSession, ExperimentAlgorithm } from '../../models';
 
@@ -66,6 +66,8 @@ export class AppAlgorithmSessionOptionsService implements AlgorithmSessionOption
             pluginPackage: session.pluginPackage,
             experimentId: dataGroup.experimentId
         });
+        
+        algorithm.updateProducer = this.serviceContainer.resolve<AlgorithmUpdateProducer>(SERVICE_TYPES.AlgorithmUpdateProducer);
 
         sessionService.removeFromService(session.dataGroupId);
         dataService.create(algorithm);

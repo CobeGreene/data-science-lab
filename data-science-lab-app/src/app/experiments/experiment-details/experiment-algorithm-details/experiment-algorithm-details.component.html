@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col">
+        <h1>
+            Algorithm Details
+            <span class="float-right">
+                <div *ngIf="algorithm.hasStarted; else hasNotStarted">
+                    <button type="button" (click)="onStop()" class="btn btn-danger">
+                        Stop
+                    </button>
+                </div>
+                <ng-template #hasNotStarted>
+                    <button type="button" class="btn btn-primary" (click)="onStart()">
+                        Start
+                    </button>
+                </ng-template>
+            </span>
+        </h1>
+        <p>
+            Iteration {{ algorithm.iteration }}
+        </p>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+
+    </div>
+</div>
