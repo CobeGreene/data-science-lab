@@ -24,5 +24,8 @@ export {
     ExperimentAlgorithmDataService,
     MockExperimentAlgorithmDataService
 } from './algorithm-data-service';
-
+export {
+    AlgorithmTrackerDataService,
+    AppAlgorithmTrackerDataService
+} from './algorithm-tracker-data-service';
 

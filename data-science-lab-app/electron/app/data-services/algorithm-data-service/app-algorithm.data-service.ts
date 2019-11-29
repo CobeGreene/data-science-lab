@@ -63,7 +63,7 @@ export class AppAlgorithmDataService implements ExperimentAlgorithmDataService {
 
             this.algorithms.splice(findIndex, 1);
         } else {
-            throw new Error(`COuldn't find experiment algorithm with id ${id}`);
+            throw new Error(`Couldn't find experiment algorithm with id ${id}`);
         }
     }
     deleteByExperiment(experimentId: number): void {

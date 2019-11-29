@@ -5,12 +5,12 @@ import { ExperimentsComponent } from './experiments.component';
 import { ExperimentsRoutingModule } from './experiments-routing.module';
 import { ExperimentStartupComponent } from './experiments-startup/experiments-startup.component';
 import { ExperimentDetailsModule } from './experiment-details/experiment-details.module';
-import { ExperimentService, AppExperimentService } from '../services/experiment-services';
 import {
+    ExperimentService, AppExperimentService,
     FetchSessionService, AppFetchSessionService, FetchPluginsService,
     AppFetchPluginsService, AppDataGroupsService, DataGroupsService, TransformPluginsService, AppTransformPluginsService,
     TransformSessionService, AppTransformSessionService, AlgorithmPluginsService, AppAlgorithmPluginsService, AlgorithmSessionService,
-    AppAlgorithmSessionService, AlgorithmService, AppAlgorithmService
+    AppAlgorithmSessionService, AlgorithmService, AppAlgorithmService, AlgorithmTrackerService, AppAlgorithmTrackerService
 } from '../services';
 
 @NgModule({
@@ -32,7 +32,8 @@ import {
         { provide: TransformSessionService, useClass: AppTransformSessionService },
         { provide: AlgorithmPluginsService, useClass: AppAlgorithmPluginsService },
         { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
-        { provide: AlgorithmService, useClass: AppAlgorithmService }
+        { provide: AlgorithmService, useClass: AppAlgorithmService },
+        { provide: AlgorithmTrackerService, useClass: AppAlgorithmTrackerService },
     ]
 })
 export class ExperimentsModule {

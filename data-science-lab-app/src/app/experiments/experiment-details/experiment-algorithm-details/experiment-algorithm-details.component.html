@@ -23,6 +23,19 @@
 </div>
 <div class="row">
     <div class="col">
-
+        <div *ngIf="hasTracker">
+            <table class="table table-borderless table-responsive">
+                <tbody>
+                    <tr *ngFor="let variable of tracker.variables">
+                        <td>
+                            {{ variable.label }}
+                        </td>
+                        <td *ngFor="let value of last5ValuesOfVariable(variable)">
+                            {{ value }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

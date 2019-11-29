@@ -3,6 +3,7 @@ import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { ExperimentAlgorithmDataService } from '../../data-services';
 import { AlgorithmProducer } from '../../producers';
 import { RecorderService } from 'data-science-lab-core';
+import { AlgorithmRecorderService } from '../../core-services';
 
 
 export class AppAlgorithmService implements AlgorithmService {
@@ -44,7 +45,9 @@ export class AppAlgorithmService implements AlgorithmService {
         const algorithm = algorithmsDataService.read(id);
 
         if (!algorithm.hasStarted) {
-            algorithm.start(this.serviceContainer.resolve<RecorderService>(SERVICE_TYPES.RecorderService));
+            const recorder = this.serviceContainer.resolve<AlgorithmRecorderService>(SERVICE_TYPES.RecorderService);
+            recorder.setAlgorithmId(algorithm.id);
+            algorithm.start(recorder);
             const producer = this.serviceContainer.resolve<AlgorithmProducer>(SERVICE_TYPES.AlgorithmProducer);
             producer.update(algorithm);
         }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlgorithmService } from '../../../services';
+import { AlgorithmService, AlgorithmTrackerService } from '../../../services';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AlgorithmViewModel } from '../../../../../shared/view-models';
+import { AlgorithmViewModel, AlgorithmTrackerViewModel, AlgorithmTrackerVariableViewModel } from '../../../../../shared/view-models';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 
@@ -17,11 +17,20 @@ export class ExperimentAlgorithmDetailsComponent implements OnInit, OnDestroy {
     id: number;
     algorithm: AlgorithmViewModel;
 
-    constructor(private service: AlgorithmService, private route: ActivatedRoute) {
+    tracker: AlgorithmTrackerViewModel;
+    hasTracker = false;
+
+    constructor(private service: AlgorithmService, private route: ActivatedRoute,
+                private trackerService: AlgorithmTrackerService) {
 
     }
 
     ngOnInit() {
+
+        if (this.trackerService.has(this.id)) {
+            this.tracker = this.trackerService.get(this.id);
+            this.hasTracker = true;
+        }
 
         this.route.params
             .pipe(untilComponentDestroyed(this))
@@ -37,10 +46,37 @@ export class ExperimentAlgorithmDetailsComponent implements OnInit, OnDestroy {
                     this.algorithm = algorithm;
                 }
             });
+
+        this.trackerService.newTracker
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((tracker) => {
+                if (tracker.algorithmId === this.id) {
+                    this.tracker = tracker;
+                    this.hasTracker = true;
+                }
+            });
+
+        this.trackerService.updateTracker
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((tracker) => {
+                if (tracker.algorithmId === this.id) {
+                    this.tracker = tracker;
+                    this.hasTracker = true;
+                }
+            });
     }
 
     ngOnDestroy() {
 
+    }
+
+    last5ValuesOfVariable(variable: AlgorithmTrackerVariableViewModel): any[] {
+        const values = variable.values;
+        if (values.length <= 5) {
+            return values;
+        } else {
+            return values.slice(values.length - 5, values.length);
+        }
     }
 
     onStart() {

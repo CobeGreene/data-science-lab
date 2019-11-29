@@ -13,7 +13,9 @@ import {
     AppSelectTransformPluginsDataService, AlgorithmPluginsDataService,
     AppAlgorithmPluginsDataService,
     ExperimentAlgorithmDataService,
-    AppAlgorithmDataService
+    AppAlgorithmDataService,
+    AlgorithmTrackerDataService,
+    AppAlgorithmTrackerDataService
 } from '../data-services';
 import { AppWebCoreService, AppFileCoreService, AppRecorderService } from '../core-services';
 import { IpcService } from '../../../shared/services';
@@ -29,7 +31,8 @@ import {
     AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer,
     AppTransformSessionProducer, AppAlgorithmPluginsProducer, AppAlgorithmSessionProducer,
     AppAlgorithmProducer,
-    AppAlgorithmUpdateProducer
+    AppAlgorithmUpdateProducer,
+    AppAlgorithmTrackerProducer
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
@@ -58,6 +61,7 @@ export class AppServiceContainer implements ServiceContainer {
     private selectTransformPluginsDataService: SelectTransformPluginsDataService;
     private algorithmPluginsDataService: AlgorithmPluginsDataService;
     private algorithmDataService: ExperimentAlgorithmDataService;
+    private algorithmTrackerDataService: AlgorithmTrackerDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -168,6 +172,13 @@ export class AppServiceContainer implements ServiceContainer {
                 this.algorithmPluginsDataService = new AppAlgorithmPluginsDataService(this);
                 return this.algorithmPluginsDataService;
 
+            case SERVICE_TYPES.AlgorithmTrackerDataService:
+                if (this.algorithmTrackerDataService) {
+                    return this.algorithmTrackerDataService;
+                }
+                this.algorithmTrackerDataService = new AppAlgorithmTrackerDataService();
+                return this.algorithmTrackerDataService;
+
             // Core Services
             case SERVICE_TYPES.WebService:
                 return new AppWebCoreService();
@@ -239,6 +250,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmProducer:
                 return new AppAlgorithmProducer(this);
+
+            case SERVICE_TYPES.AlgorithmTrackerProducer:
+                return new AppAlgorithmTrackerProducer(this);
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:

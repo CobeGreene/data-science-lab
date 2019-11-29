@@ -13,4 +13,6 @@ export { AlgorithmPluginsProducer, MockAlgorithmPluginsProducer, AppAlgorithmPlu
 export { AlgorithmSessionProducer, AppAlgorithmSessionProducer } from './algorithm-session-producer';
 export { AlgorithmProducer, AppAlgorithmProducer } from './algorithm-producer';
 export { AlgorithmUpdateProducer, AppAlgorithmUpdateProducer } from './algorithm-update-producer';
+export { AlgorithmTrackerProducer, AppAlgorithmTrackerProducer } from './algorithm-tracker-producer';
+
 

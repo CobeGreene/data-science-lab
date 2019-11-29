@@ -13,6 +13,7 @@ export const enum SERVICE_TYPES {
     SelectTransformPluginsDataService,
     AlgorithmPluginsDataService,
     AlgorithmDataService,
+    AlgorithmTrackerDataService,
     // Session Services
     FetchSessionService,
     TransformSessionService,
@@ -57,6 +58,7 @@ export const enum SERVICE_TYPES {
     AlgorithmSessionProducer,
     AlgorithmProducer,
     AlgorithmUpdateProducer,
+    AlgorithmTrackerProducer,
 }
 
 

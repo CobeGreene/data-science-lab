@@ -71,4 +71,8 @@ export namespace ExperimentsEvents {
     export const UpdatedAlgorithmListeners = 'updated-algorithm-listeners';
     export const StartAlgorithmEvent = 'start-algorithm-event';
     export const StopAlgorithmEvent = 'stop-algorithm-event';
+
+    // Tracker
+    export const NewAlgorithmTrackerListeners = 'new-algorithm-tracker-listeners';
+    export const UpdatedAlgorithmTrackerListeners = 'updated-algorithm-tracker-listeners';
 }
