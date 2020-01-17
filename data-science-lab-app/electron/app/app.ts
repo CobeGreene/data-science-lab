@@ -37,13 +37,13 @@ export class App {
         this.consumers.forEach((consumer) => {
             consumer.initialize();
         });
-        this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
-
+    
     public destory() {
         this.consumers.forEach((consumer) => {
             consumer.destory();
         });
+        this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
         console.log(`Deactivating all`);
         const context = this.servicesContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
         context.deactivateAll();
