@@ -3,7 +3,7 @@ import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { MockIpcService } from '../../../../shared/services';
 import { MockTransformService } from '../../services';
 import { ExperimentsEvents } from '../../../../shared/events';
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 
 describe('Electron App Transform Session Consumer Tests', () => {
 
@@ -44,7 +44,7 @@ describe('Electron App Transform Session Consumer Tests', () => {
             expect(plugin).toBeDefined();
             done();
         };
-        ipcService.send(ExperimentsEvents.CreateTransformSessionEvent, 1, new SelectTransformPlugin({
+        ipcService.send(ExperimentsEvents.CreateTransformSessionEvent, 1, new TransformPluginViewModel({
             plugin: {
                 name: 'name', className: 'class', packageName: 'package', description: '', type: ''
             }
@@ -72,7 +72,7 @@ describe('Electron App Transform Session Consumer Tests', () => {
             expect(id).toBe(1);
             done();
         };
-        ipcService.send(ExperimentsEvents.ExecuteCommandFetchSessionEvent, 1, 'cmd');
+        ipcService.send(ExperimentsEvents.ExecuteCommandTransformSessionEvent, 1, 'cmd');
     });
 
 });

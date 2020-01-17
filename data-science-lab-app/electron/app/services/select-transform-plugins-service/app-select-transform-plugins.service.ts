@@ -1,4 +1,5 @@
-import { PluginPackage, SelectTransformPlugin } from '../../../../shared/models';
+import { PluginPackage } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 import { SelectTransformPluginsService } from './select-transform-plugins.service';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { SelectTransformPluginsDataService } from '../../data-services';
@@ -16,7 +17,7 @@ export class AppSelectTransformPluginsService implements SelectTransformPluginsS
         this.sendAll(dataService.all(this.sendAll, this.sendError));
     }   
     
-    private sendAll = (plugins: SelectTransformPlugin[]): void => {
+    private sendAll = (plugins: TransformPluginViewModel[]): void => {
         const producer = this.serviceContainer.resolve<SelectTransformPluginsProducer>(SERVICE_TYPES.SelectTransformPluginsProducer);
         producer.all(plugins);
     }

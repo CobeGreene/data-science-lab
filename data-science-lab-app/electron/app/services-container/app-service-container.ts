@@ -1,31 +1,45 @@
 import { ServiceContainer } from './service-container';
 import { SERVICE_TYPES } from './service-types';
 import { AppDocumentContext, DocumentContext, PluginContext, AppPluginContext, AppQueuePluginContext } from '../contexts';
-import { AppFetchSessionService, FetchSessionService, TransformSessionService, AppTransformSessionService } from '../session-services';
+import {
+    AppFetchSessionService, FetchSessionService, TransformSessionService,
+    AppTransformSessionService, AlgorithmSessionService, AppAlgorithmSessionService
+} from '../session-services';
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
     ExperimentDataGroupDataService, ExperimentDataService,
     AppPackageDataService, AppSettingsDataService, PackageDataService,
-    SettingsDataService, SelectTransformPluginsDataService, AppSelectTransformPluginsDataService
+    SettingsDataService, SelectTransformPluginsDataService,
+    AppSelectTransformPluginsDataService, AlgorithmPluginsDataService,
+    AppAlgorithmPluginsDataService,
+    ExperimentAlgorithmDataService,
+    AppAlgorithmDataService,
+    AlgorithmTrackerDataService,
+    AppAlgorithmTrackerDataService
 } from '../data-services';
-import { AppWebCoreService } from '../core-services';
-import { AppFileCoreService } from '../core-services/file-core-service';
+import { AppWebCoreService, AppFileCoreService, AppRecorderService } from '../core-services';
 import { IpcService } from '../../../shared/services';
 import { AppIpcService } from '../ipc-services/app-ipc-service';
 import {
     AppFetchService, AppPackageService, AppSelectTransformPluginsService,
-    AppExperimentService, AppFetchPluginsService, AppDataGroupsService
+    AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
+    AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService,
+    AppAlgorithmService
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
-    AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer, AppTransformSessionProducer
+    AppFetchSessionProducer, AppDataGroupsProducer, AppSelectTransformPluginsProducer,
+    AppTransformSessionProducer, AppAlgorithmPluginsProducer, AppAlgorithmSessionProducer,
+    AppAlgorithmProducer,
+    AppAlgorithmUpdateProducer,
+    AppAlgorithmTrackerProducer
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
-    AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer, AppTransformSessionConsumer
+    AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
+    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, AppAlgorithmConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
-import { AppTransformService } from '../services/transform-service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -38,12 +52,16 @@ export class AppServiceContainer implements ServiceContainer {
     // Session Services
     private fetchSessionService: FetchSessionService;
     private transformSessionService: TransformSessionService;
+    private algorithmSessionService: AlgorithmSessionService;
 
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
     private experimentDataService: ExperimentDataService;
     private packageDataService: PackageDataService;
     private selectTransformPluginsDataService: SelectTransformPluginsDataService;
+    private algorithmPluginsDataService: AlgorithmPluginsDataService;
+    private algorithmDataService: ExperimentAlgorithmDataService;
+    private algorithmTrackerDataService: AlgorithmTrackerDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -93,6 +111,13 @@ export class AppServiceContainer implements ServiceContainer {
                 this.transformSessionService = new AppTransformSessionService(this);
                 return this.transformSessionService;
 
+            case SERVICE_TYPES.AlgorithmSessionService:
+                if (this.algorithmSessionService) {
+                    return this.algorithmSessionService;
+                }
+                this.algorithmSessionService = new AppAlgorithmSessionService(this);
+                return this.algorithmSessionService;
+
             // Ipc Services
             case SERVICE_TYPES.IpcService:
                 if (this.ipcService) {
@@ -130,8 +155,29 @@ export class AppServiceContainer implements ServiceContainer {
                 this.selectTransformPluginsDataService = new AppSelectTransformPluginsDataService(this);
                 return this.selectTransformPluginsDataService;
 
+            case SERVICE_TYPES.AlgorithmDataService:
+                if (this.algorithmDataService) {
+                    return this.algorithmDataService;
+                }
+                this.algorithmDataService = new AppAlgorithmDataService(this);
+                return this.algorithmDataService;
+
             case SERVICE_TYPES.SettingsDataService:
                 return new AppSettingsDataService(this);
+
+            case SERVICE_TYPES.AlgorithmPluginsDataService:
+                if (this.algorithmPluginsDataService) {
+                    return this.algorithmPluginsDataService;
+                }
+                this.algorithmPluginsDataService = new AppAlgorithmPluginsDataService(this);
+                return this.algorithmPluginsDataService;
+
+            case SERVICE_TYPES.AlgorithmTrackerDataService:
+                if (this.algorithmTrackerDataService) {
+                    return this.algorithmTrackerDataService;
+                }
+                this.algorithmTrackerDataService = new AppAlgorithmTrackerDataService();
+                return this.algorithmTrackerDataService;
 
             // Core Services
             case SERVICE_TYPES.WebService:
@@ -139,6 +185,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.FileService:
                 return new AppFileCoreService();
+
+            case SERVICE_TYPES.RecorderService:
+                return new AppRecorderService(this);
 
             // Services
             case SERVICE_TYPES.PackageService:
@@ -162,6 +211,15 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.TransformService:
                 return new AppTransformService(this);
 
+            case SERVICE_TYPES.AlgorithmPluginsService:
+                return new AppAlgorithmPluginsService(this);
+
+            case SERVICE_TYPES.AlgorithmSessionOptionsService:
+                return new AppAlgorithmSessionOptionsService(this);
+
+            case SERVICE_TYPES.AlgorithmService:
+                return new AppAlgorithmService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -180,9 +238,21 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.SelectTransformPluginsProducer:
                 return new AppSelectTransformPluginsProducer(this);
-            
+
             case SERVICE_TYPES.TransformSessionProducer:
                 return new AppTransformSessionProducer(this);
+
+            case SERVICE_TYPES.AlgorithmPluginsProducer:
+                return new AppAlgorithmPluginsProducer(this);
+
+            case SERVICE_TYPES.AlgorithmSessionProducer:
+                return new AppAlgorithmSessionProducer(this);
+
+            case SERVICE_TYPES.AlgorithmProducer:
+                return new AppAlgorithmProducer(this);
+
+            case SERVICE_TYPES.AlgorithmTrackerProducer:
+                return new AppAlgorithmTrackerProducer(this);
 
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
@@ -205,6 +275,18 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.TransformSessionConsumer:
                 return new AppTransformSessionConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmPluginsConsumer:
+                return new AppAlgorithmPluginsConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmSessionConsumer:
+                return new AppAlgorithmSessionConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmConsumer:
+                return new AppAlgorithmConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmUpdateProducer:
+                return new AppAlgorithmUpdateProducer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

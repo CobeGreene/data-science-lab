@@ -1,5 +1,6 @@
 import { AppSelectTransformPluginsDataService } from './app-select-transform-plugins.data-service';
-import { SelectTransformPlugin, PluginPackage, Plugin, SelectTransformPluginInput, PluginPackageList } from '../../../../shared/models';
+import { PluginPackage, Plugin, PluginPackageList } from '../../../../shared/models';
+import { TransformPluginViewModel, PluginInputViewModel  } from '../../../../shared/view-models';
 import { ServiceContainer, SERVICE_TYPES, MockServiceContainer } from '../../services-container';
 import { PackageDataService, MockPackageDataService } from '../package-data-service';
 import { PluginTypes, TransformPlugin } from 'data-science-lab-core';

@@ -31,8 +31,12 @@ export class AppFetchService implements FetchService {
             fetchSessionService.create(experimentId, pluginPackage, plugin)
                 .then((session) => {
                     const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
-                    fetchSessionProducer.all(fetchSessionService.all());
-                    fetchSessionProducer.newSession(session);
+                    if (session.fetchPlugin.getOptions().noMore()) {
+                        this.sessionFinish(session);
+                    } else {
+                        fetchSessionProducer.all(fetchSessionService.all());
+                        fetchSessionProducer.newSession(session);
+                    }
                 }).catch((reason) => {
                     const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
                     fetchSessionProducer.error(reason);

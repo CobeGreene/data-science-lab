@@ -5,9 +5,13 @@ import { ExperimentsComponent } from './experiments.component';
 import { ExperimentsRoutingModule } from './experiments-routing.module';
 import { ExperimentStartupComponent } from './experiments-startup/experiments-startup.component';
 import { ExperimentDetailsModule } from './experiment-details/experiment-details.module';
-import { ExperimentService, AppExperimentService } from '../services/experiment-services';
-import { FetchSessionService, AppFetchSessionService, FetchPluginsService,
-    AppFetchPluginsService, AppDataGroupsService, DataGroupsService, TransformPluginsService, AppTransformPluginsService, TransformSessionService, AppTransformSessionService } from '../services';
+import {
+    ExperimentService, AppExperimentService,
+    FetchSessionService, AppFetchSessionService, FetchPluginsService,
+    AppFetchPluginsService, AppDataGroupsService, DataGroupsService, TransformPluginsService, AppTransformPluginsService,
+    TransformSessionService, AppTransformSessionService, AlgorithmPluginsService, AppAlgorithmPluginsService, AlgorithmSessionService,
+    AppAlgorithmSessionService, AlgorithmService, AppAlgorithmService, AlgorithmTrackerService, AppAlgorithmTrackerService
+} from '../services';
 
 @NgModule({
     declarations: [
@@ -26,6 +30,10 @@ import { FetchSessionService, AppFetchSessionService, FetchPluginsService,
         { provide: DataGroupsService, useClass: AppDataGroupsService },
         { provide: TransformPluginsService, useClass: AppTransformPluginsService },
         { provide: TransformSessionService, useClass: AppTransformSessionService },
+        { provide: AlgorithmPluginsService, useClass: AppAlgorithmPluginsService },
+        { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
+        { provide: AlgorithmService, useClass: AppAlgorithmService },
+        { provide: AlgorithmTrackerService, useClass: AppAlgorithmTrackerService },
     ]
 })
 export class ExperimentsModule {

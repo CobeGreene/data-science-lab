@@ -1,9 +1,8 @@
 import { OnInit, OnDestroy, Component } from '@angular/core';
-import { SelectTransformPlugin } from '../../../../../shared/models';
 import { TransformSessionService, TransformPluginsService, DataGroupsService } from '../../../services';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { DataGroupViewModel } from '../../../../../shared/view-models';
+import { DataGroupViewModel, TransformPluginViewModel } from '../../../../../shared/view-models';
 
 @Component({
     selector: 'app-experiment-input-transform',
@@ -14,7 +13,7 @@ export class ExperimentInputTransformComponent implements OnInit, OnDestroy {
     
 
     dataGroup: DataGroupViewModel;
-    transformPlugin: SelectTransformPlugin;
+    transformPlugin: TransformPluginViewModel;
     dataGroupId: number;
 
 
@@ -41,6 +40,14 @@ export class ExperimentInputTransformComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-transform', this.dataGroupId]);
                 }
             });
+        
+        this.sessionService.sessionFinished
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((value) => {
+                if (value === this.dataGroupId) {
+                    this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'data-workspace']);
+                }
+            });
     }    
     
     ngOnDestroy(): void {
@@ -50,6 +57,10 @@ export class ExperimentInputTransformComponent implements OnInit, OnDestroy {
         this.sessionService.create(this.dataGroupId, this.transformPlugin, inputs);
     }
 
+    onBack() {
+        this.pluginsService.deselect(this.dataGroupId);
+        this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'select-transform', this.dataGroup.id]);        
+    }
 
 }
 

@@ -49,7 +49,7 @@ export class ExperimentSetupTransformComponent implements OnInit, OnDestroy {
             .pipe(untilComponentDestroyed(this))
             .subscribe((dataGroupId: number) => {
                 if (this.session.dataGroupId === dataGroupId) {
-                    this.router.navigate(['/experiments', 'details', this.experimentId, 'select-transfrom', this.session.dataGroupId]);
+                    this.router.navigate(['/experiments', 'details', this.experimentId, 'data-workspace']);
                 }
             });
             
@@ -73,6 +73,10 @@ export class ExperimentSetupTransformComponent implements OnInit, OnDestroy {
 
     onExecuteCommand(cmd: string) {
         this.transformSessionService.executeCommand(this.session.dataGroupId, cmd);
+    }
+
+    onQuit() {
+        this.transformSessionService.delete(this.session.dataGroupId);
     }
 
 }

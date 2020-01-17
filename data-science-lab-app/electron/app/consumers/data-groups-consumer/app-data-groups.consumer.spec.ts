@@ -5,7 +5,7 @@ import { MockDataGroupsService } from '../../services';
 import { AppDataGroupsConsumer } from './app-data-groups.consumer';
 
 
-describe('Electron APp Data Groups Consumer Tests', () => {
+describe('Electron App Data Groups Consumer Tests', () => {
 
     let consumer: AppDataGroupsConsumer;
     let serviceContainer: MockServiceContainer;

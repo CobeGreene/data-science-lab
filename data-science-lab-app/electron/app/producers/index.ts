@@ -9,4 +9,10 @@ export {
     AppSelectTransformPluginsProducer
 } from './select-transform-plugins-producer';
 export { TransformSessionProducer, AppTransformSessionProducer } from './transform-session-producer';
+export { AlgorithmPluginsProducer, MockAlgorithmPluginsProducer, AppAlgorithmPluginsProducer } from './algorithm-plugins-producer';
+export { AlgorithmSessionProducer, AppAlgorithmSessionProducer } from './algorithm-session-producer';
+export { AlgorithmProducer, AppAlgorithmProducer } from './algorithm-producer';
+export { AlgorithmUpdateProducer, AppAlgorithmUpdateProducer } from './algorithm-update-producer';
+export { AlgorithmTrackerProducer, AppAlgorithmTrackerProducer } from './algorithm-tracker-producer';
+
 

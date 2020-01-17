@@ -24,6 +24,18 @@ import { ExperimentInputTransformComponent } from './experiment-input-transform/
 import { ExperimentInputsComponent } from './experiment-inputs/experiment-inputs.component';
 import { SelectTransformTypePipe } from '../../pipes/select-transfrom-type.pipe';
 import { ExperimentSetupTransformComponent } from './experiment-setup-transform/experiment-setup-transform.component';
+import { ExperimentAlgorithmWorkspaceComponent } from './experiment-algorithm-workspace/experiment-algorithm-workspace.component';
+import { ExperimentNavigateWorkspaceComponent } from './experiment-navigate-workspace/experiment-navigate-workspace.component';
+import { ExperimentSelectDataAlgorithmComponent } from './experiment-select-data-algorithm/experiment-select-data-algorithm.component';
+import { ExperimentSelectDataGroupComponent } from './experiment-select-data-algorithm/experiment-select-data-group/experiment-select-data-group.component';
+import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorithm/experiment-select-algorithm.component';
+import { ExperimentSelectAlgorithmPluginsComponent } from './experiment-select-algorithm/experiment-select-algorithm-plugins/experiment-select-algorithm-plugins.component';
+import { ExperimentSelectAlgorithmPluginCardComponent } from './experiment-select-algorithm/experiment-select-algorithm-plugin-card/experiment-select-algorithm-plugin-card.component';
+import { ExperimentInputAlgorithmComponent } from './experiment-input-algorithm/experiment-input-algorithm.component';
+import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/experiment-setup-algorithm.component';
+import { ExperimentAlgorithmListComponent } from './experiment-algorithm-workspace/experiment-algorithm-list/experiment-algorithm-list.component';
+import { ExperimentAlgorithmCardComponent } from './experiment-algorithm-workspace/experiment-algorithm-card/experiment-algorithm-card.component';
+import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-details/experiment-algorithm-details.component';
 
 @NgModule({
     declarations: [
@@ -48,6 +60,18 @@ import { ExperimentSetupTransformComponent } from './experiment-setup-transform/
         ExperimentInputsComponent,
         ExperimentSetupTransformComponent,
         SelectTransformTypePipe,
+        ExperimentAlgorithmWorkspaceComponent,
+        ExperimentNavigateWorkspaceComponent,
+        ExperimentSelectDataAlgorithmComponent,
+        ExperimentSelectDataGroupComponent,
+        ExperimentSelectAlgorithmComponent,
+        ExperimentSelectAlgorithmPluginsComponent,
+        ExperimentSelectAlgorithmPluginCardComponent,
+        ExperimentInputAlgorithmComponent,
+        ExperimentSetupAlgorithmComponent,
+        ExperimentAlgorithmListComponent,
+        ExperimentAlgorithmCardComponent,
+        ExperimentAlgorithmDetailsComponent,
     ],
     imports: [
         CommonModule,

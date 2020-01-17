@@ -40,7 +40,7 @@ export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
             .pipe(untilComponentDestroyed(this))
             .subscribe((experimentId: number) => {
                 if (this.fetchSession.experimentId === experimentId) {
-                    this.router.navigate(['/experiments', 'details', this.fetchSession.experimentId, 'select-fetch']);
+                    this.router.navigate(['/experiments', 'details', this.fetchSession.experimentId, 'data-workspace']);
                 }
             });
 
@@ -64,5 +64,9 @@ export class ExperimentSetupFetchComponent implements OnInit, OnDestroy {
 
     onExecuteCommand(cmd: string) {
         this.fetchSessionService.executeCommand(this.fetchSession.experimentId, cmd);
+    }
+
+    onQuit() {
+        this.fetchSessionService.delete(this.fetchSession.experimentId);
     }
 }

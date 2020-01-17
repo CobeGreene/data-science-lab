@@ -3,6 +3,7 @@ import { IpcService } from '../../shared/services';
 import { ServiceContainer, AppServiceContainer, SERVICE_TYPES } from './services-container';
 import { Consumer } from './consumers';
 import { ErrorEvents } from '../../shared/events';
+import { PluginContext } from './contexts';
 export let win: BrowserWindow;
 
 
@@ -24,7 +25,10 @@ export class App {
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.FetchSessionConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.DataGroupsConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.SelectTransformPluginsConsumer),
-            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.TransformSessionConsumer)
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.TransformSessionConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.AlgorithmPluginsConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.AlgorithmSessionConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.AlgorithmConsumer),
         ];
         this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
@@ -33,13 +37,16 @@ export class App {
         this.consumers.forEach((consumer) => {
             consumer.initialize();
         });
-        this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
-
+    
     public destory() {
         this.consumers.forEach((consumer) => {
             consumer.destory();
         });
+        this.ipcService.removeListener(ErrorEvents.ExceptionListeners, this.errorEvent);
+        console.log(`Deactivating all`);
+        const context = this.servicesContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
+        context.deactivateAll();
     }
 
     private createWindow() {

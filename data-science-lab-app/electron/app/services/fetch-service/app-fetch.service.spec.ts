@@ -5,6 +5,7 @@ import { MockFetchSessionService } from '../../session-services';
 import { MockFetchSessionProducer } from '../../producers';
 import { MockPackageDataService } from '../../data-services';
 import { AppFetchService } from './app-fetch.service';
+import { FetchSession } from '../../models';
 
 
 describe('Electron App Fetch Service Tests', () => {
@@ -79,6 +80,13 @@ describe('Electron App Fetch Service Tests', () => {
             description: 'desc', type: 'type'
         }));
     });
+    
+    class MyOptions {
+        noMore() { return false; }
+    }
+    class MyFetchPlugin {
+        getOptions() { return new MyOptions(); }
+    }
 
     it('create should producer all for successful call', (done) => {
         producer.all = (() => {
@@ -90,7 +98,9 @@ describe('Electron App Fetch Service Tests', () => {
         });
         sessionService.create = (() => {
             return new Promise((resolve, reject) => {
-                resolve();
+                const obj = new Object();
+                obj['fetchPlugin'] = new MyFetchPlugin();
+                resolve(obj as FetchSession);
             });
         });
         fetchService.create(1, new Plugin({
@@ -98,6 +108,7 @@ describe('Electron App Fetch Service Tests', () => {
             description: 'desc', type: 'type'
         }));
     });
+
 
     it('create should producer new session for successful call', (done) => {
         producer.newSession = (() => {
@@ -109,7 +120,9 @@ describe('Electron App Fetch Service Tests', () => {
         });
         sessionService.create = (() => {
             return new Promise((resolve, reject) => {
-                resolve();
+                const obj = new Object();
+                obj['fetchPlugin'] = new MyFetchPlugin();
+                resolve(obj as FetchSession);
             });
         });
         fetchService.create(1, new Plugin({

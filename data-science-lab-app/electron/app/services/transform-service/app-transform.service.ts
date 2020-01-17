@@ -1,4 +1,4 @@
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 import { TransformService } from './transform.service';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { TransformSessionService } from '../../session-services';
@@ -20,7 +20,7 @@ export class AppTransformService implements TransformService {
         producer.all(sessionService.all());
     }
 
-    create(dataGroupId: number, transformPlugin: SelectTransformPlugin, inputs: { [id: string]: number[]; }): void {
+    create(dataGroupId: number, transformPlugin: TransformPluginViewModel, inputs: { [id: string]: number[]; }): void {
         const dataService = this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
         const pluginPackage = dataService.find(transformPlugin.plugin);
         if (!pluginPackage) {
@@ -29,15 +29,19 @@ export class AppTransformService implements TransformService {
         } else {
             const dataGroupService = this.serviceContainer
                 .resolve<ExperimentDataGroupDataService>(SERVICE_TYPES.ExperimentDataGroupDataService);
-            const dataGroup = dataGroupService.read(dataGroupId);
 
             const sessionService = this.serviceContainer.resolve<TransformSessionService>(SERVICE_TYPES.TransformSessionService);
-            const pluginData = this.getPluginData(dataGroup, inputs);
-            sessionService.create(dataGroupId, pluginPackage, transformPlugin.plugin, pluginData, this.getFeatureEditing(dataGroup, inputs))
+            const pluginData = dataGroupService.getPluginData(dataGroupId, inputs);
+
+            sessionService.create(dataGroupId, pluginPackage, transformPlugin.plugin, pluginData, this.getFeatureEditing(inputs))
                 .then((session) => {
                     const producer = this.serviceContainer.resolve<TransformSessionProducer>(SERVICE_TYPES.TransformSessionProducer);
-                    producer.all(sessionService.all());
-                    producer.newSession(session);
+                    if (session.transformPlugin.getOptions().noMore()) {
+                        this.sessionFinish(session);
+                    } else {
+                        producer.all(sessionService.all());
+                        producer.newSession(session);
+                    }
                 }).catch((reason) => {
                     const producer = this.serviceContainer.resolve<TransformSessionProducer>(SERVICE_TYPES.TransformSessionProducer);
                     producer.error(reason);
@@ -45,7 +49,7 @@ export class AppTransformService implements TransformService {
         }
     }
 
-    getFeatureEditing(dataGroup: ExperimentDataGroup, inputs: { [id: string]: number[]; }): number[] {
+    getFeatureEditing(inputs: { [id: string]: number[]; }): number[] {
         const features: number[] = [];
         for (const key in inputs) {
             if (inputs[key]) {
@@ -87,35 +91,7 @@ export class AppTransformService implements TransformService {
         }
     }
 
-    private getPluginData(dataGroup: ExperimentDataGroup, inputs: { [id: string]: number[]; }): { [id: string]: PluginData } {
-        const pluginData: { [id: string]: PluginData } = {};
-        for (const key in inputs) {
-            if (inputs[key]) {
-                const features: string[] = [];
-                const examples: any[][] = [];
 
-                for (let i = 0; i < dataGroup.examples; ++i) {
-                    examples.push([]);
-                    for (const _ of inputs[key]) {
-                        examples[i].push(undefined);
-                    }
-                }
-
-                for (let j = 0; j < inputs[key].length; ++j) {
-                    features.push(dataGroup.features[inputs[key][j]].name);
-                    for (let i = 0; i < dataGroup.features[inputs[key][j]].examples.length; ++i) {
-                        examples[i][j] = dataGroup.features[inputs[key][j]].examples[i];
-                    }
-                }
-
-                pluginData[key] = new PluginData({
-                    features,
-                    examples
-                });
-            }
-        }
-        return pluginData;
-    }
 
     private sessionFinish(session: TransformSession) {
         const temp = session.transformPlugin.transform();

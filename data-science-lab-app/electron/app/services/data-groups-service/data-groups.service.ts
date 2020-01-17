@@ -2,6 +2,6 @@
 
 export interface DataGroupsService {
     all(): void;
-    delete(experimentId: number): void;
+    delete(id: number): void;
 }
 

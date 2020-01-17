@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { SelectTransformPlugin } from '../../../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../../../shared/view-models';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { TransformPluginsService } from '../../../../services';
@@ -12,7 +12,7 @@ import { TransformPluginsService } from '../../../../services';
 export class ExperimentSelectTransformPluginCardComponent implements OnInit, OnDestroy {
 
     @Input()
-    transformPlugin: SelectTransformPlugin;
+    transformPlugin: TransformPluginViewModel;
 
     experimentId: number;
     dataGroupId: number;

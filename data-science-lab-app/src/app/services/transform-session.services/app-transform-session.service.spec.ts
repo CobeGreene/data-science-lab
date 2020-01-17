@@ -1,10 +1,10 @@
 import { MockZone } from '../mock-zone';
 import { AppTransformSessionService } from './app-transform-session.service';
-import { FetchSessionViewModel, TransformSessionViewModel } from '../../../../shared/view-models';
+import { TransformSessionViewModel, TransformPluginViewModel } from '../../../../shared/view-models';
 import { ExperimentsEvents } from '../../../../shared/events';
 import { MockIpcService } from '../../../../shared/services';
 import { OptionList } from 'data-science-lab-core';
-import { Plugin, SelectTransformPlugin } from '../../../../shared/models';
+import { Plugin } from '../../../../shared/models';
 
 describe('Angular App Transform Session Service Tests', () => {
 
@@ -84,13 +84,10 @@ describe('Angular App Transform Session Service Tests', () => {
             done();
         });
         transformSessionService.create(3,
-            new SelectTransformPlugin({
-                plugin: new Plugin({
-                    name: 'name', className: 'classname', description: 'descrption',
-                    type: 'fetch',
-                }),
-            }), {}
-        );
+            new TransformPluginViewModel({
+                plugin: new Plugin({ name: 'name', className: 'classname', description: 'descrption',
+                                     type: 'fetch'})
+            }), {});
     });
 
     it('delete should call delete fetch session event', (done) => {

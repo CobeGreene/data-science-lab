@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, NgZone } from '@angular/core';
 import { TransformPluginsService } from './transform-plugins.service';
-import { SelectTransformPlugin } from '../../../../shared/models';
+import { TransformPluginViewModel } from '../../../../shared/view-models';
 import { IpcService } from '../../../../shared/services';
 import { ExperimentsEvents } from '../../../../shared/events';
 
@@ -8,8 +8,8 @@ import { ExperimentsEvents } from '../../../../shared/events';
 export class AppTransformPluginsService extends TransformPluginsService implements OnDestroy {
 
     private retrive: boolean;
-    private transformPlugins: SelectTransformPlugin[];
-    private selectedPlugins: { dataGroupId: number, plugin: SelectTransformPlugin }[];
+    private transformPlugins: TransformPluginViewModel[];
+    private selectedPlugins: { dataGroupId: number, plugin: TransformPluginViewModel }[];
 
     constructor(private ipcService: IpcService, private zone: NgZone) {
         super();
@@ -25,7 +25,7 @@ export class AppTransformPluginsService extends TransformPluginsService implemen
         this.ipcService.on(ExperimentsEvents.GetAllTransformPluginsListeners, this.getAllEvent);
     }
 
-    private getAllEvent = (event, plugins: SelectTransformPlugin[]) => {
+    private getAllEvent = (event, plugins: TransformPluginViewModel[]) => {
         this.zone.run(() => {
             this.retrive = true;
             this.transformPlugins = plugins;
@@ -33,14 +33,14 @@ export class AppTransformPluginsService extends TransformPluginsService implemen
         });
     }
 
-    all(): SelectTransformPlugin[] {
+    all(): TransformPluginViewModel[] {
         if (!this.retrive) {
             this.ipcService.send(ExperimentsEvents.GetAllTransformPluginsEvent);
         }
         return this.transformPlugins;
     }
 
-    get(dataGroupId: number): SelectTransformPlugin {
+    get(dataGroupId: number): TransformPluginViewModel {
         const find = this.selectedPlugins.find((value) => {
             return value.dataGroupId === dataGroupId;
         });
@@ -50,7 +50,7 @@ export class AppTransformPluginsService extends TransformPluginsService implemen
         throw new Error(`Couldn't find selected plugin with data group id ${dataGroupId}`);
     }
 
-    select(dataGroupId: number, plugin: SelectTransformPlugin) {
+    select(dataGroupId: number, plugin: TransformPluginViewModel) {
         let find = this.selectedPlugins.find((value) => {
             return value.dataGroupId === dataGroupId;
         });
@@ -76,7 +76,7 @@ export class AppTransformPluginsService extends TransformPluginsService implemen
     }
 
     ngOnDestroy(): void {
-        this.ipcService.removeListener(ExperimentsEvents.GetAllTransformPluginsEvent, this.getAllEvent);
+        this.ipcService.removeListener(ExperimentsEvents.GetAllTransformPluginsListeners, this.getAllEvent);
     }
 
 }

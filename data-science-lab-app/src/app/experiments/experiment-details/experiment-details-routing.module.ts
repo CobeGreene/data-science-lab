@@ -7,17 +7,29 @@ import { ExperimentSetupFetchComponent } from './experiment-setup-fetch/experime
 import { ExperimentSelectTransformComponent } from './experiment-select-transform/experiment-select-transform.component';
 import { ExperimentInputTransformComponent } from './experiment-input-transform/experiment-input-transform.component';
 import { ExperimentSetupTransformComponent } from './experiment-setup-transform/experiment-setup-transform.component';
+import { ExperimentAlgorithmWorkspaceComponent } from './experiment-algorithm-workspace/experiment-algorithm-workspace.component';
+import { ExperimentSelectDataAlgorithmComponent } from './experiment-select-data-algorithm/experiment-select-data-algorithm.component';
+import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorithm/experiment-select-algorithm.component';
+import { ExperimentInputAlgorithmComponent } from './experiment-input-algorithm/experiment-input-algorithm.component';
+import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/experiment-setup-algorithm.component';
+import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-details/experiment-algorithm-details.component';
 
 const experimentDetailsRoutes: Routes = [
     {
         path: 'experiments/details/:id', component: ExperimentDetailsComponent, children: [
             { path: '', component: ExperimentDataWorkspaceComponent, pathMatch: 'full' },
             { path: 'data-workspace', component: ExperimentDataWorkspaceComponent },
+            { path: 'algorithm-workspace', component: ExperimentAlgorithmWorkspaceComponent },
+            { path: 'select-data-algorithm', component: ExperimentSelectDataAlgorithmComponent },
             { path: 'select-fetch', component: ExperimentSelectFetchComponent },
             { path: 'setup-fetch', component: ExperimentSetupFetchComponent },
             { path: 'select-transform/:dataGroupId', component: ExperimentSelectTransformComponent },
             { path: 'input-transform/:dataGroupId', component: ExperimentInputTransformComponent },
-            { path: 'setup-transform/:dataGroupId', component: ExperimentSetupTransformComponent }
+            { path: 'setup-transform/:dataGroupId', component: ExperimentSetupTransformComponent },
+            { path: 'select-algorithm/:dataGroupId', component: ExperimentSelectAlgorithmComponent },
+            { path: 'input-algorithm/:dataGroupId', component: ExperimentInputAlgorithmComponent },
+            { path: 'setup-algorithm/:dataGroupId', component: ExperimentSetupAlgorithmComponent },
+            { path: 'algorithm/:algorithmId', component: ExperimentAlgorithmDetailsComponent }
         ]
     }
 ];
