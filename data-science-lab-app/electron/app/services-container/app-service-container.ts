@@ -3,7 +3,8 @@ import { SERVICE_TYPES } from './service-types';
 import { AppDocumentContext, DocumentContext, PluginContext, AppPluginContext, AppQueuePluginContext } from '../contexts';
 import {
     AppFetchSessionService, FetchSessionService, TransformSessionService,
-    AppTransformSessionService, AlgorithmSessionService, AppAlgorithmSessionService
+    AppTransformSessionService, AlgorithmSessionService, AppAlgorithmSessionService,
+    AppVisualizationDataSessionService, VisualizationDataSessionService
 } from '../session-services';
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
@@ -15,7 +16,9 @@ import {
     ExperimentAlgorithmDataService,
     AppAlgorithmDataService,
     AlgorithmTrackerDataService,
-    AppAlgorithmTrackerDataService
+    AppAlgorithmTrackerDataService,
+    AppVisualizationDataService,
+    VisualizationDataService
 } from '../data-services';
 import { AppWebCoreService, AppFileCoreService, AppRecorderService } from '../core-services';
 import { IpcService } from '../../../shared/services';
@@ -24,7 +27,7 @@ import {
     AppFetchService, AppPackageService, AppSelectTransformPluginsService,
     AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
     AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService,
-    AppAlgorithmService
+    AppAlgorithmService, AppDataVisualizationService,
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
@@ -32,12 +35,14 @@ import {
     AppTransformSessionProducer, AppAlgorithmPluginsProducer, AppAlgorithmSessionProducer,
     AppAlgorithmProducer,
     AppAlgorithmUpdateProducer,
-    AppAlgorithmTrackerProducer
+    AppAlgorithmTrackerProducer,
+    AppDataVisualizationSessionProducer
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
     AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
-    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, AppAlgorithmConsumer
+    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, 
+    AppAlgorithmConsumer, AppDataVisualizationSessionConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 
@@ -53,6 +58,7 @@ export class AppServiceContainer implements ServiceContainer {
     private fetchSessionService: FetchSessionService;
     private transformSessionService: TransformSessionService;
     private algorithmSessionService: AlgorithmSessionService;
+    private visualizationDataSessionService: VisualizationDataSessionService;
 
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
@@ -62,6 +68,7 @@ export class AppServiceContainer implements ServiceContainer {
     private algorithmPluginsDataService: AlgorithmPluginsDataService;
     private algorithmDataService: ExperimentAlgorithmDataService;
     private algorithmTrackerDataService: AlgorithmTrackerDataService;
+    private visualizationDataService: VisualizationDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -117,6 +124,13 @@ export class AppServiceContainer implements ServiceContainer {
                 }
                 this.algorithmSessionService = new AppAlgorithmSessionService(this);
                 return this.algorithmSessionService;
+
+            case SERVICE_TYPES.VisualizationDataSessionService:
+                if (this.visualizationDataSessionService) {
+                    return this.visualizationDataSessionService;
+                }
+                this.visualizationDataSessionService = new AppVisualizationDataSessionService(this);
+                return this.visualizationDataSessionService;
 
             // Ipc Services
             case SERVICE_TYPES.IpcService:
@@ -179,6 +193,13 @@ export class AppServiceContainer implements ServiceContainer {
                 this.algorithmTrackerDataService = new AppAlgorithmTrackerDataService();
                 return this.algorithmTrackerDataService;
 
+            case SERVICE_TYPES.VisualizationDataService:
+                if (this.visualizationDataService) {
+                    return this.visualizationDataService;
+                }
+                this.visualizationDataService = new AppVisualizationDataService();
+                return this.visualizationDataService;
+
             // Core Services
             case SERVICE_TYPES.WebService:
                 return new AppWebCoreService();
@@ -219,6 +240,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmService:
                 return new AppAlgorithmService(this);
+            
+            case SERVICE_TYPES.DataVisualizationService:
+                return new AppDataVisualizationService(this);
 
             // Producers
             case SERVICE_TYPES.PackageProducer:
@@ -254,6 +278,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.AlgorithmTrackerProducer:
                 return new AppAlgorithmTrackerProducer(this);
 
+            case SERVICE_TYPES.VisualizationDataSessionProducer:
+                return new AppDataVisualizationSessionProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
@@ -287,6 +314,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmUpdateProducer:
                 return new AppAlgorithmUpdateProducer(this);
+
+            case SERVICE_TYPES.DataVisualizationSessionConsumer:
+                return new AppDataVisualizationSessionConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

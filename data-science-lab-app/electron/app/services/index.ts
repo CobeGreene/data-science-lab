@@ -20,4 +20,6 @@ export {
 export {
     AlgorithmService, MockAlgorithmService, AppAlgorithmService
 } from './algorithm-service';
-
+export { 
+    AppDataVisualizationService, DataVisualizationService
+} from './data-visualization-service';

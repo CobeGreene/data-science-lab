@@ -28,4 +28,7 @@ export {
     AlgorithmTrackerDataService,
     AppAlgorithmTrackerDataService
 } from './algorithm-tracker-data-service';
-
+export {
+    AppVisualizationDataService,
+    VisualizationDataService
+} from './visualization-data-service';
