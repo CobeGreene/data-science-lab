@@ -90,6 +90,14 @@ export namespace ExperimentsEvents {
     export const DeleteDataGroupEvent = 'delete-data-group-event';
     export const DeleteDataGroupListeners = 'delete-data-group-listeners';
     export const UpdatedDataGroupListeners = 'updated-data-group-listeners';
+
+    // Visualizations
+    export const GetAllVisualizationsEvent = 'get-all-visualizations-event';
+    export const GetAllVisualizationsListeners = 'get-all-visualizations-listeners';
+    export const NewVisualizationsListeners = 'new-visualization-listeners';
+    export const DeleteVisualizationsEvent = 'delete-visualization-event';
+    export const DeleteVisualizationsListeners = 'delete-visualization-listeners';
+    export const UpdatedVisualizationsListeners = 'updated-visualization-listeners';
     
     // Algorithm
     export const GetAllAlgorithmsEvent = 'get-all-algorithms-event';

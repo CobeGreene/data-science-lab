@@ -44,7 +44,11 @@ export class ExperimentPreviewDataGroupComponent implements OnInit, OnDestroy {
     }
 
     onVisualize(): void {
-
+        if (this.visualizeService.hasSession(this.dataGroup.id)) {
+            this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-data-visualization', this.dataGroup.id]);
+        } else {
+            this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'select-data-visualization', this.dataGroup.id]);
+        }
     }
 
 }

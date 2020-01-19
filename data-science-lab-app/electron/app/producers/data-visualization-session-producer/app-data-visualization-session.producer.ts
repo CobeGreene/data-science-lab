@@ -48,7 +48,7 @@ export class AppDataVisualizationSessionProducer extends BaseProducer implements
     }
     
     newVisualization(visual: Visualization): void {
-        throw new Error('Not implemented');
+        this.ipc.send(ExperimentsEvents.NewVisualizationsListeners, visual);
     }
 
 

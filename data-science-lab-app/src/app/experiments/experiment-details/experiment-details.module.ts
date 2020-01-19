@@ -36,6 +36,11 @@ import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/
 import { ExperimentAlgorithmListComponent } from './experiment-algorithm-workspace/experiment-algorithm-list/experiment-algorithm-list.component';
 import { ExperimentAlgorithmCardComponent } from './experiment-algorithm-workspace/experiment-algorithm-card/experiment-algorithm-card.component';
 import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-details/experiment-algorithm-details.component';
+import { ExperimentSetupDataVisualizationComponent } from './experiment-setup-data-visualization/experiment-setup-data-visualization.component';
+import { ExperimentSelectDataVisualizationComponent } from './experiment-select-data-visualization/experiment-select-data-visualization.component';
+import { ExperimentSelectVisualizationPluginsComponent } from './experiment-select-data-visualization/experiment-select-visualization-plugins/experiment-select-visualization-plugins.component';
+import { ExperimentSelectVisualizationPluginCardComponent } from './experiment-select-data-visualization/experiment-select-visualization-plugin-card/experiment-select-visualization-plugin-card.component';
+import { ExperimentInputDataVisualizationComponent } from './experiment-input-data-visualization/experiment-input-data-visualization.component';
 
 @NgModule({
     declarations: [
@@ -72,6 +77,11 @@ import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-deta
         ExperimentAlgorithmListComponent,
         ExperimentAlgorithmCardComponent,
         ExperimentAlgorithmDetailsComponent,
+        ExperimentSetupDataVisualizationComponent,
+        ExperimentSelectDataVisualizationComponent,
+        ExperimentSelectVisualizationPluginsComponent,
+        ExperimentSelectVisualizationPluginCardComponent,
+        ExperimentInputDataVisualizationComponent
     ],
     imports: [
         CommonModule,

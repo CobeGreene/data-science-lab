@@ -16,4 +16,5 @@ export { AlgorithmUpdateProducer, AppAlgorithmUpdateProducer } from './algorithm
 export { AlgorithmTrackerProducer, AppAlgorithmTrackerProducer } from './algorithm-tracker-producer';
 export { DataVisualizationSessionProducer, AppDataVisualizationSessionProducer } from './data-visualization-session-producer';
 export { AppSelectVisualizationPluginsProducer, SelectVisualizationPluginsProducer } from './select-visualization-plugins-producer';
+export { AppVisualizationsProducer, VisualizationsProducer } from './visualizations-producer';
 

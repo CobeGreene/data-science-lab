@@ -16,6 +16,7 @@ export class AppSelectVisualizationPluginsDataService implements SelectVisualiza
     }
 
     all(callback?: (plugins: VisualizationPluginViewModel[]) => void, error?: (reason: any) => void): VisualizationPluginViewModel[] {
+        console.log('getting vis plugins');
         if (!this.hasFetch) {
             if (callback) {
                 this.hasFetch = true;
@@ -57,7 +58,6 @@ export class AppSelectVisualizationPluginsDataService implements SelectVisualiza
                                 });
                             })
                         });
-                        
                         await pluginContext.deactivate(pluginPackage, plugin);
                         visualizationPlugins.push(selectVisualPlugin);
                     }

@@ -27,3 +27,7 @@ export {
     AppSelectVisualizationPluginsService,
     SelectVisualizationPluginsService
 } from './select-visualization-plugins-service';
+export { 
+    AppVisualizationsService,
+    VisualizationsService
+} from './visualizations-service';

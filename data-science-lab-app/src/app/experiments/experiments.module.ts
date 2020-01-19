@@ -36,6 +36,9 @@ import {
         { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
         { provide: AlgorithmService, useClass: AppAlgorithmService },
         { provide: AlgorithmTrackerService, useClass: AppAlgorithmTrackerService },
+        { provide: VisualizationDataSessionService, useClass: AppVisualizationDataSessionService },
+        { provide: VisualizationAlgorithmSessionService, useClass: AppVisualizationAlgorithmSessionService },
+        { provide: VisualizationPluginsService, useClass: AppVisualizationPluginsService }
     ]
 })
 export class ExperimentsModule {
