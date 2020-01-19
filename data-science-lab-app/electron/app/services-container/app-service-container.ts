@@ -29,7 +29,8 @@ import {
     AppFetchService, AppPackageService, AppSelectTransformPluginsService,
     AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
     AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService,
-    AppAlgorithmService, AppDataVisualizationService, AppSelectVisualizationPluginsService
+    AppAlgorithmService, AppDataVisualizationService, AppSelectVisualizationPluginsService,
+    AppVisualizationsService
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
@@ -40,12 +41,14 @@ import {
     AppAlgorithmTrackerProducer,
     AppDataVisualizationSessionProducer,
     AppSelectVisualizationPluginsProducer,
+    AppVisualizationsProducer,
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
     AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
     AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, 
-    AppAlgorithmConsumer, AppDataVisualizationSessionConsumer, AppSelectVisualizationPluginsConsumer
+    AppAlgorithmConsumer, AppDataVisualizationSessionConsumer, AppSelectVisualizationPluginsConsumer,
+    AppVisualizationsConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 
@@ -258,6 +261,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.SelectVisualizationPluginsService:
                 return new AppSelectVisualizationPluginsService(this);
 
+            case SERVICE_TYPES.VisualizationsService:
+                return new AppVisualizationsService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -298,6 +304,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.SelectVisualizationPluginsProducer:
                 return new AppSelectVisualizationPluginsProducer(this);
 
+            case SERVICE_TYPES.VisualizationsProducer:
+                return new AppVisualizationsProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
@@ -337,6 +346,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.SelectVisualizationPluginsConsumer:
                 return new AppSelectVisualizationPluginsConsumer(this);
+
+            case SERVICE_TYPES.VisualizationsConsumer:
+                return new AppVisualizationsConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

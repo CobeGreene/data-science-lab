@@ -14,5 +14,6 @@ export { AlgorithmTrackerService, AppAlgorithmTrackerService } from './algorithm
 export { AppVisualizationPluginsService, VisualizationPluginsService } from './visualization-plugins.services';
 export { AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService } from './visualization-algorithm-session.services';
 export { AppVisualizationDataSessionService, VisualizationDataSessionService } from './visualization-data-session.service';
+export { AppVisualizationsService, VisualizationsService } from './visualizations-services';
 
 

@@ -13,15 +13,18 @@ import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorith
 import { ExperimentInputAlgorithmComponent } from './experiment-input-algorithm/experiment-input-algorithm.component';
 import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/experiment-setup-algorithm.component';
 import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-details/experiment-algorithm-details.component';
-import { 
-    ExperimentSelectVisualizationPluginsComponent 
+import {
+    ExperimentSelectVisualizationPluginsComponent
 } from './experiment-select-data-visualization/experiment-select-visualization-plugins/experiment-select-visualization-plugins.component';
-import { 
+import {
     ExperimentInputDataVisualizationComponent
 } from './experiment-input-data-visualization/experiment-input-data-visualization.component';
-import { 
+import {
     ExperimentSetupDataVisualizationComponent
 } from './experiment-setup-data-visualization/experiment-setup-data-visualization.component';
+import {
+    ExperimentVisualizationWorkspaceComponent
+} from './experiment-visualization-workspace/experiment-visualization-workspace.component';
 
 const experimentDetailsRoutes: Routes = [
     {
@@ -29,6 +32,7 @@ const experimentDetailsRoutes: Routes = [
             { path: '', component: ExperimentDataWorkspaceComponent, pathMatch: 'full' },
             { path: 'data-workspace', component: ExperimentDataWorkspaceComponent },
             { path: 'algorithm-workspace', component: ExperimentAlgorithmWorkspaceComponent },
+            { path: 'visualization-workspace', component: ExperimentVisualizationWorkspaceComponent },
             { path: 'select-data-algorithm', component: ExperimentSelectDataAlgorithmComponent },
             { path: 'select-fetch', component: ExperimentSelectFetchComponent },
             { path: 'setup-fetch', component: ExperimentSetupFetchComponent },
@@ -39,7 +43,7 @@ const experimentDetailsRoutes: Routes = [
             { path: 'input-algorithm/:dataGroupId', component: ExperimentInputAlgorithmComponent },
             { path: 'setup-algorithm/:dataGroupId', component: ExperimentSetupAlgorithmComponent },
             { path: 'algorithm/:algorithmId', component: ExperimentAlgorithmDetailsComponent },
-            { path: 'select-data-visualization/:dataGroupId', component: ExperimentSelectVisualizationPluginsComponent},
+            { path: 'select-data-visualization/:dataGroupId', component: ExperimentSelectVisualizationPluginsComponent },
             { path: 'input-data-visualization/:dataGroupId', component: ExperimentInputDataVisualizationComponent },
             { path: 'setup-data-visualization/:dataGroupId', component: ExperimentSetupDataVisualizationComponent }
         ]

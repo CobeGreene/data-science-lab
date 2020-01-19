@@ -41,6 +41,9 @@ import { ExperimentSelectDataVisualizationComponent } from './experiment-select-
 import { ExperimentSelectVisualizationPluginsComponent } from './experiment-select-data-visualization/experiment-select-visualization-plugins/experiment-select-visualization-plugins.component';
 import { ExperimentSelectVisualizationPluginCardComponent } from './experiment-select-data-visualization/experiment-select-visualization-plugin-card/experiment-select-visualization-plugin-card.component';
 import { ExperimentInputDataVisualizationComponent } from './experiment-input-data-visualization/experiment-input-data-visualization.component';
+import { ExperimentVisualizationWorkspaceComponent } from './experiment-visualization-workspace/experiment-visualization-workspace.component';
+import { ExperimentVisualizationCardComponent } from './experiment-visualization-workspace/experiment-visualization-card/experiment-visualization-card.component';
+import { ExperimentVisualizationListComponent } from './experiment-visualization-workspace/experiment-visualization-list/experiment-visualization-list.component';
 
 @NgModule({
     declarations: [
@@ -81,7 +84,10 @@ import { ExperimentInputDataVisualizationComponent } from './experiment-input-da
         ExperimentSelectDataVisualizationComponent,
         ExperimentSelectVisualizationPluginsComponent,
         ExperimentSelectVisualizationPluginCardComponent,
-        ExperimentInputDataVisualizationComponent
+        ExperimentInputDataVisualizationComponent,
+        ExperimentVisualizationWorkspaceComponent,
+        ExperimentVisualizationCardComponent,
+        ExperimentVisualizationListComponent
     ],
     imports: [
         CommonModule,

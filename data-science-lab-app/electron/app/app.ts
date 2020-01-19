@@ -31,6 +31,7 @@ export class App {
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.AlgorithmConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.SelectVisualizationPluginsConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.DataVisualizationSessionConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.VisualizationsConsumer),
         ];
         this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
