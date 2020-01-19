@@ -18,7 +18,9 @@ import {
     AlgorithmTrackerDataService,
     AppAlgorithmTrackerDataService,
     AppVisualizationDataService,
-    VisualizationDataService
+    VisualizationDataService,
+    SelectVisualizationPluginsDataService,
+    AppSelectVisualizationPluginsDataService
 } from '../data-services';
 import { AppWebCoreService, AppFileCoreService, AppRecorderService } from '../core-services';
 import { IpcService } from '../../../shared/services';
@@ -27,7 +29,7 @@ import {
     AppFetchService, AppPackageService, AppSelectTransformPluginsService,
     AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
     AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService,
-    AppAlgorithmService, AppDataVisualizationService,
+    AppAlgorithmService, AppDataVisualizationService, AppSelectVisualizationPluginsService
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
@@ -36,13 +38,14 @@ import {
     AppAlgorithmProducer,
     AppAlgorithmUpdateProducer,
     AppAlgorithmTrackerProducer,
-    AppDataVisualizationSessionProducer
+    AppDataVisualizationSessionProducer,
+    AppSelectVisualizationPluginsProducer,
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
     AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
     AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, 
-    AppAlgorithmConsumer, AppDataVisualizationSessionConsumer
+    AppAlgorithmConsumer, AppDataVisualizationSessionConsumer, AppSelectVisualizationPluginsConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 
@@ -69,6 +72,7 @@ export class AppServiceContainer implements ServiceContainer {
     private algorithmDataService: ExperimentAlgorithmDataService;
     private algorithmTrackerDataService: AlgorithmTrackerDataService;
     private visualizationDataService: VisualizationDataService;
+    private selectVisualizationPluginsDataService: SelectVisualizationPluginsDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -200,6 +204,13 @@ export class AppServiceContainer implements ServiceContainer {
                 this.visualizationDataService = new AppVisualizationDataService();
                 return this.visualizationDataService;
 
+            case SERVICE_TYPES.SelectVisualizationPluginsDataService:
+                if (this.selectVisualizationPluginsDataService) {
+                    return this.selectVisualizationPluginsDataService;
+                }
+                this.selectVisualizationPluginsDataService = new AppSelectVisualizationPluginsDataService(this);
+                return this.selectVisualizationPluginsDataService;
+
             // Core Services
             case SERVICE_TYPES.WebService:
                 return new AppWebCoreService();
@@ -244,6 +255,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.DataVisualizationService:
                 return new AppDataVisualizationService(this);
 
+            case SERVICE_TYPES.SelectVisualizationPluginsService:
+                return new AppSelectVisualizationPluginsService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -281,6 +295,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.VisualizationDataSessionProducer:
                 return new AppDataVisualizationSessionProducer(this);
 
+            case SERVICE_TYPES.SelectVisualizationPluginsProducer:
+                return new AppSelectVisualizationPluginsProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
@@ -317,6 +334,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.DataVisualizationSessionConsumer:
                 return new AppDataVisualizationSessionConsumer(this);
+
+            case SERVICE_TYPES.SelectVisualizationPluginsConsumer:
+                return new AppSelectVisualizationPluginsConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

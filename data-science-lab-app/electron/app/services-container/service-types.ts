@@ -15,6 +15,7 @@ export const enum SERVICE_TYPES {
     AlgorithmDataService,
     AlgorithmTrackerDataService,
     VisualizationDataService,
+    SelectVisualizationPluginsDataService,
     // Session Services
     FetchSessionService,
     TransformSessionService,
@@ -38,6 +39,7 @@ export const enum SERVICE_TYPES {
     AlgorithmSessionOptionsService,
     AlgorithmService,
     DataVisualizationService,
+    SelectVisualizationPluginsService,
     // Consumers
     PackageConsumer,
     ExperimentConsumer,
@@ -50,6 +52,7 @@ export const enum SERVICE_TYPES {
     AlgorithmSessionConsumer,
     AlgorithmConsumer,
     DataVisualizationSessionConsumer,
+    SelectVisualizationPluginsConsumer,
     // Producers
     PackageProducer,
     ExperimentProducer,
@@ -63,7 +66,8 @@ export const enum SERVICE_TYPES {
     AlgorithmProducer,
     AlgorithmUpdateProducer,
     AlgorithmTrackerProducer,
-    VisualizationDataSessionProducer
+    VisualizationDataSessionProducer,
+    SelectVisualizationPluginsProducer,
 }
 
 

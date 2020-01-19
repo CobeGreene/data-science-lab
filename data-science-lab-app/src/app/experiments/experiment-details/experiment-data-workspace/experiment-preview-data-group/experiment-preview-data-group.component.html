@@ -2,9 +2,15 @@
     <div class="card-header">
         <div class="card-title">
             {{ dataGroup.label }}
-            <span class="float-right" (click)="onTransform()">
-                Transform
-            </span>
+            <div class="float-right">
+                <span (click)="onTransform()">
+                    Transform
+                </span>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span (click)="onVisualize()">
+                    Visualize
+                </span>
+            </div>
         </div>
     </div>
     <div class="card-body">

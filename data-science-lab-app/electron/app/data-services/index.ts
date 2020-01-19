@@ -32,3 +32,7 @@ export {
     AppVisualizationDataService,
     VisualizationDataService
 } from './visualization-data-service';
+export { 
+    AppSelectVisualizationPluginsDataService,
+    SelectVisualizationPluginsDataService
+} from './select-visualization-plugins-data-service';

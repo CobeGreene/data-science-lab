@@ -10,4 +10,4 @@ export { AppAlgorithmPluginsConsumer } from './algorithm-plugins-consumer';
 export { AppAlgorithmSessionConsumer } from './algorithm-session-consumer';
 export { AppAlgorithmConsumer } from './algorithm-consumer';
 export { AppDataVisualizationSessionConsumer } from './data-visualization-session-consumer';
-
+export { AppSelectVisualizationPluginsConsumer } from './select-visualization-plugins-consumer';

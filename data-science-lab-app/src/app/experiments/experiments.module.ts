@@ -10,7 +10,9 @@ import {
     FetchSessionService, AppFetchSessionService, FetchPluginsService,
     AppFetchPluginsService, AppDataGroupsService, DataGroupsService, TransformPluginsService, AppTransformPluginsService,
     TransformSessionService, AppTransformSessionService, AlgorithmPluginsService, AppAlgorithmPluginsService, AlgorithmSessionService,
-    AppAlgorithmSessionService, AlgorithmService, AppAlgorithmService, AlgorithmTrackerService, AppAlgorithmTrackerService
+    AppAlgorithmSessionService, AlgorithmService, AppAlgorithmService, AlgorithmTrackerService, AppAlgorithmTrackerService, 
+    AppVisualizationDataSessionService, VisualizationDataSessionService, AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService,
+    VisualizationPluginsService, AppVisualizationPluginsService
 } from '../services';
 
 @NgModule({

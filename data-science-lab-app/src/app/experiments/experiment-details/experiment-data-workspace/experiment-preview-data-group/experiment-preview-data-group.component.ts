@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { DataGroupViewModel } from '../../../../../../shared/view-models';
-import { TransformSessionService, DataGroupsService } from '../../../../services';
+import { TransformSessionService, DataGroupsService, VisualizationDataSessionService } from '../../../../services';
 import { Router } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
@@ -14,7 +14,8 @@ export class ExperimentPreviewDataGroupComponent implements OnInit, OnDestroy {
 
     @Input() dataGroup: DataGroupViewModel;
 
-    constructor(private service: TransformSessionService,
+    constructor(private transformService: TransformSessionService,
+                private visualizeService: VisualizationDataSessionService,
                 private dataService: DataGroupsService,
                 private router: Router) {
 
@@ -35,11 +36,15 @@ export class ExperimentPreviewDataGroupComponent implements OnInit, OnDestroy {
     }
 
     onTransform(): void {
-        if (this.service.hasSession(this.dataGroup.id)) {
+        if (this.transformService.hasSession(this.dataGroup.id)) {
             this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'setup-transform', this.dataGroup.id]);
         } else {
             this.router.navigate(['/experiments', 'details', this.dataGroup.experimentId, 'select-transform', this.dataGroup.id]);
         }
+    }
+
+    onVisualize(): void {
+
     }
 
 }
