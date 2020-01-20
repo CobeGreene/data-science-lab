@@ -31,3 +31,8 @@ export {
     AppVisualizationsService,
     VisualizationsService
 } from './visualizations-service';
+export {
+    AlgorithmVisualizationService,
+    AppAlgorithmVisualizationService
+} from './algorithm-visualization-service';
+

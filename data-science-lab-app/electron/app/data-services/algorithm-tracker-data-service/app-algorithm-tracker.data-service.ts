@@ -1,6 +1,6 @@
 import { AlgorithmTrackerDataService } from './algorithm-tracker.data-service';
 import { AlgorithmTracker, AlgorithmTrackerVariable } from '../../models';
-import { VariableTracker } from 'data-science-lab-core';
+import { VariableTracker, PluginData } from 'data-science-lab-core';
 
 
 
@@ -84,6 +84,28 @@ export class AppAlgorithmTrackerDataService implements AlgorithmTrackerDataServi
 
         this.trackers.push(tracker);
         return tracker;
+    }
+
+    getPluginData(id: number, inputs: { [id: string]: number[]; }): { [id: string]: PluginData } {
+        const tracker = this.read(id);
+        const pluginData: {[id: string]: PluginData } = {};
+        for (const key in inputs) {
+            if (inputs[key]) {
+                const features: string[] = [];
+                const examples: any[][] = [];
+
+                for (const index of inputs[key]) {
+                    features.push(tracker.variables[index].label);
+                    examples.push(tracker.variables[index].values);
+                }
+
+                pluginData[key] = new PluginData({
+                    features,
+                    examples
+                });
+            }
+        }
+        return pluginData;
     }
 
 }

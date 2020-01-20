@@ -4,7 +4,8 @@ import { AppDocumentContext, DocumentContext, PluginContext, AppPluginContext, A
 import {
     AppFetchSessionService, FetchSessionService, TransformSessionService,
     AppTransformSessionService, AlgorithmSessionService, AppAlgorithmSessionService,
-    AppVisualizationDataSessionService, VisualizationDataSessionService
+    AppVisualizationDataSessionService, VisualizationDataSessionService,
+    AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService
 } from '../session-services';
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
@@ -21,6 +22,7 @@ import {
     VisualizationDataService,
     SelectVisualizationPluginsDataService,
     AppSelectVisualizationPluginsDataService
+
 } from '../data-services';
 import { AppWebCoreService, AppFileCoreService, AppRecorderService } from '../core-services';
 import { IpcService } from '../../../shared/services';
@@ -30,7 +32,7 @@ import {
     AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
     AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService,
     AppAlgorithmService, AppDataVisualizationService, AppSelectVisualizationPluginsService,
-    AppVisualizationsService
+    AppVisualizationsService, AppAlgorithmVisualizationService
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
@@ -42,13 +44,15 @@ import {
     AppDataVisualizationSessionProducer,
     AppSelectVisualizationPluginsProducer,
     AppVisualizationsProducer,
+    AppAlgorithmVisualizationSessionProducer,
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
     AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
     AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, 
     AppAlgorithmConsumer, AppDataVisualizationSessionConsumer, AppSelectVisualizationPluginsConsumer,
-    AppVisualizationsConsumer
+    AppVisualizationsConsumer,
+    AppAlgorithmVisualizationSessionConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 
@@ -65,6 +69,7 @@ export class AppServiceContainer implements ServiceContainer {
     private transformSessionService: TransformSessionService;
     private algorithmSessionService: AlgorithmSessionService;
     private visualizationDataSessionService: VisualizationDataSessionService;
+    private visualizationAlgorithmSessionService: VisualizationAlgorithmSessionService;
 
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
@@ -138,6 +143,13 @@ export class AppServiceContainer implements ServiceContainer {
                 }
                 this.visualizationDataSessionService = new AppVisualizationDataSessionService(this);
                 return this.visualizationDataSessionService;
+
+            case SERVICE_TYPES.VisualizationAlgorithmSessionService:
+                if (this.visualizationAlgorithmSessionService) {
+                    return this.visualizationAlgorithmSessionService;
+                }
+                this.visualizationAlgorithmSessionService = new AppVisualizationAlgorithmSessionService(this);
+                return this.visualizationAlgorithmSessionService;
 
             // Ipc Services
             case SERVICE_TYPES.IpcService:
@@ -264,6 +276,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.VisualizationsService:
                 return new AppVisualizationsService(this);
 
+            case SERVICE_TYPES.AlgorithmVisualizationService:
+                return new AppAlgorithmVisualizationService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -307,6 +322,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.VisualizationsProducer:
                 return new AppVisualizationsProducer(this);
 
+            case SERVICE_TYPES.VisualizationAlgorithmSessionProducer:
+                return new AppAlgorithmVisualizationSessionProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
@@ -349,6 +367,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.VisualizationsConsumer:
                 return new AppVisualizationsConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmVisualizationSessionConsumer:
+                return new AppAlgorithmVisualizationSessionConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

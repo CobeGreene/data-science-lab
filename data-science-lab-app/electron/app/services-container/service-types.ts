@@ -21,6 +21,7 @@ export const enum SERVICE_TYPES {
     TransformSessionService,
     AlgorithmSessionService,
     VisualizationDataSessionService,
+    VisualizationAlgorithmSessionService,
     // Ipc Services
     IpcService,
     // Core Services
@@ -41,6 +42,7 @@ export const enum SERVICE_TYPES {
     DataVisualizationService,
     SelectVisualizationPluginsService,
     VisualizationsService,
+    AlgorithmVisualizationService,
     // Consumers
     PackageConsumer,
     ExperimentConsumer,
@@ -53,6 +55,7 @@ export const enum SERVICE_TYPES {
     AlgorithmSessionConsumer,
     AlgorithmConsumer,
     DataVisualizationSessionConsumer,
+    AlgorithmVisualizationSessionConsumer,
     SelectVisualizationPluginsConsumer,
     VisualizationsConsumer,
     // Producers
@@ -71,6 +74,7 @@ export const enum SERVICE_TYPES {
     VisualizationDataSessionProducer,
     SelectVisualizationPluginsProducer,
     VisualizationsProducer,
+    VisualizationAlgorithmSessionProducer,
 }
 
 

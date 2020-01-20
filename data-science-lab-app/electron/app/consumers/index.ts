@@ -12,6 +12,6 @@ export { AppAlgorithmConsumer } from './algorithm-consumer';
 export { AppDataVisualizationSessionConsumer } from './data-visualization-session-consumer';
 export { AppSelectVisualizationPluginsConsumer } from './select-visualization-plugins-consumer';
 export { AppVisualizationsConsumer } from './visualizations-consumer';
-
+export { AppAlgorithmVisualizationSessionConsumer } from './algorithm-visualization-session-consumer';
 
 
