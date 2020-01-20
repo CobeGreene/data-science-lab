@@ -49,7 +49,7 @@ export class ExperimentAlgorithm {
         }
         this.hasStarted = true;
         this.algorithmPlugin.setRecorderService(recorder);
-        this.trainTimer = setInterval(this.step, 1000);
+        this.trainTimer = setInterval(this.step, 300);
     }
     
     step = () => {

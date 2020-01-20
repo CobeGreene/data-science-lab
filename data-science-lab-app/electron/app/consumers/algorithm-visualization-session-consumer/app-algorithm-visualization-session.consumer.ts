@@ -13,8 +13,8 @@ export class AppAlgorithmVisualizationSessionConsumer implements Consumer {
     initialize(): void {
         const ipcService = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         ipcService.on(ExperimentsEvents.GetAllVisualizationAlgorithmSessionsEvent, this.getAllEvent);
-        ipcService.on(ExperimentsEvents.ExecuteCommandAlgorithmSessionEvent, this.executeCommandEvent);
-        ipcService.on(ExperimentsEvents.SubmitOptionsAlgorithmSessionEvent, this.submitEvent);
+        ipcService.on(ExperimentsEvents.ExecuteCommandVisualizationAlgorithmSessionEvent, this.executeCommandEvent);
+        ipcService.on(ExperimentsEvents.SubmitOptionsVisualizationAlgorithmSessionEvent, this.submitEvent);
         ipcService.on(ExperimentsEvents.DeleteVisualizationAlgorithmSessionEvent, this.deleteEvent);
         ipcService.on(ExperimentsEvents.CreateVisualizationAlgorithmSessionEvent, this.createEvent);
     }

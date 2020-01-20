@@ -89,6 +89,7 @@ export class AppAlgorithmVisualizationService implements AlgorithmVisualizationS
     }
 
     submitOptions(id: number, inputs: { [id: string]: any; }): void {
+
         const sessionService = this.serviceContainer
             .resolve<VisualizationAlgorithmSessionService>(SERVICE_TYPES.VisualizationAlgorithmSessionService);
         const session = sessionService.read(id);
@@ -107,7 +108,6 @@ export class AppAlgorithmVisualizationService implements AlgorithmVisualizationS
         const visualDataService = this.serviceContainer.resolve<VisualizationDataService>(SERVICE_TYPES.VisualizationDataService);
         const algorithmDataService = this.serviceContainer
             .resolve<ExperimentAlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService);
-
         const algorithm = algorithmDataService.read(session.id);
         const visual = session.visualizationPlugin.visualization();
 
@@ -121,7 +121,7 @@ export class AppAlgorithmVisualizationService implements AlgorithmVisualizationS
         const newVisualization = visualDataService.create(visualization);
 
         const visualAlgorithmSessionService = this.serviceContainer
-            .resolve<VisualizationAlgorithmSessionService>(SERVICE_TYPES.AlgorithmDataService);
+            .resolve<VisualizationAlgorithmSessionService>(SERVICE_TYPES.VisualizationAlgorithmSessionService);
 
         visualAlgorithmSessionService.delete(session.id);
 
@@ -134,7 +134,7 @@ export class AppAlgorithmVisualizationService implements AlgorithmVisualizationS
 
     delete(id: number): void {
         const visualAlgorithmSessionService = this.serviceContainer
-            .resolve<VisualizationAlgorithmSessionService>(SERVICE_TYPES.AlgorithmDataService);
+            .resolve<VisualizationAlgorithmSessionService>(SERVICE_TYPES.VisualizationAlgorithmSessionService);
         visualAlgorithmSessionService.delete(id);
         const producer = this.serviceContainer
             .resolve<AlgorithmVisualizationSessionProducer>(SERVICE_TYPES.VisualizationAlgorithmSessionProducer);

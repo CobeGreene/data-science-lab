@@ -43,6 +43,14 @@ export class AppAlgorithmTrackerDataService implements AlgorithmTrackerDataServi
         }
     }
 
+
+    getType(data: any): string {
+        if (data instanceof Array) {
+            return `${this.getType(data[0])}[]`;
+        }
+        return typeof data;
+    }
+
     update(id: number, trackers: VariableTracker[]): AlgorithmTracker {
         const find = this.trackers.findIndex((value) => {
             return value.algorithmId === id;
@@ -58,7 +66,8 @@ export class AppAlgorithmTrackerDataService implements AlgorithmTrackerDataServi
                     this.trackers[find].variables.push(new AlgorithmTrackerVariable({
                         label: variable.label,
                         description: variable.description,
-                        values: [variable.value]
+                        values: [variable.value],
+                        type: this.getType(variable.value)
                     }));
                 }
             });
@@ -78,7 +87,8 @@ export class AppAlgorithmTrackerDataService implements AlgorithmTrackerDataServi
             tracker.variables.push(new AlgorithmTrackerVariable({
                 label: variable.label,
                 description: variable.description,
-                values: [variable.value]
+                values: [variable.value],
+                type: this.getType(variable.value)
             }));
         });
 
@@ -93,10 +103,18 @@ export class AppAlgorithmTrackerDataService implements AlgorithmTrackerDataServi
             if (inputs[key]) {
                 const features: string[] = [];
                 const examples: any[][] = [];
-
-                for (const index of inputs[key]) {
-                    features.push(tracker.variables[index].label);
-                    examples.push(tracker.variables[index].values);
+                
+                for (let j = 0; j < inputs[key].length; ++j) {
+                    features.push(tracker.variables[inputs[key][j]].label);
+                    for (let i = 0; i < tracker.variables[inputs[key][j]].values.length; ++i) {
+                        if (examples.length <= i) {
+                            examples.push([]);
+                        }
+                        if (examples[i].length <= j) {
+                            examples[i].push(undefined);
+                        }
+                        examples[i][j] = tracker.variables[inputs[key][j]].values[i];
+                    }
                 }
 
                 pluginData[key] = new PluginData({
