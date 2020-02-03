@@ -13,6 +13,28 @@ import { ExperimentSelectAlgorithmComponent } from './experiment-select-algorith
 import { ExperimentInputAlgorithmComponent } from './experiment-input-algorithm/experiment-input-algorithm.component';
 import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/experiment-setup-algorithm.component';
 import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-details/experiment-algorithm-details.component';
+import {
+    ExperimentSelectVisualizationPluginsComponent
+} from './experiment-select-data-visualization/experiment-select-visualization-plugins/experiment-select-visualization-plugins.component';
+import {
+    ExperimentInputDataVisualizationComponent
+} from './experiment-input-data-visualization/experiment-input-data-visualization.component';
+import {
+    ExperimentSetupDataVisualizationComponent
+} from './experiment-setup-data-visualization/experiment-setup-data-visualization.component';
+import {
+    ExperimentVisualizationWorkspaceComponent
+} from './experiment-visualization-workspace/experiment-visualization-workspace.component';
+import {
+    ExperimentInputAlgorithmVisualizationComponent
+} from './experiment-input-algorithm-visualization/experiment-input-algorithm-visualization.component';
+import {
+    ExperimentSelectAlgorithmVisualizationComponent
+} from './experiment-select-algorithm-visualization/experiment-select-algorithm-visualization.component';
+import {
+    ExperimentSetupAlgorithmVisualizationComponent
+} from './experiment-setup-algorithm-visualization/experiment-setup-algorithm-visualization.component';
+
 
 const experimentDetailsRoutes: Routes = [
     {
@@ -20,6 +42,7 @@ const experimentDetailsRoutes: Routes = [
             { path: '', component: ExperimentDataWorkspaceComponent, pathMatch: 'full' },
             { path: 'data-workspace', component: ExperimentDataWorkspaceComponent },
             { path: 'algorithm-workspace', component: ExperimentAlgorithmWorkspaceComponent },
+            { path: 'visualization-workspace', component: ExperimentVisualizationWorkspaceComponent },
             { path: 'select-data-algorithm', component: ExperimentSelectDataAlgorithmComponent },
             { path: 'select-fetch', component: ExperimentSelectFetchComponent },
             { path: 'setup-fetch', component: ExperimentSetupFetchComponent },
@@ -29,7 +52,13 @@ const experimentDetailsRoutes: Routes = [
             { path: 'select-algorithm/:dataGroupId', component: ExperimentSelectAlgorithmComponent },
             { path: 'input-algorithm/:dataGroupId', component: ExperimentInputAlgorithmComponent },
             { path: 'setup-algorithm/:dataGroupId', component: ExperimentSetupAlgorithmComponent },
-            { path: 'algorithm/:algorithmId', component: ExperimentAlgorithmDetailsComponent }
+            { path: 'algorithm/:algorithmId', component: ExperimentAlgorithmDetailsComponent },
+            { path: 'select-data-visualization/:dataGroupId', component: ExperimentSelectVisualizationPluginsComponent },
+            { path: 'input-data-visualization/:dataGroupId', component: ExperimentInputDataVisualizationComponent },
+            { path: 'setup-data-visualization/:dataGroupId', component: ExperimentSetupDataVisualizationComponent },
+            { path: 'select-algorithm-visualization/:algorithmId', component: ExperimentSelectAlgorithmVisualizationComponent },
+            { path: 'input-algorithm-visualization/:algorithmId', component: ExperimentInputAlgorithmVisualizationComponent },
+            { path: 'setup-algorithm-visualization/:algorithmId', component: ExperimentSetupAlgorithmVisualizationComponent },
         ]
     }
 ];

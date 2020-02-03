@@ -30,6 +30,31 @@ export namespace ExperimentsEvents {
     export const UpdatedTransformSessionListeners = 'updated-transform-session-listeners';
     export const FinishedTransformSessionListeners = 'finished-transform-session-listeners';
     
+    // Visualization Algorithm Session
+    export const GetAllVisualizationAlgorithmSessionsEvent = 'get-all-visualization-algorithm-sessions-event';
+    export const GetAllVisualizationAlgorithmSessionsListeners = 'get-all-visualization-algorithm-sessions-listener';
+    export const CreateVisualizationAlgorithmSessionEvent = 'create-visualization-algorithm-session-event';
+    export const CreateVisualizationAlgorithmSessionListeners = 'create-visualization-algorithm-session-listeners';
+    export const DeleteVisualizationAlgorithmSessionEvent = 'delete-visualization-algorithm-session-event';
+    export const DeleteVisualizationAlgorithmSessionListeners = 'delete-visualization-algorithm-session-listeners';
+    export const SubmitOptionsVisualizationAlgorithmSessionEvent = 'submit-options-visualization-algorithm-session-event';
+    export const ExecuteCommandVisualizationAlgorithmSessionEvent = 'execute-command-visualization-algorithm-session-event';
+    export const UpdatedVisualizationAlgorithmSessionListeners = 'updated-visualization-algorithm-session-listeners';
+    export const FinishedVisualizationAlgorithmSessionListeners = 'finished-visualization-algorithm-session-listeners';
+    
+    // Visualization Data Session
+    export const GetAllVisualizationDataSessionsEvent = 'get-all-visualization-data-sessions-event';
+    export const GetAllVisualizationDataSessionsListeners = 'get-all-visualization-data-sessions-listener';
+    export const CreateVisualizationDataSessionEvent = 'create-visualization-data-session-event';
+    export const CreateVisualizationDataSessionListeners = 'create-visualization-data-session-listeners';
+    export const DeleteVisualizationDataSessionEvent = 'delete-visualization-data-session-event';
+    export const DeleteVisualizationDataSessionListeners = 'delete-visualization-data-session-listeners';
+    export const SubmitOptionsVisualizationDataSessionEvent = 'submit-options-visualization-data-session-event';
+    export const ExecuteCommandVisualizationDataSessionEvent = 'execute-command-visualization-data-session-event';
+    export const UpdatedVisualizationDataSessionListeners = 'updated-visualization-data-session-listeners';
+    export const FinishedVisualizationDataSessionListeners = 'finished-visualization-data-listeners';
+    
+    
     // Algorithm Session
     export const GetAllAlgorithmSessionsEvent = 'get-all-algorithm-sessions-event';
     export const GetAllAlgorithmSessionsListeners = 'get-all-algorithm-sessions-listener';
@@ -46,6 +71,10 @@ export namespace ExperimentsEvents {
     export const GetAllTransformPluginsEvent = 'get-all-transform-plugins-event';
     export const GetAllTransformPluginsListeners = 'get-all-transform-plugins-listeners';
 
+    // Visualization Plugins
+    export const GetAllVisualizationPluginsEvent = 'get-all-visualization-plugins-event';
+    export const GetAllVisualizationPluginsListeners = 'get-all-visualization-plugins-listeners';
+
     // Fetch Plugins
     export const GetAllFetchPluginsEvent = 'get-all-fetch-plugins-event';
     export const GetAllFetchPluginsListeners = 'get-all-fetch-plugins-listeners';
@@ -61,6 +90,14 @@ export namespace ExperimentsEvents {
     export const DeleteDataGroupEvent = 'delete-data-group-event';
     export const DeleteDataGroupListeners = 'delete-data-group-listeners';
     export const UpdatedDataGroupListeners = 'updated-data-group-listeners';
+
+    // Visualizations
+    export const GetAllVisualizationsEvent = 'get-all-visualizations-event';
+    export const GetAllVisualizationsListeners = 'get-all-visualizations-listeners';
+    export const NewVisualizationsListeners = 'new-visualization-listeners';
+    export const DeleteVisualizationsEvent = 'delete-visualization-event';
+    export const DeleteVisualizationsListeners = 'delete-visualization-listeners';
+    export const UpdatedVisualizationsListeners = 'updated-visualization-listeners';
     
     // Algorithm
     export const GetAllAlgorithmsEvent = 'get-all-algorithms-event';

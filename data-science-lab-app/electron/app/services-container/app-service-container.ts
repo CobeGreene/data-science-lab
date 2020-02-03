@@ -3,7 +3,9 @@ import { SERVICE_TYPES } from './service-types';
 import { AppDocumentContext, DocumentContext, PluginContext, AppPluginContext, AppQueuePluginContext } from '../contexts';
 import {
     AppFetchSessionService, FetchSessionService, TransformSessionService,
-    AppTransformSessionService, AlgorithmSessionService, AppAlgorithmSessionService
+    AppTransformSessionService, AlgorithmSessionService, AppAlgorithmSessionService,
+    AppVisualizationDataSessionService, VisualizationDataSessionService,
+    AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService
 } from '../session-services';
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
@@ -15,7 +17,12 @@ import {
     ExperimentAlgorithmDataService,
     AppAlgorithmDataService,
     AlgorithmTrackerDataService,
-    AppAlgorithmTrackerDataService
+    AppAlgorithmTrackerDataService,
+    AppVisualizationDataService,
+    VisualizationDataService,
+    SelectVisualizationPluginsDataService,
+    AppSelectVisualizationPluginsDataService
+
 } from '../data-services';
 import { AppWebCoreService, AppFileCoreService, AppRecorderService } from '../core-services';
 import { IpcService } from '../../../shared/services';
@@ -24,7 +31,8 @@ import {
     AppFetchService, AppPackageService, AppSelectTransformPluginsService,
     AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
     AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService,
-    AppAlgorithmService
+    AppAlgorithmService, AppDataVisualizationService, AppSelectVisualizationPluginsService,
+    AppVisualizationsService, AppAlgorithmVisualizationService
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
@@ -32,12 +40,19 @@ import {
     AppTransformSessionProducer, AppAlgorithmPluginsProducer, AppAlgorithmSessionProducer,
     AppAlgorithmProducer,
     AppAlgorithmUpdateProducer,
-    AppAlgorithmTrackerProducer
+    AppAlgorithmTrackerProducer,
+    AppDataVisualizationSessionProducer,
+    AppSelectVisualizationPluginsProducer,
+    AppVisualizationsProducer,
+    AppAlgorithmVisualizationSessionProducer,
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
     AppFetchSessionConsumer, AppDataGroupsConsumer, AppSelectTransformPluginsConsumer,
-    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, AppAlgorithmConsumer
+    AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, 
+    AppAlgorithmConsumer, AppDataVisualizationSessionConsumer, AppSelectVisualizationPluginsConsumer,
+    AppVisualizationsConsumer,
+    AppAlgorithmVisualizationSessionConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 
@@ -53,6 +68,8 @@ export class AppServiceContainer implements ServiceContainer {
     private fetchSessionService: FetchSessionService;
     private transformSessionService: TransformSessionService;
     private algorithmSessionService: AlgorithmSessionService;
+    private visualizationDataSessionService: VisualizationDataSessionService;
+    private visualizationAlgorithmSessionService: VisualizationAlgorithmSessionService;
 
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
@@ -62,6 +79,8 @@ export class AppServiceContainer implements ServiceContainer {
     private algorithmPluginsDataService: AlgorithmPluginsDataService;
     private algorithmDataService: ExperimentAlgorithmDataService;
     private algorithmTrackerDataService: AlgorithmTrackerDataService;
+    private visualizationDataService: VisualizationDataService;
+    private selectVisualizationPluginsDataService: SelectVisualizationPluginsDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -117,6 +136,20 @@ export class AppServiceContainer implements ServiceContainer {
                 }
                 this.algorithmSessionService = new AppAlgorithmSessionService(this);
                 return this.algorithmSessionService;
+
+            case SERVICE_TYPES.VisualizationDataSessionService:
+                if (this.visualizationDataSessionService) {
+                    return this.visualizationDataSessionService;
+                }
+                this.visualizationDataSessionService = new AppVisualizationDataSessionService(this);
+                return this.visualizationDataSessionService;
+
+            case SERVICE_TYPES.VisualizationAlgorithmSessionService:
+                if (this.visualizationAlgorithmSessionService) {
+                    return this.visualizationAlgorithmSessionService;
+                }
+                this.visualizationAlgorithmSessionService = new AppVisualizationAlgorithmSessionService(this);
+                return this.visualizationAlgorithmSessionService;
 
             // Ipc Services
             case SERVICE_TYPES.IpcService:
@@ -179,6 +212,20 @@ export class AppServiceContainer implements ServiceContainer {
                 this.algorithmTrackerDataService = new AppAlgorithmTrackerDataService();
                 return this.algorithmTrackerDataService;
 
+            case SERVICE_TYPES.VisualizationDataService:
+                if (this.visualizationDataService) {
+                    return this.visualizationDataService;
+                }
+                this.visualizationDataService = new AppVisualizationDataService();
+                return this.visualizationDataService;
+
+            case SERVICE_TYPES.SelectVisualizationPluginsDataService:
+                if (this.selectVisualizationPluginsDataService) {
+                    return this.selectVisualizationPluginsDataService;
+                }
+                this.selectVisualizationPluginsDataService = new AppSelectVisualizationPluginsDataService(this);
+                return this.selectVisualizationPluginsDataService;
+
             // Core Services
             case SERVICE_TYPES.WebService:
                 return new AppWebCoreService();
@@ -219,6 +266,18 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmService:
                 return new AppAlgorithmService(this);
+            
+            case SERVICE_TYPES.DataVisualizationService:
+                return new AppDataVisualizationService(this);
+
+            case SERVICE_TYPES.SelectVisualizationPluginsService:
+                return new AppSelectVisualizationPluginsService(this);
+
+            case SERVICE_TYPES.VisualizationsService:
+                return new AppVisualizationsService(this);
+
+            case SERVICE_TYPES.AlgorithmVisualizationService:
+                return new AppAlgorithmVisualizationService(this);
 
             // Producers
             case SERVICE_TYPES.PackageProducer:
@@ -254,6 +313,18 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.AlgorithmTrackerProducer:
                 return new AppAlgorithmTrackerProducer(this);
 
+            case SERVICE_TYPES.VisualizationDataSessionProducer:
+                return new AppDataVisualizationSessionProducer(this);
+
+            case SERVICE_TYPES.SelectVisualizationPluginsProducer:
+                return new AppSelectVisualizationPluginsProducer(this);
+
+            case SERVICE_TYPES.VisualizationsProducer:
+                return new AppVisualizationsProducer(this);
+
+            case SERVICE_TYPES.VisualizationAlgorithmSessionProducer:
+                return new AppAlgorithmVisualizationSessionProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
@@ -287,6 +358,18 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmUpdateProducer:
                 return new AppAlgorithmUpdateProducer(this);
+
+            case SERVICE_TYPES.DataVisualizationSessionConsumer:
+                return new AppDataVisualizationSessionConsumer(this);
+
+            case SERVICE_TYPES.SelectVisualizationPluginsConsumer:
+                return new AppSelectVisualizationPluginsConsumer(this);
+
+            case SERVICE_TYPES.VisualizationsConsumer:
+                return new AppVisualizationsConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmVisualizationSessionConsumer:
+                return new AppAlgorithmVisualizationSessionConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

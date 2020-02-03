@@ -48,10 +48,12 @@ export class AppPluginContext implements PluginContext {
     }
 
     deactivate(pluginPackage: PluginPackage, _plugin: Plugin): Promise<void> {
-        return this.uninstall(pluginPackage);
+        // return this.uninstall(pluginPackage);
+        return new Promise((resolve) => resolve());
     }
     deactivateAll(): Promise<void> {
-        return this.manager.uninstallAll();
+        // return this.manager.uninstallAll();
+        return new Promise((resolve) => resolve());
     }
 }
 

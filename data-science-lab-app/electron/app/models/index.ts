@@ -8,4 +8,6 @@ export { AlgorithmSession } from './algorithm-session';
 export { ExperimentAlgorithm } from './experiment-algorithm';
 export { AlgorithmTracker } from './algorithm-tracker';
 export { AlgorithmTrackerVariable } from './algorithm-tracker-variable';
+export { VisualizationSession } from './visualization-session';
+
 

@@ -9,5 +9,6 @@ export { AlgorithmViewModel } from './algorithm.vm';
 export { VariableViewModel } from './variable.vm';
 export { AlgorithmTrackerVariableViewModel } from './algorithm-tracker-variable.vm';
 export { AlgorithmTrackerViewModel } from './algorithm-tracker.vm';
-
+export { VisualizationPluginViewModel } from './visualization-plugin.vm';
+export { VisualizationSessionViewModel } from './visualization-session.vm';
 

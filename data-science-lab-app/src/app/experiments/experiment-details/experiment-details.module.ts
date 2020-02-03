@@ -36,6 +36,18 @@ import { ExperimentSetupAlgorithmComponent } from './experiment-setup-algorithm/
 import { ExperimentAlgorithmListComponent } from './experiment-algorithm-workspace/experiment-algorithm-list/experiment-algorithm-list.component';
 import { ExperimentAlgorithmCardComponent } from './experiment-algorithm-workspace/experiment-algorithm-card/experiment-algorithm-card.component';
 import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-details/experiment-algorithm-details.component';
+import { ExperimentSetupDataVisualizationComponent } from './experiment-setup-data-visualization/experiment-setup-data-visualization.component';
+import { ExperimentSelectDataVisualizationComponent } from './experiment-select-data-visualization/experiment-select-data-visualization.component';
+import { ExperimentSelectVisualizationPluginsComponent } from './experiment-select-data-visualization/experiment-select-visualization-plugins/experiment-select-visualization-plugins.component';
+import { ExperimentSelectVisualizationPluginCardComponent } from './experiment-select-data-visualization/experiment-select-visualization-plugin-card/experiment-select-visualization-plugin-card.component';
+import { ExperimentInputDataVisualizationComponent } from './experiment-input-data-visualization/experiment-input-data-visualization.component';
+import { ExperimentVisualizationWorkspaceComponent } from './experiment-visualization-workspace/experiment-visualization-workspace.component';
+import { ExperimentVisualizationCardComponent } from './experiment-visualization-workspace/experiment-visualization-card/experiment-visualization-card.component';
+import { ExperimentVisualizationListComponent } from './experiment-visualization-workspace/experiment-visualization-list/experiment-visualization-list.component';
+import { ExperimentAlgorithmInputsComponent } from './experiment-algorithm-inputs/experiment-algorithm-inputs.component';
+import { ExperimentInputAlgorithmVisualizationComponent } from './experiment-input-algorithm-visualization/experiment-input-algorithm-visualization.component';
+import { ExperimentSelectAlgorithmVisualizationComponent } from './experiment-select-algorithm-visualization/experiment-select-algorithm-visualization.component';
+import { ExperimentSetupAlgorithmVisualizationComponent } from './experiment-setup-algorithm-visualization/experiment-setup-algorithm-visualization.component';
 
 @NgModule({
     declarations: [
@@ -72,6 +84,18 @@ import { ExperimentAlgorithmDetailsComponent } from './experiment-algorithm-deta
         ExperimentAlgorithmListComponent,
         ExperimentAlgorithmCardComponent,
         ExperimentAlgorithmDetailsComponent,
+        ExperimentSetupDataVisualizationComponent,
+        ExperimentSelectDataVisualizationComponent,
+        ExperimentSelectVisualizationPluginsComponent,
+        ExperimentSelectVisualizationPluginCardComponent,
+        ExperimentInputDataVisualizationComponent,
+        ExperimentVisualizationWorkspaceComponent,
+        ExperimentVisualizationCardComponent,
+        ExperimentVisualizationListComponent,
+        ExperimentAlgorithmInputsComponent,
+        ExperimentInputAlgorithmVisualizationComponent,
+        ExperimentSelectAlgorithmVisualizationComponent,
+        ExperimentSetupAlgorithmVisualizationComponent
     ],
     imports: [
         CommonModule,

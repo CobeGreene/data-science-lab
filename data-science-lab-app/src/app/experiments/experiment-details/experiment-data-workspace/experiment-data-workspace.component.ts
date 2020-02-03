@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit, OnDestroy } from '@angular/core';
-import { FetchSessionService } from '../../../services';
+import { FetchSessionService, VisualizationsService } from '../../../services';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
@@ -14,7 +14,8 @@ export class ExperimentDataWorkspaceComponent implements OnInit, OnDestroy {
 
     constructor(private fetchSessionService: FetchSessionService, 
                 private route: ActivatedRoute,
-                private router: Router) {
+                private router: Router,
+                private visualizationService: VisualizationsService) {
 
     }
 

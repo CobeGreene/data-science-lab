@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlgorithmService, AlgorithmTrackerService } from '../../../services';
+import { AlgorithmService, AlgorithmTrackerService, VisualizationAlgorithmSessionService } from '../../../services';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AlgorithmViewModel, AlgorithmTrackerViewModel, AlgorithmTrackerVariableViewModel } from '../../../../../shared/view-models';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -21,7 +21,9 @@ export class ExperimentAlgorithmDetailsComponent implements OnInit, OnDestroy {
     hasTracker = false;
 
     constructor(private service: AlgorithmService, private route: ActivatedRoute,
-                private trackerService: AlgorithmTrackerService) {
+                private trackerService: AlgorithmTrackerService,
+                private router: Router,
+                private visualizeService: VisualizationAlgorithmSessionService) {
 
     }
 
@@ -85,6 +87,14 @@ export class ExperimentAlgorithmDetailsComponent implements OnInit, OnDestroy {
 
     onStop() {
         this.service.stop(this.id);
+    }
+
+    onVisualize() {
+        if (this.visualizeService.hasSession(this.id)) {
+            this.router.navigate(['/experiments', 'details', this.algorithm.experimentId, 'setup-algorithm-visualization', this.id]);
+        } else {
+            this.router.navigate(['/experiments', 'details', this.algorithm.experimentId, 'select-algorithm-visualization', this.id]);
+        }
     }
 }
 

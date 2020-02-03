@@ -16,6 +16,7 @@ export class AppAlgorithmTrackerProducer extends BaseProducer implements Algorit
                     label: value.label,
                     description: value.description,
                     values: value.values,
+                    type: value.type
                 });
             })
         });

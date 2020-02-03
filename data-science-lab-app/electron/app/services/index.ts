@@ -20,4 +20,19 @@ export {
 export {
     AlgorithmService, MockAlgorithmService, AppAlgorithmService
 } from './algorithm-service';
+export { 
+    AppDataVisualizationService, DataVisualizationService
+} from './data-visualization-service';
+export { 
+    AppSelectVisualizationPluginsService,
+    SelectVisualizationPluginsService
+} from './select-visualization-plugins-service';
+export { 
+    AppVisualizationsService,
+    VisualizationsService
+} from './visualizations-service';
+export {
+    AlgorithmVisualizationService,
+    AppAlgorithmVisualizationService
+} from './algorithm-visualization-service';
 

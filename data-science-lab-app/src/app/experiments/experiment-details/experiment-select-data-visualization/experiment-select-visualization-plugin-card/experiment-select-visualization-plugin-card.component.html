@@ -1,0 +1,12 @@
+<div class="bg-light p-3">
+    <p>
+        {{ visualizationPlugin.plugin.name }}
+        <br/>
+        {{ visualizationPlugin.plugin.description }}
+        <br/>
+        From {{ visualizationPlugin.plugin.packageName }}
+    </p>
+    <button type="button" class="btn btn-info" (click)="onSelect()">
+        Select
+    </button>
+</div>

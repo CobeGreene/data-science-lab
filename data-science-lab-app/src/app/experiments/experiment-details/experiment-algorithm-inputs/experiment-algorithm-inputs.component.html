@@ -1,0 +1,40 @@
+<form (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group" *ngFor="let feature of tracker.variables; let i = index">
+                <label>{{ feature.label }}</label>
+                <br/>
+                <label>Type: {{ tracker.variables[i].type }}</label>
+                <select class="form-control" [ngModel]=null (ngModelChange)="onChange(i,$event)" [ngModelOptions]="{standalone: true}">
+                    <option [value]=null selected>
+                        None
+                    </option>
+                    <option *ngFor="let choice of inputList | selectTransformType:tracker.variables[i].type" [value]="choice.id">
+                        {{ choice.id }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <h3>
+                Input Descriptions
+            </h3>
+            <p *ngFor="let input of inputList">
+                {{ input.id }}: {{ input.label }}
+                <br />
+                Type: {{ input.type }}
+                <br />
+                Min: {{ input.min }}
+                <br />
+                {{ input.max ? 'Max: ' + input.max.toString() : '' }}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-success" type="submit" [disabled]="!valid">
+                Next
+            </button>
+        </div>
+    </div>
+</form>

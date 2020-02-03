@@ -29,6 +29,10 @@ export class App {
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.AlgorithmPluginsConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.AlgorithmSessionConsumer),
             this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.AlgorithmConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.SelectVisualizationPluginsConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.DataVisualizationSessionConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.VisualizationsConsumer),
+            this.servicesContainer.resolve<Consumer>(SERVICE_TYPES.AlgorithmVisualizationSessionConsumer),
         ];
         this.ipcService.on(ErrorEvents.ExceptionListeners, this.errorEvent);
     }
