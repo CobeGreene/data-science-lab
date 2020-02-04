@@ -54,7 +54,14 @@ export namespace ExperimentsEvents {
     export const UpdatedVisualizationDataSessionListeners = 'updated-visualization-data-session-listeners';
     export const FinishedVisualizationDataSessionListeners = 'finished-visualization-data-listeners';
     
-    
+    // Algorithm Testing Session
+    export const GetAllAlgorithmTestingSessionsEvent = 'get-all-algorithm-testing-sessions-event';
+    export const GetAllAlgorithmTestingSessionsListeners = 'get-all-algorithm-testing-sessions-listener';
+    export const RequestAlgorithmTestingSessionEvent = 'request-algorithm-testing-session-event';
+    export const NewAlgorithmTestingSessionListener = 'new-algorithm-testing-session-listener';
+    export const StartAlgorithmTestingSessionEvent = 'start-algorithm-testing-session-event';
+    export const FinishedAlgorithmTestingSessionListener = 'finished-algorithm-testing-session-listener';
+
     // Algorithm Session
     export const GetAllAlgorithmSessionsEvent = 'get-all-algorithm-sessions-event';
     export const GetAllAlgorithmSessionsListeners = 'get-all-algorithm-sessions-listener';

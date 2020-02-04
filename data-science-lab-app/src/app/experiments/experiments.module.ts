@@ -12,7 +12,7 @@ import {
     TransformSessionService, AppTransformSessionService, AlgorithmPluginsService, AppAlgorithmPluginsService, AlgorithmSessionService,
     AppAlgorithmSessionService, AlgorithmService, AppAlgorithmService, AlgorithmTrackerService, AppAlgorithmTrackerService, 
     AppVisualizationDataSessionService, VisualizationDataSessionService, AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService,
-    VisualizationPluginsService, AppVisualizationPluginsService, AppVisualizationsService, VisualizationsService
+    VisualizationPluginsService, AppVisualizationPluginsService, AppVisualizationsService, VisualizationsService, AlgorithmTestingSessionService, AppAlgorithmTestingSessionService
 } from '../services';
 
 @NgModule({
@@ -39,7 +39,8 @@ import {
         { provide: VisualizationDataSessionService, useClass: AppVisualizationDataSessionService },
         { provide: VisualizationAlgorithmSessionService, useClass: AppVisualizationAlgorithmSessionService },
         { provide: VisualizationPluginsService, useClass: AppVisualizationPluginsService },
-        { provide: VisualizationsService, useClass: AppVisualizationsService }
+        { provide: VisualizationsService, useClass: AppVisualizationsService },
+        { provide: AlgorithmTestingSessionService, useClass: AppAlgorithmTestingSessionService }
     ]
 })
 export class ExperimentsModule {

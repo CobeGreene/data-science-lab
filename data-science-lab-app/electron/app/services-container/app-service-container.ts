@@ -5,7 +5,8 @@ import {
     AppFetchSessionService, FetchSessionService, TransformSessionService,
     AppTransformSessionService, AlgorithmSessionService, AppAlgorithmSessionService,
     AppVisualizationDataSessionService, VisualizationDataSessionService,
-    AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService
+    AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService,
+    AlgorithmTestingSessionService, AppAlgorithmTestingSessionService
 } from '../session-services';
 import {
     AppExperimentDataGroupDataService, AppExperimentDataService,
@@ -32,7 +33,7 @@ import {
     AppExperimentService, AppFetchPluginsService, AppDataGroupsService,
     AppAlgorithmPluginsService, AppTransformService, AppAlgorithmSessionOptionsService,
     AppAlgorithmService, AppDataVisualizationService, AppSelectVisualizationPluginsService,
-    AppVisualizationsService, AppAlgorithmVisualizationService
+    AppVisualizationsService, AppAlgorithmVisualizationService, AppSessionAlgorithmTestingService,
 } from '../services';
 import {
     AppPackageProducer, AppExperimentProducer, AppFetchPluginsProducer,
@@ -45,6 +46,7 @@ import {
     AppSelectVisualizationPluginsProducer,
     AppVisualizationsProducer,
     AppAlgorithmVisualizationSessionProducer,
+    AppAlgorithmTestingSessionProducer,
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
@@ -52,7 +54,8 @@ import {
     AppTransformSessionConsumer, AppAlgorithmPluginsConsumer, AppAlgorithmSessionConsumer, 
     AppAlgorithmConsumer, AppDataVisualizationSessionConsumer, AppSelectVisualizationPluginsConsumer,
     AppVisualizationsConsumer,
-    AppAlgorithmVisualizationSessionConsumer
+    AppAlgorithmVisualizationSessionConsumer,
+    AppAlgorithmTestingSessionConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 
@@ -70,6 +73,7 @@ export class AppServiceContainer implements ServiceContainer {
     private algorithmSessionService: AlgorithmSessionService;
     private visualizationDataSessionService: VisualizationDataSessionService;
     private visualizationAlgorithmSessionService: VisualizationAlgorithmSessionService;
+    private algorithmTestingSessionService: AlgorithmTestingSessionService;
 
     // Data Services
     private experimentDataGroupDataService: ExperimentDataGroupDataService;
@@ -150,6 +154,13 @@ export class AppServiceContainer implements ServiceContainer {
                 }
                 this.visualizationAlgorithmSessionService = new AppVisualizationAlgorithmSessionService(this);
                 return this.visualizationAlgorithmSessionService;
+
+            case SERVICE_TYPES.AlogirthmTestingSessionService:
+                if (this.algorithmTestingSessionService) {
+                    return this.algorithmTestingSessionService;
+                }
+                this.algorithmTestingSessionService = new AppAlgorithmTestingSessionService();
+                return this.algorithmTestingSessionService;
 
             // Ipc Services
             case SERVICE_TYPES.IpcService:
@@ -279,6 +290,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.AlgorithmVisualizationService:
                 return new AppAlgorithmVisualizationService(this);
 
+            case SERVICE_TYPES.SessionAlgorithmTestingService:
+                return new AppSessionAlgorithmTestingService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -325,6 +339,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.VisualizationAlgorithmSessionProducer:
                 return new AppAlgorithmVisualizationSessionProducer(this);
 
+            case SERVICE_TYPES.AlogirthmTestingSessionProducer:
+                return new AppAlgorithmTestingSessionProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
@@ -370,6 +387,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmVisualizationSessionConsumer:
                 return new AppAlgorithmVisualizationSessionConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmTestingSessionConsumer:
+                return new AppAlgorithmTestingSessionConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

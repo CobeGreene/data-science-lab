@@ -11,4 +11,6 @@ export { AlgorithmTrackerVariableViewModel } from './algorithm-tracker-variable.
 export { AlgorithmTrackerViewModel } from './algorithm-tracker.vm';
 export { VisualizationPluginViewModel } from './visualization-plugin.vm';
 export { VisualizationSessionViewModel } from './visualization-session.vm';
+export { TestingSessionViewModel } from './testing-session.vm';
+export { TestReportViewModel } from './test-report.vm';
 

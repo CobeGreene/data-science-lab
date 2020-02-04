@@ -21,5 +21,8 @@ export {
     AlgorithmVisualizationSessionProducer,
     AppAlgorithmVisualizationSessionProducer
 } from './algorithm-visualization-session-producer';
-
+export {
+    AlgorithmTestingSessionProducer,
+    AppAlgorithmTestingSessionProducer
+} from './algorithm-testing-session-producer';
 

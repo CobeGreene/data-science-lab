@@ -96,5 +96,9 @@ export class ExperimentAlgorithmDetailsComponent implements OnInit, OnDestroy {
             this.router.navigate(['/experiments', 'details', this.algorithm.experimentId, 'select-algorithm-visualization', this.id]);
         }
     }
+
+    onTest() {
+        this.router.navigate(['/experiments', 'details', this.algorithm.experimentId, 'algorithm-testing-datagroup', this.id ]);
+    }
 }
 

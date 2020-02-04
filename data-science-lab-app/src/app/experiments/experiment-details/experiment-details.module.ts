@@ -48,6 +48,9 @@ import { ExperimentAlgorithmInputsComponent } from './experiment-algorithm-input
 import { ExperimentInputAlgorithmVisualizationComponent } from './experiment-input-algorithm-visualization/experiment-input-algorithm-visualization.component';
 import { ExperimentSelectAlgorithmVisualizationComponent } from './experiment-select-algorithm-visualization/experiment-select-algorithm-visualization.component';
 import { ExperimentSetupAlgorithmVisualizationComponent } from './experiment-setup-algorithm-visualization/experiment-setup-algorithm-visualization.component';
+import {
+    ExperimentAlgorithmTestingDataGroupComponent
+} from './experiment-algorithm-testing-data-group/experiment-algorithm-testing-data-group.component';
 
 @NgModule({
     declarations: [
@@ -95,7 +98,8 @@ import { ExperimentSetupAlgorithmVisualizationComponent } from './experiment-set
         ExperimentAlgorithmInputsComponent,
         ExperimentInputAlgorithmVisualizationComponent,
         ExperimentSelectAlgorithmVisualizationComponent,
-        ExperimentSetupAlgorithmVisualizationComponent
+        ExperimentSetupAlgorithmVisualizationComponent,
+        ExperimentAlgorithmTestingDataGroupComponent
     ],
     imports: [
         CommonModule,
