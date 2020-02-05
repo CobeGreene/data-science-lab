@@ -1,11 +1,23 @@
 import { AppExperimentDataService } from './app-experiment.data-service';
 import { Experiment } from '../../../../shared/models';
+import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
+import { MockDocumentContext } from '../../contexts';
 
 describe('Electron App Experiment Data Service Tests', () => {
     let experimentDataService: AppExperimentDataService;
+    let serviceContainer: MockServiceContainer;
 
     beforeEach(() => {
-        experimentDataService = new AppExperimentDataService();
+        serviceContainer = new MockServiceContainer();
+        serviceContainer.getType = (type) => {
+            switch (type) {
+                case SERVICE_TYPES.DocumentContext:
+                    return new MockDocumentContext();
+                default: 
+                    throw new Error(`Can't find type ${type}`);
+            }
+        };
+        experimentDataService = new AppExperimentDataService(serviceContainer);
     });
 
     it('all should return empty list', () => {
