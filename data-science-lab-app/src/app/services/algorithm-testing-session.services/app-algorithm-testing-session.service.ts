@@ -1,10 +1,11 @@
 import { AlgorithmTestingSessionService } from './algorithm-testing-session.service';
 import { TestingSessionViewModel } from '../../../../shared/view-models';
 import { IpcService } from '../../../../shared/services';
-import { NgZone } from '@angular/core';
+import { NgZone, Injectable } from '@angular/core';
 import { ExperimentsEvents } from '../../../../shared/events';
 
 
+@Injectable()
 export class AppAlgorithmTestingSessionService extends AlgorithmTestingSessionService {
 
     private sessions: TestingSessionViewModel[];

@@ -64,13 +64,13 @@ export class AppSessionAlgorithmTestingService implements SessionAlgorithmTestin
             .resolve<ExperimentAlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService).read(id).algorithmPlugin;
 
         const testing = algorithm.getTestingInputs();
+        const examples = dataService.read(session.dataGroupId).examples;
         const pluginInput = dataService.getPluginData(session.dataGroupId, inputs);
         const pluginOutput = dataService.getPluginData(session.dataGroupId, output);
 
         let correct = 0;
-        const total = pluginInput[0].examples.length || 0;
+        const total = examples || 0;
 
-        console.log('Starting Test:', total);
         for (let i = 0; i < total; ++i) {
             let testInputs = [];
             testing.input.forEach((value) => {
@@ -78,23 +78,20 @@ export class AppSessionAlgorithmTestingService implements SessionAlgorithmTestin
                 testInputs = testInputs.concat(thisInput);
             });
             
-            console.log('Test inputs', testInputs);
-
             let expected = [];
             testing.output.forEach((value) => {
                 const thisOutput = pluginOutput[value.id].examples[i];
                 expected = expected.concat(thisOutput);
             });
             
-            console.log('Expected', expected);
-
             const actual = algorithm.test(...testInputs);
 
-            console.log('Actual', actual);
             if (JSON.stringify(actual) === JSON.stringify(expected)) {
                 correct += 1;
             }
         }
+
+        this.service.delete(id);
 
         const report = new TestReportViewModel({
             algorithmId: id,
@@ -102,7 +99,7 @@ export class AppSessionAlgorithmTestingService implements SessionAlgorithmTestin
             total
         });
 
-        console.log(report);
+        this.producer.finishSession(id);
     }
 
 

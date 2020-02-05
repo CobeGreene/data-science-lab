@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { DataGroupsService } from '../../../services';
+import { DataGroupsService, AlgorithmTestingSessionService } from '../../../services';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DataGroupViewModel } from '../../../../../shared/view-models';
 
@@ -20,6 +20,7 @@ export class ExperimentAlgorithmTestingDataGroupComponent implements OnInit, OnD
     constructor(
         private route: ActivatedRoute,
         private router: Router,
+        private algorithmTestingService: AlgorithmTestingSessionService,
         private dataGroupService: DataGroupsService) {
 
     }
@@ -38,10 +39,22 @@ export class ExperimentAlgorithmTestingDataGroupComponent implements OnInit, OnD
                 this.id = +params.algorithmId;
             });
 
+        this.algorithmTestingService.newTestingSession
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((value) => {
+                if (value.id === this.id) {
+                    this.router.navigate(['experiments', 'details', this.experimentId, 'algorithm-testing-input', this.id]);
+                }
+            });
+
     }
 
-    
+
     ngOnDestroy() {
 
+    }
+
+    onSelect(index: number) {
+        this.algorithmTestingService.requestTest(this.id, this.dataGroups[index].id);
     }
 }
