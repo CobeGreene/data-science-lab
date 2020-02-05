@@ -2,7 +2,7 @@ import { SessionAlgorithmTestingService } from './session-algorithm-testing.serv
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { AlgorithmTestingSessionProducer } from '../../producers';
 import { AlgorithmTestingSessionService } from '../../session-services';
-import { ExperimentAlgorithmDataService, ExperimentDataGroupDataService } from '../../data-services';
+import { ExperimentAlgorithmDataService, ExperimentDataGroupDataService, TestReportDataService } from '../../data-services';
 import { TestingSessionViewModel, PluginInputViewModel, TestReportViewModel } from '../../../../shared/view-models';
 
 
@@ -71,20 +71,21 @@ export class AppSessionAlgorithmTestingService implements SessionAlgorithmTestin
         let correct = 0;
         const total = examples || 0;
 
+
         for (let i = 0; i < total; ++i) {
             let testInputs = [];
             testing.input.forEach((value) => {
                 const thisInput = pluginInput[value.id].examples[i];
                 testInputs = testInputs.concat(thisInput);
             });
-            
+
             let expected = [];
             testing.output.forEach((value) => {
                 const thisOutput = pluginOutput[value.id].examples[i];
                 expected = expected.concat(thisOutput);
             });
-            
-            const actual = algorithm.test(...testInputs);
+
+            const actual = algorithm.test(testInputs);
 
             if (JSON.stringify(actual) === JSON.stringify(expected)) {
                 correct += 1;
@@ -93,12 +94,18 @@ export class AppSessionAlgorithmTestingService implements SessionAlgorithmTestin
 
         this.service.delete(id);
 
-        const report = new TestReportViewModel({
+        let report = new TestReportViewModel({
             algorithmId: id,
             correct,
             total
         });
 
+        const reportService = this.serviceContainer.resolve<TestReportDataService>(SERVICE_TYPES.TestReportDataService);
+
+        
+        report = reportService.create(report);
+        
+        this.producer.newReport(report);
         this.producer.finishSession(id);
     }
 

@@ -22,8 +22,9 @@ import {
     AppVisualizationDataService,
     VisualizationDataService,
     SelectVisualizationPluginsDataService,
-    AppSelectVisualizationPluginsDataService
-
+    AppSelectVisualizationPluginsDataService,
+    TestReportDataService,
+    AppTestReportDataService
 } from '../data-services';
 import { AppWebCoreService, AppFileCoreService, AppRecorderService } from '../core-services';
 import { IpcService } from '../../../shared/services';
@@ -47,6 +48,7 @@ import {
     AppVisualizationsProducer,
     AppAlgorithmVisualizationSessionProducer,
     AppAlgorithmTestingSessionProducer,
+    AppTestReportProducer,
 } from '../producers';
 import {
     AppPackageConsumer, AppExperimentConsumer, AppFetchPluginsConsumer,
@@ -55,9 +57,11 @@ import {
     AppAlgorithmConsumer, AppDataVisualizationSessionConsumer, AppSelectVisualizationPluginsConsumer,
     AppVisualizationsConsumer,
     AppAlgorithmVisualizationSessionConsumer,
-    AppAlgorithmTestingSessionConsumer
+    AppAlgorithmTestingSessionConsumer,
+    AppTestReportConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
+import { AppTestReportService } from '../services/test-report-service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -85,6 +89,7 @@ export class AppServiceContainer implements ServiceContainer {
     private algorithmTrackerDataService: AlgorithmTrackerDataService;
     private visualizationDataService: VisualizationDataService;
     private selectVisualizationPluginsDataService: SelectVisualizationPluginsDataService;
+    private testReportDataService: TestReportDataService;
 
     // Ipc Services
     private ipcService: IpcService;
@@ -237,6 +242,13 @@ export class AppServiceContainer implements ServiceContainer {
                 this.selectVisualizationPluginsDataService = new AppSelectVisualizationPluginsDataService(this);
                 return this.selectVisualizationPluginsDataService;
 
+            case SERVICE_TYPES.TestReportDataService:
+                if (this.testReportDataService) {
+                    return this.testReportDataService;
+                }
+                this.testReportDataService = new AppTestReportDataService();
+                return this.testReportDataService;
+
             // Core Services
             case SERVICE_TYPES.WebService:
                 return new AppWebCoreService();
@@ -293,6 +305,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.SessionAlgorithmTestingService:
                 return new AppSessionAlgorithmTestingService(this);
 
+            case SERVICE_TYPES.TestReportService:
+                return new AppTestReportService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -342,6 +357,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.AlogirthmTestingSessionProducer:
                 return new AppAlgorithmTestingSessionProducer(this);
 
+            case SERVICE_TYPES.TestReportProducer:
+                return new AppTestReportProducer(this);
+
             // Consumers
             case SERVICE_TYPES.PackageConsumer:
                 return new AppPackageConsumer(this);
@@ -390,6 +408,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.AlgorithmTestingSessionConsumer:
                 return new AppAlgorithmTestingSessionConsumer(this);
+
+            case SERVICE_TYPES.TestReportConsumer:
+                return new AppTestReportConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

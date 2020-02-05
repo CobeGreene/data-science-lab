@@ -98,6 +98,11 @@ export namespace ExperimentsEvents {
     export const DeleteDataGroupListeners = 'delete-data-group-listeners';
     export const UpdatedDataGroupListeners = 'updated-data-group-listeners';
 
+    // Test Report
+    export const GetAllTestReportEvent = 'get-all-test-report-event';
+    export const GetAllTestReportListeners = 'get-all-test-report-listeners';
+    export const NewTestReportListeners = 'new-test-report-listeners';
+
     // Visualizations
     export const GetAllVisualizationsEvent = 'get-all-visualizations-event';
     export const GetAllVisualizationsListeners = 'get-all-visualizations-listeners';

@@ -49,3 +49,17 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col">
+        <div class="card" *ngFor="let report of reports">
+            <div class="card-body text-center">
+                <h1>
+                    {{ report.correct }} / {{ report.total }}
+                </h1>
+                <p>
+                    {{ report.correct * 100.0 / report.total }}%
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

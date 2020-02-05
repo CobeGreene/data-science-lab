@@ -1,5 +1,5 @@
 import { Producer } from '../producer';
-import { TestingSessionViewModel } from '../../../../shared/view-models';
+import { TestingSessionViewModel, TestReportViewModel } from '../../../../shared/view-models';
 
 
 export interface AlgorithmTestingSessionProducer extends Producer {
@@ -7,5 +7,6 @@ export interface AlgorithmTestingSessionProducer extends Producer {
     all(sessions: TestingSessionViewModel[]): void;
     newSession(session: TestingSessionViewModel): void;
     finishSession(id: number): void;
+    newReport(report: TestReportViewModel): void;
 }
 

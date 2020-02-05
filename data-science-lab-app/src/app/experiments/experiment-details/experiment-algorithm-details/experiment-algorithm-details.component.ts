@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlgorithmService, AlgorithmTrackerService, VisualizationAlgorithmSessionService } from '../../../services';
+import { AlgorithmService, AlgorithmTrackerService, VisualizationAlgorithmSessionService, TestReportService } from '../../../services';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AlgorithmViewModel, AlgorithmTrackerViewModel, AlgorithmTrackerVariableViewModel } from '../../../../../shared/view-models';
+import { AlgorithmViewModel, AlgorithmTrackerViewModel, AlgorithmTrackerVariableViewModel, TestReportViewModel } from '../../../../../shared/view-models';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 
@@ -19,26 +19,30 @@ export class ExperimentAlgorithmDetailsComponent implements OnInit, OnDestroy {
 
     tracker: AlgorithmTrackerViewModel;
     hasTracker = false;
+    reports: TestReportViewModel[];
 
     constructor(private service: AlgorithmService, private route: ActivatedRoute,
-                private trackerService: AlgorithmTrackerService,
-                private router: Router,
-                private visualizeService: VisualizationAlgorithmSessionService) {
+        private trackerService: AlgorithmTrackerService,
+        private router: Router,
+        private visualizeService: VisualizationAlgorithmSessionService,
+        private testReportService: TestReportService) {
 
     }
 
     ngOnInit() {
 
-        if (this.trackerService.has(this.id)) {
-            this.tracker = this.trackerService.get(this.id);
-            this.hasTracker = true;
-        }
+        
 
         this.route.params
             .pipe(untilComponentDestroyed(this))
             .subscribe((params: Params) => {
                 this.id = +params.algorithmId;
                 this.algorithm = this.service.get(this.id);
+                this.reports = this.testReportService.all(this.id);
+                if (this.trackerService.has(this.id)) {
+                    this.tracker = this.trackerService.get(this.id);
+                    this.hasTracker = true;
+                }
             });
 
         this.service.updatedAlgorithm
@@ -98,7 +102,7 @@ export class ExperimentAlgorithmDetailsComponent implements OnInit, OnDestroy {
     }
 
     onTest() {
-        this.router.navigate(['/experiments', 'details', this.algorithm.experimentId, 'algorithm-testing-datagroup', this.id ]);
+        this.router.navigate(['/experiments', 'details', this.algorithm.experimentId, 'algorithm-testing-datagroup', this.id]);
     }
 }
 

@@ -14,5 +14,6 @@ export { AppSelectVisualizationPluginsConsumer } from './select-visualization-pl
 export { AppVisualizationsConsumer } from './visualizations-consumer';
 export { AppAlgorithmVisualizationSessionConsumer } from './algorithm-visualization-session-consumer';
 export { AppAlgorithmTestingSessionConsumer } from './algorithm-testing-session-consumer';
+export { AppTestReportConsumer } from './test-report-consumer';
 
 

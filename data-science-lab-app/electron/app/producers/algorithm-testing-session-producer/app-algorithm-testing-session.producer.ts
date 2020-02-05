@@ -1,6 +1,6 @@
 import { BaseProducer } from '../base.producer';
 import { AlgorithmTestingSessionProducer } from './algorithm-testing-session.producer';
-import { TestingSessionViewModel } from '../../../../shared/view-models';
+import { TestingSessionViewModel, TestReportViewModel } from '../../../../shared/view-models';
 import { ExperimentsEvents } from '../../../../shared/events';
 
 
@@ -17,6 +17,8 @@ export class AppAlgorithmTestingSessionProducer extends BaseProducer implements 
         this.ipc.send(ExperimentsEvents.FinishedAlgorithmTestingSessionListener, id);
     }
 
-
+    newReport(report: TestReportViewModel) {
+        this.ipc.send(ExperimentsEvents.NewTestReportListeners, report);
+    }
 }
 

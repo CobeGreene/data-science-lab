@@ -46,7 +46,7 @@ export class ExperimentAlgorithmTestingInputsComponent implements OnInit, OnDest
             .pipe(untilComponentDestroyed(this))
             .subscribe((value) => {
                 if (value === this.id) {
-                    this.router.navigate(['experiment', 'details', this.experimentId, 'algorithm', this.id]);
+                    this.router.navigate(['experiments', 'details', this.experimentId, 'algorithm', this.id]);
                 }
             });
     }    

@@ -36,3 +36,8 @@ export {
     AppSelectVisualizationPluginsDataService,
     SelectVisualizationPluginsDataService
 } from './select-visualization-plugins-data-service';
+export {
+    AppTestReportDataService,
+    TestReportDataService
+} from './test-report-data-service';
+
