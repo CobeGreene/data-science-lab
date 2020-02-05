@@ -54,7 +54,14 @@ export namespace ExperimentsEvents {
     export const UpdatedVisualizationDataSessionListeners = 'updated-visualization-data-session-listeners';
     export const FinishedVisualizationDataSessionListeners = 'finished-visualization-data-listeners';
     
-    
+    // Algorithm Testing Session
+    export const GetAllAlgorithmTestingSessionsEvent = 'get-all-algorithm-testing-sessions-event';
+    export const GetAllAlgorithmTestingSessionsListeners = 'get-all-algorithm-testing-sessions-listener';
+    export const RequestAlgorithmTestingSessionEvent = 'request-algorithm-testing-session-event';
+    export const NewAlgorithmTestingSessionListener = 'new-algorithm-testing-session-listener';
+    export const StartAlgorithmTestingSessionEvent = 'start-algorithm-testing-session-event';
+    export const FinishedAlgorithmTestingSessionListener = 'finished-algorithm-testing-session-listener';
+
     // Algorithm Session
     export const GetAllAlgorithmSessionsEvent = 'get-all-algorithm-sessions-event';
     export const GetAllAlgorithmSessionsListeners = 'get-all-algorithm-sessions-listener';
@@ -90,6 +97,11 @@ export namespace ExperimentsEvents {
     export const DeleteDataGroupEvent = 'delete-data-group-event';
     export const DeleteDataGroupListeners = 'delete-data-group-listeners';
     export const UpdatedDataGroupListeners = 'updated-data-group-listeners';
+
+    // Test Report
+    export const GetAllTestReportEvent = 'get-all-test-report-event';
+    export const GetAllTestReportListeners = 'get-all-test-report-listeners';
+    export const NewTestReportListeners = 'new-test-report-listeners';
 
     // Visualizations
     export const GetAllVisualizationsEvent = 'get-all-visualizations-event';

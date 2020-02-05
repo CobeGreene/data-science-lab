@@ -15,5 +15,7 @@ export { AppVisualizationPluginsService, VisualizationPluginsService } from './v
 export { AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService } from './visualization-algorithm-session.services';
 export { AppVisualizationDataSessionService, VisualizationDataSessionService } from './visualization-data-session.service';
 export { AppVisualizationsService, VisualizationsService } from './visualizations-services';
+export { AlgorithmTestingSessionService, AppAlgorithmTestingSessionService } from './algorithm-testing-session.services';
+export { AppTestReportService, TestReportService } from './test-report.services';
 
 

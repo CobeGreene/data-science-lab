@@ -13,5 +13,7 @@ export { AppDataVisualizationSessionConsumer } from './data-visualization-sessio
 export { AppSelectVisualizationPluginsConsumer } from './select-visualization-plugins-consumer';
 export { AppVisualizationsConsumer } from './visualizations-consumer';
 export { AppAlgorithmVisualizationSessionConsumer } from './algorithm-visualization-session-consumer';
+export { AppAlgorithmTestingSessionConsumer } from './algorithm-testing-session-consumer';
+export { AppTestReportConsumer } from './test-report-consumer';
 
 

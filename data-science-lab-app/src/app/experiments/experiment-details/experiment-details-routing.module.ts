@@ -34,7 +34,12 @@ import {
 import {
     ExperimentSetupAlgorithmVisualizationComponent
 } from './experiment-setup-algorithm-visualization/experiment-setup-algorithm-visualization.component';
-
+import {
+    ExperimentAlgorithmTestingDataGroupComponent
+} from './experiment-algorithm-testing-data-group/experiment-algorithm-testing-data-group.component';
+import {
+    ExperimentAlgorithmTestingInputsComponent
+} from './experiment-algorithm-testing-inputs/experiment-algorithm-testing-inputs.component';
 
 const experimentDetailsRoutes: Routes = [
     {
@@ -59,6 +64,8 @@ const experimentDetailsRoutes: Routes = [
             { path: 'select-algorithm-visualization/:algorithmId', component: ExperimentSelectAlgorithmVisualizationComponent },
             { path: 'input-algorithm-visualization/:algorithmId', component: ExperimentInputAlgorithmVisualizationComponent },
             { path: 'setup-algorithm-visualization/:algorithmId', component: ExperimentSetupAlgorithmVisualizationComponent },
+            { path: 'algorithm-testing-datagroup/:algorithmId', component: ExperimentAlgorithmTestingDataGroupComponent },
+            { path: 'algorithm-testing-input/:algorithmId', component: ExperimentAlgorithmTestingInputsComponent }
         ]
     }
 ];

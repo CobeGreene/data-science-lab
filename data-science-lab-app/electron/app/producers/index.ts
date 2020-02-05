@@ -21,5 +21,11 @@ export {
     AlgorithmVisualizationSessionProducer,
     AppAlgorithmVisualizationSessionProducer
 } from './algorithm-visualization-session-producer';
-
-
+export {
+    AlgorithmTestingSessionProducer,
+    AppAlgorithmTestingSessionProducer
+} from './algorithm-testing-session-producer';
+export {
+    AppTestReportProducer, 
+    TestReportProducer
+} from './test-report-producer';

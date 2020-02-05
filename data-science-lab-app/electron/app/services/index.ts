@@ -35,4 +35,9 @@ export {
     AlgorithmVisualizationService,
     AppAlgorithmVisualizationService
 } from './algorithm-visualization-service';
-
+export { 
+    SessionAlgorithmTestingService, AppSessionAlgorithmTestingService
+} from './session-algorithm-testing-service';
+export {
+    TestReportService, AppTestReportService
+} from './test-report-service';
