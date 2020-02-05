@@ -5,9 +5,15 @@ import { ExperimentsComponent } from './experiments.component';
 import { ExperimentsRoutingModule } from './experiments-routing.module';
 import { ExperimentStartupComponent } from './experiments-startup/experiments-startup.component';
 import { ExperimentDetailsModule } from './experiment-details/experiment-details.module';
-import { ExperimentService, AppExperimentService } from '../services/experiment-services';
-import { FetchSessionService, AppFetchSessionService, FetchPluginsService,
-    AppFetchPluginsService, AppDataGroupsService, DataGroupsService } from '../services';
+import {
+    ExperimentService, AppExperimentService,
+    FetchSessionService, AppFetchSessionService, FetchPluginsService,
+    AppFetchPluginsService, AppDataGroupsService, DataGroupsService, TransformPluginsService, AppTransformPluginsService,
+    TransformSessionService, AppTransformSessionService, AlgorithmPluginsService, AppAlgorithmPluginsService, AlgorithmSessionService,
+    AppAlgorithmSessionService, AlgorithmService, AppAlgorithmService, AlgorithmTrackerService, AppAlgorithmTrackerService, 
+    AppVisualizationDataSessionService, VisualizationDataSessionService, AppVisualizationAlgorithmSessionService, VisualizationAlgorithmSessionService,
+    VisualizationPluginsService, AppVisualizationPluginsService, AppVisualizationsService, VisualizationsService, AlgorithmTestingSessionService, AppAlgorithmTestingSessionService, TestReportService, AppTestReportService
+} from '../services';
 
 @NgModule({
     declarations: [
@@ -24,6 +30,18 @@ import { FetchSessionService, AppFetchSessionService, FetchPluginsService,
         { provide: FetchSessionService, useClass: AppFetchSessionService },
         { provide: FetchPluginsService, useClass: AppFetchPluginsService },
         { provide: DataGroupsService, useClass: AppDataGroupsService },
+        { provide: TransformPluginsService, useClass: AppTransformPluginsService },
+        { provide: TransformSessionService, useClass: AppTransformSessionService },
+        { provide: AlgorithmPluginsService, useClass: AppAlgorithmPluginsService },
+        { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
+        { provide: AlgorithmService, useClass: AppAlgorithmService },
+        { provide: AlgorithmTrackerService, useClass: AppAlgorithmTrackerService },
+        { provide: VisualizationDataSessionService, useClass: AppVisualizationDataSessionService },
+        { provide: VisualizationAlgorithmSessionService, useClass: AppVisualizationAlgorithmSessionService },
+        { provide: VisualizationPluginsService, useClass: AppVisualizationPluginsService },
+        { provide: VisualizationsService, useClass: AppVisualizationsService },
+        { provide: AlgorithmTestingSessionService, useClass: AppAlgorithmTestingSessionService },
+        { provide: TestReportService, useClass: AppTestReportService }
     ]
 })
 export class ExperimentsModule {

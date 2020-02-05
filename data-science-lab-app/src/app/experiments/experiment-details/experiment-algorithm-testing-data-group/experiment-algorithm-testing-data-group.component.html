@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col">
+        <h1>
+            Select a data group to test on
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="mt-3" *ngFor="let dataGroup of dataGroups; let i = index">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        {{ dataGroup.label }}
+                        <div class="float-right">
+                            <span (click)="onSelect(i)">
+                                Select
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

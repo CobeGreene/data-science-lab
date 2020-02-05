@@ -65,7 +65,8 @@ export class AppDataGroupsService extends DataGroupsService implements OnDestroy
     }
 
     ngOnDestroy() {
-        this.ipcService.removeListener(ExperimentsEvents.GetAllDataGroupsListeners, this.getAllEvent);    
+        this.ipcService.removeListener(ExperimentsEvents.GetAllDataGroupsListeners, this.getAllEvent);   
+        this.ipcService.removeListener(ExperimentsEvents.NewDataGroupListeners, this.newEvent);    
         this.ipcService.removeListener(ExperimentsEvents.DeleteDataGroupListeners, this.deletedEvent);
         this.ipcService.removeListener(ExperimentsEvents.UpdatedFetchSessionListeners, this.updatedEvent);
     }

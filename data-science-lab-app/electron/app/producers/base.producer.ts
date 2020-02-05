@@ -16,4 +16,8 @@ export abstract class BaseProducer implements Producer {
             ipc.send(ErrorEvents.ExceptionListeners, reason);
         }
     }
+
+    get ipc(): IpcService {
+        return this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+    }
 }

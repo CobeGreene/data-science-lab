@@ -5,7 +5,7 @@ import { FetchSessionService } from '../../session-services';
 import { FetchSessionProducer } from '../../producers';
 import { PackageDataService, ExperimentDataGroupDataService, SettingsDataService } from '../../data-services';
 import { FetchSession } from '../../models';
-import { FetchPluginDataConverter } from '../../converters/fetch-plugin-data-converter';
+import { PluginDataConverter } from '../../converters/plugin-data-converter';
 
 export class AppFetchService implements FetchService {
 
@@ -31,8 +31,12 @@ export class AppFetchService implements FetchService {
             fetchSessionService.create(experimentId, pluginPackage, plugin)
                 .then((session) => {
                     const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
-                    fetchSessionProducer.all(fetchSessionService.all());
-                    fetchSessionProducer.newSession(session);
+                    if (session.fetchPlugin.getOptions().noMore()) {
+                        this.sessionFinish(session);
+                    } else {
+                        fetchSessionProducer.all(fetchSessionService.all());
+                        fetchSessionProducer.newSession(session);
+                    }
                 }).catch((reason) => {
                     const fetchSessionProducer = this.serviceContainer.resolve<FetchSessionProducer>(SERVICE_TYPES.FetchSessionProducer);
                     fetchSessionProducer.error(reason);
@@ -80,7 +84,7 @@ export class AppFetchService implements FetchService {
 
     private sessionFinish(session: FetchSession) {
         const fetchPluginData = session.fetchPlugin.fetch();
-        const converter = this.serviceContainer.resolve<FetchPluginDataConverter>(SERVICE_TYPES.FetchPluginDataConverter);
+        const converter = this.serviceContainer.resolve<PluginDataConverter>(SERVICE_TYPES.PluginDataConverter);
         const dataGroups = converter.toDataGroups(fetchPluginData);
         const dataGroupDataService = this.serviceContainer
             .resolve<ExperimentDataGroupDataService>(SERVICE_TYPES.ExperimentDataGroupDataService);

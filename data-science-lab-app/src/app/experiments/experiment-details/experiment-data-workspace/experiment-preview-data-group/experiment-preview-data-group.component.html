@@ -2,9 +2,15 @@
     <div class="card-header">
         <div class="card-title">
             {{ dataGroup.label }}
-            <span class="float-right">
-                Transform
-            </span>
+            <div class="float-right">
+                <span (click)="onTransform()">
+                    Transform
+                </span>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span (click)="onVisualize()">
+                    Visualize
+                </span>
+            </div>
         </div>
     </div>
     <div class="card-body">
@@ -20,7 +26,7 @@
                     </th>
                 </tr>
                 <tr>
-                    <th *ngFor="let type of dataGroup.previewFeautureTypes;">
+                    <th *ngFor="let type of dataGroup.previewFeatureTypes;">
                         {{ type }} 
                     </th>
                 </tr>

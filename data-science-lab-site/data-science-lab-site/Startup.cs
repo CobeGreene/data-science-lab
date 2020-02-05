@@ -90,7 +90,7 @@ namespace data_science_lab_site
             app.UseAuthentication();
 
             app.UseMvc();
-            Seed(userManager, roleManager, context).Wait();
+            //Seed(userManager, roleManager, context).Wait();
         }
 
         public async Task Seed(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,

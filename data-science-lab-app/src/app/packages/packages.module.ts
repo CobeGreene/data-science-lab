@@ -10,6 +10,7 @@ import { PackagesListComponent } from './packages-list/packages-list.component';
 import { InstallOnlyPackagesPipe } from '../pipes/install-only-packages.pipe';
 import { FilterPackagesPipe } from '../pipes/filter-packages.pipe';
 import { FormsModule } from '@angular/forms';
+import { TypeFilterPipe } from '../pipes/filter-type.pipe';
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { FormsModule } from '@angular/forms';
         PackagesListComponent,
         InstallOnlyPackagesPipe,
         FilterPackagesPipe,
+        TypeFilterPipe,
     ],
     imports: [
         CommonModule,

@@ -39,4 +39,8 @@ export class ExperimentSelectFetchComponent implements OnInit, OnDestroy {
 
     }
 
+    onBack(): void {
+        this.router.navigate(['/experiments', 'details', this.experimentId, 'data-workspace']);
+    }
+
 }

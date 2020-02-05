@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col">
+        <h1>Experiment Input Algorithm Visualization
+            <span class="float-right">
+                <button class="btn btn-primary" type="button" (click)="onBack()">
+                    Back
+                </button>
+            </span>
+        </h1>
+        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <app-experiment-algorithm-inputs [inputList]="visualizationPlugin.inputs" [tracker]="tracker"
+            (emitSubmit)="onSubmit($event)">
+        </app-experiment-algorithm-inputs>
+    </div>
+</div>
