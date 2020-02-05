@@ -180,7 +180,7 @@ export class AppServiceContainer implements ServiceContainer {
                 if (this.experimentDataService) {
                     return this.experimentDataService;
                 }
-                this.experimentDataService = new AppExperimentDataService();
+                this.experimentDataService = new AppExperimentDataService(this);
                 return this.experimentDataService;
 
             case SERVICE_TYPES.ExperimentDataGroupDataService:
