@@ -6,6 +6,9 @@ export class MockExperimentService implements ExperimentService {
     
     create: () => void;
 
+    load: () => void;
+    save: () => void;
+
     constructor() {
         this.reset();
     }
@@ -13,6 +16,8 @@ export class MockExperimentService implements ExperimentService {
     reset() {
         this.all = () => {};
         this.create = () => {};
+        this.load = () => {};
+        this.reset = () => {};
     }
 }
 

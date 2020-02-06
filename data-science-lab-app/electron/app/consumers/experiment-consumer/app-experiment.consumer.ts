@@ -14,12 +14,15 @@ export class AppExperimentConsumer implements Consumer {
         const ipcService = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         ipcService.on(ExperimentsEvents.GetAllEvent, this.getAllEvent);
         ipcService.on(ExperimentsEvents.CreateEvent, this.createEvent);
+        ipcService.on(ExperimentsEvents.LoadExperimentEvent, this.loadEvent);
+        ipcService.on(ExperimentsEvents.SaveExperimentEvent, this.saveEvent);
     }    
 
     destory() {
         const ipcService = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         ipcService.removeListener(ExperimentsEvents.GetAllEvent, this.getAllEvent);
         ipcService.removeListener(ExperimentsEvents.CreateEvent, this.createEvent);
+        ipcService.removeListener(ExperimentsEvents.LoadExperimentEvent, this.loadEvent);
     }
 
     private getAllEvent = (_event, _arg): void => {
@@ -30,6 +33,16 @@ export class AppExperimentConsumer implements Consumer {
     private createEvent = (_event, _arg): void => {
         const experimentService = this.serviceContainer.resolve<ExperimentService>(SERVICE_TYPES.ExperimentService);
         experimentService.create();
+    }
+
+    private loadEvent = (_event, id: number): void => {
+        const experimentService = this.serviceContainer.resolve<ExperimentService>(SERVICE_TYPES.ExperimentService);
+        experimentService.load(id);
+    }
+    
+    private saveEvent = (_event, id: number): void => {
+        const experimentService = this.serviceContainer.resolve<ExperimentService>(SERVICE_TYPES.ExperimentService);
+        experimentService.save(id);
     }
 
 }

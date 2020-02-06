@@ -6,12 +6,13 @@ export abstract class AlgorithmService {
     public newAlgorithm: Subject<AlgorithmViewModel>;
     public deletedAlgorithm: Subject<number>;
     public updatedAlgorithm: Subject<AlgorithmViewModel>;
-
+    public algorithmsChanged: Subject<AlgorithmViewModel[]>;
 
     constructor() {
         this.newAlgorithm = new Subject<AlgorithmViewModel>();
         this.deletedAlgorithm = new Subject<number>();
         this.updatedAlgorithm = new Subject<AlgorithmViewModel>();
+        this.algorithmsChanged = new Subject<AlgorithmViewModel[]>();
     }
 
     abstract all(experimentId: number): AlgorithmViewModel[];

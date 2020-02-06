@@ -23,6 +23,8 @@ export class ExperimentDataGroupListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+
+
         this.route.parent.params
             .pipe(untilComponentDestroyed(this))
             .subscribe((params: Params) => {
@@ -36,6 +38,12 @@ export class ExperimentDataGroupListComponent implements OnInit, OnDestroy {
                 if (dataGroup.experimentId === this.experimentId) {
                     this.dataGroups.push(dataGroup);
                 }
+            });
+
+        this.dataGroupsService.dataGroupsChanged
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((value) => {
+                this.dataGroups = this.dataGroupsService.all(this.experimentId);
             });
 
         this.dataGroupsService.deletedDataGroup

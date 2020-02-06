@@ -1,5 +1,5 @@
 import { ExperimentDataGroupDataService } from './experiment-data-group.data-service';
-import { ExperimentDataGroup } from '../../models';
+import { ExperimentDataGroup, ExperimentFeature } from '../../models';
 import { PluginData } from 'data-science-lab-core';
 
 export class AppExperimentDataGroupDataService implements ExperimentDataGroupDataService {
@@ -58,6 +58,15 @@ export class AppExperimentDataGroupDataService implements ExperimentDataGroupDat
         } else {
             throw new Error(`Couldn't find experiment data group with id ${id}.`);
         }
+    }
+
+    load(groups: ExperimentDataGroup[]) {
+        groups.forEach((value) => {
+            const group = Object.setPrototypeOf(value, ExperimentDataGroup.prototype) as ExperimentDataGroup;
+            group.features = group.features
+                .map(feature => Object.setPrototypeOf(feature, ExperimentFeature.prototype) as ExperimentFeature);
+            this.dataGroups.push(group);
+        });
     }
 
     deleteByExperiment(experimentId: number): void {

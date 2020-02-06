@@ -33,6 +33,7 @@ export class AppExperimentDataService implements ExperimentDataService {
     
     create(experiment: Experiment): Experiment {
         experiment.id = this.nextId++;
+        experiment.isLoaded = true;
         this.experimentList.experiments.push(experiment);
         this.saveExperiments();
         return experiment;

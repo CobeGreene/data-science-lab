@@ -58,10 +58,12 @@ import {
     AppVisualizationsConsumer,
     AppAlgorithmVisualizationSessionConsumer,
     AppAlgorithmTestingSessionConsumer,
-    AppTestReportConsumer
+    AppTestReportConsumer,
+    AppAlgorithmTrackerConsumer
 } from '../consumers';
 import { AppPluginDataConverter, AppDataGroupConverter } from '../converters';
 import { AppTestReportService } from '../services/test-report-service';
+import { AppAlgorithmTrackerService } from '../services/algorithm-tracker-service';
 
 export class AppServiceContainer implements ServiceContainer {
 
@@ -308,6 +310,9 @@ export class AppServiceContainer implements ServiceContainer {
             case SERVICE_TYPES.TestReportService:
                 return new AppTestReportService(this);
 
+            case SERVICE_TYPES.AlgorithmTrackerService:
+                return new AppAlgorithmTrackerService(this);
+
             // Producers
             case SERVICE_TYPES.PackageProducer:
                 return new AppPackageProducer(this);
@@ -411,6 +416,9 @@ export class AppServiceContainer implements ServiceContainer {
 
             case SERVICE_TYPES.TestReportConsumer:
                 return new AppTestReportConsumer(this);
+
+            case SERVICE_TYPES.AlgorithmTrackerConsumer:
+                return new AppAlgorithmTrackerConsumer(this);
 
             default:
                 throw new Error(`Couldn't resolve type with value ${type}.`);

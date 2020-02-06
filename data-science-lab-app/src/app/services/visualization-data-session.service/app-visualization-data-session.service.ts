@@ -26,6 +26,7 @@ export class AppVisualizationDataSessionService extends VisualizationDataSession
         this.ipcService.on(ExperimentsEvents.FinishedVisualizationDataSessionListeners, this.finishedEvent);
     }
 
+
     private findSessionIndex(id: number) {
         return this.visualizationSessions.findIndex((value) => {
             return value.id === id;

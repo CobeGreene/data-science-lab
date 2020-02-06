@@ -16,11 +16,25 @@ export class AppAlgorithmTrackerService extends AlgorithmTrackerService implemen
         this.trackers = [];
 
         this.registerEvents();
+        this.ipcService.send(ExperimentsEvents.GetAllAlgorithmTrackerEvent);
     }
 
     registerEvents() {
         this.ipcService.on(ExperimentsEvents.NewAlgorithmTrackerListeners, this.newEvent);
         this.ipcService.on(ExperimentsEvents.UpdatedAlgorithmTrackerListeners, this.updateEvent);
+        this.ipcService.on(ExperimentsEvents.GetAllAlgorithmTrackerListeners, this.getAllEvent);
+        this.ipcService.on(ExperimentsEvents.LoadExperimentListener, this.loadedEvent);
+    }
+
+    private getAllEvent = (event, trackers: AlgorithmTrackerViewModel[]) => {
+        this.zone.run(() => {
+            this.trackers = trackers;
+            this.trackersUpdated.next(this.trackers);
+        });
+    }
+
+    private loadedEvent = (event, _) => {
+        this.ipcService.send(ExperimentsEvents.GetAllAlgorithmTrackerEvent);
     }
 
 
@@ -42,6 +56,7 @@ export class AppAlgorithmTrackerService extends AlgorithmTrackerService implemen
         this.zone.run(() => {
             this.trackers.push(tracker);
             this.newTracker.next(tracker);
+            this.trackersUpdated.next(this.trackers);
         });
     }
     
@@ -63,10 +78,11 @@ export class AppAlgorithmTrackerService extends AlgorithmTrackerService implemen
     }
     
     
-    
     ngOnDestroy(): void {
         this.ipcService.removeListener(ExperimentsEvents.NewAlgorithmTrackerListeners, this.newEvent);
         this.ipcService.removeListener(ExperimentsEvents.UpdatedAlgorithmTrackerListeners, this.updateEvent);
+        this.ipcService.removeListener(ExperimentsEvents.GetAllAlgorithmTrackerListeners, this.getAllEvent);
+        this.ipcService.removeListener(ExperimentsEvents.LoadExperimentListener, this.loadedEvent);
     }
 
 } 

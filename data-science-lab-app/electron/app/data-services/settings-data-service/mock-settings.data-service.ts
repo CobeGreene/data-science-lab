@@ -6,6 +6,7 @@ export class MockSettingsDataService implements SettingsDataService {
     readApiSettings: () => ApiSettings;
     readPluginPath: () => string;
     readDataGroupSettings: () => DataGroupSettings;
+    readExperimentsFolder: () => string;
 
     constructor() {
         this.reset();
@@ -18,7 +19,8 @@ export class MockSettingsDataService implements SettingsDataService {
         this.readPluginPath = () => '';
         this.readDataGroupSettings = () => {
             return new DataGroupSettings();
-        }
+        };
+        this.readExperimentsFolder = () => '';
     }
 
 

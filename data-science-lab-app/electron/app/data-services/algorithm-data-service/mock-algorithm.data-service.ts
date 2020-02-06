@@ -18,6 +18,12 @@ export class MockExperimentAlgorithmDataService implements ExperimentAlgorithmDa
 
     deleteByExperiment: (experimentId: number) => void;
 
+    load: (jsons: string[]) => void;
+
+    export: (jsons: ExperimentAlgorithm[]) => string[];
+
+
+
     constructor() {
         this.reset();
     }
@@ -29,6 +35,8 @@ export class MockExperimentAlgorithmDataService implements ExperimentAlgorithmDa
         this.update = () => { };
         this.delete = () => { };
         this.deleteByExperiment = () => { };
+        this.load = () => {};
+        this.export = () => [];
     }
 
 }

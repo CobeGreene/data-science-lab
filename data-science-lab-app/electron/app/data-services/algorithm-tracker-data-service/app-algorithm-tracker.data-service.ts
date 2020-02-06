@@ -43,6 +43,15 @@ export class AppAlgorithmTrackerDataService implements AlgorithmTrackerDataServi
         }
     }
 
+    load(trackers: AlgorithmTracker[]) {
+        trackers.forEach((value) => {
+            const tracker = Object.setPrototypeOf(value, AlgorithmTracker.prototype) as AlgorithmTracker;
+            tracker.variables = tracker.variables
+                .map(variable => Object.setPrototypeOf(variable, AlgorithmTrackerVariable.prototype) as AlgorithmTrackerVariable);
+            this.trackers.push(tracker);
+        });
+    }
+
 
     getType(data: any): string {
         if (data instanceof Array) {

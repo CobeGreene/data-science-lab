@@ -11,7 +11,10 @@ export class AppVisualizationDataService implements VisualizationDataService {
         this.nextId = 1;
     }
     
-    all(): Visualization[] {
+    all(experimentId?: number): Visualization[] {
+        if (experimentId) {
+            return this.visuals.filter((value) => value.experimentId);
+        }
         return this.visuals;
     }
 
@@ -51,6 +54,13 @@ export class AppVisualizationDataService implements VisualizationDataService {
         } else {
             throw new Error(`Couldn't find visual with id ${id}`);
         }
+    }
+
+    load(visuals: Visualization[]) {
+        visuals.forEach((value) => {
+            const visual = Object.setPrototypeOf(value, Visualization.prototype);
+            this.visuals.push(visual);
+        });
     }
 
 

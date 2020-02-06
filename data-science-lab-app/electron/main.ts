@@ -1,6 +1,7 @@
 import { App } from './app/app';
 import * as path from 'path';
 import * as url from 'url';
+import * as fs from 'fs';
 const settings = require('electron-settings');
 console.log('start');
 const settingsPath = path.join(__dirname, '../app.settings.json');
@@ -14,6 +15,11 @@ const angularApp = url.format({
 });
 const plugins = path.join(__dirname, '../plugins_packages');
 settings.set('plugins-package', plugins);
+const experimentFolder = path.join(__dirname, '../experiments');
+settings.set('experiment-folder', experimentFolder);
+if (!fs.existsSync(experimentFolder)) {
+    fs.mkdirSync(experimentFolder);
+}
 
 const app = new App(preload, angularApp);
 
