@@ -8,4 +8,6 @@ export interface ExperimentAlgorithmDataService {
     update(algorithm: ExperimentAlgorithm): void;
     delete(id: number): void;
     deleteByExperiment(experimentId: number): void;
+    load(jsons: string[]);
+    export(algorithms: ExperimentAlgorithm[]): string [];
 }

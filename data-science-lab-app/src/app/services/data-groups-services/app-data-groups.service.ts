@@ -23,6 +23,11 @@ export class AppDataGroupsService extends DataGroupsService implements OnDestroy
         this.ipcService.on(ExperimentsEvents.NewDataGroupListeners, this.newEvent);    
         this.ipcService.on(ExperimentsEvents.DeleteDataGroupListeners, this.deletedEvent);
         this.ipcService.on(ExperimentsEvents.UpdatedDataGroupListeners, this.updatedEvent);
+        this.ipcService.on(ExperimentsEvents.LoadExperimentListener, this.loadEvent);
+    }
+
+    loadEvent = (event, id: number) => {
+        this.ipcService.send(ExperimentsEvents.GetAllDataGroupsEvent);
     }
 
 
@@ -55,12 +60,14 @@ export class AppDataGroupsService extends DataGroupsService implements OnDestroy
                 this.dataGroups.splice(findIndex, 1);
             }
             this.deletedDataGroup.next(id);
+            this.dataGroupsChanged.next(this.dataGroups);
         });
     }
 
     getAllEvent = (event, dataGroups: DataGroupViewModel[]) => {
         this.zone.run(() => {
             this.dataGroups = dataGroups;
+            this.dataGroupsChanged.next(this.dataGroups);
         });
     }
 
@@ -69,6 +76,7 @@ export class AppDataGroupsService extends DataGroupsService implements OnDestroy
         this.ipcService.removeListener(ExperimentsEvents.NewDataGroupListeners, this.newEvent);    
         this.ipcService.removeListener(ExperimentsEvents.DeleteDataGroupListeners, this.deletedEvent);
         this.ipcService.removeListener(ExperimentsEvents.UpdatedFetchSessionListeners, this.updatedEvent);
+        this.ipcService.removeListener(ExperimentsEvents.LoadExperimentListener, this.loadEvent);
     }
 
     all(experimentId: number): DataGroupViewModel[] {

@@ -17,5 +17,9 @@ export class AppExperimentProducer extends BaseProducer implements ExperimentPro
         ipc.send(ExperimentsEvents.CreateListeners, experiment);
     }
 
+    load(id: number) {
+        this.ipc.send(ExperimentsEvents.LoadExperimentListener, id);
+    }
+
 }
 

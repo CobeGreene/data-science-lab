@@ -12,7 +12,7 @@ export class AppTransformSessionService extends TransformSessionService implemen
 
     constructor(private ipcService: IpcService, private zone: NgZone) {
         super();
-
+        
         this.transformSessions = [];
 
         this.registerEvents();

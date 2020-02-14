@@ -2,13 +2,13 @@ import { SettingsDataService } from './settings.data-service';
 import { ApiSettings, DataGroupSettings } from '../../models';
 import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
 import { DocumentContext } from '../../contexts';
-import { isContext } from 'vm';
 
 export class AppSettingsDataService implements SettingsDataService {
     
     readonly API_SETTINGS = 'api-settings';
     readonly PLUGINS_PACKAGE = 'plugins-package';
     readonly DATA_GROUP_SETTINGS = 'data-group-settings';
+    readonly EXPERIMENT_FOLDER = 'experiment-folder';
 
     constructor(private serviceContainer: ServiceContainer) {
     }
@@ -26,5 +26,10 @@ export class AppSettingsDataService implements SettingsDataService {
     readDataGroupSettings(): DataGroupSettings {
         const context = this.serviceContainer.resolve<DocumentContext>(SERVICE_TYPES.DocumentContext);
         return context.get<DataGroupSettings>(this.DATA_GROUP_SETTINGS);
+    }
+
+    readExperimentsFolder(): string {
+        const context = this.serviceContainer.resolve<DocumentContext>(SERVICE_TYPES.DocumentContext);
+        return context.get<string>(this.EXPERIMENT_FOLDER);
     }
 }

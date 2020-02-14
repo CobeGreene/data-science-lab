@@ -5,4 +5,5 @@ export interface SettingsDataService {
     readApiSettings(): ApiSettings;
     readPluginPath(): string;
     readDataGroupSettings(): DataGroupSettings;
+    readExperimentsFolder(): string;
 }

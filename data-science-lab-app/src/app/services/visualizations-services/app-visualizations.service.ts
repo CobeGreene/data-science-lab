@@ -23,6 +23,11 @@ export class AppVisualizationsService extends VisualizationsService implements O
         this.ipcService.on(ExperimentsEvents.NewVisualizationsListeners, this.newEvent);    
         this.ipcService.on(ExperimentsEvents.DeleteVisualizationsListeners, this.deletedEvent);
         this.ipcService.on(ExperimentsEvents.UpdatedVisualizationsListeners, this.updatedEvent);
+        this.ipcService.on(ExperimentsEvents.LoadExperimentListener, this.loadEvent);
+    }
+
+    loadEvent = () => {
+        this.ipcService.send(ExperimentsEvents.GetAllVisualizationsEvent);
     }
 
 
@@ -30,6 +35,7 @@ export class AppVisualizationsService extends VisualizationsService implements O
         this.zone.run(() => {
             this.visualizations.push(visual);
             this.newVisualization.next(visual);
+            this.visualizationChanges.next(this.visualizations);
         });
     }
 
@@ -55,12 +61,15 @@ export class AppVisualizationsService extends VisualizationsService implements O
                 this.visualizations.splice(findIndex, 1);
             }
             this.deletedVisualization.next(id);
+            this.visualizationChanges.next(this.visualizations);
+
         });
     }
 
     getAllEvent = (event, visuals: Visualization[]) => {
         this.zone.run(() => {
             this.visualizations = visuals;
+            this.visualizationChanges.next(this.visualizations);
         });
     }
 
@@ -69,6 +78,7 @@ export class AppVisualizationsService extends VisualizationsService implements O
         this.ipcService.removeListener(ExperimentsEvents.NewVisualizationsListeners, this.newEvent);    
         this.ipcService.removeListener(ExperimentsEvents.DeleteVisualizationsListeners, this.deletedEvent);
         this.ipcService.removeListener(ExperimentsEvents.UpdatedVisualizationsListeners, this.updatedEvent);
+        this.ipcService.removeListener(ExperimentsEvents.LoadExperimentListener, this.loadEvent);
     }
 
     all(experimentId: number): Visualization[] {

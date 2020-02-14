@@ -5,10 +5,12 @@ export abstract class AlgorithmTrackerService {
 
     public newTracker: Subject<AlgorithmTrackerViewModel>;
     public updateTracker: Subject<AlgorithmTrackerViewModel>;
+    public trackersUpdated: Subject<AlgorithmTrackerViewModel[]>;
 
     constructor() {
         this.newTracker = new Subject<AlgorithmTrackerViewModel>();
         this.updateTracker = new Subject<AlgorithmTrackerViewModel>();
+        this.trackersUpdated = new Subject<AlgorithmTrackerViewModel[]>();
     }
 
     abstract has(id: number): boolean;

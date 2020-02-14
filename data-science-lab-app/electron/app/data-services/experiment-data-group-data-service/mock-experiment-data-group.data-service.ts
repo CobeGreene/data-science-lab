@@ -20,8 +20,10 @@ export class MockExperimentDataGroupDataService implements ExperimentDataGroupDa
     deleteByExperiment: (experimentId: number) => void;
 
     getPluginData: (id: number, inputs: { [id: string]: number[]; }) => { [id: string]: PluginData };
-    
-    getFeatures: (id: number, inputs: { [id: string]: number[]; }) => { [id: string]: { label: string, type: string}[] };
+
+    getFeatures: (id: number, inputs: { [id: string]: number[]; }) => { [id: string]: { label: string, type: string }[] };
+
+    load: (groups: ExperimentDataGroup[]) => void;
 
     constructor() {
         this.reset();
@@ -34,8 +36,9 @@ export class MockExperimentDataGroupDataService implements ExperimentDataGroupDa
         this.update = () => { };
         this.delete = () => { };
         this.deleteByExperiment = () => { };
-        this.getPluginData = () => {throw new Error(`Not implemented`);};
-        this.getFeatures = () => {throw new Error(`Not implemented`);};
+        this.getPluginData = () => { throw new Error(`Not implemented`); };
+        this.getFeatures = () => { throw new Error(`Not implemented`); };
+        this.load = () => { };
     }
 
 }
