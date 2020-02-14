@@ -7,6 +7,7 @@ export interface AlgorithmTrackerDataService {
     read(id: number): AlgorithmTracker;
     update(id: number, trackers: VariableTracker[]): AlgorithmTracker;
     delete(id: number): void;
+    load(trackers: AlgorithmTracker[]);
     create(id: number, trackers: VariableTracker[]): AlgorithmTracker;
     getPluginData(id: number, inputs: { [id: string]: number[]}): { [id: string]: PluginData };
 }

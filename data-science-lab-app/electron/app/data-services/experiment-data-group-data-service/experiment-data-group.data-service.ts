@@ -10,6 +10,7 @@ export interface ExperimentDataGroupDataService {
     deleteByExperiment(experimentId: number): void;
     getPluginData(id: number, inputs: { [id: string]: number[]; }): { [id: string]: PluginData };
     getFeatures(id: number, inputs: { [id: string]: number[]; }): { [id: string]: { label: string, type: string}[] };
+    load(groups: ExperimentDataGroup[]);
 }
 
 

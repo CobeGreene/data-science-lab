@@ -8,6 +8,8 @@ export class MockExperimentProducer implements ExperimentProducer {
 
     error: (reason: any) => void;
 
+    load: (id: number) => void;
+
     constructor() {
         this.reset();
     }
@@ -16,6 +18,7 @@ export class MockExperimentProducer implements ExperimentProducer {
         this.all = () => {};
         this.newExperiment = () => {};
         this.error = () => {};
+        this.load = () => {};
     }
 
 }

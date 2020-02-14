@@ -22,6 +22,12 @@ export class AppAlgorithmService extends AlgorithmService implements OnDestroy {
         this.ipcService.on(ExperimentsEvents.NewAlgorithmListeners, this.newEvent);
         this.ipcService.on(ExperimentsEvents.DeleteAlgorithmListeners, this.deleteEvent);
         this.ipcService.on(ExperimentsEvents.UpdatedAlgorithmListeners, this.updatedEvent);
+        this.ipcService.on(ExperimentsEvents.LoadExperimentListener, this.loadEvent);
+
+    }
+
+    loadEvent = () => {
+        this.ipcService.send(ExperimentsEvents.GetAllAlgorithmsEvent);
     }
     
     all(experimentId: number): AlgorithmViewModel[] {
@@ -73,6 +79,7 @@ export class AppAlgorithmService extends AlgorithmService implements OnDestroy {
                 this.algorithms.splice(findIndex, 1);
             }
             this.deletedAlgorithm.next(id);
+            this.algorithmsChanged.next(this.algorithms);
         });
     }
 
@@ -80,6 +87,7 @@ export class AppAlgorithmService extends AlgorithmService implements OnDestroy {
         this.zone.run(() => {
             this.algorithms.push(algorithm);
             this.newAlgorithm.next(algorithm);
+            this.algorithmsChanged.next(this.algorithms);
         });
     }
 
@@ -88,6 +96,7 @@ export class AppAlgorithmService extends AlgorithmService implements OnDestroy {
     getAllEvent = (event, algorithms: AlgorithmViewModel[]) => {
         this.zone.run(() => {
             this.algorithms = algorithms;
+            this.algorithmsChanged.next(this.algorithms);
         });
     }
 
@@ -96,7 +105,8 @@ export class AppAlgorithmService extends AlgorithmService implements OnDestroy {
         this.ipcService.removeListener(ExperimentsEvents.GetAllAlgorithmsListeners, this.getAllEvent);
         this.ipcService.removeListener(ExperimentsEvents.NewAlgorithmListeners, this.newEvent);
         this.ipcService.removeListener(ExperimentsEvents.DeleteAlgorithmListeners, this.deleteEvent);
-        this.ipcService.removeListener(ExperimentsEvents.UpdatedAlgorithmListeners, this.updatedEvent);        
+        this.ipcService.removeListener(ExperimentsEvents.UpdatedAlgorithmListeners, this.updatedEvent);
+        this.ipcService.removeListener(ExperimentsEvents.LoadExperimentListener, this.loadEvent);       
     }
 }
 

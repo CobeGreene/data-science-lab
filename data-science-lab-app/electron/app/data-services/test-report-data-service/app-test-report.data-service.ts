@@ -10,7 +10,10 @@ export class AppTestReportDataService implements TestReportDataService {
         this.nextId = 1;
     }
 
-    all(): TestReportViewModel[] {
+    all(algorithmId?: number): TestReportViewModel[] {
+        if (algorithmId) {
+            return this.vms.filter((value) => value.algorithmId === algorithmId);
+        }
         return this.vms;
     }
 
@@ -51,7 +54,12 @@ export class AppTestReportDataService implements TestReportDataService {
         }
     }
 
-    
+    load(reports: TestReportViewModel[]) {
+        reports.forEach((value) => {
+            const report = Object.setPrototypeOf(value, TestReportViewModel.prototype);
+            this.vms.push(report);
+        });
+    }    
 
 }
 

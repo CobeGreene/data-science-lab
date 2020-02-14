@@ -41,3 +41,6 @@ export {
 export {
     TestReportService, AppTestReportService
 } from './test-report-service';
+export {
+    AlgorithmTrackerService
+} from './algorithm-tracker-service';

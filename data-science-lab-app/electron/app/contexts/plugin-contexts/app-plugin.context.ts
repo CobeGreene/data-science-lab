@@ -47,6 +47,7 @@ export class AppPluginContext implements PluginContext {
         });
     }
 
+    
     deactivate(pluginPackage: PluginPackage, _plugin: Plugin): Promise<void> {
         // return this.uninstall(pluginPackage);
         return new Promise((resolve) => resolve());

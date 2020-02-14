@@ -5,4 +5,5 @@ export interface ExperimentProducer extends Producer {
 
     all(experimentList: ExperimentList);
     newExperiment(experiment: Experiment);
+    load(id: number);
 }

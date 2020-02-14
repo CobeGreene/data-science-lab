@@ -32,4 +32,8 @@ export class ExperimentDetailsComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
 
     }
+
+    onSave() {
+        this.experimentService.save(this.id);
+    }
 }

@@ -24,6 +24,7 @@ export class AppExperimentService extends ExperimentService implements OnDestroy
         this.ipcService.on(ExperimentsEvents.GetAllListeners, this.getAllEvent);
         this.ipcService.on(ExperimentsEvents.UpdatedListeners, this.updateEvent);
         this.ipcService.on(ExperimentsEvents.CreateListeners, this.createEvent);
+        this.ipcService.on(ExperimentsEvents.LoadExperimentListener, this.loadEvent);
     }
 
     private getAllEvent = (event, experimentList: ExperimentList): void => {
@@ -56,13 +57,34 @@ export class AppExperimentService extends ExperimentService implements OnDestroy
         });
     }
 
+    private loadEvent = (event, id: number): void => {
+        this.zone.run(() => {
+            const find = this.experimentsList.experiments.find((value) => {
+                return value.id === id;
+            });
+            if (find) {
+                find.isLoaded = true;
+                this.loadExperiment.next(id);
+            }
+        });
+    }
+
 
     ngOnDestroy() {
         this.ipcService.removeListener(ExperimentsEvents.GetAllListeners, this.getAllEvent);
         this.ipcService.removeListener(ExperimentsEvents.UpdatedListeners, this.updateEvent);
         this.ipcService.removeListener(ExperimentsEvents.CreateListeners, this.createEvent);
+        this.ipcService.removeListener(ExperimentsEvents.LoadExperimentListener, this.loadEvent);
     }
 
+
+    load(id: number) {
+        this.ipcService.send(ExperimentsEvents.LoadExperimentEvent, id);
+    }
+
+    save(id: number) {
+        this.ipcService.send(ExperimentsEvents.SaveExperimentEvent, id);
+    }
 
 
     all(): ExperimentList {

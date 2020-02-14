@@ -20,6 +20,11 @@ export class AppTestReportService extends TestReportService {
     registerEvents() {
         this.ipcService.on(ExperimentsEvents.GetAllTestReportListeners, this.getAllEvent);
         this.ipcService.on(ExperimentsEvents.NewTestReportListeners, this.newEvent);
+        this.ipcService.on(ExperimentsEvents.LoadExperimentListener, this.loadEvent);
+    }
+
+    loadEvent = () => {
+        this.ipcService.send(ExperimentsEvents.GetAllTestReportEvent);
     }
 
     getAllEvent = (event, reports: TestReportViewModel[]) => {

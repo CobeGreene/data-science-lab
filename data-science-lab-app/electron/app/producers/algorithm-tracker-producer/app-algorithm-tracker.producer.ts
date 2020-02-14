@@ -22,6 +22,11 @@ export class AppAlgorithmTrackerProducer extends BaseProducer implements Algorit
         });
     }
 
+    all(trackers: AlgorithmTracker[]) {
+        const vms = trackers.map(value => this.convertToViewModel(value));
+        this.ipc.send(ExperimentsEvents.GetAllAlgorithmTrackerListeners, vms); 
+    }
+
     newTracker(tracker: AlgorithmTracker): void {
         const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         ipc.send(ExperimentsEvents.NewAlgorithmTrackerListeners, this.convertToViewModel(tracker));

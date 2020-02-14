@@ -5,6 +5,9 @@ export namespace ExperimentsEvents {
     export const GetAllEvent = 'get-all-experiments';
     export const GetAllListeners = 'get-all-experiments-listeners';
     export const UpdatedListeners = 'updated-experiment-listeners';
+    export const LoadExperimentEvent = 'load-experimnent-event';
+    export const LoadExperimentListener = 'load-experiment-listener';
+    export const SaveExperimentEvent = 'save-experiment-event';
 
     // Fetch Session
     export const GetAllFetchSessionsEvent = 'get-all-fetch-sessions-event';
@@ -124,4 +127,6 @@ export namespace ExperimentsEvents {
     // Tracker
     export const NewAlgorithmTrackerListeners = 'new-algorithm-tracker-listeners';
     export const UpdatedAlgorithmTrackerListeners = 'updated-algorithm-tracker-listeners';
+    export const GetAllAlgorithmTrackerEvent = 'get-all-algorithm-tracker-event';
+    export const GetAllAlgorithmTrackerListeners = 'get-all-algorithm-tracker-listeners';
 }
