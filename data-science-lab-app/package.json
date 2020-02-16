@@ -29,6 +29,13 @@
   },
   "private": true,
   "dependencies": {
+    "data-science-lab-core": "^0.0.23",
+    "electron-settings": "^3.2.0",
+    "live-plugin-manager": "^0.13.2",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "electron": "^6.0.10",
     "@angular/animations": "~8.2.5",
     "@angular/common": "~8.2.5",
     "@angular/compiler": "~8.2.5",
@@ -37,18 +44,7 @@
     "@angular/platform-browser": "~8.2.5",
     "@angular/platform-browser-dynamic": "~8.2.5",
     "@angular/router": "~8.2.5",
-    "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "@w11k/ngx-componentdestroyed": "^4.1.4",
-    "bootstrap": "^4.3.1",
-    "data-science-lab-core": "^0.0.23",
-    "electron": "^6.0.10",
-    "electron-settings": "^3.2.0",
-    "live-plugin-manager": "^0.13.2",
-    "rxjs": "~6.4.0",
-    "tslib": "^1.10.0",
-    "zone.js": "~0.9.1"
-  },
-  "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.4",
     "@angular/cli": "~8.3.4",
     "@angular/compiler-cli": "~8.2.5",
@@ -58,7 +54,6 @@
     "@types/jasminewd2": "2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
-    "istanbul": "^0.4.5",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "jasmine-ts-console-reporter": "^3.1.1",
@@ -70,6 +65,8 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.5.3",
+    "rxjs": "~6.4.0",
+    "zone.js": "~0.9.1"
   }
 }
