@@ -29,11 +29,11 @@ export class AppShortcutService extends ShortcutService {
             });
             if (find >= 0) {
                 this.observers[shortcut].splice(find, 1);
-            }
+            } 
         }   
     }
 
-    private runAction(shortcut: string) {
+    runAction(shortcut: string) {
         if (this.observers[shortcut]) {
             this.observers[shortcut].forEach((cmd) => {
                 cmd();
