@@ -1,17 +1,18 @@
 import { IpcService, Listener } from '../../../shared/services';
-import { ipcMain, ipcRenderer } from 'electron';
+import { ipcMain } from 'electron';
+import { win } from '../app';
 
 export class AppIpcService implements IpcService {
 
     constructor() {
-        
+
     }
 
     send(channel: string, ...arg: any): void {
-        // win.webContents.send(channel, ...arg);
+        win.webContents.send(channel, ...arg);
         ipcMain.emit(channel, channel, ...arg);
-    }    
-    
+    }
+
     on(channel: string, listener: Listener): void {
         ipcMain.on(channel, listener);
     }
