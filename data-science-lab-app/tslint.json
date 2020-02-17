@@ -89,7 +89,8 @@
     "variable-name": false,
     "no-internal-module": false,
     "no-namespace": false,
-    "no-implicit-dependencies": false
+    "no-implicit-dependencies": false,
+    "no-submodule-imports": false
   },
   "rulesDirectory": [
     "codelyzer"

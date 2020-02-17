@@ -8,19 +8,11 @@ import { Component, OnInit, NgZone } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'data-science-lab-app';
 
-  constructor(private zone: NgZone) {
+  constructor() {
     
   }
 
   ngOnInit() {
-    window.electronIpcOn('listener', (event: string, msg: string) => {
-      this.zone.run(() => {
-        console.log('angular side');
-        this.title = msg;
-      });
-    });
-
-    window.electronIpcSend('event');
   }
 
 }

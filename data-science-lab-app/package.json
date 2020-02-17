@@ -53,12 +53,14 @@
   "dependencies": {
     "data-science-lab-core": "^0.0.23",
     "electron-settings": "^3.2.0",
+    "font-awesome": "^4.7.0",
     "live-plugin-manager": "^0.13.2",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.4",
     "@angular/animations": "~8.2.5",
+    "@angular/cdk": "^8.2.3",
     "@angular/cli": "~8.3.4",
     "@angular/common": "~8.2.5",
     "@angular/compiler": "~8.2.5",
@@ -74,6 +76,8 @@
     "@types/jasminewd2": "2.0.3",
     "@types/node": "~8.9.4",
     "@w11k/ngx-componentdestroyed": "^4.1.4",
+    "angular-font-awesome": "^3.1.2",
+    "angular-resize-event": "^1.2.1",
     "codelyzer": "^5.0.0",
     "electron": "^6.0.10",
     "electron-builder": "^22.3.2",
@@ -85,6 +89,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "ng-keyboard-shortcuts": "^8.2.5",
     "protractor": "~5.4.0",
     "rxjs": "~6.4.0",
     "ts-node": "~7.0.0",
