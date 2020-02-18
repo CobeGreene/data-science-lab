@@ -2,8 +2,9 @@
     <div class="tabs">
         <app-tabs></app-tabs>
     </div>
-    <div class="workspace">
+    <div class="workspace" (resized)="onResized()" #workspaceCmp>
         <app-workspace-area>
+            <router-outlet></router-outlet>
         </app-workspace-area>
     </div>
     <div class="sidebar">

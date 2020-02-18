@@ -12,6 +12,8 @@ import { Messenger } from '../services/messenger';
 import { IpcService } from '../../../shared/services';
 import { AppIpcService } from '../services/ipc-service/app-ipc.service';
 import { TabsComponent } from './areas/tabs/tabs.component';
+import { CoreAreaService } from '../services/core-area-service/core-area.service';
+import { AppCoreAreaService } from '../services/core-area-service/app-core-area.service';
 
 @NgModule({
     declarations: [
@@ -37,7 +39,8 @@ import { TabsComponent } from './areas/tabs/tabs.component';
         { provide: ShortcutService, useClass: AppShortcutService },
         { provide: IpcService, useClass: AppIpcService },
         { provide: Messenger, useClass: Messenger },
-        { provide: ThemeService, useClass: AppThemeService }
+        { provide: ThemeService, useClass: AppThemeService },
+        { provide: CoreAreaService, useClass: AppCoreAreaService }
     ]
 })
 export class CoreModule {
