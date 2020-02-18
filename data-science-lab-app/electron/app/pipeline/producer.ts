@@ -4,11 +4,8 @@ import * as Events from '../../../shared/events';
 
 export class Producer extends Service {
     
-    private ipc: IpcService;
-    
-    constructor(serviceContainer: ServiceContainer) {
-        super(serviceContainer);
-        this.ipc = serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+    get ipc(): IpcService {
+        return this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
     }
 
     send(event: string, ...arg: any) {

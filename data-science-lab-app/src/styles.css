@@ -1,1 +1,15 @@
+@import "~@angular/cdk/overlay-prebuilt.css";
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+    --workspace-background: #303030;
+    --workspace-word: #fff;
+    --workspace-scroll-background: #303030;
+    --workspace-scroll-foreground: #3655B5;
+    --sidebar-background: #505050;
+    --sidebar-word: #FFF;
+    --tabs-background: #404040;
+    --tabs-word: #FFF;
+    --report-word: #fff;
+    --report-background: #404040;
+}

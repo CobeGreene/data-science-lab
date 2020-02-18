@@ -1,6 +1,6 @@
 import { AppShortcutService } from './app-shortcut.service';
 
-describe('App Shotcut Service', () => {
+describe('Angular App Shotcut Service', () => {
 
     let service: AppShortcutService;
 

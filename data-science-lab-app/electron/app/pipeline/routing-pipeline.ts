@@ -16,7 +16,7 @@ export class RoutingPipeline {
         this.serviceModelRoutes.forEach((serviceModelRoutes: ServiceModelRoutes) => {
             serviceModelRoutes.routes.forEach((route: Route) => {
                 this.ipc.on(this.getPath(route), (_event: string, listener: Listener) => {
-                    const producer = new Producer(this.serviceContainer);
+                    const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
                     const service = this.serviceContainer.resolve(serviceModelRoutes.service, producer);
                     service[route.method](listener);
                 });

@@ -1,0 +1,12 @@
+{
+    "workspace-background": "#303030",
+    "workspace-word": "#FFF",
+    "workspace-scroll-background": "#303030",
+    "workspace-scroll-foreground": "#303030",
+    "sidebar-background": "#505050",
+    "sidebar-word": "#FFF",
+    "report-background": "#404040",
+    "report-word": "#FFF",
+    "tabs-background": "#404040",
+    "tabs-word": "#FFF"
+}

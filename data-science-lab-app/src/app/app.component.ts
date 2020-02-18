@@ -1,4 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
+import { ThemeService } from './services/theme-service/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'data-science-lab-app';
 
-  constructor() {
-    
+  constructor(private themeService: ThemeService) {
   }
 
   ngOnInit() {

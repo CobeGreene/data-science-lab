@@ -4,6 +4,11 @@ export const enum SERVICE_TYPES {
     IpcService,
     // Producer
     Producer,
-    // View Models
-    ExperimentViewModel
+    // Context
+    SettingsContext,
+    // Service Models
+    ExperimentServiceModel,
+    ThemeServiceModel,
+    // Data Services
+    ThemeDataService,
 }

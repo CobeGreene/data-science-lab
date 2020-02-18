@@ -5,7 +5,7 @@ import { ServiceModel  } from '../service-model';
 
 export class ExperimentServiceModel extends ServiceModel {
     static routes: ServiceModelRoutes = {
-        service: SERVICE_TYPES.ExperimentViewModel,
+        service: SERVICE_TYPES.ExperimentServiceModel,
         routes: [
             // { path: ExperimentEvents.All, method: 'all' },
             // { path: ExperimentEvents.Get, method: 'get' },

@@ -1,0 +1,60 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: min-content 1fr min-content;
+    grid-template-areas: 
+        'tabs sidebar'
+        'workspace sidebar'
+        'report sidebar';
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0
+}
+
+.tabs {
+    grid-area: tabs;
+    background-color: var(--tabs-background);
+    color: var(--tabs-word);
+}
+
+.workspace {
+    grid-area: workspace;
+    position: relative;
+    background: var(--workspace-background);
+    color: var(--workspace-word);   
+    overflow-y: scroll;
+}
+
+.workspace::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+}
+
+.workspace::-webkit-scrollbar-track {
+    background-color: var(--workspace-scroll-background);
+}
+
+.workspace::-webkit-scrollbar-thumb {
+    background-color: var(--workspace-scroll-background);
+}
+
+.workspace:hover::-webkit-scrollbar-thumb {
+    background-color: var(--workspace-scroll-forebackground);
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background-color: var(--sidebar-background);
+    color: var(--sidebar-word);
+}
+
+.report {
+    grid-area: report;
+    background-color: var(--report-background);
+    color: var(--report-word);
+}
+
+
