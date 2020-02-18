@@ -1,6 +1,4 @@
-export interface Area {
-    top: number;
-    left: number;
-    width: number;
-    height: number;
-}
+export { Area } from './area';
+export { ShortcutInput } from './shortcut-input';
+
+

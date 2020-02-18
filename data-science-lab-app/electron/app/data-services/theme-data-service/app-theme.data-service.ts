@@ -20,6 +20,9 @@ export class AppThemeDataService extends Service implements ThemeDataService {
 
     constructor(serviceContainer: ServiceContainer) {
         super(serviceContainer);
+    }
+    
+    configure() {
         this.watcher = fs.watch(this.context.get<string>(this.key), (event, current) => {
             this.producer.send(ThemeEvents.Change);
         });       

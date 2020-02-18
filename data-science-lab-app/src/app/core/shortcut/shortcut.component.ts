@@ -1,21 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { ShortcutInput } from 'ng-keyboard-shortcuts';
+import { Component, OnInit, HostListener, AfterViewInit, Input } from '@angular/core';
 import { ShortcutService } from '../../services/shortcut-service';
 
 @Component({
   selector: 'app-shortcut',
-  templateUrl: './shortcut.component.html',
-  styleUrls: ['./shortcut.component.css']
+  template: '',
 })
-export class ShortcutComponent implements OnInit {
+export class ShortcutComponent implements OnInit, AfterViewInit {
 
-  shortcuts: ShortcutInput[];
+  constructor(
+    private shortcutService: ShortcutService
+  ) {
 
-  constructor(private shortcutService: ShortcutService) {
+  }
+
+  onKeyup = (event: KeyboardEvent): void => {
+    const shortcut = this.getShortcut(event);
+    this.shortcutService.runAction(shortcut);
   }
 
   ngOnInit() {
-    this.shortcuts = this.shortcutService.shortcuts;
+  }
+
+  ngAfterViewInit() {
+    window.addEventListener('keyup', this.onKeyup, true);
+  }
+
+  getShortcut(event: KeyboardEvent): string {
+    let shortcut = '';
+    if (event.ctrlKey && event.key !== 'Control') {
+      shortcut += 'ctrl + ';
+    }
+    if (event.shiftKey && event.key !== 'Shift') {
+      shortcut += 'shift + ';
+    }
+    if (event.altKey && event.key !== 'Alt') {
+      shortcut += 'alt + ';
+    }
+
+    shortcut += event.key.toLocaleLowerCase();
+
+    return shortcut;
   }
 
 }

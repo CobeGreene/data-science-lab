@@ -1,5 +1,5 @@
 import { app, BrowserWindow, screen } from 'electron';
-import { ServiceContainer, AppServiceContainer, SERVICE_TYPES } from './service-container';
+import { ServiceContainer, AppServiceContainer, SERVICE_TYPES, Service } from './service-container';
 import { RoutingPipeline, Producer } from './pipeline';
 import { AppIpcService } from './ipc-services';
 import { IpcService } from '../../shared/services';
@@ -36,6 +36,7 @@ export class App {
 
     public configure() {
         this.pipeline.initialize();
+        this.serviceContainer.resolve<ThemeDataService>(SERVICE_TYPES.ThemeDataService).configure();
     }
 
     private createWindow() {

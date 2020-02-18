@@ -20,7 +20,7 @@
     color: var(--welcome-options);
 }
 
-.options h2:hover {
+.option:hover {
     color: var(--welcome-options-focus);
 }
 

@@ -6,8 +6,8 @@ import { Messenger } from '../messenger';
 export abstract class ThemeService extends Service {
     public themeChanged: Subject<void>;
 
-    constructor(messeger: Messenger, zone: NgZone) {
-        super(messeger, zone);
+    constructor(messenger: Messenger, zone: NgZone) {
+        super(messenger, zone);
         
         this.themeChanged = new Subject<void>();
     }

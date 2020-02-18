@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ThemeService } from './services/theme-service';
 import { CoreAreaService } from './services/core-area-service';
+import { FocusService } from './services/focus-service';
+import { FocusAreas } from './constants';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +16,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private themeService: ThemeService,
+    private focusService: FocusService,
     private coreAreaService: CoreAreaService) {
   }
 
@@ -26,6 +29,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
 
+  }
+
+  onFocusWorkspace(event: Event) {
+    this.focusService.set(FocusAreas.Workspace);
+    event.preventDefault();
   }
 
   onResized() {

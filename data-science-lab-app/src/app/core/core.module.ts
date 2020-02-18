@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
-import { ShortcutComponent } from './shortcut/shortcut.component';
 import { AppShortcutService, ShortcutService } from '../services/shortcut-service';
 import { ReportComponent } from './areas/report/report.component';
 import { SidebarComponent } from './areas/sidebar/sidebar.component';
@@ -15,25 +13,24 @@ import { TabsComponent } from './areas/tabs/tabs.component';
 import { CoreAreaService } from '../services/core-area-service/core-area.service';
 import { AppCoreAreaService } from '../services/core-area-service/app-core-area.service';
 import { AppFocusService, FocusService } from '../services/focus-service';
+import { ShortcutComponent } from './shortcut/shortcut.component';
 
 @NgModule({
     declarations: [
-        ShortcutComponent,
         ReportComponent,
         SidebarComponent,
         WorkspaceAreaComponent,
-        TabsComponent
+        TabsComponent,
+        ShortcutComponent
     ],
     imports: [
         SharedModule,
-        KeyboardShortcutsModule
     ],
     exports: [
-        KeyboardShortcutsModule,
-        ShortcutComponent,
         ReportComponent,
         SidebarComponent,
         TabsComponent,
+        ShortcutComponent,
         WorkspaceAreaComponent
     ],
     providers: [

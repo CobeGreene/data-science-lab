@@ -1,1 +1,6 @@
-export { Area } from './index';
+export interface Area {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+}

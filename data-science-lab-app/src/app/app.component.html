@@ -2,7 +2,7 @@
     <div class="tabs">
         <app-tabs></app-tabs>
     </div>
-    <div class="workspace" (resized)="onResized()" #workspaceCmp>
+    <div class="workspace" (touch)="onFocusWorkspace($event)" (click)="onFocusWorkspace($event)" (resized)="onResized()" #workspaceCmp>
         <app-workspace-area>
             <router-outlet></router-outlet>
         </app-workspace-area>

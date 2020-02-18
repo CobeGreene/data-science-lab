@@ -34,6 +34,7 @@ describe('Electron App Theme Data Service', () => {
             throw new Error(`Couldn't resolve type ${type}.`);
         });
         dataService = new AppThemeDataService(serviceContainer);
+        dataService.configure();
     });
 
     it('should get current theme', () => {
