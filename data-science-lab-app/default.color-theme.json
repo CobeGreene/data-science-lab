@@ -8,5 +8,9 @@
     "report-background": "#404040",
     "report-word": "#FFF",
     "tabs-background": "#404040",
-    "tabs-word": "#FFF"
+    "tabs-word": "#FFF",
+    "welcome-title": "#FFF",
+    "welcome-options": "#AAA",
+    "welcome-options-focus": "#EEE",
+    "welcome-options-faded": "#CCC"
 }

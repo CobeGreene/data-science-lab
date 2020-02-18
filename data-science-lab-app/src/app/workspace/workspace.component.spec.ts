@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { WorkspaceComponent } from './workspace.component';
 import { CoreAreaService } from '../services/core-area-service';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Area } from '../models';
 import { Subject } from 'rxjs';
 
@@ -22,6 +22,9 @@ describe('WorkspaceComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [WorkspaceComponent],
+      imports: [
+        RouterTestingModule.withRoutes([])
+      ],
       providers: [
         { provide: CoreAreaService, useValue: service }
       ]

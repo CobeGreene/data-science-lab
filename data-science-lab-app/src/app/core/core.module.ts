@@ -14,6 +14,7 @@ import { AppIpcService } from '../services/ipc-service/app-ipc.service';
 import { TabsComponent } from './areas/tabs/tabs.component';
 import { CoreAreaService } from '../services/core-area-service/core-area.service';
 import { AppCoreAreaService } from '../services/core-area-service/app-core-area.service';
+import { AppFocusService, FocusService } from '../services/focus-service';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import { AppCoreAreaService } from '../services/core-area-service/app-core-area.
         { provide: IpcService, useClass: AppIpcService },
         { provide: Messenger, useClass: Messenger },
         { provide: ThemeService, useClass: AppThemeService },
-        { provide: CoreAreaService, useClass: AppCoreAreaService }
+        { provide: CoreAreaService, useClass: AppCoreAreaService },
+        { provide: FocusService, useClass: AppFocusService },
     ]
 })
 export class CoreModule {
