@@ -1,13 +1,19 @@
 import { Subject } from 'rxjs';
 import { Experiment } from '../../../../shared/models';
+import { Service } from '../service';
+import { NgZone } from '@angular/core';
+import { Messenger } from '../messenger';
 
-export abstract class ExperimentService {
+
+export abstract class ExperimentService extends Service {
     experimentsChanged: Subject<Experiment[]>;
     experimentUpdated: Subject<Experiment>;
     experimentCreated: Subject<Experiment>;
     experimentDeleted: Subject<number>;
 
-    constructor() {
+    constructor(messenger: Messenger, zone: NgZone) {
+        super(messenger, zone);
+
         this.experimentsChanged = new Subject<Experiment[]>();
         this.experimentUpdated = new Subject<Experiment>();
         this.experimentCreated = new Subject<Experiment>();
@@ -19,5 +25,6 @@ export abstract class ExperimentService {
     abstract get(id: number): Experiment;
     abstract update(id: number, title: string, description?: string): void;
     abstract delete(id: number): void;
+    abstract save(id: number): void;
 }
 
