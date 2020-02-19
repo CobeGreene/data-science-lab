@@ -1,6 +1,7 @@
 import { AppOverlayService } from './app-overlay.service';
 import { FocusService } from '../focus-service';
 import { FocusAreas } from '../../constants';
+import { Subject } from 'rxjs';
 
 describe('Angular App Overlay Service', () => {
     let service: AppOverlayService;
@@ -8,7 +9,7 @@ describe('Angular App Overlay Service', () => {
 
     beforeEach(() => {
         focusService = {
-            focusChanged: null,
+            focusChanged: new Subject<string>(),
             set: () => {},
             current: () => '',
             pop: () => {}
@@ -45,5 +46,12 @@ describe('Angular App Overlay Service', () => {
             done();
         };
         service.close();
+    });
+
+    it('should close component if focus change', () => {
+        const component = jasmine.createSpyObj('OverlayComponent', ['close']);
+        service.register(component);
+        focusService.focusChanged.next(FocusAreas.Workspace);
+        expect(component.close).toHaveBeenCalled();
     });
 });

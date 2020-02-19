@@ -14,14 +14,15 @@ export class AppOverlayService extends OverlayService {
 
         this.focusService.focusChanged
             .subscribe((value) => {
-                if (value !== FocusAreas.Overlay) {
-                    this.close();
+                if (value !== FocusAreas.Overlay && this.component !== undefined) {
+                    this.component.close();
+                    this.component = undefined;
                 }
             });
     }
 
     register(component: OverlayComponent) {
-        if (this.component) {
+        if (this.component !== undefined) {
             this.component.close();
         }
 
@@ -30,7 +31,7 @@ export class AppOverlayService extends OverlayService {
     }
     
     close() {
-        if (this.component) {
+        if (this.component !== undefined) {
             this.component.close();
             this.component = undefined;
             this.focusService.pop();
