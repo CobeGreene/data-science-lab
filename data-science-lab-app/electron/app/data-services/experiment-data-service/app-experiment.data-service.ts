@@ -1,6 +1,6 @@
 import { Service, ServiceContainer, SERVICE_TYPES } from '../../service-container';
 import { ExperimentDataService } from './experiment.data-service';
-import { Experiment } from '../../../../shared/models';
+import { Experiment, ExperimentState } from '../../../../shared/models';
 import { SettingsContext } from '../../contexts/settings-context';
 import { IdGenerator } from '../../data-structures';
 
@@ -22,11 +22,19 @@ export class AppExperimentDataService extends Service implements ExperimentDataS
     }
 
     configure() {
+        this.experiments = this.context.get<Experiment[]>(this.key, []);
+        this.experiments.forEach((value) => {
+            value.state = ExperimentState.Unloaded;
+        });
 
+        const id = this.experiments.length > 0 ?
+            Math.max(...this.experiments.map(value => value.id)) + 1 : 1;
+
+        this.idGenerator = new IdGenerator(id);
     }
 
     private save() {
-
+        this.context.set(this.key, this.experiments);
     }
 
     all() {
