@@ -12,5 +12,10 @@
     "welcome-title": "#FFF",
     "welcome-options": "#AAA",
     "welcome-options-focus": "#EEE",
-    "welcome-options-faded": "#CCC"
+    "welcome-options-faded": "#CCC",
+    "modal-header": "#303030",
+    "modal-shadow": "rgba(0, 0, 0, 0.1)",
+    "modal-word": "#FFF",
+    "modal-exit": "#AAA",
+    "modal-exit-hover": "#FFF"
 }

@@ -4,11 +4,15 @@ import { AngularResizedEventModule } from 'angular-resize-event';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
-
+import { ModalComponent } from './modal/modal.component';
+import { ModalHeaderComponent } from './modal/modal-header/modal-header.component';
+import { ModalCloseComponent } from './modal/modal-close/modal-close.component';
 
 @NgModule({
     declarations: [
-
+        ModalComponent,
+        ModalHeaderComponent,
+        ModalCloseComponent
     ],
     imports: [
         CommonModule,
@@ -19,6 +23,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
         OverlayModule,
     ],
     exports: [
+        ModalComponent,
+        ModalHeaderComponent,
+        ModalCloseComponent,
         CommonModule,
         AngularFontAwesomeModule,
         FormsModule,
