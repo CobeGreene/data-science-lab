@@ -6,6 +6,8 @@ import { IpcService } from '../../shared/services';
 import { SettingsContext, AppSettingsContext } from './contexts/settings-context';
 import { ThemeDataService, AppThemeDataService } from './data-services/theme-data-service';
 import { ThemeServiceModel } from './services/theme.sm/theme.sm';
+import { ExperimentDataService, AppExperimentDataService } from './data-services/experiment-data-service';
+import { ExperimentServiceModel } from './services/experiment.sm/experiment.sm';
 
 export let win: BrowserWindow;
 
@@ -21,12 +23,15 @@ export class App {
         this.serviceContainer.addSingleton<IpcService>(AppIpcService, SERVICE_TYPES.IpcService);
         this.serviceContainer.addSingleton<SettingsContext>(AppSettingsContext, SERVICE_TYPES.SettingsContext);
         this.serviceContainer.addSingleton<ThemeDataService>(AppThemeDataService, SERVICE_TYPES.ThemeDataService);
+        this.serviceContainer.addSingleton<ExperimentDataService>(AppExperimentDataService, SERVICE_TYPES.ExperimentDataService);
         
         this.serviceContainer.addTransient<Producer>(Producer, SERVICE_TYPES.Producer);
         this.serviceContainer.addTransient<ThemeServiceModel>(ThemeServiceModel, SERVICE_TYPES.ThemeServiceModel);
+        this.serviceContainer.addTransient<ExperimentServiceModel>(ExperimentServiceModel, SERVICE_TYPES.ExperimentServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
-            ThemeServiceModel.routes
+            ThemeServiceModel.routes,
+            ExperimentServiceModel.routes,
         ]);
     }
 
@@ -37,6 +42,7 @@ export class App {
     public configure() {
         this.pipeline.initialize();
         this.serviceContainer.resolve<ThemeDataService>(SERVICE_TYPES.ThemeDataService).configure();
+        this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService).configure();
     }
 
     private createWindow() {

@@ -99,6 +99,12 @@ describe('Angular App Experiment Service', () => {
         expect(service.get(1).id).toBe(1);
     });
 
+    it('should throw to get id 2', () => {
+        expect(() => {
+            service.get(2);
+        }).toThrowError();
+    });
+
     it('should call publish when updating', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id, title, desc) => {
             expect(event).toBe(ExperimentEvents.Update);
