@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using data_science_lab_site.Data;
 
 namespace data_science_lab_site.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200219193156_Profile Added to Application User")]
+    partial class ProfileAddedtoApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,8 +167,6 @@ namespace data_science_lab_site.Migrations
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<byte[]>("Profile");
-
-                    b.Property<string>("ProfileMineType");
 
                     b.Property<string>("SecurityStamp");
 

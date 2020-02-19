@@ -1,0 +1,32 @@
+﻿@page
+@model data_science_lab_site.Pages.Account.ProfileModel
+@{
+}
+
+<h1 class="text-info">Profile</h1>
+<p>@Model.Email</p>
+<hr />
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        @if (Model.HasProfile)
+        {
+            <img src="/api/users/profile/@Model.Email" class="img-thumbnail mb-2"/>
+        }
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="custom-file-input" asp-for="Profile">
+                    <label class="custom-file-label" asp-for="Profile"></label>
+                    <span asp-validation-for="Profile" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-light">Save</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 col-sm-12">
+
+    </div>
+</div>
