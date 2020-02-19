@@ -7,12 +7,14 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { ModalComponent } from './modal/modal.component';
 import { ModalHeaderComponent } from './modal/modal-header/modal-header.component';
 import { ModalCloseComponent } from './modal/modal-close/modal-close.component';
+import { CreateExperimentComponent } from './experiment/create-experiment/create-experiment.component';
 
 @NgModule({
     declarations: [
         ModalComponent,
         ModalHeaderComponent,
-        ModalCloseComponent
+        ModalCloseComponent,
+        CreateExperimentComponent
     ],
     imports: [
         CommonModule,
@@ -26,6 +28,7 @@ import { ModalCloseComponent } from './modal/modal-close/modal-close.component';
         ModalComponent,
         ModalHeaderComponent,
         ModalCloseComponent,
+        CreateExperimentComponent,
         CommonModule,
         AngularFontAwesomeModule,
         FormsModule,

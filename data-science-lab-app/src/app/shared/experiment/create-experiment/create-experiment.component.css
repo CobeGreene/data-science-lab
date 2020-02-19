@@ -1,0 +1,10 @@
+.desc-cont .header {
+    background-color: var(--create-experiment-desc-background);
+}
+
+.desc {
+    resize: vertical;
+    max-height: 20vh;
+    min-height: 10vh;
+    overflow-y: auto
+}

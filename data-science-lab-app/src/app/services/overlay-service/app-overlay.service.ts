@@ -11,6 +11,13 @@ export class AppOverlayService extends OverlayService {
 
     constructor(private focusService: FocusService) {
         super();
+
+        this.focusService.focusChanged
+            .subscribe((value) => {
+                if (value !== FocusAreas.Overlay) {
+                    this.close();
+                }
+            });
     }
 
     register(component: OverlayComponent) {
@@ -25,8 +32,8 @@ export class AppOverlayService extends OverlayService {
     close() {
         if (this.component) {
             this.component.close();
+            this.component = undefined;
             this.focusService.pop();
         }
-        this.component = undefined;
     }
 }

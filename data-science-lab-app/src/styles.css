@@ -22,6 +22,24 @@
     --modal-word: #fff;
     --modal-exit: #aaa;
     --modal-exit-hover: #fff;
+    --word: #FFF;
+    --invalid: #C7444A;
+    --accent1: #C7444A;
+    --accent2: #3655B5;
+    --accent3: #6089B4;
+    --accent4: #9872A2;
+    --accent5: #D08442;
+    --accent6: #219186;
+    --input-background: #404040;
+    --input-color: #fff;
+    --input-placeholder: #f5f5f5;
+    --input-range-tick: #fff;
+    --input-range-track: #FFF;
+    --dropdown-background: #404040;
+    --dropdown-shadow: rgba(0, 0, 0, 0.1);
+    --dropdown-list-hover: #505050;
+    --dropdown-word: #fff;
+    --create-experiment-desc-background: #505050;
 }
 
 body, p {
@@ -34,8 +52,282 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Merriweather', serif;
 }
 
-.pointer, .pointer > * {
+.pointer, .pointer>* {
     cursor: pointer !important;
+}
+
+body, p {
+    font-family: 'Source Sans Pro', sans-serif;
+    cursor: default;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    cursor: default;
+    font-family: 'Merriweather', serif;
+}
+
+button, button:hover, button:active, button:focus {
+    outline: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+button.disabled, button.disabled>* {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+input, textarea, select {
+    font-family: 'Source Sans Pro', sans-serif;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0px;
+    border: 0px;
+}
+
+input, textarea {
+    background-color: var(--input-background);
+    color: var(--input-color);
+}
+
+input[type=range] {
+    background: transparent;
+    height: 40px;
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 1px;
+    border-radius: 0px;
+    border: 1px solid var(--input-range-track);
+}
+
+input.accent4[type=range]::-webkit-slider-runnable-track {
+    background: var(--accent4);
+}
+
+input.accent5[type=range]::-webkit-slider-runnable-track {
+    background: var(--accent5);
+}
+
+input[type=range]::-webkit-slider-thumb {
+    height: 30px;
+    width: 10px;
+    border-radius: 0px;
+    appearance: none;
+    margin-top: -15px;
+}
+
+input.accent4[type=range]::-webkit-slider-thumb {
+    border: 1px solid var(--accent4);
+    background: var(--accent4);
+}
+
+input.accent4[type=range]:focus::-webkit-slider-runnable-track {
+    background: var(--accent4);
+}
+
+input.accent5[type=range]::-webkit-slider-thumb {
+    border: 1px solid var(---accent5);
+    background: var(--accent5);
+}
+
+input.accent5[type=range]:focus::-webkit-slider-runnable-track {
+    background: var(--accent5);
+}
+
+input[type=range]:focus {
+    outline: transparent;
+}
+
+::placeholder {
+    color: var(--input-placeholder);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+input.accent1:focus, textarea.accent1:focus {
+    outline-color: var(--accent1);
+    caret-color: var(--accent1);
+}
+
+input.accent2:focus, textarea.accent2:focus {
+    outline-color: var(--accent2);
+    caret-color: var(--accent2);
+}
+
+input.accent3:focus, textarea.accent3:focus {
+    outline-color: var(--accent3);
+    caret-color: var(--accent3);
+}
+
+input.accent4:focus, textarea.accent4:focus {
+    outline-color: var(--accent4);
+    caret-color: var(--accent4);
+}
+
+.text-accent1 {
+    color: var(--accent1);
+}
+
+.text-accent2 {
+    color: var(--accent2);
+}
+
+.text-accent3 {
+    color: var(--accent3);
+}
+
+.text-accent4 {
+    color: var(--accent4);
+}
+
+.text-accent5 {
+    color: var(--accent5);
+}
+
+.text-accent6 {
+    color: var(--accent6);
+}
+
+.input-lg {
+    font-size: larger;
+}
+
+.input-xlg {
+    font-size: x-large
+}
+
+.btn-lg {
+    font-size: larger;
+}
+
+.btn, .btn:hover, .btn:active, .btn:focus {
+    border: 1px solid;
+    background: transparent;
+    color: var(--word);
+}
+
+.btn-accent1, .btn-accent1:focus {
+    transition: all 400ms linear;
+    color: var(--accent1);
+    border-color: var(--accent1);
+}
+
+.btn-accent1:hover, .btn-accent1:active {
+    color: var(--word);
+    background: var(--accent1);
+    border-color: var(--accent1);
+}
+
+.btn-accent2, .btn-accent2:focus {
+    transition: all 400ms linear;
+    color: var(--accent2);
+    border-color: var(--accent2);
+}
+
+.btn-accent2:hover, .btn-accent2:active {
+    color: var(--word);
+    background: var(--accent2);
+    border-color: var(--accent2);
+}
+
+.btn-accent3, .btn-accent3:focus {
+    transition: all 400ms linear;
+    color: var(--accent3);
+    border-color: var(--accent3);
+}
+
+.btn-accent3:hover, .btn-accent3:active {
+    color: var(--word);
+    background: var(--accent3);
+    border-color: var(--accent3);
+}
+
+.btn-accent4, .btn-accent4:focus {
+    transition: all 400ms linear;
+    color: var(--accent4);
+    border-color: var(--accent4);
+}
+
+.btn-accent4:hover, .btn-accent4:active {
+    color: var(--word);
+    background: var(--accent4);
+    border-color: var(--accent4);
+}
+
+.btn-accent5, .btn-accent5:focus {
+    transition: all 400ms linear;
+    color: var(--accent5);
+    border-color: var(--accent5);
+}
+
+.btn-accent5:hover, .btn-accent5:active {
+    color: var(--word);
+    background: var(--accent5);
+    border-color: var(--accent5);
+}
+
+.btn-accent6, .btn-accent6:focus {
+    transition: all 400ms linear;
+    color: var(--accent6);
+    border-color: var(--accent6);
+}
+
+.btn-accent6:hover, .btn-accent6:active {
+    color: var(--word);
+    background: var(--accent6);
+    border-color: var(--accent6);
+}
+
+.dropdown {
+    background-color: var(--modal-background);
+    box-shadow: 0px 5px 1px 3px var(--modal-shadow);
+    color: var(--modal-word);
+}
+
+.dropdown-list>li {
+    margin: 5px 0px;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+.dropdown-list>li:hover {
+    background: var(--dropdown-list-hover);
+}
+
+.invalid-feedback {
+    color: var(--invalid);
+}
+
+.tab-font {
+    font-family: 'Roboto Slab', serif;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.list-unstyled {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.text-center {
+    text-align: center;
 }
 
 .modal {
@@ -345,7 +637,6 @@ h1, h2, h3, h4, h5, h6 {
 .ml-5 {
     margin-left: 25px;
 }
-
 
 .my-0 {
     margin-top: 0px;

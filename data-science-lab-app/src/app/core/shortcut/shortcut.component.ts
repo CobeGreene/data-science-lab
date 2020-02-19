@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ShortcutService } from '../../services/shortcut-service';
 
 @Component({
@@ -13,16 +13,25 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
 
   }
 
-  onKeyup = (event: KeyboardEvent): void => {
+  onKeypress = (event: KeyboardEvent): void => {
     const shortcut = this.getShortcut(event);
     this.shortcutService.runAction(shortcut);
+  }
+
+  onKeyup = (event: KeyboardEvent): void => {
+    const lowercase = event.key.toLowerCase();
+    if (lowercase === 'escape' || lowercase.startsWith('f') || lowercase.startsWith('arrow')) {
+      const shortcut = this.getShortcut(event);
+      this.shortcutService.runAction(shortcut);
+    }
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
-    window.addEventListener('keyup', this.onKeyup, true);
+    document.addEventListener('keypress', this.onKeypress, true);
+    document.addEventListener('keyup', this.onKeyup, true);
   }
 
   getShortcut(event: KeyboardEvent): string {

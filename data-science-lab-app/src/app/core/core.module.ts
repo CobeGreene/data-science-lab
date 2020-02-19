@@ -14,6 +14,7 @@ import { CoreAreaService } from '../services/core-area-service/core-area.service
 import { AppCoreAreaService } from '../services/core-area-service/app-core-area.service';
 import { AppFocusService, FocusService } from '../services/focus-service';
 import { ShortcutComponent } from './shortcut/shortcut.component';
+import { OverlayService, AppOverlayService } from '../services/overlay-service';
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import { ShortcutComponent } from './shortcut/shortcut.component';
         { provide: ThemeService, useClass: AppThemeService },
         { provide: CoreAreaService, useClass: AppCoreAreaService },
         { provide: FocusService, useClass: AppFocusService },
+        { provide: OverlayService, useClass: AppOverlayService },
     ]
 })
 export class CoreModule {
