@@ -1,0 +1,17 @@
+:host {
+    background-color: var(--workspace-background);
+    color: var(--tabs-word);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: var(--tabs-actual-height);
+    grid-template-areas: 'tabs options';
+    height: var(--tabs-actual-height) !important;
+}
+
+.tabs {
+    grid-area: tabs;
+    background-color: var(--tabs-background);
+    /* overflow-x: scroll; */
+    white-space: nowrap;
+    height: 100%;
+}

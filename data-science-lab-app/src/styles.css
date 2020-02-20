@@ -12,6 +12,14 @@
     --welcome-options-faded: #CCC;
     --sidebar-background: #505050;
     --sidebar-word: #FFF;
+    --sidebar-icon: #707070;
+    --sidebar-icon-active: #FFF;
+    --sidebar-icon-hover: #A0A0A0;
+    --sidebar-list-background: #353535;
+    --sidebar-list-background-hover: #ffffff40;
+    --sidebar-list-header-selected: #3655B5;
+    --sidebar-list-card-hover: #606060;
+    --sidebar-list-card-selected: #707070;
     --tabs-background: #404040;
     --tabs-word: #FFF;
     --report-word: #fff;
@@ -40,6 +48,12 @@
     --dropdown-list-hover: #505050;
     --dropdown-word: #fff;
     --create-experiment-desc-background: #505050;
+
+    --tabs-height: 40px;
+    --tabs-actual-height: 42px;
+    --sidebar-expanded-width: 300px;
+    --sidebar-list-header-icon-width: 20px;
+    --sidebar-scroll-width: 20px;
 }
 
 body, p {
@@ -311,6 +325,7 @@ input.accent4:focus, textarea.accent4:focus {
 .pointer {
     cursor: pointer;
 }
+
 
 .list-unstyled {
     list-style: none;
@@ -702,6 +717,14 @@ input.accent4:focus, textarea.accent4:focus {
     width: 100%;
 }
 
+.h-100 {
+    height: 100%;
+}
+
 .w-100v {
     width: 100vw;
+}
+
+.h-100v {
+    height: 100vh;
 }

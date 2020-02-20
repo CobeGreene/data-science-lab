@@ -15,10 +15,12 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
 
   onKeypress = (event: KeyboardEvent): void => {
     const shortcut = this.getShortcut(event);
+    
     this.shortcutService.runAction(shortcut);
   }
-
+  
   onKeyup = (event: KeyboardEvent): void => {
+    // console.log(event.key, event);
     const lowercase = event.key.toLowerCase();
     if (lowercase === 'escape' || lowercase.startsWith('f') || lowercase.startsWith('arrow')) {
       const shortcut = this.getShortcut(event);
@@ -35,6 +37,7 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
   }
 
   getShortcut(event: KeyboardEvent): string {
+    // tslint:disable-next-line: deprecation
     let shortcut = '';
     if (event.ctrlKey && event.key !== 'Control') {
       shortcut += 'ctrl + ';
@@ -46,7 +49,7 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
       shortcut += 'alt + ';
     }
 
-    shortcut += event.key.toLocaleLowerCase();
+    shortcut += event.code.toLocaleLowerCase();
 
     return shortcut;
   }

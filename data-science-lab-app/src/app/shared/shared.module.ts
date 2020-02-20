@@ -8,13 +8,15 @@ import { ModalComponent } from './modal/modal.component';
 import { ModalHeaderComponent } from './modal/modal-header/modal-header.component';
 import { ModalCloseComponent } from './modal/modal-close/modal-close.component';
 import { CreateExperimentComponent } from './experiment/create-experiment/create-experiment.component';
+import { IncompletePipe } from './pipes/incomplete.pipe';
 
 @NgModule({
     declarations: [
         ModalComponent,
         ModalHeaderComponent,
         ModalCloseComponent,
-        CreateExperimentComponent
+        CreateExperimentComponent,
+        IncompletePipe,
     ],
     imports: [
         CommonModule,
@@ -29,6 +31,7 @@ import { CreateExperimentComponent } from './experiment/create-experiment/create
         ModalHeaderComponent,
         ModalCloseComponent,
         CreateExperimentComponent,
+        IncompletePipe,
         CommonModule,
         AngularFontAwesomeModule,
         FormsModule,

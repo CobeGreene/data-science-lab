@@ -1,0 +1,28 @@
+:host {
+    max-height: 100vh;
+    transition: max-height 0.7s linear;
+    overflow-y: scroll;
+    background-color: var(--sidebar-list-background);
+}
+
+:host(.hidden) {
+    transition: max-height 0.3s linear;
+    max-height: 0vh !important;
+    overflow: hidden;
+}
+
+:host()::-webkit-scrollbar {
+    width: var(--sidebar-scroll-width);
+}
+
+:host()::-webkit-scrollbar-track {
+    background-color: var(--sidebar-list-background);
+}
+
+:host()::-webkit-scrollbar-thumb {
+    background: var(--sidebar-list-background);
+}
+
+:host():hover::-webkit-scrollbar-thumb {
+    background: var(--sidebar-list-background-hover);
+}

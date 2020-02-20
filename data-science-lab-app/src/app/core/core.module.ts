@@ -15,6 +15,20 @@ import { AppCoreAreaService } from '../services/core-area-service/app-core-area.
 import { AppFocusService, FocusService } from '../services/focus-service';
 import { ShortcutComponent } from './shortcut/shortcut.component';
 import { OverlayService, AppOverlayService } from '../services/overlay-service';
+import { SidebarExperimentComponent } from './areas/sidebar/sidebar-experiment/sidebar-experiment.component';
+import { SidebarHeaderComponent } from './areas/sidebar/sidebar-header/sidebar-header.component';
+import { SidebarListBodyComponent } from './areas/sidebar/sidebar-list-body/sidebar-list-body.component';
+import { SidebarListCardComponent } from './areas/sidebar/sidebar-list-card/sidebar-list-card.component';
+import { SidebarListHeaderComponent } from './areas/sidebar/sidebar-list-header/sidebar-list-header.component';
+import {
+    SidebarExperimentCreateComponent
+} from './areas/sidebar/sidebar-experiment/sidebar-experiment-create/sidebar-experiment-create.component';
+import {
+    SidebarExperimentCardComponent
+} from './areas/sidebar/sidebar-experiment/sidebar-experiment-card/sidebar-experiment-card.component';
+import { ExperimentService } from '../services/experiment-service/experiment.service';
+import { AppExperimentService } from '../services/experiment-service/app-experiment.service';
+import { SidebarService, AppSidebarService } from '../services/sidebar-service';
 
 @NgModule({
     declarations: [
@@ -22,7 +36,14 @@ import { OverlayService, AppOverlayService } from '../services/overlay-service';
         SidebarComponent,
         WorkspaceAreaComponent,
         TabsComponent,
-        ShortcutComponent
+        ShortcutComponent,
+        SidebarExperimentComponent,
+        SidebarHeaderComponent,
+        SidebarListBodyComponent,
+        SidebarListCardComponent,
+        SidebarListHeaderComponent,
+        SidebarExperimentCreateComponent,
+        SidebarExperimentCardComponent
     ],
     imports: [
         SharedModule,
@@ -42,6 +63,8 @@ import { OverlayService, AppOverlayService } from '../services/overlay-service';
         { provide: CoreAreaService, useClass: AppCoreAreaService },
         { provide: FocusService, useClass: AppFocusService },
         { provide: OverlayService, useClass: AppOverlayService },
+        { provide: ExperimentService, useClass: AppExperimentService },
+        { provide: SidebarService, useClass: AppSidebarService }
     ]
 })
 export class CoreModule {
