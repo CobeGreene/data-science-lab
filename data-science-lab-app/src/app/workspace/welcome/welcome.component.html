@@ -1,0 +1,16 @@
+<div class="header">
+    <h1 class="title">
+        <em>
+            DATA SCIENCE LAB
+        </em>
+    </h1>
+</div>
+<div class="options pointer pr-2">
+    <h2 class="option" (click)="onCreateExperiment($event)" [ngClass]="{ 'selected': selected === 0 && inFocus, 'faded': selected === 0 && !inFocus }">Create Experiment</h2>
+    <h2 class="option" [ngClass]="{ 'selected': selected === 1 && inFocus, 'faded': selected === 0 && !inFocus }">Load Experiment</h2>
+    <h2 class="option" [ngClass]="{ 'selected': selected === 2 && inFocus, 'faded': selected === 0 && !inFocus }">Shortcuts</h2>
+    <h2 class="option" (click)="onGoToSettings()" [ngClass]="{ 'selected': selected === 3 && inFocus, 'faded': selected === 0 && !inFocus }">Settings</h2>
+    <h2 class="option" [ngClass]="{ 'selected': selected === 4 && inFocus, 'faded': selected === 0 && !inFocus }">Quit</h2>
+</div>
+<div class="logo"></div>
+<app-create-experiment #createCmp></app-create-experiment>

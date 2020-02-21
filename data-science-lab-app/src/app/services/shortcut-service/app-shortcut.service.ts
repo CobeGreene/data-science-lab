@@ -15,9 +15,8 @@ export class AppShortcutService extends ShortcutService {
         } else {
             this.observers[shortcut] = new Array<() => void>(action);
             this.shortcuts.push({
-                key: shortcut,
-                preventDefault: true,
-                command: _ => this.runAction(shortcut)
+                shortcut,
+                command: () => this.runAction(shortcut)
             });
         }
     }    

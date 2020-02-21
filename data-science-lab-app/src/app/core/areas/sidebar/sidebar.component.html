@@ -1,0 +1,34 @@
+<div class="extended" *ngIf="isExpanded">
+    <app-sidebar-experiment class="h-100v"></app-sidebar-experiment>
+</div>
+<div class="icons">
+    <div class="space"></div>
+    <ul class="list-unstyled">
+        <li class="text-center icon my-2 px-4" (click)='onPick("experiments", $event)'
+            [ngClass]="{ 'active': choice === 'experiments' }">
+            <fa name="flask" size="2x" title="experiments"></fa>
+        </li>
+        <li class="text-center icon my-2 px-4" (click)='onPick("data", $event)'
+            [ngClass]="{ 'active': choice === 'data' }">
+            <fa name="database" size="2x" title="data"></fa>
+        </li>
+        <li class="text-center icon my-2 px-4" (click)='onPick("visuals", $event)'
+            [ngClass]="{ 'active': choice === 'visuals' }">
+            <fa name="bar-chart" size="2x" title="visuals"></fa>
+        </li>
+        <li class="text-center icon my-2 px-4" (click)='onPick("algorithms", $event)'
+            [ngClass]="{ 'active': choice === 'algorithms' }">
+            <fa name="code" size="2x" title="algorithms"></fa>
+        </li>
+        <li class="text-center icon my-2 px-4" (click)='onPick("packages", $event)'
+            [ngClass]="{ 'active': choice === 'packages' }">
+            <fa name="puzzle-piece" size="2x" title="packages"></fa>
+        </li>
+    </ul>
+</div>
+<div class="settings">
+    <div class="text-center icon my-2 px-4">
+        <fa name="gear" title="settings" size="2x"></fa>
+        <!-- Settings -->
+    </div>
+</div>

@@ -1,0 +1,31 @@
+:host {
+    display: inline-flex;
+    padding: 0px 10px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border-width: 0px 1px 0px 0px;
+    border-color: var(--tabs-card-border);
+    border-style: solid;
+    background-color: var(--tabs-card-background);
+}
+
+:host {
+    cursor: grab;
+}
+
+:host(.selected) {
+    background-color: var(--workspace-background);
+}
+
+:host(.selected) .close {
+    color: var(--tabs-word);
+}
+
+.close {
+    color: var(--tabs-card-background);
+}
+
+:host:hover .close {
+    color: var(--tabs-word);
+}

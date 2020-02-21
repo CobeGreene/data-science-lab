@@ -1,0 +1,43 @@
+:host {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content auto auto auto auto auto 1fr;
+    grid-template-areas: 
+        'header'
+        'create'
+        'open-experiments-header'
+        'open-experiments-list'
+        'saved-experiments-header'
+        'saved-experiments-list'
+        'bottom';
+}
+
+.header {
+    grid-area: header;
+}
+
+.create {
+    grid-area: create;
+}
+
+.open-experiments-header {
+    grid-area: open-experiments-header;
+}
+
+.open-experiments-list {
+    grid-area: open-experiments-list;
+}
+
+.saved-experiments-header {
+    grid-area: saved-experiments-header;
+}
+
+.saved-experiments-list {
+    grid-area: saved-experiments-list;
+}
+
+.bottom {
+    grid-area: bottom;
+    background-color: var(--sidebar-list-background);
+}
+

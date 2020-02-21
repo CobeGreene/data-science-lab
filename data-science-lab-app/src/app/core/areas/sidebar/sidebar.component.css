@@ -1,0 +1,51 @@
+.space {
+    height: var(--tabs-height) !important;
+}
+
+:host() {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr 1fr min-content;
+    grid-template-areas: 'extended icons' 'extended icons' 'extended settings';
+    height: 100%;
+}
+
+.extended {
+    grid-area: extended;
+    width: var(--sidebar-expanded-width);
+}
+
+.icons {
+    grid-area: icons;
+}
+
+.settings {
+    grid-area: settings;
+}
+
+.icon {
+    color: var(--sidebar-icon);
+    border-right: 2px solid transparent;
+}
+
+
+.icon:hover {
+    color: var(--sidebar-icon-hover);
+}
+
+.icon.active {
+    color: var(--sidebar-icon-active);
+}
+
+.icon:hover.active {
+    color: var(--sidebar-icon-active);  
+}
+
+.icon.active {
+    border-right: 2px solid var(--sidebar-icon-active);
+}
+
+.icon:hover.active {
+    border-right: 2px solid var(--sidebar-icon-active);
+}
+

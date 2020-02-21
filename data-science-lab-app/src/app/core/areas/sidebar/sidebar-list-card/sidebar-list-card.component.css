@@ -1,0 +1,11 @@
+.card:hover {
+    background-color: var(--sidebar-list-card-hover);
+}
+
+:host(.selected) > .card {
+    background-color: var(--sidebar-list-card-selected);
+}
+
+:host(.faded)> .card {
+    background-color: var(--sidebar-list-card-hover);
+}

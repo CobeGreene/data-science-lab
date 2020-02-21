@@ -15,10 +15,10 @@ export class RoutingPipeline {
     initialize() {
         this.serviceModelRoutes.forEach((serviceModelRoutes: ServiceModelRoutes) => {
             serviceModelRoutes.routes.forEach((route: Route) => {
-                this.ipc.on(this.getPath(route), (_event: string, listener: Listener) => {
-                    const producer = new Producer(this.serviceContainer);
+                this.ipc.on(this.getPath(route), (_event: string, ...args: any) => {
+                    const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
                     const service = this.serviceContainer.resolve(serviceModelRoutes.service, producer);
-                    service[route.method](listener);
+                    service[route.method](...args);
                 });
 
             });

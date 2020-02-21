@@ -1,13 +1,8 @@
 {
-    "title": "Electron Setting Saids Hi",
     "api-settings": {
         "protocol": "https:",
         "hostname": "localhost",
         "port": 44339,
         "pathPackages": "/api/packages"
-    },
-    "data-group-settings": {
-        "numOfExamples": 10,
-        "numOfFeatures": 5
     }
 }

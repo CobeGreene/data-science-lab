@@ -1,1 +1,17 @@
+<div class="container">
+    <div class="tabs">
+        <app-tabs></app-tabs>
+    </div>
+    <div class="workspace" (touch)="onFocusWorkspace($event)" (click)="onFocusWorkspace($event)" (resized)="onResized()" #workspaceCmp>
+        <app-workspace-area>
+            <router-outlet></router-outlet>
+        </app-workspace-area>
+    </div>
+    <div class="sidebar">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="report">
+        <app-report></app-report>
+    </div>
+</div>
 <app-shortcut></app-shortcut>

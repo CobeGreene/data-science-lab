@@ -1,0 +1,16 @@
+:host {
+    display: flex;
+    align-items: center;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+:host(.selected) {
+    border: 2px solid var(--sidebar-list-header-selected);
+}
+
+.icon {
+    display: inline-block;
+    width: var(--sidebar-list-header-icon-width);
+    text-align: right;
+}
