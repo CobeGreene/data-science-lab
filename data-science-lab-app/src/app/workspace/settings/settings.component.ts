@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Setting } from '../../../../shared/models';
 
 @Component({
   selector: 'app-settings',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor() { }
+  settings: Setting[];
+
+  constructor() {
+    this.settings = [];
+   }
 
   ngOnInit() {
   }
