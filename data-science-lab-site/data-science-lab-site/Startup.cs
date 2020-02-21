@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using data_science_lab_site.Constants;
 using data_science_lab_site.Data;
@@ -12,10 +14,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace data_science_lab_site
 {
@@ -38,9 +42,11 @@ namespace data_science_lab_site
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var connectionString = System.Environment.GetEnvironmentVariable("DATA_SCIENCE_LAB_CONN_STR");
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    connectionString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
@@ -65,7 +71,12 @@ namespace data_science_lab_site
         {
             services.Configure<PackageOptions>(Configuration.GetSection(nameof(PackageOptions)));
 
+            services.AddTransient(options =>
+            {
+                return JsonConvert.DeserializeObject<GmailOptions>(Environment.GetEnvironmentVariable("DATA_SCIENCE_LAB_GMAIL"));
+            });
             services.AddTransient<IPackageService, PackageService>();
+            services.AddTransient<IEmailSender, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,7 +101,7 @@ namespace data_science_lab_site
             app.UseAuthentication();
 
             app.UseMvc();
-            //Seed(userManager, roleManager, context).Wait();
+            //Seed(userManager, roleManager, context, authService).Wait();
         }
 
         public async Task Seed(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
@@ -105,6 +116,7 @@ namespace data_science_lab_site
             {
                 await roleManager.CreateAsync(new IdentityRole(IdentityRoleConstants.Contributor));
             }
+
         }
     }
 }

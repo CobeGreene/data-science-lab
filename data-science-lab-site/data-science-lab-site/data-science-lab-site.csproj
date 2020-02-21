@@ -9,6 +9,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191018202347_Remove integer id from PluginPackage.cs" />
     <Compile Remove="Migrations\20191018202347_Remove integer id from PluginPackage.Designer.cs" />
+    <Compile Remove="Migrations\20200220231400_Add Tokens To Context.cs" />
+    <Compile Remove="Migrations\20200220231400_Add Tokens To Context.Designer.cs" />
   </ItemGroup>
 
 
