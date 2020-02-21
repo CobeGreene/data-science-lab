@@ -20,6 +20,13 @@ export abstract class ExperimentService extends Service {
         this.experimentDeleted = new Subject<number>();
     }
 
+    destorySubjects() {
+        this.experimentsChanged.complete();
+        this.experimentUpdated.complete();
+        this.experimentCreated.complete();
+        this.experimentDeleted.complete();
+    }
+
     abstract all(): Experiment[];
     abstract create(title: string, description?: string): void;
     abstract get(id: number): Experiment;

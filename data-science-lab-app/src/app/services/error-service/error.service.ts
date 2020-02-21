@@ -11,4 +11,8 @@ export abstract class ErrorService extends Service {
 
         this.errorCreated = new Subject<any>();
     }
+
+    destorySubjects() {
+        this.errorCreated.complete();
+    }
 }

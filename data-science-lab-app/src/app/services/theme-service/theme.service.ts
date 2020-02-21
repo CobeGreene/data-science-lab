@@ -12,5 +12,9 @@ export abstract class ThemeService extends Service {
         this.themeChanged = new Subject<void>();
     }
 
+    destorySubjects() {
+        this.themeChanged.complete();
+    }
+
     abstract getColor(path: string): string;
 }

@@ -11,7 +11,10 @@ export abstract class Service implements OnDestroy {
     
     abstract unregisterEvents();
 
+    abstract destorySubjects();
+
     ngOnDestroy() {
         this.unregisterEvents();
+        this.destorySubjects();
     }
 }
