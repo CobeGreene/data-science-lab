@@ -1,1 +1,8 @@
-<div class="tabs"></div>
+<div class="tabs tab-font" *ngIf="selected !== -1" (dragover)="onAllowDrop($event)" (drop)="onDrop($event, 'tabs', -1)">
+    <ng-container *ngFor="let tab of tabs; let i = index">
+        <app-tab-card [ngClass]="{'selected': selected === i }" (dragstart)="onDrag($event, i)"
+            (drop)="onDrop($event, 'tabs', i)" [tab]="tab" draggable="true" (click)="onSelected($event, i)" #tabCmp>
+        </app-tab-card>
+    </ng-container>
+</div>
+<app-tab-options class="options" *ngIf="selected !== -1"></app-tab-options>

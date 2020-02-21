@@ -5,11 +5,13 @@ import { SharedModule } from '../shared/shared.module';
 import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { WorkspaceService, AppWorkspaceService } from '../services/workspace-service';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
     declarations: [
         WorkspaceComponent,
-        WelcomeComponent
+        WelcomeComponent,
+        SettingsComponent
     ],
     imports: [
         CommonModule,

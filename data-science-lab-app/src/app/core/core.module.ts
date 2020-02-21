@@ -30,6 +30,11 @@ import { ExperimentService, AppExperimentService } from '../services/experiment-
 import { SidebarService, AppSidebarService } from '../services/sidebar-service';
 import { NotificationService, AppNotificationService } from '../services/notification-service';
 import { ErrorService, AppErrorService } from '../services/error-service';
+import { TabCardComponent } from './areas/tabs/tab-card/tab-card.component';
+import { TabOptionsComponent } from './areas/tabs/tab-options/tab-options.component';
+import { RouterService, AppRouterService } from '../services/router-service';
+import { TabService, AppTabService } from '../services/tab-service';
+import { TabFactory, AppTabFactory } from '../factory/tab-factory';
 
 @NgModule({
     declarations: [
@@ -44,7 +49,9 @@ import { ErrorService, AppErrorService } from '../services/error-service';
         SidebarListCardComponent,
         SidebarListHeaderComponent,
         SidebarExperimentCreateComponent,
-        SidebarExperimentCardComponent
+        SidebarExperimentCardComponent,
+        TabCardComponent,
+        TabOptionsComponent
     ],
     imports: [
         SharedModule,
@@ -60,6 +67,9 @@ import { ErrorService, AppErrorService } from '../services/error-service';
         { provide: ShortcutService, useClass: AppShortcutService },
         { provide: IpcService, useClass: AppIpcService },
         { provide: Messenger, useClass: Messenger },
+        { provide: RouterService, useClass: AppRouterService },
+        { provide: TabService, useClass: AppTabService },
+        { provide: TabFactory, useClass: AppTabFactory },
         { provide: ThemeService, useClass: AppThemeService },
         { provide: CoreAreaService, useClass: AppCoreAreaService },
         { provide: FocusService, useClass: AppFocusService },
@@ -67,7 +77,7 @@ import { ErrorService, AppErrorService } from '../services/error-service';
         { provide: ExperimentService, useClass: AppExperimentService },
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: NotificationService, useClass: AppNotificationService },
-        { provide: ErrorService, useClass: AppErrorService }
+        { provide: ErrorService, useClass: AppErrorService }, 
     ]
 })
 export class CoreModule {

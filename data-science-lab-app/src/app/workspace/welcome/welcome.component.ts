@@ -5,6 +5,9 @@ import { ShortcutService } from '../../services/shortcut-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { FocusAreas } from '../../constants';
 import { ModalComponent } from '../../shared/modal/modal.component';
+import { TabService } from '../../services/tab-service';
+import { RouterService } from '../../services/router-service';
+import { TabFactory } from '../../factory/tab-factory';
 
 @Component({
   selector: 'app-welcome',
@@ -21,7 +24,10 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private focusService: FocusService,
     private workspaceService: WorkspaceService,
-    private shortcutService: ShortcutService
+    private shortcutService: ShortcutService,
+    private routerService: RouterService,
+    private tabService: TabService,
+    private tabFactory: TabFactory,
   ) { }
 
   ngOnInit() {
@@ -37,7 +43,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.shortcutService.subscribe('arrowup', this.onMoveUp);
     this.shortcutService.subscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.subscribe('enter',   this.onEnter);
+    this.shortcutService.subscribe('enter', this.onEnter);
   }
 
   onMoveUp = () => {
@@ -64,6 +70,8 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.inFocus) {
       if (this.selected === 0) {
         this.onCreateExperiment(new MouseEvent('click'));
+      } else if (this.selected === 3) {
+        this.onGoToSettings();
       }
     }
   }
@@ -72,11 +80,20 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.createComponent.open(event);
   }
 
+  onGoToSettings() {
+    const tab = this.tabFactory.create(['settings']);
+    if (this.routerService.current() === '/') {
+      this.tabService.openTab(tab);
+    } else {
+      this.tabService.replaceTab(this.routerService.current(), tab);
+    }
+  }
+
   ngOnDestroy() {
     this.workspaceService.set('/welcome', { selected: this.selected });
     this.shortcutService.unsubscribe('arrowup', this.onMoveUp);
     this.shortcutService.unsubscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.unsubscribe('enter',   this.onEnter);
+    this.shortcutService.unsubscribe('enter', this.onEnter);
   }
 
 }
