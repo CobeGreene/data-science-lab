@@ -10,9 +10,9 @@ export class AppSidebarService extends SidebarService {
     }
 
     get<T>(name: string, defaultValue?: T) {
-        if (this.values[name]) {
+        if (this.values[name] !== undefined) {
             return this.values[name] as T;
-        } else if (defaultValue) {
+        } else if (defaultValue !== undefined) {
             this.values[name] = defaultValue;
             return defaultValue;
         } else {

@@ -19,7 +19,7 @@ describe('Angular App Sidebar Service', () => {
         }).toThrowError();
     });
 
-    it('set should set value in workspace', () => {
+    it('set should set value in sidebar', () => {
         service.set('value', 0);
         const value = service.get('value');
         expect(value).toBe(0);
