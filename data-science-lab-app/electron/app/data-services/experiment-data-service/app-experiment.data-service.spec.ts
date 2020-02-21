@@ -47,7 +47,7 @@ describe('Electron App Experiment Data Service', () => {
     it('should throw for get of 2', () => {
         expect(() => {
             dataService.get(2);
-        }).toThrowError();
+        }).toThrow();
     });
 
     it('should call context set with zero experiments after delete', (done) => {
@@ -61,7 +61,7 @@ describe('Electron App Experiment Data Service', () => {
     it('should throw for delete of 2', () => {
         expect(() => {
             dataService.delete(2);
-        }).toThrowError();
+        }).toThrow();
     });
 
     it('should create for post with id of 2', () => {
@@ -112,7 +112,7 @@ describe('Electron App Experiment Data Service', () => {
                 title: 'New Title',
                 description: 'Description'
             }); 
-        }).toThrowError();
+        }).toThrow();
     });
 
 

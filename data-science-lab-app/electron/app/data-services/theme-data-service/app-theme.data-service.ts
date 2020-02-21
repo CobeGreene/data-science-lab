@@ -4,6 +4,7 @@ import { ThemeDataService } from './theme.data-service';
 import { SettingsContext } from '../../contexts/settings-context';
 import * as fs from 'fs';
 import { ThemeEvents } from '../../../../shared/events';
+import { SystemError, ErrorTypes } from '../../../../shared/errors';
 
 export class AppThemeDataService extends Service implements ThemeDataService {
 
@@ -12,8 +13,8 @@ export class AppThemeDataService extends Service implements ThemeDataService {
 
     get producer(): Producer {
         return this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
-    } 
-    
+    }
+
     get context(): SettingsContext {
         return this.serviceContainer.resolve<SettingsContext>(SERVICE_TYPES.SettingsContext);
     }
@@ -21,18 +22,45 @@ export class AppThemeDataService extends Service implements ThemeDataService {
     constructor(serviceContainer: ServiceContainer) {
         super(serviceContainer);
     }
-    
+
     configure() {
-        this.watcher = fs.watch(this.context.get<string>(this.key), (event, current) => {
-            this.producer.send(ThemeEvents.Change);
-        });       
+        const path = this.context.get<string>(this.key);
+        if (fs.existsSync(path)) {
+            this.watcher = fs.watch(path, (event, current) => {
+                this.producer.send(ThemeEvents.Change);
+            });
+        }
     }
 
     current() {
         const path = this.context.get<string>(this.key);
-        const file = fs.readFileSync(path);
-        const json = JSON.parse(`${file}`);
-        return json;
+        if (fs.existsSync(path)) {
+            const file = fs.readFileSync(path);
+            try {
+                const json = JSON.parse(`${file}`);
+                return json;
+            } catch (error) {
+                throw this.parseError(error, path);
+            }
+        } else {
+            throw this.notFound(path);
+        }
+    }
+
+    parseError(error: SyntaxError, path: string): SystemError {
+        return {
+            header: 'Color Theme Error',
+            description: `File: ${path}, Error: ${error.message} Will use default theme instead.`,
+            type: ErrorTypes.Warning
+        };
+    }
+
+    notFound(path: string): SystemError {
+        return {
+            header: 'Color Theme Error',
+            description: `Couldn't find color theme '${path}'. Will use default theme instead.`,
+            type: ErrorTypes.Warning
+        };
     }
 
 

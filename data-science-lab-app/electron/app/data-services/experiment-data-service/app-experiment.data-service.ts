@@ -3,6 +3,7 @@ import { ExperimentDataService } from './experiment.data-service';
 import { Experiment, ExperimentState } from '../../../../shared/models';
 import { SettingsContext } from '../../contexts/settings-context';
 import { IdGenerator } from '../../data-structures';
+import { SystemError, ErrorTypes } from '../../../../shared/errors';
 
 export class AppExperimentDataService extends Service implements ExperimentDataService {
     private readonly key = 'experiments';
@@ -44,15 +45,15 @@ export class AppExperimentDataService extends Service implements ExperimentDataS
     get(id: number) {
         const find = this.experiments.find(value => value.id === id);
         if (find === undefined) {
-            throw new Error(`Couldn't find experiment with id ${id}.`);
-        }
+            throw this.notFound(id); 
+        } 
         return find;
     }
 
     delete(id: number) {
         const find = this.experiments.findIndex((value) => value.id === id);
         if (find < 0) {
-            throw new Error(`Couldn't find experiment with id ${id}.`);
+            throw this.notFound(id); 
         }
         this.experiments.splice(find, 1);
         this.save();
@@ -68,10 +69,18 @@ export class AppExperimentDataService extends Service implements ExperimentDataS
     update(experiment: Experiment) {
         const find = this.experiments.findIndex((value) => value.id === experiment.id);
         if (find < 0) {
-            throw new Error(`Couldn't find experiment with id ${experiment.id}.`);
+            throw this.notFound(experiment.id); 
         }
         this.experiments.splice(find, 1, experiment);
         this.save();
+    }
+
+    notFound(id: number): SystemError {
+        return {
+            header: 'Experiment Data Service',
+            description: `Couldn't find experiment with id ${id}.`,
+            type: ErrorTypes.Error
+        };        
     }
 }
 

@@ -13,12 +13,9 @@ describe('Electron App Theme Data Service', () => {
     let context: SettingsContext;
     const json = { value: 'value' };
     const jsonPath = path.join(__dirname, 'app-theme-data-service.json');
-
-    beforeAll(() => {
-        fs.writeFileSync(jsonPath, `${JSON.stringify(json)}`);
-    });
-
+    
     beforeEach(() => {
+        fs.writeFileSync(jsonPath, `${JSON.stringify(json)}`);
         producer = jasmine.createSpyObj('Producer', ['send']);
         
         context = jasmine.createSpyObj('SettingsContext', ['get']);
@@ -48,6 +45,20 @@ describe('Electron App Theme Data Service', () => {
             done();
         });
         fs.appendFileSync(jsonPath, ' ');
+    });
+
+    it('should throw error for changing the file to have json error', () => {
+        fs.appendFileSync(jsonPath, '}');
+        expect(() => {
+            dataService.current();
+        }).toThrow();
+    });
+
+    it('should throw error for file not found', () => {
+        fs.unlinkSync(jsonPath);
+        expect(() => {
+            dataService.current();
+        }).toThrow();
     });
 
 });
