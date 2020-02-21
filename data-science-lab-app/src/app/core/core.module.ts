@@ -26,11 +26,10 @@ import {
 import {
     SidebarExperimentCardComponent
 } from './areas/sidebar/sidebar-experiment/sidebar-experiment-card/sidebar-experiment-card.component';
-import { ExperimentService } from '../services/experiment-service/experiment.service';
-import { AppExperimentService } from '../services/experiment-service/app-experiment.service';
+import { ExperimentService, AppExperimentService } from '../services/experiment-service';
 import { SidebarService, AppSidebarService } from '../services/sidebar-service';
-import { NotificationService } from '../services/notification-service/notification.service';
-import { AppNotificationService } from '../services/notification-service/app-notification.service';
+import { NotificationService, AppNotificationService } from '../services/notification-service';
+import { ErrorService, AppErrorService } from '../services/error-service';
 
 @NgModule({
     declarations: [
@@ -67,7 +66,8 @@ import { AppNotificationService } from '../services/notification-service/app-not
         { provide: OverlayService, useClass: AppOverlayService },
         { provide: ExperimentService, useClass: AppExperimentService },
         { provide: SidebarService, useClass: AppSidebarService },
-        { provide: NotificationService, useClass: AppNotificationService }
+        { provide: NotificationService, useClass: AppNotificationService },
+        { provide: ErrorService, useClass: AppErrorService }
     ]
 })
 export class CoreModule {

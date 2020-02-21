@@ -3,6 +3,7 @@ import { ServiceContainer, AppServiceContainer, SERVICE_TYPES, Service } from '.
 import { RoutingPipeline, Producer } from './pipeline';
 import { AppIpcService } from './ipc-services';
 import { IpcService } from '../../shared/services';
+import { ErrorEvent } from '../../shared/events';
 import { SettingsContext, AppSettingsContext } from './contexts/settings-context';
 import { ThemeDataService, AppThemeDataService } from './data-services/theme-data-service';
 import { ThemeServiceModel } from './services/theme.sm/theme.sm';
@@ -82,7 +83,12 @@ export class App {
         });
 
         process.on('uncaughtException', (error) => {
-            console.warn(`uncaught exception ${error.name}, ${error.message}`);
+            if (error instanceof Error) {
+                console.log('uncaught error', error.message, error.name);
+            } else {
+                const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
+                producer.send(ErrorEvent, error);
+            }
         });
     }
 }

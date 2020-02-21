@@ -10,6 +10,7 @@ export class AppThemeDataService extends Service implements ThemeDataService {
 
     private readonly key = 'color-theme';
     private watcher: fs.FSWatcher;
+    private watching: boolean;
 
     get producer(): Producer {
         return this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
@@ -27,6 +28,13 @@ export class AppThemeDataService extends Service implements ThemeDataService {
         const path = this.context.get<string>(this.key);
         if (fs.existsSync(path)) {
             this.watcher = fs.watch(path, (event, current) => {
+                if (this.watching) {
+                    return;
+                }
+                this.watching = true;
+                setTimeout(() => {
+                    this.watching = false;
+                }, 100);
                 this.producer.send(ThemeEvents.Change);
             });
         }

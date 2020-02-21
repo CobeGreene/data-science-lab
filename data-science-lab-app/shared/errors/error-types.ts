@@ -1,5 +1,5 @@
 export enum ErrorTypes {
-    Warning = 'Warning',
-    Error = 'Error',
-    Info = 'Info'
+    Warning = 'warning',
+    Error = 'error',
+    Info = 'info'
 }
