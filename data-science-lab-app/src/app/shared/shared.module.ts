@@ -9,6 +9,7 @@ import { ModalHeaderComponent } from './modal/modal-header/modal-header.componen
 import { ModalCloseComponent } from './modal/modal-close/modal-close.component';
 import { CreateExperimentComponent } from './experiment/create-experiment/create-experiment.component';
 import { IncompletePipe } from './pipes/incomplete.pipe';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import { IncompletePipe } from './pipes/incomplete.pipe';
         ModalCloseComponent,
         CreateExperimentComponent,
         IncompletePipe,
+        NotificationComponent,
     ],
     imports: [
         CommonModule,
@@ -25,6 +27,9 @@ import { IncompletePipe } from './pipes/incomplete.pipe';
         AngularResizedEventModule,
         ReactiveFormsModule,
         OverlayModule,
+    ],
+    entryComponents: [
+        NotificationComponent
     ],
     exports: [
         ModalComponent,

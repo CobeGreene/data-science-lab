@@ -9,6 +9,7 @@ export const enum SERVICE_TYPES {
     // Service Models
     ExperimentServiceModel,
     ThemeServiceModel,
+    OpenLinkServiceModel,
     // Data Services
     ExperimentDataService,
     ThemeDataService,

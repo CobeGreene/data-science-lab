@@ -1,0 +1,13 @@
+<div class="notification m-5" [ngClass]="notification.type">
+    <div class="header">
+        <h1 class="m-0 px-1 pt-1 pb-0">{{ notification.header }}</h1>
+        <button type="button" (click)="onExit($event)">
+            <span class="exit">&times;</span>
+        </button>
+    </div>
+    <hr>
+    <p class="m-0 px-1 pb-1 pt-0">{{ notification.message }}</p>
+    <button class="float-right" type="button" *ngIf="notification.action !== undefined">
+        {{ notification.action.label }}
+    </button>
+</div>
