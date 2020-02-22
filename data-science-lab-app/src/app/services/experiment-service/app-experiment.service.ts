@@ -8,7 +8,7 @@ import { ExperimentEvents } from '../../../../shared/events';
 @Injectable()
 export class AppExperimentService extends ExperimentService {
 
-    experiments: Experiment[];
+    private experiments: Experiment[];
 
     constructor(messeger: Messenger, zone: NgZone) {
         super(messeger, zone);

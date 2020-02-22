@@ -20,7 +20,7 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
   }
   
   onKeyup = (event: KeyboardEvent): void => {
-    // console.log(event.key, event);
+    
     const lowercase = event.key.toLowerCase();
     if (lowercase === 'escape' || lowercase.startsWith('f') || lowercase.startsWith('arrow')) {
       const shortcut = this.getShortcut(event);

@@ -25,7 +25,8 @@
     "shared/events",
     "shared/shortcuts",
     "shared/models",
-    "shared/errors"
+    "shared/errors",
+    "shared/settings"
   ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

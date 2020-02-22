@@ -36,19 +36,20 @@ export class AppTabService extends TabService {
         const find = this.tabs.findIndex(value => value.route === route);
         if (find >= 0) {
             this.closeTab(this.tabs[find]);
-            let alreadyOpen = this.tabs.findIndex((value) => {
-                return value.route === tab.route;
-            });
+            let alreadyOpen = this.tabs.findIndex((value) => value.route === tab.route);
+            
             if (alreadyOpen >= 0) {
                 this.tabs.splice(find, 1);
                 if (find !== alreadyOpen) {
-                    alreadyOpen = this.tabs.findIndex((value) => {
-                        return value.route === tab.route;
-                    });
+                    alreadyOpen = this.tabs.findIndex((value) => value.route === tab.route);
+                    
                     this.closeTab(this.tabs[alreadyOpen]);
                     this.tabs.splice(alreadyOpen, 1, tab);
+                
                 } else {
+                
                     this.tabs.splice(alreadyOpen, 0, tab);
+                
                 }
                 this.tabReplaced.next({
                     tabs: this.tabs,

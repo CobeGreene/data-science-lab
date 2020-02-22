@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container h-100v" [ngClass]="{ 'rightSidebar': rightSidebar, 'leftSidebar': !rightSidebar }">
     <div class="tabs">
         <app-tabs></app-tabs>
     </div>
@@ -8,7 +8,7 @@
         </app-workspace-area>
     </div>
     <div class="sidebar">
-        <app-sidebar></app-sidebar>
+        <app-sidebar [ngClass]="{ 'rightSidebar': rightSidebar, 'leftSidebar': !rightSidebar }"></app-sidebar>
     </div>
     <div class="report">
         <app-report></app-report>

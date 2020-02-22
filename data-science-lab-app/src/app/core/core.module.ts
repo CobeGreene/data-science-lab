@@ -35,6 +35,9 @@ import { TabOptionsComponent } from './areas/tabs/tab-options/tab-options.compon
 import { RouterService, AppRouterService } from '../services/router-service';
 import { TabService, AppTabService } from '../services/tab-service';
 import { TabFactory, AppTabFactory } from '../factory/tab-factory';
+import { UserSettingService, AppUserSettingService } from '../services/user-setting-service';
+import { CreationService } from '../services/creation-service/creation.service';
+import { AppCreationService } from '../services/creation-service/app-creation.service';
 
 @NgModule({
     declarations: [
@@ -78,6 +81,8 @@ import { TabFactory, AppTabFactory } from '../factory/tab-factory';
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: NotificationService, useClass: AppNotificationService },
         { provide: ErrorService, useClass: AppErrorService }, 
+        { provide: UserSettingService, useClass: AppUserSettingService },
+        { provide: CreationService, useClass: AppCreationService },
     ]
 })
 export class CoreModule {

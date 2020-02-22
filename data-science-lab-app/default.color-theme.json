@@ -45,5 +45,13 @@
     "dropdown-shadow": "rgba(0, 0, 0, 0.1)",
     "dropdown-list-hover": "#505050",
     "dropdown-word": "#FFF",
-    "create-experiment-desc-background": "#505050"
+    "create-experiment-desc-background": "#505050",
+    "settings-title": "#FFF",
+    "settings-desc": "#DDD",
+    "settings-gear": "#AAA",
+    "settings-border": "#AAA",
+    "select-background": "#404040",
+    "select-option-background": "#505050",
+    "select-word": "#FFF",
+    "select-option-hover": "#404040"
 }

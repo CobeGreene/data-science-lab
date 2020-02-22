@@ -136,5 +136,6 @@ describe('Angular App Experiment Service', () => {
 
     afterEach(() => {
         service.unregisterEvents();
+        service.destorySubjects();
     });
 });

@@ -9,7 +9,8 @@ const routes: Routes = [
         path: '', component: WorkspaceComponent, children: [
             { path: '', component: WelcomeComponent, pathMatch: 'full' },
             { path: 'welcome', component: WelcomeComponent, pathMatch: 'full' },
-            { path: 'settings', component: SettingsComponent, pathMatch: 'full' }
+            { path: 'settings', component: SettingsComponent, pathMatch: 'full' },
+            { path: 'experiment', loadChildren: './experiment/experiment.module#ExperimentModule' }
         ]
     }
 ];

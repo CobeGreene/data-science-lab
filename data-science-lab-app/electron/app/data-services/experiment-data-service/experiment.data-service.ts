@@ -1,7 +1,7 @@
 import { Experiment } from '../../../../shared/models';
 
 export interface ExperimentDataService {
-    configure();
+    configure(): void;
     all(): Experiment[];
     post(experiment: Experiment): Experiment;
     get(id: number): Experiment;

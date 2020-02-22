@@ -10,6 +10,9 @@ import { ModalCloseComponent } from './modal/modal-close/modal-close.component';
 import { CreateExperimentComponent } from './experiment/create-experiment/create-experiment.component';
 import { IncompletePipe } from './pipes/incomplete.pipe';
 import { NotificationComponent } from './notification/notification.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
+import { SelectComponent } from './select/select.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +22,9 @@ import { NotificationComponent } from './notification/notification.component';
         CreateExperimentComponent,
         IncompletePipe,
         NotificationComponent,
+        DropdownComponent,
+        SelectComponent,
+        CheckboxComponent,
     ],
     imports: [
         CommonModule,
@@ -37,6 +43,9 @@ import { NotificationComponent } from './notification/notification.component';
         ModalCloseComponent,
         CreateExperimentComponent,
         IncompletePipe,
+        DropdownComponent,
+        SelectComponent,
+        CheckboxComponent,
         CommonModule,
         AngularFontAwesomeModule,
         FormsModule,

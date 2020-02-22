@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { TabFactory } from './tab.factory';
 import { Tab } from '../../models';
-
+import { ExperimentTabBuilder } from './experiment-tab.builder';
+import { ExperimentService } from '../../services/experiment-service';
+import { TabService } from '../../services/tab-service';
+import { RoutesHandler } from './routes-handler';
 
 @Injectable()
 export class AppTabFactory extends TabFactory {
 
-    constructor() {
+    constructor(
+        private tabService: TabService,
+        private experimentService: ExperimentService
+    ) {
         super();
     }
 
@@ -16,14 +22,33 @@ export class AppTabFactory extends TabFactory {
         }
     }
     create(routes: any[]): Tab {
-        this.validRoutes(routes);
-        if (routes[0] === 'settings') {
+        const handler = new RoutesHandler(routes);
+        if (handler.get(0) === 'settings') {
             return { name: 'Settings', route: '/settings' };
-        } else if (routes[0] === 'welcome') {
+        } else if (handler.get(0) === 'welcome') {
             return { name: 'Welcome', route: '/welcome' };
+        } else if (handler.get(0) === 'experiment') {
+            return this.createExperimentRoute(handler.skip(1));
         } else {
-            throw new Error(`Invalid route to create tab.`);
+            throw handler.invalidRoute();
         }
+    }
+
+    createExperimentRoute(handler: RoutesHandler): Tab {
+        if (handler.isNumber(0)) {
+            const experimentId = +handler.get(0);
+            const experimentTitle = this.experimentService.get(experimentId).title;
+            handler.skip(1);
+
+            const builder = new ExperimentTabBuilder(experimentId, experimentTitle, this.tabService, this)
+                .buildUpdate(this.experimentService.experimentUpdated)
+                .buildDelete(this.experimentService.experimentDeleted);
+
+            if (handler.done()) {
+                return builder.build();
+            }
+        }
+        throw handler.invalidRoute();
     }
 }
 

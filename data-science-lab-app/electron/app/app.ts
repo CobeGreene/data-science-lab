@@ -10,6 +10,8 @@ import { ThemeServiceModel } from './services/theme.sm/theme.sm';
 import { ExperimentDataService, AppExperimentDataService } from './data-services/experiment-data-service';
 import { ExperimentServiceModel } from './services/experiment.sm/experiment.sm';
 import { OpenLinkServiceModel } from './services/open-link.sm/open-link.sm';
+import { UserSettingServiceModel } from './services/user-setting.sm';
+import { AppUserSettingDataService, UserSettingDataService } from './data-services/user-setting-data-service';
 
 export let win: BrowserWindow;
 
@@ -26,16 +28,19 @@ export class App {
         this.serviceContainer.addSingleton<SettingsContext>(AppSettingsContext, SERVICE_TYPES.SettingsContext);
         this.serviceContainer.addSingleton<ThemeDataService>(AppThemeDataService, SERVICE_TYPES.ThemeDataService);
         this.serviceContainer.addSingleton<ExperimentDataService>(AppExperimentDataService, SERVICE_TYPES.ExperimentDataService);
+        this.serviceContainer.addSingleton<UserSettingDataService>(AppUserSettingDataService, SERVICE_TYPES.UserSettingDataService);
 
         this.serviceContainer.addTransient<Producer>(Producer, SERVICE_TYPES.Producer);
         this.serviceContainer.addTransient<ThemeServiceModel>(ThemeServiceModel, SERVICE_TYPES.ThemeServiceModel);
         this.serviceContainer.addTransient<ExperimentServiceModel>(ExperimentServiceModel, SERVICE_TYPES.ExperimentServiceModel);
         this.serviceContainer.addTransient<OpenLinkServiceModel>(OpenLinkServiceModel, SERVICE_TYPES.OpenLinkServiceModel);
+        this.serviceContainer.addTransient<UserSettingServiceModel>(UserSettingServiceModel, SERVICE_TYPES.UserSettingServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
             ExperimentServiceModel.routes,
-            OpenLinkServiceModel.routes
+            OpenLinkServiceModel.routes,
+            UserSettingServiceModel.routes
         ]);
     }
 
@@ -61,6 +66,8 @@ export class App {
                 preload: this.preload
             }
         });
+
+        // win.setMenu(null); to allow 
 
 
         this.configure();

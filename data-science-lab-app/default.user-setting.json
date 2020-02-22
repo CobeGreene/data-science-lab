@@ -1,0 +1,13 @@
+[
+    {
+        "key": "sidebar.location",
+        "title": "Sidebar's Location",
+        "description": "Controls the location of the sidebar. It can either be on the left or right side of the workspace.",
+        "value": "right",
+        "default": "right",
+        "choices": [
+            "left",
+            "right"
+        ]
+    }
+]
