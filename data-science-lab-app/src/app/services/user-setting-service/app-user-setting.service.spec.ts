@@ -99,14 +99,6 @@ describe('Angular App User Setting Service', () => {
         );
     });
 
-    it('change event should publish all', (done) => {
-        (messenger.publish as jasmine.Spy).and.callFake((event) => {
-            expect(event).toBe(SettingEvents.All);
-            done();
-        });
-        dict[SettingEvents.Change](SettingEvents.Change);
-    });
-
     afterEach(() => {
         service.unregisterEvents();
         service.destorySubjects();

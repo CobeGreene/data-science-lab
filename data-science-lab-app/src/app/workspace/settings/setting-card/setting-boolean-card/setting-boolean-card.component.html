@@ -1,1 +1,4 @@
-<p>setting-boolean-card works!</p>
+<app-checkbox (emitChange)="onChange($event)" [value]="setting.value" class="mr-1"></app-checkbox>
+<p class="m-0 desc">
+    {{ setting.description }}
+</p>

@@ -1,1 +1,13 @@
-<p>setting-string-card works!</p>
+<p class="m-0 desc">
+    {{ setting.description }}
+</p>
+<app-select *ngIf="setting.choices !== undefined; else text_input" [value]="setting.value" [options]="setting.choices" (emitChange)="onChange($event)"
+    class="w-100">
+</app-select>
+<ng-template #text_input>
+    <input type="text" class="w-100 accent1" value="value" [(ngModel)]="setting.value" #value="ngModel" required minlength="1" maxlength="60" #stringCmp>
+    <div *ngIf="value.invalid">
+        <div *ngIf="value.errors.required" class="invalid-feedback">Title is required</div>
+        <div *ngIf="value.errors.minlength || value.errors.maxlength" class="invalid-feedback">Title must be between 1 and 60 characters.</div>
+    </div>
+</ng-template>

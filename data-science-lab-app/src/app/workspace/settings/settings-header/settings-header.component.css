@@ -1,0 +1,11 @@
+:host(){
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--settings-border);
+    color: var(--settings-title);
+}
+
+.icon {
+    color: var(--settings-gear);
+    display: inline-block;
+}

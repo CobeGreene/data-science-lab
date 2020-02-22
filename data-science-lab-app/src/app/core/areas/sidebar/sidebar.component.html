@@ -3,26 +3,30 @@
 </div>
 <div class="icons">
     <div class="space"></div>
-    <ul class="list-unstyled">
+    <ul class='list-unstyled'>
         <li class="text-center icon my-2 px-4" (click)='onPick("experiments", $event)'
             [ngClass]="{ 'active': choice === 'experiments' }">
-            <fa name="flask" size="2x" title="experiments"></fa>
+            <fa name="flask" size="2x" title="experiments">
+            </fa>
+            <!-- Experiments -->
         </li>
-        <li class="text-center icon my-2 px-4" (click)='onPick("data", $event)'
-            [ngClass]="{ 'active': choice === 'data' }">
-            <fa name="database" size="2x" title="data"></fa>
+        <li class="text-center icon my-2 px-4" (click)='onPick("data", $event)' [ngClass]="{ 'active': choice === 'data' }">
+            <fa name="table" size="2x" title="data"></fa>
+            <!-- Data -->
         </li>
-        <li class="text-center icon my-2 px-4" (click)='onPick("visuals", $event)'
-            [ngClass]="{ 'active': choice === 'visuals' }">
-            <fa name="bar-chart" size="2x" title="visuals"></fa>
+        <li class="text-center icon my-2 px-4" (click)='onPick("visuals", $event)' [ngClass]="{ 'active': choice === 'visuals' }">
+            <fa name="bar-chart" title="visuals" size="2x"></fa>
+            <!-- Visuals -->
         </li>
         <li class="text-center icon my-2 px-4" (click)='onPick("algorithms", $event)'
             [ngClass]="{ 'active': choice === 'algorithms' }">
-            <fa name="code" size="2x" title="algorithms"></fa>
+            <fa name="code" title="algorithms" size="2x"></fa>
+            <!-- Algorithms -->
         </li>
         <li class="text-center icon my-2 px-4" (click)='onPick("packages", $event)'
             [ngClass]="{ 'active': choice === 'packages' }">
-            <fa name="puzzle-piece" size="2x" title="packages"></fa>
+            <fa name="puzzle-piece" title="packages" size="2x"></fa>
+            <!-- Packages -->
         </li>
     </ul>
 </div>

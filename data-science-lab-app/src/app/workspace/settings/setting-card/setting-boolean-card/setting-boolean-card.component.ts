@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Setting } from '../../../../../../shared/models';
 
 @Component({
   selector: 'app-setting-boolean-card',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingBooleanCardComponent implements OnInit {
 
+  @Input() setting: Setting;
+
+  @Output() emitChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onChange(value: boolean) {
+    this.emitChange.emit(value);
   }
 
 }

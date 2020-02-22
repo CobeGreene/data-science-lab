@@ -1,5 +1,5 @@
 import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
-import { ThemeDataService, AppThemeDataService } from '../../data-services/theme-data-service';
+import { ThemeDataService } from '../../data-services/theme-data-service';
 import { Producer } from '../../pipeline';
 import { ThemeServiceModel } from './theme.sm';
 import { ThemeEvents } from '../../../../shared/events';
@@ -28,7 +28,6 @@ describe('Electron Theme Service Model', () => {
     });
 
     it('current should call producer and data service', () => {
-        (producer.send as jasmine.Spy).and.returnValue(0);
         (dataService.current as jasmine.Spy).and.returnValue(0);
         
         serviceModel.current();

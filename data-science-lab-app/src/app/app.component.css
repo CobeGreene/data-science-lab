@@ -1,4 +1,4 @@
-.container {
+.container.rightSidebar {
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: min-content 1fr min-content;
@@ -6,12 +6,26 @@
         'tabs sidebar'
         'workspace sidebar'
         'report sidebar';
-    height: 100vh;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0
+    bottom: 0;
+}
+
+.container.leftSidebar {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: min-content 1fr min-content;
+    grid-template-areas: 
+        'sidebar tabs'
+        'sidebar workspace'
+        'sidebar report';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .tabs {
@@ -38,12 +52,14 @@
 }
 
 .workspace::-webkit-scrollbar-thumb {
-    background-color: var(--workspace-scroll-background);
+    background-color: var(--workspace-scroll-foreground);
 }
 
 .workspace:hover::-webkit-scrollbar-thumb {
-    background-color: var(--workspace-scroll-forebackground);
+    background-color: var(--workspace-scroll-foreground);
 }
+
+
 
 .sidebar {
     grid-area: sidebar;
@@ -56,5 +72,4 @@
     background-color: var(--report-background);
     color: var(--report-word);
 }
-
 

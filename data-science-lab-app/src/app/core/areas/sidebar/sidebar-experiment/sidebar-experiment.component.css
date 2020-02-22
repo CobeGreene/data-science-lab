@@ -2,14 +2,7 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: min-content auto auto auto auto auto 1fr;
-    grid-template-areas: 
-        'header'
-        'create'
-        'open-experiments-header'
-        'open-experiments-list'
-        'saved-experiments-header'
-        'saved-experiments-list'
-        'bottom';
+    grid-template-areas: 'header' 'create' 'open-experiments-header' 'open-experiments-list' 'saved-experiments-header' 'saved-experiments-list' 'bottom';
 }
 
 .header {
@@ -40,4 +33,3 @@
     grid-area: bottom;
     background-color: var(--sidebar-list-background);
 }
-

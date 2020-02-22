@@ -21,7 +21,6 @@ export class AppUserSettingService extends UserSettingService {
     registerEvents() {
         this.messenger.subscribe(SettingEvents.All, this.allEvent);
         this.messenger.subscribe(SettingEvents.Update, this.updateEvent);
-        this.messenger.subscribe(SettingEvents.Change, this.changeEvent);
     }
 
     unregisterEvents() {
@@ -29,9 +28,6 @@ export class AppUserSettingService extends UserSettingService {
         this.messenger.unsubscribe(SettingEvents.Update, this.updateEvent);
     }
 
-    private changeEvent = (_event) => {
-        this.messenger.publish(SettingEvents.All);
-    }
 
     private allEvent = (_event, settings: Setting[]) => {
         this.zone.run(() => {

@@ -11,6 +11,9 @@ settings.setPath(settingsPath);
 // Set electron color theme path
 settings.set('color-theme', path.join(__dirname, '../app.color-theme.json'));
 
+// Set electron user setting path
+settings.set('user-setting', path.join(__dirname, '../app.user-setting.json'));
+
 const preload = path.join(__dirname, 'preload.js');
 const angularApp = url.format({
     pathname: path.join(__dirname, '../data-science-lab-app/index.html'),
