@@ -7,9 +7,7 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Settings } from '../../shared/settings';
 import { ErrorService } from './services/error-service';
 import { UserSettingService } from './services/user-setting-service';
-import { ExperimentService } from './services/experiment-service';
-import { TabFactory } from './factory/tab-factory';
-import { TabService } from './services/tab-service';
+import { CreationService } from './services/creation-service/creation.service';
 
 @Component({
   selector: 'app-root',
@@ -26,12 +24,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private themeService: ThemeService,
     private errorService: ErrorService,
+    private creationService: CreationService,
     private focusService: FocusService,
     private userSettingService: UserSettingService,
-    private coreAreaService: CoreAreaService,
-    private experimentService: ExperimentService,
-    private tabFactory: TabFactory,
-    private tabService: TabService) {
+    private coreAreaService: CoreAreaService
+    ) {
   }
 
   ngOnInit() {
@@ -46,12 +43,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     const userSetting = this.userSettingService.findOrDefault(Settings.SidebarLocation);
     this.rightSidebar = (userSetting) ? userSetting.value === 'right' : true;
 
-    this.experimentService.experimentCreated
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((experiment) => {
-        const tab = this.tabFactory.create(['experiment', experiment.id]);
-        this.tabService.openTab(tab);
-      });
   }
 
   ngAfterViewInit() {
