@@ -21,7 +21,7 @@ import { SettingNumberCardComponent } from './settings/setting-card/setting-numb
         SettingCardComponent,
         SettingBooleanCardComponent,
         SettingStringCardComponent,
-        SettingNumberCardComponent
+        SettingNumberCardComponent,
     ],
     imports: [
         CommonModule,

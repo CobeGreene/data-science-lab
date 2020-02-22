@@ -67,7 +67,7 @@ export class App {
             }
         });
 
-        win.setMenu(null);
+        // win.setMenu(null); to allow 
 
 
         this.configure();

@@ -4,10 +4,12 @@ import { CoreAreaService } from './services/core-area-service';
 import { FocusService } from './services/focus-service';
 import { FocusAreas } from './constants';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { NotificationService } from './services/notification-service/notification.service';
 import { Settings } from '../../shared/settings';
 import { ErrorService } from './services/error-service';
 import { UserSettingService } from './services/user-setting-service';
+import { ExperimentService } from './services/experiment-service';
+import { TabFactory } from './factory/tab-factory';
+import { TabService } from './services/tab-service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +28,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private errorService: ErrorService,
     private focusService: FocusService,
     private userSettingService: UserSettingService,
-    private coreAreaService: CoreAreaService) {
+    private coreAreaService: CoreAreaService,
+    private experimentService: ExperimentService,
+    private tabFactory: TabFactory,
+    private tabService: TabService) {
   }
 
   ngOnInit() {
@@ -34,20 +39,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userSettingService.settingsChanged
       .pipe(untilComponentDestroyed(this))
       .subscribe(() => {
-        const value = this.userSettingService.findOrDefault(Settings.SidebarLocation);
-        if (value) {
-          this.rightSidebar = value.value === 'right';
-        } else {
-          this.rightSidebar = true;
-        }
+        const setting = this.userSettingService.findOrDefault(Settings.SidebarLocation);
+        this.rightSidebar = (setting) ? setting.value === 'right' : true;
       });
 
-    const setting = this.userSettingService.findOrDefault(Settings.SidebarLocation);
-    if (setting) {
-      this.rightSidebar = setting.value === 'right';
-    } else {
-      this.rightSidebar = true;
-    }
+    const userSetting = this.userSettingService.findOrDefault(Settings.SidebarLocation);
+    this.rightSidebar = (userSetting) ? userSetting.value === 'right' : true;
+
+    this.experimentService.experimentCreated
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((experiment) => {
+        const tab = this.tabFactory.create(['experiment', experiment.id]);
+        this.tabService.openTab(tab);
+      });
   }
 
   ngAfterViewInit() {
