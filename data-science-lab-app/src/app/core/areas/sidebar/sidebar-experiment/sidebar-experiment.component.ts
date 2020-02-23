@@ -55,7 +55,6 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
         selected: 0,
       });
 
-    this.data.inFocus = true;
 
     this.focusService.focusChanged
       .pipe(untilComponentDestroyed(this))

@@ -38,6 +38,9 @@ import { TabFactory, AppTabFactory } from '../factory/tab-factory';
 import { UserSettingService, AppUserSettingService } from '../services/user-setting-service';
 import { CreationService } from '../services/creation-service/creation.service';
 import { AppCreationService } from '../services/creation-service/app-creation.service';
+import { SidebarPackageComponent } from './areas/sidebar/sidebar-package/sidebar-package.component';
+import { SidebarPackageSearchComponent } from './areas/sidebar/sidebar-package/sidebar-package-search/sidebar-package-search.component';
+import { SidebarPackageCardComponent } from './areas/sidebar/sidebar-package/sidebar-package-card/sidebar-package-card.component';
 
 @NgModule({
     declarations: [
@@ -54,7 +57,10 @@ import { AppCreationService } from '../services/creation-service/app-creation.se
         SidebarExperimentCreateComponent,
         SidebarExperimentCardComponent,
         TabCardComponent,
-        TabOptionsComponent
+        TabOptionsComponent,
+        SidebarPackageComponent,
+        SidebarPackageSearchComponent,
+        SidebarPackageCardComponent
     ],
     imports: [
         SharedModule,
