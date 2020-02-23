@@ -13,6 +13,8 @@ import { NotificationComponent } from './notification/notification.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
+import { UpdateExperimentComponent } from './experiment/update-experiment/update-experiment.component';
+import { DeleteExperimentComponent } from './experiment/delete-experiment/delete-experiment.component';
 
 @NgModule({
     declarations: [
@@ -25,6 +27,8 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
         DropdownComponent,
         SelectComponent,
         CheckboxComponent,
+        UpdateExperimentComponent,
+        DeleteExperimentComponent,
     ],
     imports: [
         CommonModule,
@@ -42,6 +46,8 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
         ModalHeaderComponent,
         ModalCloseComponent,
         CreateExperimentComponent,
+        UpdateExperimentComponent,
+        DeleteExperimentComponent,
         IncompletePipe,
         DropdownComponent,
         SelectComponent,

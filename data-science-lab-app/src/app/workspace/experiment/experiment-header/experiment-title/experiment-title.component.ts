@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { RouterService } from '../../../../services/router-service';
 import { ExperimentService } from '../../../../services/experiment-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-
+import { UpdateExperimentComponent } from '../../../../shared/experiment/update-experiment/update-experiment.component';
 
 @Component({
   selector: 'app-experiment-title',
@@ -13,6 +13,8 @@ export class ExperimentTitleComponent implements OnInit, OnDestroy {
 
   id: number;
   title: string;
+
+  @ViewChild('updateCmp', { static: false }) updateComponent: UpdateExperimentComponent;
 
   constructor(private router: RouterService, private experimentService: ExperimentService) { }
 
@@ -32,6 +34,10 @@ export class ExperimentTitleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
+  }
+  
+  onUpdate(event: MouseEvent) {
+    this.updateComponent.open(event);
   }
 
 }
