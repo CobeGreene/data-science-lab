@@ -67,7 +67,7 @@ export class App {
             }
         });
 
-        // win.setMenu(null); to allow 
+        // win.setMenu(null); // to allow some of the shortcuts. 
 
 
         this.configure();
