@@ -1,0 +1,9 @@
+<div class="container" [style.width.px]="area.width - 2" [style.top.px]="area.top">
+    <app-experiment-title *ngIf="isExpanded" class="title">
+    </app-experiment-title>
+    <div class="expander">
+        <fa name="minus" class="pb-1 pointer" (click)="onToggleExpanded()"></fa>
+    </div>
+    <app-experiment-navigation *ngIf="isExpanded" class="nav pr-1">
+    </app-experiment-navigation>
+</div>

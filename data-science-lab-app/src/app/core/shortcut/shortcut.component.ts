@@ -15,7 +15,6 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
 
   onKeypress = (event: KeyboardEvent): void => {
     const shortcut = this.getShortcut(event);
-    
     this.shortcutService.runAction(shortcut);
   }
   

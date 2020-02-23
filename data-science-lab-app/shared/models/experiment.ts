@@ -1,8 +1,6 @@
 export enum ExperimentState {
     Unloaded,
-    Current,
-    Unsaved,
-    Saving
+    Loaded,
 }
 
 export interface Experiment {

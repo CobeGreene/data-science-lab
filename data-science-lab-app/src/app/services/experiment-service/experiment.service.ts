@@ -10,6 +10,7 @@ export abstract class ExperimentService extends Service {
     experimentUpdated: Subject<Experiment>;
     experimentCreated: Subject<Experiment>;
     experimentDeleted: Subject<number>;
+    experimentLoaded: Subject<Experiment>;
 
     constructor(messenger: Messenger, zone: NgZone) {
         super(messenger, zone);
@@ -18,6 +19,7 @@ export abstract class ExperimentService extends Service {
         this.experimentUpdated = new Subject<Experiment>();
         this.experimentCreated = new Subject<Experiment>();
         this.experimentDeleted = new Subject<number>();
+        this.experimentLoaded = new Subject<Experiment>();
     }
 
     destorySubjects() {
@@ -25,6 +27,7 @@ export abstract class ExperimentService extends Service {
         this.experimentUpdated.complete();
         this.experimentCreated.complete();
         this.experimentDeleted.complete();
+        this.experimentLoaded.complete();
     }
 
     abstract all(): Experiment[];
@@ -32,6 +35,6 @@ export abstract class ExperimentService extends Service {
     abstract get(id: number): Experiment;
     abstract update(id: number, title: string, description?: string): void;
     abstract delete(id: number): void;
-    abstract save(id: number): void;
+    abstract load(id: number): void;
 }
 

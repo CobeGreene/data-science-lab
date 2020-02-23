@@ -6,6 +6,8 @@ import { ExperimentService } from '../../../../services/experiment-service/exper
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ShortcutService } from '../../../../services/shortcut-service';
 import { SidebarService } from '../../../../services/sidebar-service';
+import { TabService } from '../../../../services/tab-service';
+import { TabFactory } from '../../../../factory/tab-factory';
 
 interface SidebarExperimentData {
   openExperiments: boolean;
@@ -34,6 +36,8 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
     private focusService: FocusService,
     private sidebarService: SidebarService,
     private shortcutService: ShortcutService,
+    private tabFactory: TabFactory,
+    private tabService: TabService,
     private experimentService: ExperimentService) { }
 
   @HostListener('click', ['$event']) onFocusSidebar(event: MouseEvent) {
@@ -42,14 +46,14 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngOnInit() {
-    this.data = this.sidebarService.get<SidebarExperimentData>('sidebar-experiment', 
-    {
-      openExperiments: false,
-      openSelected: 0,
-      savedExperiments: false,
-      savedSelected: 0,
-      selected: 0,
-    });
+    this.data = this.sidebarService.get<SidebarExperimentData>('sidebar-experiment',
+      {
+        openExperiments: false,
+        openSelected: 0,
+        savedExperiments: false,
+        savedSelected: 0,
+        selected: 0,
+      });
 
     this.data.inFocus = true;
 
@@ -62,6 +66,12 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
     this.data.inFocus = this.focusService.current() === FocusAreas.Sidebar;
 
     this.experimentService.experimentsChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe(() => {
+        this.initializeExperiment();
+      });
+
+    this.experimentService.experimentLoaded
       .pipe(untilComponentDestroyed(this))
       .subscribe(() => {
         this.initializeExperiment();
@@ -190,6 +200,9 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
     this.data.openSelected = selected;
 
     this.scrollIntoViewOpenSelected();
+
+    const tab = this.tabFactory.create(['experiment', this.openExperiments[selected].id]);
+    this.tabService.openTab(tab);
   }
 
   onSaveSelected(selected: number) {
@@ -197,6 +210,8 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
     this.data.savedSelected = selected;
 
     this.scrollIntoViewSaveSelected();
+
+    this.experimentService.load(this.savedExperiments[selected].id);
   }
 
   scrollIntoViewOpenSelected() {

@@ -23,6 +23,13 @@ export class AppCreationService extends CreationService implements OnDestroy {
                 const tab = this.tabFactory.create(['experiment', experiment.id]);
                 this.tabService.openTab(tab);
             });
+
+        this.experimentService.experimentLoaded
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((experiment) => {
+                const tab = this.tabFactory.create(['experiment', experiment.id]);
+                this.tabService.openTab(tab);
+            });
     }
 
     ngOnDestroy() {

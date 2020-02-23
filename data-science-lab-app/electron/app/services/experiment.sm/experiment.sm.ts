@@ -12,8 +12,8 @@ export class ExperimentServiceModel extends ServiceModel {
             { path: ExperimentEvents.All, method: 'all' },
             { path: ExperimentEvents.Create, method: 'create' },
             { path: ExperimentEvents.Delete, method: 'delete' },
-            { path: ExperimentEvents.Save, method: 'save' },
             { path: ExperimentEvents.Update, method: 'update' },
+            { path: ExperimentEvents.Load, method: 'load' },
         ]
     };
 
@@ -34,7 +34,7 @@ export class ExperimentServiceModel extends ServiceModel {
             title,
             description,
             created: new Date(),
-            state: ExperimentState.Current
+            state: ExperimentState.Loaded
         };
         experiment = this.dataService.post(experiment);
         this.producer.send(ExperimentEvents.Create, experiment);
@@ -53,6 +53,15 @@ export class ExperimentServiceModel extends ServiceModel {
     delete(id: number) {
         this.dataService.delete(id);
         this.producer.send(ExperimentEvents.Delete, id);
+    }
+
+    load(id: number) {
+        const experiment = this.dataService.get(id);
+        if (experiment.state === ExperimentState.Unloaded) {
+            experiment.state = ExperimentState.Loaded;
+            this.dataService.update(experiment);
+            this.producer.send(ExperimentEvents.Load, experiment);
+        }
     }
 
 }

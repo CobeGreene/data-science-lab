@@ -3,6 +3,7 @@ import { Producer } from '../../pipeline';
 import { ExperimentServiceModel } from './experiment.sm';
 import { ExperimentEvents } from '../../../../shared/events';
 import { ExperimentDataService } from '../../data-services/experiment-data-service';
+import { ExperimentState } from '../../../../shared/models';
 
 describe('Electron Experiment Service Model', () => {
 
@@ -98,6 +99,47 @@ describe('Electron Experiment Service Model', () => {
         });
         serviceModel.delete(3);
         expect(dataService.delete).toHaveBeenCalledTimes(1);
+    });
+
+    it('load should update experiment', (done) => {
+        (dataService.get as jasmine.Spy).and.returnValue({
+            id: 3,
+            title: 'Title',
+            description: 'Desc',
+            state: ExperimentState.Unloaded
+        });
+        (dataService.update as jasmine.Spy).and.callFake((experiment) => {
+            expect(experiment.id).toBe(3);
+            expect(experiment.state).toBe(ExperimentState.Loaded);
+            done();
+        });
+        serviceModel.load(3);
+    });
+
+    it('load should call producer', (done) => {
+        (dataService.get as jasmine.Spy).and.returnValue({
+            id: 3,
+            title: 'Title',
+            description: 'Desc',
+            state: ExperimentState.Unloaded
+        });
+        (producer.send as jasmine.Spy).and.callFake((event, experiment) => {
+            expect(event).toBe(ExperimentEvents.Load);
+            expect(experiment.id).toBe(3);
+            done();
+        });
+        serviceModel.load(3);
+    });
+
+    it('load should not call producer', () => {
+        (dataService.get as jasmine.Spy).and.returnValue({
+            id: 3,
+            title: 'Title',
+            description: 'Desc',
+            state: ExperimentState.Loaded
+        });
+        serviceModel.load(3);
+        expect(producer.send).toHaveBeenCalledTimes(0);
     });
 
 });
