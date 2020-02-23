@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Experiment } from '../../../../../../../shared/models';
+import { Experiment, ExperimentState } from '../../../../../../../shared/models';
 
 @Component({
   selector: 'app-sidebar-experiment-card',

@@ -59,6 +59,12 @@
     --select-option-background: #505050;
     --select-word: #FFF;
     --select-option-hover: #404040;
+    --experiment-header: #303030;
+    --experiment-header-shadow: rgba(0, 0, 0, 0.1);
+    --experiment-description-icon: #6089B4;
+    --experiment-dataset: #219186;
+    --experiment-visualization: #9872A2;
+    --experiment-algorithm: #C7444A;
 
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;
@@ -78,7 +84,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Merriweather', serif;
 }
 
-.pointer, .pointer>* {
+.pointer, .pointer * {
     cursor: pointer !important;
 }
 

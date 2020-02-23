@@ -53,5 +53,11 @@
     "select-background": "#404040",
     "select-option-background": "#505050",
     "select-word": "#FFF",
-    "select-option-hover": "#404040"
+    "select-option-hover": "#404040",
+    "experiment-header": "#303030",
+    "experiment-header-shadow": "rgba(0, 0, 0, 0.1)",
+    "experiment-description-icon": "#6089B4",
+    "experiment-dataset": "#219186",
+    "experiment-visualization": "#9872A2",
+    "experiment-algorithm": "#C7444A"
 }

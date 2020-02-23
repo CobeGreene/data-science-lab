@@ -1,1 +1,4 @@
-<p>experiment works!</p>
+<app-experiment-header [style.height.px]="isExpanded ? 80 : 30" (emitExpanded)="onExpanded($event)" #headerCmp>
+</app-experiment-header>
+<div [style.margin-top.px]="isExpanded ? 80 : 30">
+</div>

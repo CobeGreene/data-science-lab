@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ExperimentService } from './experiment.service';
-import { Experiment } from '../../../../shared/models';
+import { Experiment, ExperimentState } from '../../../../shared/models';
 import { Messenger } from '../messenger';
 import { ExperimentEvents } from '../../../../shared/events';
 
@@ -23,6 +23,7 @@ export class AppExperimentService extends ExperimentService {
         this.messenger.subscribe(ExperimentEvents.Create, this.createEvent);
         this.messenger.subscribe(ExperimentEvents.Delete, this.deleteEvent);
         this.messenger.subscribe(ExperimentEvents.Update, this.updateEvent);
+        this.messenger.subscribe(ExperimentEvents.Load, this.loadEvent);
     }
     
     unregisterEvents() {
@@ -30,6 +31,7 @@ export class AppExperimentService extends ExperimentService {
         this.messenger.unsubscribe(ExperimentEvents.Create, this.createEvent);
         this.messenger.unsubscribe(ExperimentEvents.Delete, this.deleteEvent);
         this.messenger.unsubscribe(ExperimentEvents.Update, this.updateEvent);
+        this.messenger.unsubscribe(ExperimentEvents.Load, this.loadEvent);
     }
 
     private allEvent = (_event, experiments: Experiment[]) => {
@@ -45,6 +47,20 @@ export class AppExperimentService extends ExperimentService {
             if (find === undefined) {
                 this.experiments.push(experiment);
                 this.experimentCreated.next(experiment);
+                this.experimentsChanged.next(this.experiments);
+            }
+        });
+    }
+
+    private loadEvent = (_event, experiment: Experiment) => {
+        this.zone.run(() => {
+            const find = this.experiments.findIndex(value => value.id === experiment.id);
+            if (find >= 0) {
+                this.experiments.splice(find, 1, experiment);
+                this.experimentLoaded.next(experiment);
+            } else {
+                this.experiments.push(experiment);
+                this.experimentLoaded.next(experiment);
                 this.experimentsChanged.next(this.experiments);
             }
         });
@@ -97,9 +113,9 @@ export class AppExperimentService extends ExperimentService {
     delete(id: number): void {
         this.messenger.publish(ExperimentEvents.Delete, id);
     }
-    
-    save(id: number): void {
-        this.messenger.publish(ExperimentEvents.Save, id);
+
+    load(id: number): void {
+        this.messenger.publish(ExperimentEvents.Load, id);
     }
     
 

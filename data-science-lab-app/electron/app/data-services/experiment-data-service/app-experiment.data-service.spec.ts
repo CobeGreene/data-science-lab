@@ -14,7 +14,7 @@ describe('Electron App Experiment Data Service', () => {
         original = [
             {
                 id: 1, created: new Date(),
-                state: ExperimentState.Current,
+                state: ExperimentState.Loaded,
                 title: 'Title'
             }
         ];
@@ -68,7 +68,7 @@ describe('Electron App Experiment Data Service', () => {
         const experiment = dataService.post({
             id: 0,
             created: new Date(),
-            state: ExperimentState.Current,
+            state: ExperimentState.Loaded,
             title: 'New Title',
             description: 'Description'
         });
@@ -83,7 +83,7 @@ describe('Electron App Experiment Data Service', () => {
         dataService.post({
             id: 0,
             created: new Date(),
-            state: ExperimentState.Current,
+            state: ExperimentState.Loaded,
             title: 'New Title',
             description: 'Description'
         }); 
@@ -97,7 +97,7 @@ describe('Electron App Experiment Data Service', () => {
         dataService.update({
             id: 1,
             created: new Date(),
-            state: ExperimentState.Current,
+            state: ExperimentState.Loaded,
             title: 'New Title',
             description: 'Description'
         }); 
@@ -108,7 +108,7 @@ describe('Electron App Experiment Data Service', () => {
             dataService.update({
                 id: 2,
                 created: new Date(),
-                state: ExperimentState.Current,
+                state: ExperimentState.Loaded,
                 title: 'New Title',
                 description: 'Description'
             }); 

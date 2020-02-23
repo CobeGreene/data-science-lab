@@ -1,0 +1,60 @@
+:host {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-item {
+    display: inline-flex;
+    margin: 0px 2px;
+    padding: 10px;
+    border-radius: 0.5em;
+    border: 3px solid transparent;
+}
+
+.nav-item.dataset .icon {
+    color: var(--experiment-dataset);
+}
+
+.nav-item.dataset.active {
+    border-bottom: 3px solid var(--experiment-dataset);
+}
+
+.nav-item.dataset:hover .icon {
+    color: var(--experiment-dataset);
+}
+
+.nav-item.nav-item.dataset:hover {
+    border-bottom: 3px solid var(--experiment-dataset);
+}
+
+.nav-item.visualization .icon {
+    color: var(--experiment-visualization);
+}
+
+.nav-item.visualization.active {
+    border-bottom: 3px solid var(--experiment-visualization);
+}
+
+.nav-item.visualization:hover .icon {
+    color: var(--experiment-visualization);
+}
+
+.nav-item.visualization:hover {
+    border-bottom: 3px solid var(--experiment-visualization);
+}
+
+.nav-item.algorithm .icon {
+    color: var(--experiment-algorithm);
+}
+
+.nav-item.algorithm.active {
+    border-bottom: 3px solid var(--experiment-algorithm);
+}
+
+.nav-item.algorithm:hover .icon {
+    color: var(--experiment-algorithm);
+}
+
+.nav-item.algorithm:hover {
+    border-bottom: 3px solid var(--experiment-algorithm);
+}

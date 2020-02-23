@@ -48,6 +48,22 @@ describe('Angular App Experiment Service', () => {
         });
         dict[ExperimentEvents.Create](ExperimentEvents.Create, { id: 1 });
     });
+    
+    it('should call loaded subject when loaded', (done) => {
+        service.experimentLoaded.subscribe((value) => {
+            expect(value.id).toBe(1);
+            done();
+        });
+        dict[ExperimentEvents.Load](ExperimentEvents.Load, { id: 1 });
+    });
+
+    it('should call change subject when loaded', (done) => {
+        service.experimentsChanged.subscribe((value) => {
+            expect(value.length).toBe(1);
+            done();
+        });
+        dict[ExperimentEvents.Load](ExperimentEvents.Load, { id: 1 });
+    });
 
     it('should call delete subject when delete', (done) => {
         service.experimentDeleted.subscribe((value) => {
@@ -125,13 +141,14 @@ describe('Angular App Experiment Service', () => {
         service.delete(1);
     });
     
-    it('should call publish when saving', (done) => {
+    
+    it('should call publish when loading', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id) => {
-            expect(event).toBe(ExperimentEvents.Save);
+            expect(event).toBe(ExperimentEvents.Load);
             expect(id).toBe(1);
             done();
         });
-        service.save(1);
+        service.load(1);
     });
 
     afterEach(() => {
