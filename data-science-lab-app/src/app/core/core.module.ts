@@ -39,8 +39,11 @@ import { UserSettingService, AppUserSettingService } from '../services/user-sett
 import { CreationService } from '../services/creation-service/creation.service';
 import { AppCreationService } from '../services/creation-service/app-creation.service';
 import { SidebarPackageComponent } from './areas/sidebar/sidebar-package/sidebar-package.component';
-import { SidebarPackageSearchComponent } from './areas/sidebar/sidebar-package/sidebar-package-search/sidebar-package-search.component';
 import { SidebarPackageCardComponent } from './areas/sidebar/sidebar-package/sidebar-package-card/sidebar-package-card.component';
+import { PackageService, AppPackageService } from '../services/package-service';
+import {
+    SidebarPackageExplorerComponent
+} from './areas/sidebar/sidebar-package/sidebar-package-explorer/sidebar-package-explorer.component';
 
 @NgModule({
     declarations: [
@@ -59,8 +62,8 @@ import { SidebarPackageCardComponent } from './areas/sidebar/sidebar-package/sid
         TabCardComponent,
         TabOptionsComponent,
         SidebarPackageComponent,
-        SidebarPackageSearchComponent,
-        SidebarPackageCardComponent
+        SidebarPackageCardComponent,
+        SidebarPackageExplorerComponent,
     ],
     imports: [
         SharedModule,
@@ -84,9 +87,10 @@ import { SidebarPackageCardComponent } from './areas/sidebar/sidebar-package/sid
         { provide: FocusService, useClass: AppFocusService },
         { provide: OverlayService, useClass: AppOverlayService },
         { provide: ExperimentService, useClass: AppExperimentService },
+        { provide: PackageService, useClass: AppPackageService },
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: NotificationService, useClass: AppNotificationService },
-        { provide: ErrorService, useClass: AppErrorService }, 
+        { provide: ErrorService, useClass: AppErrorService },
         { provide: UserSettingService, useClass: AppUserSettingService },
         { provide: CreationService, useClass: AppCreationService },
     ]

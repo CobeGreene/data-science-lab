@@ -51,14 +51,14 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.selected > 0) {
         this.selected -= 1;
       } else {
-        this.selected = 4;
+        this.selected = 5;
       }
     }
   }
 
   onMoveDown = () => {
     if (this.inFocus) {
-      if (this.selected < 4) {
+      if (this.selected < 5) {
         this.selected += 1;
       } else {
         this.selected = 0;
@@ -70,7 +70,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.inFocus) {
       if (this.selected === 0) {
         this.onCreateExperiment(new MouseEvent('click'));
-      } else if (this.selected === 3) {
+      } else if (this.selected === 4) {
         this.onGoToSettings();
       }
     }

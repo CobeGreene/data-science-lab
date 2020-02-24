@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Package } from '../../../../../../../shared/models';
 
 @Component({
   selector: 'app-sidebar-package-card',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebar-package-card.component.css']
 })
 export class SidebarPackageCardComponent implements OnInit {
+
+  @Input() pluginPackage: Package;
 
   constructor() { }
 

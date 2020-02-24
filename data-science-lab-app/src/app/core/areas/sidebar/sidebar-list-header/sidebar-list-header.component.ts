@@ -11,6 +11,8 @@ export class SidebarListHeaderComponent implements OnInit {
 
   @Input() isOpen: boolean;
 
+  @Input() isHidden = false;
+
   constructor() { }
 
   ngOnInit() {

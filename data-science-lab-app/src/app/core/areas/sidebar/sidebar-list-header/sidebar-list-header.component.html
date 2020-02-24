@@ -1,5 +1,5 @@
-<div class="icon">
-    <fa name="angle-down" size="lg" *ngIf="isOpen"></fa>
+<div class="icon" [ngClass]="{ 'invisible': isHidden }">
+    <fa name="angle-down" size="lg" *ngIf="isOpen" ></fa>
     <fa name="angle-right" size="lg" *ngIf="!isOpen"></fa>
 </div>
 <h3 class="m-0 p-1">{{ header }}</h3>

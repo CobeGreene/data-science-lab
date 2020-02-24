@@ -20,6 +20,7 @@
     --sidebar-list-header-selected: #3655B5;
     --sidebar-list-card-hover: #606060;
     --sidebar-list-card-selected: #707070;
+    --sidebar-plugin-badge: #6089B4;
     --tabs-background: #404040;
     --tabs-card-background: #505050;
     --tabs-card-border: #282828;
@@ -73,6 +74,8 @@
     --sidebar-expanded-width: 300px;
     --sidebar-list-header-icon-width: 20px;
     --sidebar-scroll-width: 20px;
+    --plugin-badge: 25px;
+
 }
 
 body, p {
