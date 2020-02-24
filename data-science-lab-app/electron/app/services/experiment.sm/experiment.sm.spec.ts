@@ -24,7 +24,7 @@ describe('Electron Experiment Service Model', () => {
 
     beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
-        dataService = jasmine.createSpyObj('ThemeDataService', ['all', 'post', 'get', 'update', 'delete']);
+        dataService = jasmine.createSpyObj('ExperimentDataService', ['all', 'post', 'get', 'update', 'delete']);
         serviceModel = new ExperimentServiceModel(serviceContainer, producer);
     });
 

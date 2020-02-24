@@ -103,6 +103,14 @@ describe('Angular App Package Service', () => {
         expect(service.get('Name 1').owner).toBe('Owner');
     });
 
+    it('change should call publish', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event) => {
+            expect(event).toBe(PackageEvents.All);
+            done();
+        });
+        dict[PackageEvents.Change](PackageEvents.Change);
+    });
+
 
 });
 

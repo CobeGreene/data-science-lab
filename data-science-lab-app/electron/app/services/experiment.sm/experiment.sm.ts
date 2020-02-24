@@ -1,4 +1,4 @@
-import { SERVICE_TYPES, ServiceContainer, Service } from '../../service-container';
+import { SERVICE_TYPES, ServiceContainer } from '../../service-container';
 import { ServiceModelRoutes, Producer, } from '../../pipeline';
 import { ExperimentEvents } from '../../../../shared/events';
 import { ServiceModel } from '../service-model';
@@ -19,7 +19,7 @@ export class ExperimentServiceModel extends ServiceModel {
 
     private dataService: ExperimentDataService;
 
-    constructor(serviceContainer: ServiceContainer, protected producer: Producer) {
+    constructor(serviceContainer: ServiceContainer, producer: Producer) {
         super(serviceContainer, producer);
         this.dataService = serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
     }

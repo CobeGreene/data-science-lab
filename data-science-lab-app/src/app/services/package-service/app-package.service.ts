@@ -18,10 +18,12 @@ export class AppPackageService extends PackageService {
 
     registerEvents() {
         this.messenger.subscribe(PackageEvents.All, this.allEvent);
+        this.messenger.subscribe(PackageEvents.Change, this.changeEvent);
     }
-
+    
     unregisterEvents() {
         this.messenger.unsubscribe(PackageEvents.All, this.allEvent);
+        this.messenger.unsubscribe(PackageEvents.Change, this.changeEvent);
     }
 
     private allEvent = (_event, packages: Package[]) => {
@@ -29,6 +31,10 @@ export class AppPackageService extends PackageService {
             this.packages = packages;
             this.packagesChanged.next(this.packages);
         });
+    }
+
+    private changeEvent = (_event) => {
+        this.messenger.publish(PackageEvents.All);
     }
 
     all() {

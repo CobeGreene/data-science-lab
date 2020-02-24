@@ -1,5 +1,6 @@
 <div class="extended" *ngIf="isExpanded">
-    <app-sidebar-experiment class="h-100v"></app-sidebar-experiment>
+    <app-sidebar-experiment class="h-100v" *ngIf="choice === 'experiments'"></app-sidebar-experiment>
+    <app-sidebar-package class="h-100v" *ngIf="choice === 'packages'"></app-sidebar-package>
 </div>
 <div class="icons">
     <div class="space"></div>
