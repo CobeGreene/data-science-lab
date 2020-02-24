@@ -8,6 +8,7 @@ import { ModalComponent } from '../../shared/modal/modal.component';
 import { TabService } from '../../services/tab-service';
 import { RouterService } from '../../services/router-service';
 import { TabFactory } from '../../factory/tab-factory';
+import { Tab } from '../../models';
 
 @Component({
   selector: 'app-welcome',
@@ -82,6 +83,15 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onGoToSettings() {
     const tab = this.tabFactory.create(['settings']);
+    this.goToTab(tab);
+  }
+
+  onGoToPackages() {
+    const tab = this.tabFactory.create(['package']);
+    this.goToTab(tab);
+  }
+  
+  private goToTab(tab: Tab) {
     if (this.routerService.current() === '/') {
       this.tabService.openTab(tab);
     } else {
