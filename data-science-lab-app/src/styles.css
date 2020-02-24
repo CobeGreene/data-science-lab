@@ -59,8 +59,12 @@
     --settings-border: #AAA;
     --package-title: #FFF;
     --package-border: #AAA;
-    --package-icon: #AAA;
+    --package-icon: #6089B4;
     --package-desc: #DDD;
+    --package-install: #219186;
+    --package-card-background: #323232;
+    --package-card-border: #404040;
+    --package-card-shadow: rgba(0, 0, 0, .1);
     --select-background: #404040;
     --select-option-background: #505050;
     --select-word: #FFF;
@@ -71,7 +75,6 @@
     --experiment-dataset: #219186;
     --experiment-visualization: #9872A2;
     --experiment-algorithm: #C7444A;
-
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;
     --tabs-actual-height: 42px;
@@ -79,7 +82,6 @@
     --sidebar-list-header-icon-width: 20px;
     --sidebar-scroll-width: 20px;
     --plugin-badge: 25px;
-
 }
 
 body, p {
@@ -355,7 +357,6 @@ input.accent4:focus, textarea.accent4:focus {
 .pointer {
     cursor: pointer;
 }
-
 
 .list-unstyled {
     list-style: none;

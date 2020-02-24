@@ -2,11 +2,11 @@
 <p class="mx-0 my-1 desc">
     Search packages by name.
 </p>
-<input type="text" class="w-100 accent3">
+<input type="text" class="w-100 accent3" [(ngModel)]="search">
 <p class="mx-0 my-1 desc">
     Show packages if they contain type.
 </p>
-<app-select [value]="type" [options]="types()"></app-select>
-<ng-container *ngFor="let pluginPackage of packages">
+<app-select [value]="type" [options]="types()"  (emitChange)="onTypeChange($event)"></app-select>
+<ng-container *ngFor="let pluginPackage of packages | packageSearch:search:type">
     <app-package-explorer-card [pluginPackage]="pluginPackage"></app-package-explorer-card>
 </ng-container>

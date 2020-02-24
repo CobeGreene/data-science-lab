@@ -39,4 +39,8 @@ export class PackageExplorerComponent implements OnInit, OnDestroy {
     return ['All', ...Object.keys(PluginTypes)];
   }
 
+  onTypeChange(type: string) {
+    this.type = type;
+  }
+
 }

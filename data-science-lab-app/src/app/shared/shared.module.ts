@@ -16,6 +16,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { UpdateExperimentComponent } from './experiment/update-experiment/update-experiment.component';
 import { DeleteExperimentComponent } from './experiment/delete-experiment/delete-experiment.component';
 import { PackageBadgePipe } from './pipes/package-badge.pipe';
+import { PackageSearchPipe } from './pipes/package-search.pipe';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { PackageBadgePipe } from './pipes/package-badge.pipe';
         CreateExperimentComponent,
         IncompletePipe,
         PackageBadgePipe,
+        PackageSearchPipe,
         NotificationComponent,
         DropdownComponent,
         SelectComponent,
@@ -52,6 +54,7 @@ import { PackageBadgePipe } from './pipes/package-badge.pipe';
         DeleteExperimentComponent,
         IncompletePipe,
         PackageBadgePipe,
+        PackageSearchPipe,
         DropdownComponent,
         SelectComponent,
         CheckboxComponent,
