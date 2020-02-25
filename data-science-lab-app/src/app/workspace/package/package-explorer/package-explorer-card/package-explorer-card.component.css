@@ -21,8 +21,8 @@
     color: var(--package-install);
 }
 
-.status .icon {
-    color: var(--package-icon)
+.icon {
+    color: var(--package-icon);
 }
 
 

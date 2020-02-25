@@ -107,36 +107,40 @@ export class AppPackageDataService extends Service implements PackageDataService
 
     async getPackageFromApi() {
         const api = this.settings.get<ApiSettings>(this.api);
-        const response = await this.web.send({
-            method: 'GET',
-            protocol: api.protocol,
-            hostname: api.hostname,
-            port: api.port,
-            path: api.pathPackages
-        });
-
-        if (response.statusCode === 200) {
-            const obj = JSON.parse(response.body.toString()) as any[];
-
-            obj.forEach(element => {
-                const find = this.packages.find((value: Package) => {
-                    return value.name === element.name;
-                });
-                if (find == null) {
-                    const pluginPackage = {
-                        name: element.name,
-                        owner: element.owner,
-                        repositoryName: element.repositoryName,
-                        username: element.username,
-                        install: false,
-                        plugins: element.plugins
-                    };
-                    this.packages.push(pluginPackage);
-                }
+        try {
+            const response = await this.web.send({
+                method: 'GET',
+                protocol: api.protocol,
+                hostname: api.hostname,
+                port: api.port,
+                path: api.pathPackages
             });
-
-            this.producer.send(PackageEvents.Change);
-        } else {
+    
+            if (response.statusCode === 200) {
+                const obj = JSON.parse(response.body.toString()) as any[];
+    
+                obj.forEach(element => {
+                    const find = this.packages.find((value: Package) => {
+                        return value.name === element.name;
+                    });
+                    if (find == null) {
+                        const pluginPackage = {
+                            name: element.name,
+                            owner: element.owner,
+                            repositoryName: element.repositoryName,
+                            username: element.username,
+                            install: false,
+                            plugins: element.plugins
+                        };
+                        this.packages.push(pluginPackage);
+                    }
+                });
+    
+                this.producer.send(PackageEvents.Change);
+            } else {
+                this.producer.send(ErrorEvent, this.unableConnect());
+            }
+        } catch (error) {
             this.producer.send(ErrorEvent, this.unableConnect());
         }
 

@@ -71,6 +71,8 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.inFocus) {
       if (this.selected === 0) {
         this.onCreateExperiment(new MouseEvent('click'));
+      } else if (this.selected === 2) {
+        this.onGoToPackages();
       } else if (this.selected === 4) {
         this.onGoToSettings();
       }

@@ -70,6 +70,7 @@ export class App {
         this.serviceContainer.resolve<ThemeDataService>(SERVICE_TYPES.ThemeDataService).configure();
         this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService).configure();
         this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext).configure();
+        this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService).configure();
     }
 
     private createWindow() {

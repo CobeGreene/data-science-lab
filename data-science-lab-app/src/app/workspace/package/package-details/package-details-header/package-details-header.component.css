@@ -1,0 +1,40 @@
+:host {
+    display: grid;
+    grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+    grid-template-rows: auto;
+    grid-template-areas: 'return title blank';
+}
+
+.return {
+    grid-area: return;
+    display: flex;
+    align-self: flex-start;
+    align-items: center;
+}
+
+.icon {
+    transform: scale(0.8);
+    transition: all 200ms ease-in-out;
+}
+
+.icon:hover {
+    transform: scale(1);
+}
+
+.title {
+    grid-area: title;
+    color: var(--package-title);
+    text-align: center;
+}
+
+/* :host(){
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--package-border);
+    color: var(--package-title);
+}
+
+.icon {
+    color: var(--package-icon);
+    display: inline-block;
+} */

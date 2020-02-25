@@ -44,6 +44,7 @@ import { PackageService, AppPackageService } from '../services/package-service';
 import {
     SidebarPackageExplorerComponent
 } from './areas/sidebar/sidebar-package/sidebar-package-explorer/sidebar-package-explorer.component';
+import { AppOpenLinkService, OpenLinkService } from '../services/open-link-service';
 
 @NgModule({
     declarations: [
@@ -73,7 +74,7 @@ import {
         SidebarComponent,
         TabsComponent,
         ShortcutComponent,
-        WorkspaceAreaComponent
+        WorkspaceAreaComponent,
     ],
     providers: [
         { provide: ShortcutService, useClass: AppShortcutService },
@@ -93,6 +94,7 @@ import {
         { provide: ErrorService, useClass: AppErrorService },
         { provide: UserSettingService, useClass: AppUserSettingService },
         { provide: CreationService, useClass: AppCreationService },
+        { provide: OpenLinkService, useClass: AppOpenLinkService },
     ]
 })
 export class CoreModule {

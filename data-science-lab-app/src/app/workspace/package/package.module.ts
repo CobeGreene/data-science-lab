@@ -7,6 +7,9 @@ import { PackageExplorerComponent } from './package-explorer/package-explorer.co
 import { PackageDetailsComponent } from './package-details/package-details.component';
 import { PackageExplorerHeaderComponent } from './package-explorer/package-explorer-header/package-explorer-header.component';
 import { PackageExplorerCardComponent } from './package-explorer/package-explorer-card/package-explorer-card.component';
+import { PackageDetailsHeaderComponent } from './package-details/package-details-header/package-details-header.component';
+import { PackageDetailsActionsComponent } from './package-details/package-details-actions/package-details-actions.component';
+import { PackageDetailsReadmeComponent } from './package-details/package-details-readme/package-details-readme.component';
 
 @NgModule({
     declarations: [
@@ -14,7 +17,10 @@ import { PackageExplorerCardComponent } from './package-explorer/package-explore
         PackageExplorerComponent,
         PackageDetailsComponent,
         PackageExplorerHeaderComponent,
-        PackageExplorerCardComponent
+        PackageExplorerCardComponent,
+        PackageDetailsHeaderComponent,
+        PackageDetailsActionsComponent,
+        PackageDetailsReadmeComponent
     ], 
     imports: [
         CommonModule,

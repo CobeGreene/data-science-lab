@@ -1,17 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Package } from '../../../../../../shared/models';
 import { TabService } from '../../../../services/tab-service';
 import { RouterService } from '../../../../services/router-service';
 import { TabFactory } from '../../../../factory/tab-factory';
 
 @Component({
-  selector: 'app-package-explorer-card',
-  templateUrl: './package-explorer-card.component.html',
-  styleUrls: ['./package-explorer-card.component.css']
+  selector: 'app-package-details-header',
+  templateUrl: './package-details-header.component.html',
+  styleUrls: ['./package-details-header.component.css']
 })
-export class PackageExplorerCardComponent implements OnInit {
+export class PackageDetailsHeaderComponent implements OnInit {
 
-  @Input() pluginPackage: Package;
+  @Input() name: string;
 
   constructor(
     private routerService: RouterService,
@@ -22,8 +21,8 @@ export class PackageExplorerCardComponent implements OnInit {
   ngOnInit() {
   }
 
-  onClick() {
-    const tab = this.tabFactory.create(['package', this.pluginPackage.name]);
+  onReturn() {
+    const tab = this.tabFactory.create(['package']);
     this.tabService.replaceTab(this.routerService.current(), tab);
   }
 

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgxMdModule } from 'ngx-md';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -41,6 +43,8 @@ import { PackageSearchPipe } from './pipes/package-search.pipe';
         AngularResizedEventModule,
         ReactiveFormsModule,
         OverlayModule,
+        HttpClientModule,
+        NgxMdModule,
     ],
     entryComponents: [
         NotificationComponent
@@ -63,6 +67,8 @@ import { PackageSearchPipe } from './pipes/package-search.pipe';
         FormsModule,
         ReactiveFormsModule,
         AngularResizedEventModule,
+        HttpClientModule,
+        NgxMdModule,
     ]
 })
 export class SharedModule {
