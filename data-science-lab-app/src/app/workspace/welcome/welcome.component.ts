@@ -8,6 +8,7 @@ import { ModalComponent } from '../../shared/modal/modal.component';
 import { TabService } from '../../services/tab-service';
 import { RouterService } from '../../services/router-service';
 import { TabFactory } from '../../factory/tab-factory';
+import { Tab } from '../../models';
 
 @Component({
   selector: 'app-welcome',
@@ -51,14 +52,14 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.selected > 0) {
         this.selected -= 1;
       } else {
-        this.selected = 4;
+        this.selected = 5;
       }
     }
   }
 
   onMoveDown = () => {
     if (this.inFocus) {
-      if (this.selected < 4) {
+      if (this.selected < 5) {
         this.selected += 1;
       } else {
         this.selected = 0;
@@ -70,7 +71,9 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.inFocus) {
       if (this.selected === 0) {
         this.onCreateExperiment(new MouseEvent('click'));
-      } else if (this.selected === 3) {
+      } else if (this.selected === 2) {
+        this.onGoToPackages();
+      } else if (this.selected === 4) {
         this.onGoToSettings();
       }
     }
@@ -82,6 +85,15 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onGoToSettings() {
     const tab = this.tabFactory.create(['settings']);
+    this.goToTab(tab);
+  }
+
+  onGoToPackages() {
+    const tab = this.tabFactory.create(['package']);
+    this.goToTab(tab);
+  }
+  
+  private goToTab(tab: Tab) {
     if (this.routerService.current() === '/') {
       this.tabService.openTab(tab);
     } else {

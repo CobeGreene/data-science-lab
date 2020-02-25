@@ -27,6 +27,10 @@ export class AppTabFactory extends TabFactory {
             return { name: 'Settings', route: '/settings' };
         } else if (handler.get(0) === 'welcome') {
             return { name: 'Welcome', route: '/welcome' };
+        } else if (handler.get(0) === 'package' && !handler.has(1)) {
+            return { name: 'Package Explorer', route: '/package' };
+        } else if (handler.get(0) === 'package' && handler.has(1)) {
+            return { name: handler.get(1) as string, route: `/package/${handler.get(1)}` };
         } else if (handler.get(0) === 'experiment') {
             return this.createExperimentRoute(handler.skip(1));
         } else {

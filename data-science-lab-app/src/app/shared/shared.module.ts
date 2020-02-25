@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgxMdModule } from 'ngx-md';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +17,8 @@ import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { UpdateExperimentComponent } from './experiment/update-experiment/update-experiment.component';
 import { DeleteExperimentComponent } from './experiment/delete-experiment/delete-experiment.component';
+import { PackageBadgePipe } from './pipes/package-badge.pipe';
+import { PackageSearchPipe } from './pipes/package-search.pipe';
 
 @NgModule({
     declarations: [
@@ -23,6 +27,8 @@ import { DeleteExperimentComponent } from './experiment/delete-experiment/delete
         ModalCloseComponent,
         CreateExperimentComponent,
         IncompletePipe,
+        PackageBadgePipe,
+        PackageSearchPipe,
         NotificationComponent,
         DropdownComponent,
         SelectComponent,
@@ -37,6 +43,8 @@ import { DeleteExperimentComponent } from './experiment/delete-experiment/delete
         AngularResizedEventModule,
         ReactiveFormsModule,
         OverlayModule,
+        HttpClientModule,
+        NgxMdModule,
     ],
     entryComponents: [
         NotificationComponent
@@ -49,6 +57,8 @@ import { DeleteExperimentComponent } from './experiment/delete-experiment/delete
         UpdateExperimentComponent,
         DeleteExperimentComponent,
         IncompletePipe,
+        PackageBadgePipe,
+        PackageSearchPipe,
         DropdownComponent,
         SelectComponent,
         CheckboxComponent,
@@ -57,6 +67,8 @@ import { DeleteExperimentComponent } from './experiment/delete-experiment/delete
         FormsModule,
         ReactiveFormsModule,
         AngularResizedEventModule,
+        HttpClientModule,
+        NgxMdModule,
     ]
 })
 export class SharedModule {

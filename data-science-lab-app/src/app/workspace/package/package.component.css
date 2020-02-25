@@ -1,0 +1,10 @@
+:host() {
+    display: flex;
+    justify-content: center;
+}
+
+
+.content {
+    min-width: 50%;
+    max-width: 75%;
+}

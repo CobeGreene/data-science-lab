@@ -38,6 +38,13 @@ import { TabFactory, AppTabFactory } from '../factory/tab-factory';
 import { UserSettingService, AppUserSettingService } from '../services/user-setting-service';
 import { CreationService } from '../services/creation-service/creation.service';
 import { AppCreationService } from '../services/creation-service/app-creation.service';
+import { SidebarPackageComponent } from './areas/sidebar/sidebar-package/sidebar-package.component';
+import { SidebarPackageCardComponent } from './areas/sidebar/sidebar-package/sidebar-package-card/sidebar-package-card.component';
+import { PackageService, AppPackageService } from '../services/package-service';
+import {
+    SidebarPackageExplorerComponent
+} from './areas/sidebar/sidebar-package/sidebar-package-explorer/sidebar-package-explorer.component';
+import { AppOpenLinkService, OpenLinkService } from '../services/open-link-service';
 
 @NgModule({
     declarations: [
@@ -54,7 +61,10 @@ import { AppCreationService } from '../services/creation-service/app-creation.se
         SidebarExperimentCreateComponent,
         SidebarExperimentCardComponent,
         TabCardComponent,
-        TabOptionsComponent
+        TabOptionsComponent,
+        SidebarPackageComponent,
+        SidebarPackageCardComponent,
+        SidebarPackageExplorerComponent,
     ],
     imports: [
         SharedModule,
@@ -64,7 +74,7 @@ import { AppCreationService } from '../services/creation-service/app-creation.se
         SidebarComponent,
         TabsComponent,
         ShortcutComponent,
-        WorkspaceAreaComponent
+        WorkspaceAreaComponent,
     ],
     providers: [
         { provide: ShortcutService, useClass: AppShortcutService },
@@ -78,11 +88,13 @@ import { AppCreationService } from '../services/creation-service/app-creation.se
         { provide: FocusService, useClass: AppFocusService },
         { provide: OverlayService, useClass: AppOverlayService },
         { provide: ExperimentService, useClass: AppExperimentService },
+        { provide: PackageService, useClass: AppPackageService },
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: NotificationService, useClass: AppNotificationService },
-        { provide: ErrorService, useClass: AppErrorService }, 
+        { provide: ErrorService, useClass: AppErrorService },
         { provide: UserSettingService, useClass: AppUserSettingService },
         { provide: CreationService, useClass: AppCreationService },
+        { provide: OpenLinkService, useClass: AppOpenLinkService },
     ]
 })
 export class CoreModule {

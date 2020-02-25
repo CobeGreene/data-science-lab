@@ -6,8 +6,10 @@ export const enum SERVICE_TYPES {
     Producer,
     // Context
     SettingsContext,
+    PluginContext,
     // Service Models
     ExperimentServiceModel,
+    PackageServiceModel,
     ThemeServiceModel,
     OpenLinkServiceModel,
     UserSettingServiceModel,
@@ -15,4 +17,7 @@ export const enum SERVICE_TYPES {
     ExperimentDataService,
     ThemeDataService,
     UserSettingDataService,
+    PackageDataService,
+    // Core Services
+    WebService,
 }

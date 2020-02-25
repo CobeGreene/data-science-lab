@@ -2,7 +2,10 @@
     display: flex;
     align-items: center;
     border: 2px solid transparent;
-    cursor: pointer;
+}
+
+.icon.invisible {
+    cursor: auto;
 }
 
 :host(.selected) {
@@ -13,4 +16,9 @@
     display: inline-block;
     width: var(--sidebar-list-header-icon-width);
     text-align: right;
+    cursor: pointer;
+}
+
+.invisible {
+    color: transparent;
 }

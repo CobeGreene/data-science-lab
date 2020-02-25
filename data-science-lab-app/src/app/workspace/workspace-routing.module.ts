@@ -10,7 +10,8 @@ const routes: Routes = [
             { path: '', component: WelcomeComponent, pathMatch: 'full' },
             { path: 'welcome', component: WelcomeComponent, pathMatch: 'full' },
             { path: 'settings', component: SettingsComponent, pathMatch: 'full' },
-            { path: 'experiment', loadChildren: './experiment/experiment.module#ExperimentModule' }
+            { path: 'experiment', loadChildren: './experiment/experiment.module#ExperimentModule' },
+            { path: 'package', loadChildren: './package/package.module#PackageModule' }
         ]
     }
 ];

@@ -55,7 +55,6 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
         selected: 0,
       });
 
-    this.data.inFocus = true;
 
     this.focusService.focusChanged
       .pipe(untilComponentDestroyed(this))
@@ -199,19 +198,26 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
     this.data.selected = 0;
     this.data.openSelected = selected;
 
-    this.scrollIntoViewOpenSelected();
+    if (this.data.openSelected < this.openExperiments.length) {
+      this.scrollIntoViewOpenSelected();
+  
+      const tab = this.tabFactory.create(['experiment', this.openExperiments[selected].id]);
+      this.tabService.openTab(tab);
 
-    const tab = this.tabFactory.create(['experiment', this.openExperiments[selected].id]);
-    this.tabService.openTab(tab);
+    }
+
   }
 
   onSaveSelected(selected: number) {
     this.data.selected = 1;
     this.data.savedSelected = selected;
 
-    this.scrollIntoViewSaveSelected();
+    if (this.data.savedSelected < this.savedExperiments.length) {
+      this.scrollIntoViewSaveSelected();
+  
+      this.experimentService.load(this.savedExperiments[selected].id);
+    }
 
-    this.experimentService.load(this.savedExperiments[selected].id);
   }
 
   scrollIntoViewOpenSelected() {
