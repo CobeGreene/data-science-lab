@@ -23,6 +23,7 @@ export const enum SERVICE_TYPES {
     UserSettingDataService,
     PackageDataService,
     SessionDataService,
+    DatasetDataService,
     // Core Services
     WebService,
     FileService,

@@ -8,6 +8,7 @@ import { Session, Plugin, SessionOptions, SessionState } from '../../../../share
 import { PluginContext } from '../../contexts/plugin-context';
 import { FetchPlugin, FileService } from 'data-science-lab-core';
 import { SystemError, ErrorTypes } from '../../../../shared/errors';
+import { DatasetDataService } from '../../data-services/dataset-data-service';
 
 export class FetchServiceModel extends ServiceModel {
     static routes: ServiceModelRoutes = {
@@ -25,6 +26,7 @@ export class FetchServiceModel extends ServiceModel {
     private dataService: SessionDataService;
     private packageService: PackageDataService;
     private context: PluginContext;
+    private datasetService: DatasetDataService;
 
     private get fileService(): FileService {
         return this.serviceContainer.resolve<FileService>(SERVICE_TYPES.FileService);
@@ -36,6 +38,7 @@ export class FetchServiceModel extends ServiceModel {
         this.dataService = serviceContainer.resolve<SessionDataService>(SERVICE_TYPES.SessionDataService);
         this.packageService = serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
         this.context = serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
+        this.datasetService = serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService);
     }
 
     create(experimentId: number, options: SessionOptions) {
@@ -115,6 +118,9 @@ export class FetchServiceModel extends ServiceModel {
     }
 
     sessionFinish(session: Session, plugin: FetchPlugin) {
-        
+        const data = plugin.fetch();
+        const ids = this.datasetService.create(session.keyId, data);
+        this.dataService.delete(session.id);
+        this.producer.send(FetchEvents.Finish, session.id);
     }
 }
