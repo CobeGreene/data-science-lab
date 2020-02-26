@@ -7,17 +7,23 @@ export const enum SERVICE_TYPES {
     // Context
     SettingsContext,
     PluginContext,
+    // Converters
+    PluginDataConverter,
     // Service Models
     ExperimentServiceModel,
     PackageServiceModel,
     ThemeServiceModel,
     OpenLinkServiceModel,
     UserSettingServiceModel,
+    // Session Service Models
+    FetchServiceModel,
     // Data Services
     ExperimentDataService,
     ThemeDataService,
     UserSettingDataService,
     PackageDataService,
+    SessionDataService,
     // Core Services
     WebService,
+    FileService,
 }

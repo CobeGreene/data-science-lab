@@ -6,12 +6,12 @@ import { OptionList } from 'data-science-lab-core';
 export class Session {
     id: number;
     keyId: number;
-    selectedFeatures: number;
     sessionOptions: SessionOptions;
     state: string;
+    selectedFeatures?: number[];
     returnPath?: string;
     isWaiting: boolean;
-    plugin: SessionPlugin | Plugin;
+    plugin?: SessionPlugin | Plugin;
     optionList?: OptionList;
     search?: string;
     inputDict?: { [id: string]: number[] };

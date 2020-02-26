@@ -1,4 +1,4 @@
-export class ApiSettings {
+export interface ApiSettings {
     protocol: string;
     hostname: string;
     port: number;

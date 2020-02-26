@@ -6,4 +6,8 @@ export class IdGenerator {
     next(): number {
         return this.start++;
     }
+
+    at(): number {
+        return this.start;
+    }
 }
