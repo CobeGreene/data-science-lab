@@ -1,0 +1,18 @@
+:host {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'search icon';
+}
+
+.search {
+    width: 100%;
+    grid-area: search;
+}
+
+.icon {
+    grid-area: icon;
+    display: flex;
+    align-items: center;
+    background-color: var(--accent3);
+}

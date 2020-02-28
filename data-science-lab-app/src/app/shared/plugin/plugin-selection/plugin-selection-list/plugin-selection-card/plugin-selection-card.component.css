@@ -1,0 +1,28 @@
+.container {
+    background-color: var(--plugin-selection-background);
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-template-rows: 1fr min-content;
+    gap: 0.5rem;
+    grid-template-areas: 'icon version' 'name action';
+}
+
+
+.icon {
+    grid-area: icon;
+}
+
+.version {
+    text-align: right;
+    grid-area: version;
+}
+
+.name {
+    grid-area: name;
+}
+
+.action {
+    grid-area: action;
+    display: flex;
+    align-self: flex-end;
+}
