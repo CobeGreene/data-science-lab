@@ -13,7 +13,7 @@
     {
         "key": "dataset.default.preview",
         "title": "Dataset Default Preview Examples",
-        "description": "The default number of examples to preview dataset",
+        "description": "The default number of examples to preview",
         "value": 10,
         "default": 10,
         "min": 0

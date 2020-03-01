@@ -12,11 +12,17 @@ import { ExperimentServiceModel } from './services/experiment.sm/experiment.sm';
 import { OpenLinkServiceModel } from './services/open-link.sm/open-link.sm';
 import { UserSettingServiceModel } from './services/user-setting.sm';
 import { AppUserSettingDataService, UserSettingDataService } from './data-services/user-setting-data-service';
-import { WebService } from 'data-science-lab-core';
+import { WebService, FileService } from 'data-science-lab-core';
 import { AppWebService } from './core-services/web-core-service/app-web.service';
 import { PluginContext, AppPluginContext } from './contexts/plugin-context';
 import { PackageDataService, AppPackageDataService } from './data-services/package-data-service';
 import { PackageServiceModel } from './services/package.sm/package.sm';
+import { FetchServiceModel } from './session-services/fetch.sm/fetch.sm';
+import { PluginDataConverter } from './converters/plugin-data-converter/plugin-data.converter';
+import { AppPluginDataConverter } from './converters/plugin-data-converter/app-plugin-data.converter';
+import { AppFileCoreService } from './core-services/file-core-service/app-file.service';
+import { DatasetDataService, AppDatasetDataService } from './data-services/dataset-data-service';
+import { SessionDataService, AppSessionDataService } from './data-services/session-data-service';
 
 export let win: BrowserWindow;
 
@@ -35,14 +41,20 @@ export class App {
         this.serviceContainer.addSingleton<SettingsContext>(AppSettingsContext, SERVICE_TYPES.SettingsContext);
         this.serviceContainer.addSingleton<PluginContext>(AppPluginContext, SERVICE_TYPES.PluginContext);
 
+        // Converters
+        this.serviceContainer.addTransient<PluginDataConverter>(AppPluginDataConverter, SERVICE_TYPES.PluginDataConverter);
+
         // Data Services
         this.serviceContainer.addSingleton<ThemeDataService>(AppThemeDataService, SERVICE_TYPES.ThemeDataService);
         this.serviceContainer.addSingleton<ExperimentDataService>(AppExperimentDataService, SERVICE_TYPES.ExperimentDataService);
         this.serviceContainer.addSingleton<UserSettingDataService>(AppUserSettingDataService, SERVICE_TYPES.UserSettingDataService);
         this.serviceContainer.addSingleton<PackageDataService>(AppPackageDataService, SERVICE_TYPES.PackageDataService);
-
+        this.serviceContainer.addSingleton<DatasetDataService>(AppDatasetDataService, SERVICE_TYPES.DatasetDataService);
+        this.serviceContainer.addSingleton<SessionDataService>(AppSessionDataService, SERVICE_TYPES.SessionDataService);
+        
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
+        this.serviceContainer.addTransient<FileService>(AppFileCoreService, SERVICE_TYPES.FileService);
 
         // Service Models 
         this.serviceContainer.addTransient<Producer>(Producer, SERVICE_TYPES.Producer);
@@ -51,6 +63,7 @@ export class App {
         this.serviceContainer.addTransient<OpenLinkServiceModel>(OpenLinkServiceModel, SERVICE_TYPES.OpenLinkServiceModel);
         this.serviceContainer.addTransient<UserSettingServiceModel>(UserSettingServiceModel, SERVICE_TYPES.UserSettingServiceModel);
         this.serviceContainer.addTransient<PackageServiceModel>(PackageServiceModel, SERVICE_TYPES.PackageServiceModel);
+        this.serviceContainer.addTransient<FetchServiceModel>(FetchServiceModel, SERVICE_TYPES.FetchServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -58,6 +71,7 @@ export class App {
             OpenLinkServiceModel.routes,
             UserSettingServiceModel.routes,
             PackageServiceModel.routes,
+            FetchServiceModel.routes,
         ]);
     }
 

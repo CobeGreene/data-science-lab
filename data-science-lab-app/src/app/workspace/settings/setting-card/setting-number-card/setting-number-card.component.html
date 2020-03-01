@@ -2,7 +2,7 @@
     {{ setting.description }}
 </p>
 <input type="number" class="w-100 p-1 accent1" value="value" #value="ngModel" [(ngModel)]="setting.value" required
-    [min]="setting.min" [max]="setting.max" #numberCmp>
+    [min]="setting.min" [max]="setting.max" pattern="\d+" #numberCmp>
 <div *ngIf="!isValid(setting.value)">
     <div class="invalid-feedback">
         <div *ngIf="setting.min !== undefined && setting.max === undefined">
@@ -13,6 +13,9 @@
         </div>
         <div *ngIf="setting.max !== undefined && setting.min !== undefined">
             Number must be between {{ setting.min }} and {{ setting.max }}
+        </div>
+        <div *ngIf="!isInteger(setting.value)">
+            Number must be an integer.
         </div>
     </div>
 </div>

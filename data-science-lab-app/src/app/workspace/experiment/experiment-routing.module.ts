@@ -6,7 +6,8 @@ import { ExperimentDatasetsComponent } from './experiment-datasets/experiment-da
 const routes: Routes = [
     {
         path: ':id', component: ExperimentComponent, children: [
-            { path: '', component: ExperimentDatasetsComponent, pathMatch: 'full' }
+            { path: '', component: ExperimentDatasetsComponent, pathMatch: 'full' },
+            { path: 'dataset', loadChildren: './dataset/dataset.module#DatasetModule' }
         ]
     }
 ];

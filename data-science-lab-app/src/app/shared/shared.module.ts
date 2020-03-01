@@ -33,13 +33,18 @@ import { PluginInputValidComponent } from './plugin/plugin-input/plugin-input-va
 import { PopupComponent } from './popup/popup.component';
 import { PluginSelectionListComponent } from './plugin/plugin-selection/plugin-selection-list/plugin-selection-list.component';
 import { PluginSelectionSearchComponent } from './plugin/plugin-selection/plugin-selection-search/plugin-selection-search.component';
-import { PluginSelectionBoxComponent } from './plugin/plugin-selection/plugin-selection-list/plugin-selection-box/plugin-selection-box.component';
-import { PluginSelectionCardComponent } from './plugin/plugin-selection/plugin-selection-list/plugin-selection-card/plugin-selection-card.component';
+import {
+    PluginSelectionBoxComponent
+} from './plugin/plugin-selection/plugin-selection-list/plugin-selection-box/plugin-selection-box.component';
+import {
+    PluginSelectionCardComponent
+} from './plugin/plugin-selection/plugin-selection-list/plugin-selection-card/plugin-selection-card.component';
 import { CheckboxOptionComponent } from './plugin/plugin-setup/checkbox-option/checkbox-option.component';
 import { ChoicesOptionComponent } from './plugin/plugin-setup/choices-option/choices-option.component';
 import { CommandOptionComponent } from './plugin/plugin-setup/command-option/command-option.component';
 import { NumberOptionComponent } from './plugin/plugin-setup/number-option/number-option.component';
 import { TextOptionComponent } from './plugin/plugin-setup/text-option/text-option.component';
+import { PluginSearchPipe } from './pipes/plugin-search.pipe';
 
 @NgModule({
     declarations: [
@@ -50,6 +55,7 @@ import { TextOptionComponent } from './plugin/plugin-setup/text-option/text-opti
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,
+        PluginSearchPipe,
         NotificationComponent,
         DropdownComponent,
         SelectComponent,
@@ -106,6 +112,7 @@ import { TextOptionComponent } from './plugin/plugin-setup/text-option/text-opti
         PluginSetupComponent,
         PluginInputComponent,
         PluginFeaturesComponent,
+        PluginHeaderComponent,
         SelectComponent,
         CheckboxComponent,
         CommonModule,

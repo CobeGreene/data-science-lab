@@ -89,6 +89,9 @@
     --popup-word: #FFF;
     --popup-info: #6089B4;
     --popup-warning: #D08442;
+    --experiment-dataset-card-background: #323232;
+    --experiment-dataset-card-border: #404040;
+    --experiment-dataset-card-shadow: rgba(0, 0, 0, .1);
 
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;

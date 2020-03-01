@@ -8,6 +8,10 @@ import { ExperimentTitleComponent } from './experiment-header/experiment-title/e
 import { ExperimentNavigationComponent } from './experiment-header/experiment-navigation/experiment-navigation.component';
 import { ExperimentBodyComponent } from './experiment-body/experiment-body.component';
 import { ExperimentDatasetsComponent } from './experiment-datasets/experiment-datasets.component';
+import { ExperimentDatasetCardComponent } from './experiment-datasets/experiment-dataset-card/experiment-dataset-card.component';
+import {
+    ExperimentCreateDatasetCardComponent
+} from './experiment-datasets/experiment-create-dataset-card/experiment-create-dataset-card.component';
 
 @NgModule({
     declarations: [
@@ -16,7 +20,9 @@ import { ExperimentDatasetsComponent } from './experiment-datasets/experiment-da
         ExperimentTitleComponent,
         ExperimentNavigationComponent,
         ExperimentBodyComponent,
-        ExperimentDatasetsComponent
+        ExperimentDatasetsComponent,
+        ExperimentDatasetCardComponent,
+        ExperimentCreateDatasetCardComponent,
     ],
     imports: [
         CommonModule,

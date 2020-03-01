@@ -47,7 +47,11 @@ export class SettingNumberCardComponent implements OnInit, AfterViewInit, OnDest
     if (this.setting.max && num > this.setting.max) {
       return false;
     }
-    return true;
+    return this.isInteger(num);
+  }
+
+  isInteger(num: number) {
+    return Number.isInteger(num);
   }
 
 }

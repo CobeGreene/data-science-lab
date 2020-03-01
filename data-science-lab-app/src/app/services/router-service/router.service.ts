@@ -1,20 +1,20 @@
-import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { ExperimentRoute } from '../../models/experiment-route';
+import { Event } from '@angular/router';
 
 export abstract class RouterService implements OnDestroy {
-    routeChanged: Subject<string>;
 
     constructor() {
-        this.routeChanged = new Subject<string>();
+        
     }
 
     abstract current(): string;
     abstract data(): ExperimentRoute;
     abstract navigate(route: string, data?: ExperimentRoute);
+    abstract changed(): Observable<Event>;
 
     ngOnDestroy() {
-        this.routeChanged.complete();
     }
 } 
 

@@ -72,7 +72,7 @@ export class FetchServiceModel extends ServiceModel {
         } else {
             session.optionList = fetchPlugin.getOptions().options();
             session.plugin = plugin;
-            session.state = SessionState.Option;
+            session.state = SessionState.Setup;
             session.isWaiting = false;
             this.producer.send(FetchEvents.Update, session);
         }
@@ -95,13 +95,30 @@ export class FetchServiceModel extends ServiceModel {
         }
     }
 
+    options(id: number, inputs: { [id: string]: any; }) {
+        const session = this.dataService.get(id);
+
+        const fetchPlugin = this.dataService.reference<FetchPlugin>(id);
+
+        fetchPlugin.getOptions().submit(inputs);
+        
+        if (fetchPlugin.getOptions().noMore()) {
+            // session finish
+            this.sessionFinish(session, fetchPlugin);
+        } else {
+            session.optionList = fetchPlugin.getOptions().options();
+            session.isWaiting = false;
+            this.producer.send(FetchEvents.Update, session);
+        }
+    }
+
     async previous(id: number) {
         const session = this.dataService.get(id);
 
         if (session.state === SessionState.Select) {
             this.dataService.delete(id);
             this.producer.send(FetchEvents.Finish, id);
-        } else if (session.state === SessionState.Option) {
+        } else if (session.state === SessionState.Setup) {
             await this.context.deactivate(this.packageService.find(session.plugin), session.plugin);
             session.state = SessionState.Select;
             session.optionList = undefined;

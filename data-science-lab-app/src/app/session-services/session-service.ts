@@ -118,7 +118,7 @@ export abstract class SessionService extends Service {
         this.messenger.publish(this.eventDelete, id);
     }
 
-    attemptDelete(id: number): void {
+    attemptDelete = (id: number): void => {
         const find = this.sessions.find(value => value.id === id);
         if (find) {
             this.messenger.publish(this.eventDelete, id);

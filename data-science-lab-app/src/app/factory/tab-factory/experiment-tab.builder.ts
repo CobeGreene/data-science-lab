@@ -1,40 +1,28 @@
 import { Tab } from '../../models';
 import { TabService } from '../../services/tab-service';
 import { TabFactory } from './tab.factory';
-import { TabBuilder } from './tab.builder';
 import { Subject, Subscription } from 'rxjs';
 import { Experiment } from '../../../../shared/models';
+import { BaseTabBuilder } from './base-tab.builder';
 
-export class ExperimentTabBuilder implements TabBuilder {
-    public tab: Tab;
+export class ExperimentTabBuilder extends BaseTabBuilder {
     public update: Subscription;
     public delete: Subscription;
 
     constructor(id: number, title: string, public tabService: TabService, public tabFactory: TabFactory) {
-        this.tab = {
+        super({
             name: title,
             route: `/experiment/${id}`,
             data: {
                 id,
                 prefix: '',
             }
-        };
+        });
     }
 
     build(): Tab {
         this.tab.sub = this.update.add(this.delete);
         return this.tab;
-    }
-
-    buildPrefix(prefix: string): ExperimentTabBuilder {
-        this.tab.name = `${prefix}${this.tab.name}`;
-        this.tab.data.prefix = prefix;
-        return this;
-    }
-
-    buildRoute(route: string): ExperimentTabBuilder {
-        this.tab.route = `${this.tab.route}/${route}`;
-        return this;
     }
 
     buildUpdate(subject: Subject<Experiment>): ExperimentTabBuilder {
@@ -53,6 +41,10 @@ export class ExperimentTabBuilder implements TabBuilder {
             }
         });
         return this;
+    }
+
+    buildFinish(subject: Subject<any>): ExperimentTabBuilder {
+        throw new Error(`Experiment route does not have a finish`);
     }
 
     buildClose(_: (id: number) => void): ExperimentTabBuilder {
