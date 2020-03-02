@@ -1,9 +1,9 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import { ServiceContainer, AppServiceContainer, SERVICE_TYPES, Service } from './service-container';
 import { RoutingPipeline, Producer } from './pipeline';
 import { AppIpcService } from './ipc-services';
 import { IpcService } from '../../shared/services';
-import { ErrorEvent } from '../../shared/events';
+import { ErrorEvent, ExperimentEvents } from '../../shared/events';
 import { SettingsContext, AppSettingsContext } from './contexts/settings-context';
 import { ThemeDataService, AppThemeDataService } from './data-services/theme-data-service';
 import { ThemeServiceModel } from './services/theme.sm/theme.sm';
@@ -24,6 +24,7 @@ import { AppFileCoreService } from './core-services/file-core-service/app-file.s
 import { DatasetDataService, AppDatasetDataService } from './data-services/dataset-data-service';
 import { SessionDataService, AppSessionDataService } from './data-services/session-data-service';
 import { AppQueuePluginContext } from './contexts/plugin-context/app-queue-plugin.context';
+import { DatasetServiceModel } from './services/dataset.sm';
 
 export let win: BrowserWindow;
 
@@ -62,6 +63,7 @@ export class App {
         this.serviceContainer.addTransient<Producer>(Producer, SERVICE_TYPES.Producer);
         this.serviceContainer.addTransient<ThemeServiceModel>(ThemeServiceModel, SERVICE_TYPES.ThemeServiceModel);
         this.serviceContainer.addTransient<ExperimentServiceModel>(ExperimentServiceModel, SERVICE_TYPES.ExperimentServiceModel);
+        this.serviceContainer.addTransient<DatasetServiceModel>(DatasetServiceModel, SERVICE_TYPES.DatasetServiceModel);
         this.serviceContainer.addTransient<OpenLinkServiceModel>(OpenLinkServiceModel, SERVICE_TYPES.OpenLinkServiceModel);
         this.serviceContainer.addTransient<UserSettingServiceModel>(UserSettingServiceModel, SERVICE_TYPES.UserSettingServiceModel);
         this.serviceContainer.addTransient<PackageServiceModel>(PackageServiceModel, SERVICE_TYPES.PackageServiceModel);
@@ -70,6 +72,7 @@ export class App {
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
             ExperimentServiceModel.routes,
+            DatasetServiceModel.routes,
             OpenLinkServiceModel.routes,
             UserSettingServiceModel.routes,
             PackageServiceModel.routes,
@@ -78,7 +81,12 @@ export class App {
     }
 
     public destory() {
-
+        const dataService = this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
+        const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
+        
+        dataService.all().forEach(experiment => {
+            producer.send(ExperimentEvents.Save, experiment.id);
+        });
     }
 
     public configure() {
@@ -109,8 +117,14 @@ export class App {
         this.configure();
         win.loadURL(this.indexPage);
 
-        win.on('closed', () => {
+        win.on('close', (event: Event) => {
+            event.preventDefault();
             this.destory();
+            win.destroy();
+
+        });
+
+        win.on('closed', () => {
             win = null;
         });
     }

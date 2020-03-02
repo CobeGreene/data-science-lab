@@ -16,6 +16,7 @@ export const enum SERVICE_TYPES {
     ThemeServiceModel,
     OpenLinkServiceModel,
     UserSettingServiceModel,
+    DatasetServiceModel,
     // Session Service Models
     FetchServiceModel,
     // Data Services

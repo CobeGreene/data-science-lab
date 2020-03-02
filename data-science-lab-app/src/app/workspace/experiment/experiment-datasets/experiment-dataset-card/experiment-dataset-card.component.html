@@ -1,1 +1,33 @@
-<p>experiment-dataset-card works!</p>
+<div class="image p-2">
+    <fa name="database" class="icon-sm" size="lg"></fa>
+    <fa name="database" class="icon-lg" size="5x"></fa>
+</div>
+<div class="p-2">
+    <h3>{{ dataset.name }}</h3>
+    <div class="body">
+        <div>
+            <p class="m-0 p-0">
+                {{ dataset.examples }} Examples
+            </p>
+            <p class="m-0 p-0">
+                {{ dataset.features.length }} Features
+            </p>
+        </div>
+        <div class="action p-3">
+            <fa name="gavel" size="3x" (click)="onOptions($event)"></fa>
+        </div>
+    </div>
+</div>
+<app-dropdown #optionsCmp>
+    <ul class="list-unstyled dropdown-list">
+        <li (click)="onSplit($event)">
+            Split Dataset
+        </li>
+        <li (click)="onJoin($event)">
+            Join Dataset
+        </li>
+        <li (click)="onDelete($event)">
+            Delete Dataset
+        </li>
+    </ul>
+</app-dropdown>

@@ -1,13 +1,8 @@
 import { SERVICE_TYPES, ServiceContainer } from '../../service-container';
 import { ServiceModelRoutes, Producer } from '../../pipeline';
-import { FetchEvents, ErrorEvent } from '../../../../shared/events';
-import { ServiceModel } from '../../services/service-model';
-import { SessionDataService } from '../../data-services/session-data-service';
-import { PackageDataService } from '../../data-services/package-data-service';
-import { Session, Plugin, SessionOptions, SessionState } from '../../../../shared/models';
-import { PluginContext } from '../../contexts/plugin-context';
+import { FetchEvents, DatasetEvents } from '../../../../shared/events';
+import { Session } from '../../../../shared/models';
 import { FetchPlugin, FileService } from 'data-science-lab-core';
-import { SystemError, ErrorTypes } from '../../../../shared/errors';
 import { DatasetDataService } from '../../data-services/dataset-data-service';
 import { SessionService } from '../session-service';
 
@@ -79,6 +74,10 @@ export class FetchServiceModel extends SessionService {
     async sessionFinish(session: Session, plugin: FetchPlugin) {
         const data = plugin.fetch();
         const ids = this.datasetService.create(session.keyId, data);
+        ids.forEach(id => {
+            const view = this.datasetService.view(id);
+            this.producer.send(DatasetEvents.Create, view);
+        });
     }
 
 }

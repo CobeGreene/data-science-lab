@@ -99,10 +99,13 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     }
 
     save(experimentId: number): void {
-        const datasetPath = this.context.get<string>(this.path);
-        const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
-        const buffer = zlib.gzipSync(JSON.stringify(this.all(experimentId)));
-        fs.writeFileSync(experimentPath, buffer);
+        const datasets = this.all(experimentId);
+        if (datasets.length > 0) {
+            const datasetPath = this.context.get<string>(this.path);
+            const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
+            const buffer = zlib.gzipSync(JSON.stringify(this.all(experimentId)));
+            fs.writeFileSync(experimentPath, buffer);
+        }
     }
 
     get(id: number): DatasetObject {
