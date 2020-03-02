@@ -5,13 +5,17 @@ import { ExperimentTabBuilder } from './experiment-tab.builder';
 import { ExperimentService } from '../../services/experiment-service';
 import { TabService } from '../../services/tab-service';
 import { RoutesHandler } from './routes-handler';
+import { FetchDatasetTabBuilder } from './fetch-dataset-tab.builder';
+import { TabBuilder } from './tab.builder';
+import { FetchSessionService } from '../../session-services/fetch-session-service';
 
 @Injectable()
 export class AppTabFactory extends TabFactory {
 
     constructor(
         private tabService: TabService,
-        private experimentService: ExperimentService
+        private experimentService: ExperimentService,
+        private fetchSessionService: FetchSessionService
     ) {
         super();
     }
@@ -44,9 +48,28 @@ export class AppTabFactory extends TabFactory {
             const experimentTitle = this.experimentService.get(experimentId).title;
             handler.skip(1);
 
-            const builder = new ExperimentTabBuilder(experimentId, experimentTitle, this.tabService, this)
+            let builder: TabBuilder = new ExperimentTabBuilder(experimentId, experimentTitle, this.tabService, this)
                 .buildUpdate(this.experimentService.experimentUpdated)
                 .buildDelete(this.experimentService.experimentDeleted);
+
+            if (handler.has(0) && handler.get(0) === 'dataset') {
+                handler.skip(1);
+                builder.buildRoute('dataset');
+
+                if (handler.get(0) === 'fetch') {
+                    builder = new FetchDatasetTabBuilder(+handler.get(1), handler.get(2), builder as ExperimentTabBuilder);
+                    builder.buildPrefix('Fetch for ')
+                        .buildUpdate(this.fetchSessionService.sessionUpdated)
+                        .buildDelete(this.fetchSessionService.sessionDeleted)
+                        .buildFinish(this.fetchSessionService.sessionFinished)
+                        .buildClose(this.fetchSessionService.attemptDelete);
+                    handler.skip(3);
+                    
+                } else if (handler.isNumber(0)) {
+
+                }
+            }
+
 
             if (handler.done()) {
                 return builder.build();

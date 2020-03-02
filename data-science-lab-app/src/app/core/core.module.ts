@@ -45,6 +45,8 @@ import {
     SidebarPackageExplorerComponent
 } from './areas/sidebar/sidebar-package/sidebar-package-explorer/sidebar-package-explorer.component';
 import { AppOpenLinkService, OpenLinkService } from '../services/open-link-service';
+import { FetchSessionService, AppFetchSessionService } from '../session-services/fetch-session-service';
+import { DatasetService, AppDatasetService } from '../services/dataset-service';
 
 @NgModule({
     declarations: [
@@ -88,8 +90,10 @@ import { AppOpenLinkService, OpenLinkService } from '../services/open-link-servi
         { provide: FocusService, useClass: AppFocusService },
         { provide: OverlayService, useClass: AppOverlayService },
         { provide: ExperimentService, useClass: AppExperimentService },
+        { provide: DatasetService, useClass: AppDatasetService },
         { provide: PackageService, useClass: AppPackageService },
         { provide: SidebarService, useClass: AppSidebarService },
+        { provide: FetchSessionService, useClass: AppFetchSessionService },
         { provide: NotificationService, useClass: AppNotificationService },
         { provide: ErrorService, useClass: AppErrorService },
         { provide: UserSettingService, useClass: AppUserSettingService },

@@ -1,4 +1,7 @@
 <app-experiment-header [style.height.px]="isExpanded ? 80 : 30" (emitExpanded)="onExpanded($event)" #headerCmp>
 </app-experiment-header>
 <div [style.margin-top.px]="isExpanded ? 80 : 30">
+    <app-experiment-body class="p-2">
+        <router-outlet></router-outlet>
+    </app-experiment-body>
 </div>

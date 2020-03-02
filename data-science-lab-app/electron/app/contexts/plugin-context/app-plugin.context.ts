@@ -3,7 +3,7 @@ import { PluginContext } from './plugin.context';
 import { PluginManager } from 'live-plugin-manager';
 import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
 import { SettingsContext } from '../settings-context';
-
+import { PackageError, ErrorTypes } from '../../../../shared/errors';
 
 export class AppPluginContext implements PluginContext {
     private readonly key = 'plugin-package';
@@ -66,6 +66,15 @@ export class AppPluginContext implements PluginContext {
     deactivateAll(): Promise<void> {
         // return this.manager.uninstallAll();
         return new Promise((resolve) => resolve());
+    }
+
+    pluginError(pluginPackage: Package, plugin: Plugin): PackageError {
+        return {
+            header: 'Package Error',
+            description: `Unable to activate the plugin ${plugin.name} for the package ${pluginPackage.name}`,
+            type: ErrorTypes.Warning,
+            issues: `https://www.github.com/${pluginPackage.owner}/${pluginPackage.repositoryName}/issues/new`
+        };
     }
 }
 

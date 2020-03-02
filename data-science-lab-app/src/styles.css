@@ -75,6 +75,24 @@
     --experiment-dataset: #219186;
     --experiment-visualization: #9872A2;
     --experiment-algorithm: #C7444A;
+    --plugin-body-next: #FFF;
+    --plugin-header-title: #FFF;
+    --plugin-exit: #C7444A;
+    --plugin-selection-background: #353535;
+    --object-card-background: #323232;
+    --object-card-selected: #6089B4;
+    --plugin-input-card-background: #323232;
+    --plugin-input-card-border: #219186;
+    --plugin-input-card-shadow: rgba(0, 0, 0, .1);
+    --plugin-input-card-valid: #219186;
+    --popup-error: #C7444A;
+    --popup-word: #FFF;
+    --popup-info: #6089B4;
+    --popup-warning: #D08442;
+    --experiment-dataset-card-background: #323232;
+    --experiment-dataset-card-border: #404040;
+    --experiment-dataset-card-shadow: rgba(0, 0, 0, .1);
+
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;
     --tabs-actual-height: 42px;

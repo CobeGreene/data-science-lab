@@ -130,7 +130,13 @@ export class AppPackageDataService extends Service implements PackageDataService
                             repositoryName: element.repositoryName,
                             username: element.username,
                             install: false,
-                            plugins: element.plugins
+                            plugins: element.plugins.map(value => ({
+                                name: value.name,
+                                className: value.className,
+                                description: value.description,
+                                type: value.type,
+                                packageName: element.name
+                            }))
                         };
                         this.packages.push(pluginPackage);
                     }

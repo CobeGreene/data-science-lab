@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" [attr.viewBox]="getViewBox()" [style.width.px]="width"
+    [style.height.px]="height" [style.top.px]="top" [style.left.px]="left" class="box">
+    <path [id]="getPathId()" stroke-width="1" stroke-linejoin="round" [attr.d]="path" [attr.fill]="getPathColor()"
+        [attr.stroke]="box.color">
+    </path>
+    <text [attr.fill]="box.color" dy="15" dx="5">
+        <textPath [attr.href]="getTextPath()">
+            {{ box.name.toLocaleLowerCase() }}
+        </textPath>
+    </text>
+</svg>

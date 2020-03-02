@@ -5,4 +5,5 @@ export namespace ExperimentEvents {
     export const Delete = 'experiment-delete';
     export const Update = 'experiment-update';
     export const Load = 'experiment-load';
+    export const Save = 'experiment-save';
 }

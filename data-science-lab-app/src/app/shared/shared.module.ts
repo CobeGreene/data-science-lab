@@ -19,6 +19,32 @@ import { UpdateExperimentComponent } from './experiment/update-experiment/update
 import { DeleteExperimentComponent } from './experiment/delete-experiment/delete-experiment.component';
 import { PackageBadgePipe } from './pipes/package-badge.pipe';
 import { PackageSearchPipe } from './pipes/package-search.pipe';
+import { PluginBodyComponent } from './plugin/plugin-body/plugin-body.component';
+import { PluginHeaderComponent } from './plugin/plugin-header/plugin-header.component';
+import { PluginSelectionComponent } from './plugin/plugin-selection/plugin-selection.component';
+import { PluginSetupComponent } from './plugin/plugin-setup/plugin-setup.component';
+import { PluginInputComponent } from './plugin/plugin-input/plugin-input.component';
+import { PluginFeaturesComponent } from './plugin/plugin-features/plugin-features.component';
+import { PluginNextComponent } from './plugin/plugin-body/plugin-next/plugin-next.component';
+import { ObjectCardComponent } from './object-card/object-card.component';
+import { PluginExitComponent } from './plugin/plugin-header/plugin-exit/plugin-exit.component';
+import { PluginReturnComponent } from './plugin/plugin-header/plugin-return/plugin-return.component';
+import { PluginInputValidComponent } from './plugin/plugin-input/plugin-input-valid/plugin-input-valid.component';
+import { PopupComponent } from './popup/popup.component';
+import { PluginSelectionListComponent } from './plugin/plugin-selection/plugin-selection-list/plugin-selection-list.component';
+import { PluginSelectionSearchComponent } from './plugin/plugin-selection/plugin-selection-search/plugin-selection-search.component';
+import {
+    PluginSelectionBoxComponent
+} from './plugin/plugin-selection/plugin-selection-list/plugin-selection-box/plugin-selection-box.component';
+import {
+    PluginSelectionCardComponent
+} from './plugin/plugin-selection/plugin-selection-list/plugin-selection-card/plugin-selection-card.component';
+import { CheckboxOptionComponent } from './plugin/plugin-setup/checkbox-option/checkbox-option.component';
+import { ChoicesOptionComponent } from './plugin/plugin-setup/choices-option/choices-option.component';
+import { CommandOptionComponent } from './plugin/plugin-setup/command-option/command-option.component';
+import { NumberOptionComponent } from './plugin/plugin-setup/number-option/number-option.component';
+import { TextOptionComponent } from './plugin/plugin-setup/text-option/text-option.component';
+import { PluginSearchPipe } from './pipes/plugin-search.pipe';
 
 @NgModule({
     declarations: [
@@ -29,12 +55,34 @@ import { PackageSearchPipe } from './pipes/package-search.pipe';
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,
+        PluginSearchPipe,
         NotificationComponent,
         DropdownComponent,
         SelectComponent,
         CheckboxComponent,
         UpdateExperimentComponent,
         DeleteExperimentComponent,
+        PluginBodyComponent,
+        PluginHeaderComponent,
+        PluginSelectionComponent,
+        PluginSetupComponent,
+        PluginInputComponent,
+        PluginFeaturesComponent,
+        PluginNextComponent,
+        ObjectCardComponent,
+        PluginExitComponent,
+        PluginReturnComponent,
+        PluginInputValidComponent,
+        PopupComponent,
+        PluginSelectionListComponent,
+        PluginSelectionSearchComponent,
+        PluginSelectionBoxComponent,
+        PluginSelectionCardComponent,
+        CheckboxOptionComponent,
+        ChoicesOptionComponent,
+        CommandOptionComponent,
+        NumberOptionComponent,
+        TextOptionComponent,
     ],
     imports: [
         CommonModule,
@@ -60,6 +108,11 @@ import { PackageSearchPipe } from './pipes/package-search.pipe';
         PackageBadgePipe,
         PackageSearchPipe,
         DropdownComponent,
+        PluginSelectionComponent,
+        PluginSetupComponent,
+        PluginInputComponent,
+        PluginFeaturesComponent,
+        PluginHeaderComponent,
         SelectComponent,
         CheckboxComponent,
         CommonModule,

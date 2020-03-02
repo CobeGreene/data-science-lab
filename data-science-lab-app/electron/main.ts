@@ -1,6 +1,7 @@
 import { App } from './app/app';
 import * as path from 'path';
 import * as url from 'url';
+import * as fs from 'fs';
 const settings = require('electron-settings');
 
 console.log('start');
@@ -16,6 +17,14 @@ settings.set('user-setting', path.join(__dirname, '../app.user-setting.json'));
 
 // Set electron plugin package path
 settings.set('plugin-package', path.join(__dirname, '../plugin_packages'));
+
+// Set dataset folder path
+const datasetsPath = path.join(__dirname, '../datasets');
+if (!fs.existsSync(datasetsPath)) {
+    fs.mkdirSync(datasetsPath);
+}
+settings.set('datasets-path', datasetsPath);
+
 
 const preload = path.join(__dirname, 'preload.js');
 const angularApp = url.format({
