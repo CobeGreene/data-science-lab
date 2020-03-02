@@ -6,6 +6,7 @@ export const enum SERVICE_TYPES {
     Producer,
     // Context
     SettingsContext,
+    OriginalPluginContext,
     PluginContext,
     // Converters
     PluginDataConverter,

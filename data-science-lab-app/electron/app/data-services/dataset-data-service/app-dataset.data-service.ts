@@ -9,7 +9,9 @@ import { UserSettingDataService } from '../../data-services/user-setting-data-se
 import { IdGenerator } from '../../data-structures';
 import { SystemError, ErrorTypes } from '../../../../shared/errors';
 import { PluginDataConverter } from '../../converters/plugin-data-converter/plugin-data.converter';
-
+import * as fs from 'fs';
+import * as path from 'path';
+import * as zlib from 'zlib';
 
 export class AppDatasetDataService extends Service implements DatasetDataService {
     private readonly key = 'datasets';
@@ -70,11 +72,37 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     }
 
     load(experimentId: number): void {
+        const datasetPath = this.context.get<string>(this.path);
+        const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
+        if (fs.existsSync(experimentPath)) {
+            const setting = this.user.find(Settings.DatasetDefaultPreview);
+            const defaultPreview = (setting === undefined) ? 10 : setting.value;
 
+            const buffer = fs.readFileSync(experimentPath);
+            const datasets = JSON.parse(`${zlib.unzipSync(buffer)}`);
+            datasets.forEach((value) => {
+                const dataset: DatasetObject = {
+                    id: value.id,
+                    name: value.name,
+                    examples: value.examples,
+                    experimentId: value.experimentId,
+                    previewExamples: defaultPreview,
+                    features: (value.features as Array<any>).map((feature) => ({
+                       name: feature.name,
+                       type: feature.type,
+                       examples: feature.examples 
+                    }))
+                };
+                this.datasets.push(dataset);
+            });
+        }
     }
 
     save(experimentId: number): void {
-
+        const datasetPath = this.context.get<string>(this.path);
+        const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
+        const buffer = zlib.gzipSync(JSON.stringify(this.all(experimentId)));
+        fs.writeFileSync(experimentPath, buffer);
     }
 
     get(id: number): DatasetObject {
@@ -92,6 +120,16 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         } else {
             throw this.notFound(id);
         }
+    }
+
+    deleteByExperiment(experimentId: number) {
+        const ids = this.all(experimentId).map(value => value.id);
+        ids.forEach(id => this.delete(id));
+        
+        const datasetPath = this.context.get<string>(this.path);
+        const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
+        fs.unlinkSync(experimentPath);
+
     }
 
     view(id: number): Dataset {
@@ -116,7 +154,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             name: obj.name,
             examples: obj.examples,
             features,
-            previewExamples: []
+            previewExamples
         };
     }
 

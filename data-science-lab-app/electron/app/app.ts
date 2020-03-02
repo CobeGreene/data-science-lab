@@ -23,6 +23,7 @@ import { AppPluginDataConverter } from './converters/plugin-data-converter/app-p
 import { AppFileCoreService } from './core-services/file-core-service/app-file.service';
 import { DatasetDataService, AppDatasetDataService } from './data-services/dataset-data-service';
 import { SessionDataService, AppSessionDataService } from './data-services/session-data-service';
+import { AppQueuePluginContext } from './contexts/plugin-context/app-queue-plugin.context';
 
 export let win: BrowserWindow;
 
@@ -39,7 +40,8 @@ export class App {
         
         // Context
         this.serviceContainer.addSingleton<SettingsContext>(AppSettingsContext, SERVICE_TYPES.SettingsContext);
-        this.serviceContainer.addSingleton<PluginContext>(AppPluginContext, SERVICE_TYPES.PluginContext);
+        this.serviceContainer.addSingleton<PluginContext>(AppPluginContext, SERVICE_TYPES.OriginalPluginContext);
+        this.serviceContainer.addSingleton<PluginContext>(AppQueuePluginContext, SERVICE_TYPES.PluginContext);
 
         // Converters
         this.serviceContainer.addTransient<PluginDataConverter>(AppPluginDataConverter, SERVICE_TYPES.PluginDataConverter);
@@ -85,6 +87,7 @@ export class App {
         this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService).configure();
         this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext).configure();
         this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService).configure();
+        this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService).configure();
     }
 
     private createWindow() {
