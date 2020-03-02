@@ -9,8 +9,9 @@ import { PluginContext } from '../../contexts/plugin-context';
 import { FetchPlugin, FileService } from 'data-science-lab-core';
 import { SystemError, ErrorTypes } from '../../../../shared/errors';
 import { DatasetDataService } from '../../data-services/dataset-data-service';
+import { SessionService } from '../session-service';
 
-export class FetchServiceModel extends ServiceModel {
+export class FetchServiceModel extends SessionService {
     static routes: ServiceModelRoutes = {
         service: SERVICE_TYPES.FetchServiceModel,
         routes: [
@@ -23,9 +24,6 @@ export class FetchServiceModel extends ServiceModel {
         ]
     };
 
-    private dataService: SessionDataService;
-    private packageService: PackageDataService;
-    private context: PluginContext;
     private datasetService: DatasetDataService;
 
     private get fileService(): FileService {
@@ -35,109 +33,52 @@ export class FetchServiceModel extends ServiceModel {
     constructor(serviceContainer: ServiceContainer, producer: Producer) {
         super(serviceContainer, producer);
 
-        this.dataService = serviceContainer.resolve<SessionDataService>(SERVICE_TYPES.SessionDataService);
-        this.packageService = serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
-        this.context = serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
         this.datasetService = serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService);
     }
 
-    create(experimentId: number, options: SessionOptions) {
-        let session: Session = {
-            id: 0,
-            keyId: experimentId,
-            isWaiting: false,
-            sessionOptions: options,
-            state: SessionState.Select,
-        };
-
-        session = this.dataService.post(session);
-        this.producer.send(FetchEvents.Create, session);
+    get eventCreate(): string {
+        return FetchEvents.Create;
     }
 
-    delete(id: number) {
-        this.dataService.delete(id);
-        this.producer.send(FetchEvents.Delete, id);
+    get eventUpdate(): string {
+        return FetchEvents.Update;
     }
 
-    async select(id: number, plugin: Plugin) {
-        const session = this.dataService.get(id);
-
-        const fetchPlugin = await this.context.activate<FetchPlugin>(this.packageService.find(plugin), plugin);
-        fetchPlugin.setFileService(this.fileService);
-        this.dataService.reference(id, fetchPlugin);
-
-        if (fetchPlugin.getOptions().noMore()) {
-            // session finish
-            this.sessionFinish(session, fetchPlugin);
-        } else {
-            session.optionList = fetchPlugin.getOptions().options();
-            session.plugin = plugin;
-            session.state = SessionState.Setup;
-            session.isWaiting = false;
-            this.producer.send(FetchEvents.Update, session);
-        }
+    get eventDelete(): string {
+        return FetchEvents.Delete;
     }
 
-    async command(id: number, command: string) {
-        const session = this.dataService.get(id);
-
-        const fetchPlugin = this.dataService.reference<FetchPlugin>(id);
-
-        await fetchPlugin.getOptions().executeCommand(command);
-
-        if (fetchPlugin.getOptions().noMore()) {
-            // session finish
-            this.sessionFinish(session, fetchPlugin);
-        } else {
-            session.optionList = fetchPlugin.getOptions().options();
-            session.isWaiting = false;
-            this.producer.send(FetchEvents.Update, session);
-        }
+    get eventFinish(): string {
+        return FetchEvents.Finish;
     }
 
-    options(id: number, inputs: { [id: string]: any; }) {
-        const session = this.dataService.get(id);
-
-        const fetchPlugin = this.dataService.reference<FetchPlugin>(id);
-
-        fetchPlugin.getOptions().submit(inputs);
-        
-        if (fetchPlugin.getOptions().noMore()) {
-            // session finish
-            this.sessionFinish(session, fetchPlugin);
-        } else {
-            session.optionList = fetchPlugin.getOptions().options();
-            session.isWaiting = false;
-            this.producer.send(FetchEvents.Update, session);
-        }
+    get eventSelect(): string {
+        return FetchEvents.Select;
     }
 
-    async previous(id: number) {
-        const session = this.dataService.get(id);
-
-        if (session.state === SessionState.Select) {
-            this.dataService.delete(id);
-            this.producer.send(FetchEvents.Finish, id);
-        } else if (session.state === SessionState.Setup) {
-            await this.context.deactivate(this.packageService.find(session.plugin), session.plugin);
-            session.state = SessionState.Select;
-            session.optionList = undefined;
-            session.isWaiting = false;
-            this.producer.send(FetchEvents.Update, session);
-        } else {
-            const error: SystemError = {
-                header: 'Fetch Session Error',
-                description: 'Fetch session is in invalid state',
-                type: ErrorTypes.Error
-            };
-            this.producer.send(ErrorEvent, error);
-        }
+    get eventOptions(): string {
+        return FetchEvents.Options;
     }
 
-    sessionFinish(session: Session, plugin: FetchPlugin) {
+    get eventCommand(): string {
+        return FetchEvents.Command;
+    }
+
+    get eventInput(): string {
+        throw new Error(`Fetch Event Input doesn't exists`);
+    }
+
+    get eventPrevious(): string {
+        return FetchEvents.Previous;
+    }
+
+    async pluginActivate(plugin: FetchPlugin) {
+        plugin.setFileService(this.fileService);
+    }
+
+    async sessionFinish(session: Session, plugin: FetchPlugin) {
         const data = plugin.fetch();
         const ids = this.datasetService.create(session.keyId, data);
-        this.dataService.delete(session.id);
-        this.producer.send(FetchEvents.Finish, session.id);
     }
+
 }
