@@ -1,8 +1,8 @@
 import { ServiceContainer, SERVICE_TYPES, Service } from '../../service-container';
 import { DatasetDataService } from './dataset.data-service';
 import { PluginData } from 'data-science-lab-core';
-import { DatasetObject } from '../../models';
-import { Dataset,  } from '../../../../shared/models';
+import { DatasetObject, FeatureObject } from '../../models';
+import { Dataset, Feature, } from '../../../../shared/models';
 import { Settings } from '../../../../shared/settings';
 import { SettingsContext } from '../../contexts/settings-context';
 import { UserSettingDataService } from '../../data-services/user-setting-data-service';
@@ -25,7 +25,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     }
 
     get user(): UserSettingDataService {
-        return this.serviceContainer.resolve<UserSettingDataService>(SERVICE_TYPES.UserSettingDataService); 
+        return this.serviceContainer.resolve<UserSettingDataService>(SERVICE_TYPES.UserSettingDataService);
     }
 
     get converter(): PluginDataConverter {
@@ -54,7 +54,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         return this.datasets.filter((value) => value.experimentId === experimentId);
     }
 
-    create(experimentId: number, data: PluginData): number [] {
+    create(experimentId: number, data: PluginData): number[] {
         const datasets = this.converter.convert(data);
 
         datasets.forEach((value) => {
@@ -88,9 +88,9 @@ export class AppDatasetDataService extends Service implements DatasetDataService
                     experimentId: value.experimentId,
                     previewExamples: defaultPreview,
                     features: (value.features as Array<any>).map((feature) => ({
-                       name: feature.name,
-                       type: feature.type,
-                       examples: feature.examples 
+                        name: feature.name,
+                        type: feature.type,
+                        examples: feature.examples
                     }))
                 };
                 this.datasets.push(dataset);
@@ -128,11 +128,12 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     deleteByExperiment(experimentId: number) {
         const ids = this.all(experimentId).map(value => value.id);
         ids.forEach(id => this.delete(id));
-        
+
         const datasetPath = this.context.get<string>(this.path);
         const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
-        fs.unlinkSync(experimentPath);
-
+        if (fs.existsSync(experimentPath)) {
+            fs.unlinkSync(experimentPath);
+        }
     }
 
     view(id: number): Dataset {
@@ -171,6 +172,105 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             description: `Couldn't find dataset with id ${id}`,
             type: ErrorTypes.Error
         };
+    }
+
+    update(dataset: DatasetObject) {
+        const find = this.datasets.findIndex(value => value.id === dataset.id);
+        if (find < 0) {
+            throw this.notFound(dataset.id);
+        }
+        this.datasets.splice(find, 1, dataset);
+    }
+
+    split(id: number, split: number): number {
+        const dataset = this.get(id);
+        const setting = this.user.find(Settings.DatasetDefaultPreview);
+        const defaultPreview = (setting === undefined) ? 10 : setting.value;
+
+        const features: FeatureObject[] = [];
+        for (const feature of dataset.features) {
+            features.push({
+                name: feature.name,
+                type: feature.type,
+                examples: feature.examples.splice(split, dataset.examples - split)
+            });
+        }
+
+        const splitDataset: DatasetObject = {
+            id: this.idGenerator.next(),
+            experimentId: dataset.experimentId,
+            name: `${dataset.name} (Split)`,
+            previewExamples: defaultPreview,
+            examples: dataset.examples - split,
+            features
+        };
+
+        this.datasets.push(splitDataset);
+        dataset.examples = split;
+        this.update(dataset);
+        this.saveGenerator();
+        return splitDataset.id;
+    }
+
+    join(ids: number[]): { updateId: number, deletedIds: number[] } {
+        if (ids.length < 2) {
+            throw this.unableToJoin(ids);
+        }
+        const original = this.get(ids[0]);
+        const dataset: DatasetObject = {
+            id: original.id,
+            experimentId: original.experimentId,
+            examples: original.examples,
+            name: original.name,
+            previewExamples: original.previewExamples,
+            features: this.sortFeatures(original.features.slice())
+        };
+        
+        for (const id of ids.slice(1)) {
+            const next = this.get(id);
+            const features = this.sortFeatures(next.features);
+            if (dataset.features.length !== features.length) {
+                throw this.joinFailWrapper(dataset, ids);
+            }
+            for (let i = 0; i < features.length; ++i) {
+                if (dataset.features[i].name !== features[i].name) {
+                    throw this.joinFailWrapper(dataset, ids);
+                } else if (dataset.features[i].type !== features[i].type) {
+                    throw this.joinFailWrapper(dataset, ids);
+                }
+                dataset.features[i].examples.push(...features[i].examples.slice());
+            }
+            dataset.examples += next.examples;
+        }
+        
+        this.update(dataset);
+        ids.slice(1).forEach((id) => this.delete(id));
+        return { updateId: ids[0], deletedIds: ids.slice(1) };
+    }
+
+    joinFailWrapper(dataset: DatasetObject, ids: number[]) {
+        delete dataset.features;
+        return this.unableToJoin(ids);
+    }
+
+    unableToJoin(ids: number[]): SystemError {
+        return {
+            header: 'Dataset Join Error',
+            description: `Unable to join dataset for the following ids: ${ids.join(', ')}`,
+            type: ErrorTypes.Error
+        };
+    }
+
+    sortFeatures(features: FeatureObject[]): FeatureObject[] {
+        return features.sort((lhs: FeatureObject, rhs: FeatureObject) => {
+            if (lhs.name < rhs.name) {
+                return -1;
+            }
+            if (lhs.name > rhs.name) {
+                return 1;
+            }
+            return 0;
+        });
     }
 
 }

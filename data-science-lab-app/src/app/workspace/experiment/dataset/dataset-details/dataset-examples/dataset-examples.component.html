@@ -1,0 +1,43 @@
+<div class="options p-3">
+    <h2 class="mb-0 pb-0">Examples</h2>
+    <p class="mt-0 pt-0">
+        {{ dataset.examples }} Examples
+    </p>
+    <h4 class="text-accent4 pointer" (click)="onSplit($event)">
+        <u><i>Split Dataset</i></u>
+    </h4>
+    <h4 class="text-accent6 pointer" (click)="onJoin($event)">
+        <u><i>Join Dataset</i></u>
+    </h4>
+</div>
+<div class="examples p-3">
+    <table class="table w-100">
+        <thead>
+            <tr>
+                <th class="p-2 index">
+                    Example #
+                </th>
+                <th class="p-2 pointer" *ngFor="let feature of dataset.features; let i = index" [title]="feature.type">
+                    <app-dataset-feature-header [feature]="feature" [index]="i"></app-dataset-feature-header>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let example of dataset.previewExamples; let i = index">
+                <td class="p-2 index">
+                    {{ i + 1 }}
+                </td>
+                <td class="p-2" *ngFor="let data of example; let featureIndex = index">
+                    <app-preview-card class="pointer" [value]="data" [feature]="dataset.features[featureIndex]"></app-preview-card>
+                </td>
+            </tr>
+            <tr *ngIf="dataset.previewExamples.length !== examples">
+                <td [attr.colspan]="dataset.features.length + 1" class="pointer p-3" (click)="onShowMore()" >
+                    Click to show more
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<app-split-dataset #splitCmp [id]="dataset.id"></app-split-dataset>
+<app-join-dataset #joinCmp [id]="dataset.id"></app-join-dataset>

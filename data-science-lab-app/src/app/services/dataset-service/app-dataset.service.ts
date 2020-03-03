@@ -93,6 +93,18 @@ export class AppDatasetService extends DatasetService {
     delete(id: number): void {
         this.messenger.publish(DatasetEvents.Delete, id);
     }
+
+    rename(id: number, name: string): void {
+        this.messenger.publish(DatasetEvents.Rename, id, name);
+    }
+
+    split(id: number, split: number): void {
+        this.messenger.publish(DatasetEvents.Split, id, split);
+    }
+
+    join(ids: number[]): void {
+        this.messenger.publish(DatasetEvents.Join, ids);
+    }
 }
 
 

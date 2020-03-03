@@ -45,6 +45,14 @@ import { CommandOptionComponent } from './plugin/plugin-setup/command-option/com
 import { NumberOptionComponent } from './plugin/plugin-setup/number-option/number-option.component';
 import { TextOptionComponent } from './plugin/plugin-setup/text-option/text-option.component';
 import { PluginSearchPipe } from './pipes/plugin-search.pipe';
+import { EditDatasetComponent } from './dataset/edit-dataset/edit-dataset.component';
+import { DeleteDatasetComponent } from './dataset/delete-dataset/delete-dataset.component';
+import { SplitDatasetComponent } from './dataset/split-dataset/split-dataset.component';
+import { JoinDatasetComponent } from './dataset/join-dataset/join-dataset.component';
+import { JoinDatasetCardComponent } from './dataset/join-dataset/join-dataset-card/join-dataset-card.component';
+import { UnjoinDatasetCardComponent } from './dataset/join-dataset/unjoin-dataset-card/unjoin-dataset-card.component';
+import { PreviewCardComponent } from './preview-card/preview-card.component';
+import { PreviewPipe } from './pipes/preview.pipe';
 
 @NgModule({
     declarations: [
@@ -56,6 +64,7 @@ import { PluginSearchPipe } from './pipes/plugin-search.pipe';
         PackageBadgePipe,
         PackageSearchPipe,
         PluginSearchPipe,
+        PreviewPipe,
         NotificationComponent,
         DropdownComponent,
         SelectComponent,
@@ -83,6 +92,13 @@ import { PluginSearchPipe } from './pipes/plugin-search.pipe';
         CommandOptionComponent,
         NumberOptionComponent,
         TextOptionComponent,
+        EditDatasetComponent,
+        DeleteDatasetComponent,
+        SplitDatasetComponent,
+        JoinDatasetComponent,
+        JoinDatasetCardComponent,
+        UnjoinDatasetCardComponent,
+        PreviewCardComponent,
     ],
     imports: [
         CommonModule,
@@ -104,15 +120,21 @@ import { PluginSearchPipe } from './pipes/plugin-search.pipe';
         CreateExperimentComponent,
         UpdateExperimentComponent,
         DeleteExperimentComponent,
+        EditDatasetComponent,
+        DeleteDatasetComponent,
+        SplitDatasetComponent,
+        JoinDatasetComponent,
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,
         DropdownComponent,
+        PreviewCardComponent,
         PluginSelectionComponent,
         PluginSetupComponent,
         PluginInputComponent,
         PluginFeaturesComponent,
         PluginHeaderComponent,
+        ObjectCardComponent,
         SelectComponent,
         CheckboxComponent,
         CommonModule,

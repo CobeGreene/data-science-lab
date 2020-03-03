@@ -31,11 +31,18 @@ export class DatasetSelectFetchComponent implements OnInit, OnDestroy {
         this.initPlugins();
       });
 
+    this.routerService.changed()
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.session = this.fetchSessionService.get(this.routerService.data().sessionId);
+        this.initPlugins();
+      });
+
     this.initPlugins();
   }
 
   ngOnDestroy() {
-    
+
   }
 
   onExit() {

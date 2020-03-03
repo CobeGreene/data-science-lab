@@ -1,0 +1,14 @@
+<div class="header">
+    {{ dataset.name }}
+</div>
+<div class="example">
+    {{ dataset.examples }} examples / {{ dataset.features.length }} features 
+</div>
+<div class="icon">
+    <fa name="database" class="float-right"></fa>
+</div>
+<div class="action">
+    <button type="button" class="btn btn-accent5" (click)="onAction($event)">
+        Unjoin
+    </button>
+</div>
