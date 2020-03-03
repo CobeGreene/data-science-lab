@@ -46,6 +46,7 @@ import {
 } from './areas/sidebar/sidebar-package/sidebar-package-explorer/sidebar-package-explorer.component';
 import { AppOpenLinkService, OpenLinkService } from '../services/open-link-service';
 import { FetchSessionService, AppFetchSessionService } from '../session-services/fetch-session-service';
+import { AppTransformSessionService, TransformSessionService } from '../session-services/transform-session-service';
 import { DatasetService, AppDatasetService } from '../services/dataset-service';
 
 @NgModule({
@@ -94,6 +95,7 @@ import { DatasetService, AppDatasetService } from '../services/dataset-service';
         { provide: PackageService, useClass: AppPackageService },
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: FetchSessionService, useClass: AppFetchSessionService },
+        { provide: TransformSessionService, useClass: AppTransformSessionService },
         { provide: NotificationService, useClass: AppNotificationService },
         { provide: ErrorService, useClass: AppErrorService },
         { provide: UserSettingService, useClass: AppUserSettingService },
