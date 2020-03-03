@@ -11,6 +11,7 @@ export class DatasetServiceModel extends ServiceModel {
             { path: DatasetEvents.All, method: 'all' },
             { path: DatasetEvents.Delete, method: 'delete' },
             { path: DatasetEvents.Rename, method: 'rename' },
+            { path: DatasetEvents.Split, method: 'split' },
             { path: ExperimentEvents.Load, method: 'load' },
             { path: ExperimentEvents.Save, method: 'save', isListener: true },
         ]
@@ -46,6 +47,12 @@ export class DatasetServiceModel extends ServiceModel {
 
     save(experimentId: number) {
         this.datasetService.save(experimentId);
+    }
+
+    split(id: number, split: number) {
+        const splitId = this.datasetService.split(id, split);
+        this.producer.send(DatasetEvents.Update, this.datasetService.view(id));
+        this.producer.send(DatasetEvents.Create, this.datasetService.view(splitId));
     }
 }
 

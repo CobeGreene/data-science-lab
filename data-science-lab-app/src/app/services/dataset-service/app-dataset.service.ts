@@ -97,6 +97,10 @@ export class AppDatasetService extends DatasetService {
     rename(id: number, name: string): void {
         this.messenger.publish(DatasetEvents.Rename, id, name);
     }
+
+    split(id: number, split: number): void {
+        this.messenger.publish(DatasetEvents.Split, id, split);
+    }
 }
 
 

@@ -268,5 +268,67 @@ describe('Electron Dataset Data Service', () => {
         datasetService.deleteByExperiment(2);
     });
 
+    it('split should create a second dataset with the other half of data', () => {
+        (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
+            return [
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 4,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [1, 2, 3, 4] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3, 4] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3, 4] },
+                    ],
+                }
+            ];
+        });
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
+        const splitId = datasetService.split(id, 2);
+
+        const dataset = datasetService.get(id);
+        const splitDataset = datasetService.get(splitId);
+
+        expect(dataset.examples).toBe(2);
+        expect(dataset.features.length).toBe(3);
+        expect(dataset.experimentId).toBe(2);
+        expect(dataset.features[0].name).toBe('F1');
+        expect(dataset.features[1].name).toBe('F2');
+        expect(dataset.features[2].name).toBe('F3');
+        expect(dataset.features[0].type).toBe('number');
+        expect(dataset.features[1].type).toBe('number');
+        expect(dataset.features[2].type).toBe('number');
+        expect(dataset.features[0].examples.length).toBe(2);
+        expect(dataset.features[0].examples[0]).toBe(1);
+        expect(dataset.features[0].examples[1]).toBe(2);
+        expect(dataset.features[1].examples.length).toBe(2);
+        expect(dataset.features[1].examples[0]).toBe(1);
+        expect(dataset.features[1].examples[1]).toBe(2);
+        expect(dataset.features[2].examples.length).toBe(2);
+        expect(dataset.features[2].examples[0]).toBe(1);
+        expect(dataset.features[2].examples[1]).toBe(2);
+        expect(splitDataset.examples).toBe(2);
+        expect(splitDataset.features.length).toBe(3);
+        expect(splitDataset.experimentId).toBe(2);
+        expect(splitDataset.features[0].name).toBe('F1');
+        expect(splitDataset.features[1].name).toBe('F2');
+        expect(splitDataset.features[2].name).toBe('F3');
+        expect(splitDataset.features[0].type).toBe('number');
+        expect(splitDataset.features[1].type).toBe('number');
+        expect(splitDataset.features[2].type).toBe('number');
+        expect(splitDataset.features[0].examples.length).toBe(2);
+        expect(splitDataset.features[0].examples[0]).toBe(3);
+        expect(splitDataset.features[0].examples[1]).toBe(4);
+        expect(splitDataset.features[1].examples.length).toBe(2);
+        expect(splitDataset.features[1].examples[0]).toBe(3);
+        expect(splitDataset.features[1].examples[1]).toBe(4);
+        expect(splitDataset.features[2].examples.length).toBe(2);
+        expect(splitDataset.features[2].examples[0]).toBe(3);
+        expect(splitDataset.features[2].examples[1]).toBe(4);
+
+        datasetService.deleteByExperiment(2);
+    });
+
 });
 

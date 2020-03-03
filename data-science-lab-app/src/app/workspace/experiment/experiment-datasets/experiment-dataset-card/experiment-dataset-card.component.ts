@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Dataset } from '../../../../../../shared/models';
 import { DropdownComponent } from '../../../../shared/dropdown/dropdown.component';
 import { DeleteDatasetComponent } from '../../../../shared/dataset/delete-dataset/delete-dataset.component';
+import { SplitDatasetComponent } from '../../../../shared/dataset/split-dataset/split-dataset.component';
 
 @Component({
   selector: 'app-experiment-dataset-card',
@@ -14,6 +15,7 @@ export class ExperimentDatasetCardComponent implements OnInit {
   @ViewChild('optionsCmp', { static: false }) optionsComponent: DropdownComponent;
 
   @ViewChild('deleteCmp', { static: false }) deleteComponent: DeleteDatasetComponent;
+  @ViewChild('splitCmp', { static: false }) splitComponent: SplitDatasetComponent;
   
 
   constructor() { }
@@ -27,6 +29,10 @@ export class ExperimentDatasetCardComponent implements OnInit {
 
   onDelete(event: MouseEvent) {
     this.deleteComponent.open(event);
+  }
+
+  onSplit(event: MouseEvent) {
+    this.splitComponent.open(event);
   }
 
 }

@@ -24,7 +24,7 @@ describe('Elecron Dataset Service Model', () => {
 
     beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
-        datasetService = jasmine.createSpyObj('DatasetDataService', ['delete', 'load', 'save', 'update', 'all', 'get', 'view']);
+        datasetService = jasmine.createSpyObj('DatasetDataService', ['delete', 'load', 'save', 'update', 'all', 'get', 'view', 'split']);
         serviceModel = new DatasetServiceModel(serviceContainer, producer);
     });
 
@@ -89,7 +89,43 @@ describe('Elecron Dataset Service Model', () => {
         serviceModel.save(1);
         expect(datasetService.save).toHaveBeenCalledTimes(1);
     });
-
+    
+    it('split should call dataservice split', () => {
+        serviceModel.split(1, 30);
+        expect(datasetService.split).toHaveBeenCalledTimes(1);
+    });
+    
+    it('split should call producer created with new id', (done) => {
+        (datasetService.split as jasmine.Spy).and.callFake(() => {
+            return 2;
+        });
+        (datasetService.view as jasmine.Spy).and.callFake((id) => {
+            return { id };
+        });
+        (producer.send as jasmine.Spy).and.callFake((event, dataset) => {
+            if (event === DatasetEvents.Create) {
+                expect(dataset.id).toBe(2);
+                done();
+            }
+        });
+        serviceModel.split(1, 30);
+    });
+    
+    it('split should call producer update of previous id', (done) => {
+        (datasetService.split as jasmine.Spy).and.callFake(() => {
+            return 2;
+        });
+        (datasetService.view as jasmine.Spy).and.callFake((id) => {
+            return { id };
+        });
+        (producer.send as jasmine.Spy).and.callFake((event, dataset) => {
+            if (event === DatasetEvents.Update) {
+                expect(dataset.id).toBe(1);
+                done();
+            }
+        });
+        serviceModel.split(1, 30);
+    });
 
 
 });

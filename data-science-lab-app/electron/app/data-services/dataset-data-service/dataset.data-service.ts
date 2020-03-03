@@ -15,4 +15,5 @@ export interface DatasetDataService {
     load(experimentId: number): void;
     save(experimentId: number): void;
     update(dataset: DatasetObject): void;
+    split(id: number, split: number): number;
 }

@@ -47,6 +47,7 @@ import { TextOptionComponent } from './plugin/plugin-setup/text-option/text-opti
 import { PluginSearchPipe } from './pipes/plugin-search.pipe';
 import { EditDatasetComponent } from './dataset/edit-dataset/edit-dataset.component';
 import { DeleteDatasetComponent } from './dataset/delete-dataset/delete-dataset.component';
+import { SplitDatasetComponent } from './dataset/split-dataset/split-dataset.component';
 
 @NgModule({
     declarations: [
@@ -87,6 +88,7 @@ import { DeleteDatasetComponent } from './dataset/delete-dataset/delete-dataset.
         TextOptionComponent,
         EditDatasetComponent,
         DeleteDatasetComponent,
+        SplitDatasetComponent,
     ],
     imports: [
         CommonModule,
@@ -110,6 +112,7 @@ import { DeleteDatasetComponent } from './dataset/delete-dataset/delete-dataset.
         DeleteExperimentComponent,
         EditDatasetComponent,
         DeleteDatasetComponent,
+        SplitDatasetComponent,
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,

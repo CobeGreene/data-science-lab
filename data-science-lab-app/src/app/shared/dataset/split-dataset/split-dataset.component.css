@@ -1,0 +1,25 @@
+.range-cont {
+    border-radius: 75%;
+    background: linear-gradient(to right, transparent calc(10% + 4px), var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(10% + 5px)),
+                linear-gradient(to right, transparent calc(20% + 3px), var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(20% + 4px)),
+                linear-gradient(to right, transparent calc(30% + 2px), var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(30% + 3px)),
+                linear-gradient(to right, transparent calc(40% + 1px), var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(40% + 2px)),
+                linear-gradient(to right, transparent 50%, var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(50% + 1px)),
+                linear-gradient(to right, transparent calc(60% - 2px), var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(60% - 1px)),
+                linear-gradient(to right, transparent calc(70% - 3px), var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(70% - 2px)),
+                linear-gradient(to right, transparent calc(80% - 4px), var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(80% - 3px)),
+                linear-gradient(to right, transparent calc(90% - 5px), var(--input-range-tick), var(--input-range-tick) 1px, transparent calc(90% - 4px));
+}
+
+
+.range-list {
+    position: relative;
+    left: 0.5rem;
+}
+
+.range-list li {
+    display: inline-block;
+    width: 10%;
+    text-align: right;
+    color: var(--input-color);
+}

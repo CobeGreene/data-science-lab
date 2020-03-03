@@ -1,8 +1,8 @@
 import { ServiceContainer, SERVICE_TYPES, Service } from '../../service-container';
 import { DatasetDataService } from './dataset.data-service';
 import { PluginData } from 'data-science-lab-core';
-import { DatasetObject } from '../../models';
-import { Dataset,  } from '../../../../shared/models';
+import { DatasetObject, FeatureObject } from '../../models';
+import { Dataset, Feature, } from '../../../../shared/models';
 import { Settings } from '../../../../shared/settings';
 import { SettingsContext } from '../../contexts/settings-context';
 import { UserSettingDataService } from '../../data-services/user-setting-data-service';
@@ -25,7 +25,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     }
 
     get user(): UserSettingDataService {
-        return this.serviceContainer.resolve<UserSettingDataService>(SERVICE_TYPES.UserSettingDataService); 
+        return this.serviceContainer.resolve<UserSettingDataService>(SERVICE_TYPES.UserSettingDataService);
     }
 
     get converter(): PluginDataConverter {
@@ -54,7 +54,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         return this.datasets.filter((value) => value.experimentId === experimentId);
     }
 
-    create(experimentId: number, data: PluginData): number [] {
+    create(experimentId: number, data: PluginData): number[] {
         const datasets = this.converter.convert(data);
 
         datasets.forEach((value) => {
@@ -88,9 +88,9 @@ export class AppDatasetDataService extends Service implements DatasetDataService
                     experimentId: value.experimentId,
                     previewExamples: defaultPreview,
                     features: (value.features as Array<any>).map((feature) => ({
-                       name: feature.name,
-                       type: feature.type,
-                       examples: feature.examples 
+                        name: feature.name,
+                        type: feature.type,
+                        examples: feature.examples
                     }))
                 };
                 this.datasets.push(dataset);
@@ -128,7 +128,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     deleteByExperiment(experimentId: number) {
         const ids = this.all(experimentId).map(value => value.id);
         ids.forEach(id => this.delete(id));
-        
+
         const datasetPath = this.context.get<string>(this.path);
         const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
         if (fs.existsSync(experimentPath)) {
@@ -180,6 +180,36 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             throw this.notFound(dataset.id);
         }
         this.datasets.splice(find, 1, dataset);
+    }
+
+    split(id: number, split: number): number {
+        const dataset = this.get(id);
+        const setting = this.user.find(Settings.DatasetDefaultPreview);
+        const defaultPreview = (setting === undefined) ? 10 : setting.value;
+
+        const features: FeatureObject[] = [];
+        for (const feature of dataset.features) {
+            features.push({
+                name: feature.name,
+                type: feature.type,
+                examples: feature.examples.splice(split, dataset.examples - split)
+            });
+        }
+
+        const splitDataset: DatasetObject = {
+            id: this.idGenerator.next(),
+            experimentId: dataset.experimentId,
+            name: `${dataset.name} (Split)`,
+            previewExamples: defaultPreview,
+            examples: dataset.examples - split,
+            features
+        };
+
+        this.datasets.push(splitDataset);
+        dataset.examples = split;
+        this.update(dataset);
+        this.saveGenerator();
+        return splitDataset.id;
     }
 
 }

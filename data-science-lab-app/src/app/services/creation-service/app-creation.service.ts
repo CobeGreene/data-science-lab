@@ -5,6 +5,7 @@ import { TabFactory } from '../../factory/tab-factory';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ExperimentService } from '../experiment-service';
 import { FetchSessionService } from '../../session-services/fetch-session-service';
+import { DatasetService } from '../dataset-service';
 
 @Injectable()
 export class AppCreationService extends CreationService implements OnDestroy {
@@ -13,6 +14,7 @@ export class AppCreationService extends CreationService implements OnDestroy {
         private tabService: TabService,
         private tabFactory: TabFactory,
         private experimentService: ExperimentService,
+        private datasetService: DatasetService,
         private fetchSessionService: FetchSessionService) {
         super();
         this.subscribe();
@@ -43,6 +45,13 @@ export class AppCreationService extends CreationService implements OnDestroy {
                 } else {
                     this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
                 }
+            });
+        
+        this.datasetService.datasetCreated
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((dataset) => {
+                const tab = this.tabFactory.create(['experiment', dataset.experimentId, 'dataset', dataset.id]);
+                this.tabService.openTab(tab);
             });
     }
 
