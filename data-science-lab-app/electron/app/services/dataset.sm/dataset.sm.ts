@@ -10,9 +10,9 @@ export class DatasetServiceModel extends ServiceModel {
         routes: [
             { path: DatasetEvents.All, method: 'all' },
             { path: DatasetEvents.Delete, method: 'delete' },
+            { path: DatasetEvents.Rename, method: 'rename' },
             { path: ExperimentEvents.Load, method: 'load' },
             { path: ExperimentEvents.Save, method: 'save', isListener: true },
-            // { path: ExperimentEvents.Delete, method: 'experimentDelete' },
         ]
     };
 
@@ -30,6 +30,13 @@ export class DatasetServiceModel extends ServiceModel {
     delete(id: number) {
         this.datasetService.delete(id);
         this.producer.send(DatasetEvents.Delete, id);
+    }
+
+    rename(id: number, name: string) {
+        const dataset = this.datasetService.get(id);
+        dataset.name = name;
+        this.datasetService.update(dataset);
+        this.producer.send(DatasetEvents.Update, this.datasetService.view(id));
     }
 
     load(experimentId: number) {

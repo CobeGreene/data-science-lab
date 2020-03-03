@@ -30,9 +30,9 @@ describe('Electron Dataset Data Service', () => {
                     name: 'Name1',
                     examples: 3,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F2', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F3', type: 'number', examples: [1, 2, 3]},
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
                     ],
                 },
                 {
@@ -41,9 +41,9 @@ describe('Electron Dataset Data Service', () => {
                     name: 'Name2',
                     examples: 3,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F2', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F3', type: 'number', examples: [1, 2, 3]},
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
                     ],
                 }
             ])
@@ -101,10 +101,10 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 3,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F2', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F3', type: 'number', examples: [1, 2, 3]},
-                    ],   
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
+                    ],
                 },
                 {
                     id: 0,
@@ -112,15 +112,15 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset 2',
                     examples: 3,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F2', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F3', type: 'number', examples: [1, 2, 3]},
-                    ],   
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
+                    ],
                 }
             ];
         });
 
-        const ids = datasetService.create(2, {examples: [], features: []});
+        const ids = datasetService.create(2, { examples: [], features: [] });
 
         expect(ids.length).toBe(2);
         expect(ids[0]).toBe(100);
@@ -137,14 +137,14 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 3,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F2', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F3', type: 'number', examples: [1, 2, 3]},
-                    ],   
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
+                    ],
                 }
             ];
         });
-        const ids = datasetService.create(2, {examples: [], features: []});
+        const ids = datasetService.create(2, { examples: [], features: [] });
 
         const dataset = datasetService.get(ids[0]);
 
@@ -160,14 +160,14 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 3,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F2', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F3', type: 'number', examples: [1, 2, 3]},
-                    ],   
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
+                    ],
                 }
             ];
         });
-        datasetService.create(2, {examples: [], features: []});
+        datasetService.create(2, { examples: [], features: [] });
         datasetService.save(2);
 
         expect(fs.existsSync(path.join(experimentPath, `datasets${2}.gzip`)));
@@ -194,14 +194,14 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 3,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F2', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F3', type: 'number', examples: [1, 2, 3]},
-                    ],   
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
+                    ],
                 }
             ];
         });
-        const ids = datasetService.create(2, {examples: [], features: []});
+        const ids = datasetService.create(2, { examples: [], features: [] });
         datasetService.delete(ids[0]);
         expect(datasetService.all(2).length).toBe(0);
     });
@@ -215,15 +215,15 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 3,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F2', type: 'number', examples: [1, 2, 3]},
-                        { name: 'F3', type: 'number', examples: [1, 2, 3]},
-                    ],   
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
+                    ],
                 }
             ];
         });
-        
-        datasetService.create(2, {examples: [], features: []});
+
+        datasetService.create(2, { examples: [], features: [] });
         datasetService.save(2);
 
         datasetService.deleteByExperiment(2);
@@ -242,7 +242,31 @@ describe('Electron Dataset Data Service', () => {
     });
 
 
-    
+    it('update should change name of dataset', () => {
+        (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
+            return [
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 3,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F2', type: 'number', examples: [1, 2, 3] },
+                        { name: 'F3', type: 'number', examples: [1, 2, 3] },
+                    ],
+                }
+            ];
+        });
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
+        const dataset = datasetService.get(id);
+        dataset.name = 'Update Dataset';
+        datasetService.update(dataset);
+
+        expect(datasetService.get(id).name).toBe('Update Dataset');
+
+        datasetService.deleteByExperiment(2);
+    });
 
 });
 

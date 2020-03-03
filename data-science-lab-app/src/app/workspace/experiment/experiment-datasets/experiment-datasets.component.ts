@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FetchSessionService } from '../../../session-services/fetch-session-service';
 import { RouterService } from '../../../services/router-service';
 import { DatasetService } from '../../../services/dataset-service';
+import { TabService } from '../../../services/tab-service';
+import { TabFactory } from '../../../factory/tab-factory';
 import { Dataset } from '../../../../../shared/models';
 
 @Component({
@@ -18,6 +20,8 @@ export class ExperimentDatasetsComponent implements OnInit {
     private routerService: RouterService,
     private fetchSessionService: FetchSessionService,
     private datasetService: DatasetService, 
+    private tabFactory: TabFactory,
+    private tabService: TabService
   ) {
 
   }
@@ -38,6 +42,11 @@ export class ExperimentDatasetsComponent implements OnInit {
       currentRoute: this.routerService.current(),
       newTab: true,
     });
+  }
+
+  onOpen(_: MouseEvent, index: number) {
+    const tab = this.tabFactory.create(['experiment', this.id, 'dataset', this.datasets[index].id]);
+    this.tabService.openTab(tab);
   }
 
 }

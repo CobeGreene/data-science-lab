@@ -117,6 +117,16 @@ describe('Angular App Dataset Service', () => {
         });
         service.delete(1);
     });
+    
+    it('rename should call messegner', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event, id, name) => {
+            expect(event).toBe(DatasetEvents.Rename);
+            expect(id).toBe(1);
+            expect(name).toBe('name');
+            done();
+        });
+        service.rename(1, 'name');
+    });
 
 });
 

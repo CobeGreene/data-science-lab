@@ -131,8 +131,9 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         
         const datasetPath = this.context.get<string>(this.path);
         const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
-        fs.unlinkSync(experimentPath);
-
+        if (fs.existsSync(experimentPath)) {
+            fs.unlinkSync(experimentPath);
+        }
     }
 
     view(id: number): Dataset {
@@ -171,6 +172,14 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             description: `Couldn't find dataset with id ${id}`,
             type: ErrorTypes.Error
         };
+    }
+
+    update(dataset: DatasetObject) {
+        const find = this.datasets.findIndex(value => value.id === dataset.id);
+        if (find < 0) {
+            throw this.notFound(dataset.id);
+        }
+        this.datasets.splice(find, 1, dataset);
     }
 
 }

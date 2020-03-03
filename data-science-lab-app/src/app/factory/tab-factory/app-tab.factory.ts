@@ -8,6 +8,8 @@ import { RoutesHandler } from './routes-handler';
 import { FetchDatasetTabBuilder } from './fetch-dataset-tab.builder';
 import { TabBuilder } from './tab.builder';
 import { FetchSessionService } from '../../session-services/fetch-session-service';
+import { DatasetService } from '../../services/dataset-service';
+import { DatasetTabBuilder } from './dataset-tab.builder';
 
 @Injectable()
 export class AppTabFactory extends TabFactory {
@@ -15,6 +17,7 @@ export class AppTabFactory extends TabFactory {
     constructor(
         private tabService: TabService,
         private experimentService: ExperimentService,
+        private datasetService: DatasetService,
         private fetchSessionService: FetchSessionService
     ) {
         super();
@@ -64,9 +67,14 @@ export class AppTabFactory extends TabFactory {
                         .buildFinish(this.fetchSessionService.sessionFinished)
                         .buildClose(this.fetchSessionService.attemptDelete);
                     handler.skip(3);
-                    
-                } else if (handler.isNumber(0)) {
 
+                } else if (handler.isNumber(0)) {
+                    const datasetId = +handler.get(0);
+                    const datasetName = this.datasetService.get(datasetId).name;
+                    builder = new DatasetTabBuilder(datasetId, datasetName, builder as ExperimentTabBuilder);
+                    builder.buildUpdate(this.datasetService.datasetUpdated)
+                        .buildDelete(this.datasetService.datasetDeleted);
+                    handler.skip(1);
                 }
             }
 

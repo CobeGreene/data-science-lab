@@ -31,5 +31,6 @@ export abstract class DatasetService extends Service {
     abstract all(experimentId: number): Dataset[];
     abstract get(id: number): Dataset;
     abstract delete(id: number): void;
+    abstract rename(id: number, name: string): void;
 }
 

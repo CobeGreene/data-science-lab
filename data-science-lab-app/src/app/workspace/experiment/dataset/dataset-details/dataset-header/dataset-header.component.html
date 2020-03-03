@@ -1,0 +1,17 @@
+<fa name="database" class="pr-2 icon" size="2x"></fa>
+<h2 class="m-0 p-0">{{ name }}</h2>
+<span class="pl-1 edit pointer" (click)="onOptions($event)" #optionsCmp>
+    <fa name="pencil"></fa>
+</span>
+<app-dropdown #optionsDropdown>
+    <ul class="list-unstyled dropdown-list">
+        <li (click)="onEdit($event)">
+            Edit Name
+        </li>
+        <li (click)="onDelete($event)">
+            Delete Dataset
+        </li>
+    </ul>
+</app-dropdown>
+<app-edit-dataset [id]="id" #editCmp></app-edit-dataset>
+<app-delete-dataset [id]="id" #deleteCmp></app-delete-dataset>

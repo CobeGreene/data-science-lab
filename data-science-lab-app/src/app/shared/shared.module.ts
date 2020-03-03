@@ -45,6 +45,8 @@ import { CommandOptionComponent } from './plugin/plugin-setup/command-option/com
 import { NumberOptionComponent } from './plugin/plugin-setup/number-option/number-option.component';
 import { TextOptionComponent } from './plugin/plugin-setup/text-option/text-option.component';
 import { PluginSearchPipe } from './pipes/plugin-search.pipe';
+import { EditDatasetComponent } from './dataset/edit-dataset/edit-dataset.component';
+import { DeleteDatasetComponent } from './dataset/delete-dataset/delete-dataset.component';
 
 @NgModule({
     declarations: [
@@ -83,6 +85,8 @@ import { PluginSearchPipe } from './pipes/plugin-search.pipe';
         CommandOptionComponent,
         NumberOptionComponent,
         TextOptionComponent,
+        EditDatasetComponent,
+        DeleteDatasetComponent,
     ],
     imports: [
         CommonModule,
@@ -104,6 +108,8 @@ import { PluginSearchPipe } from './pipes/plugin-search.pipe';
         CreateExperimentComponent,
         UpdateExperimentComponent,
         DeleteExperimentComponent,
+        EditDatasetComponent,
+        DeleteDatasetComponent,
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,
