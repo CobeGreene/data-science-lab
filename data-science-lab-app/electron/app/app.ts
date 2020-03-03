@@ -25,6 +25,7 @@ import { DatasetDataService, AppDatasetDataService } from './data-services/datas
 import { SessionDataService, AppSessionDataService } from './data-services/session-data-service';
 import { AppQueuePluginContext } from './contexts/plugin-context/app-queue-plugin.context';
 import { DatasetServiceModel } from './services/dataset.sm';
+import { TransformServiceModel } from './session-services/transform.sm/transform.sm';
 
 export let win: BrowserWindow;
 
@@ -68,6 +69,7 @@ export class App {
         this.serviceContainer.addTransient<UserSettingServiceModel>(UserSettingServiceModel, SERVICE_TYPES.UserSettingServiceModel);
         this.serviceContainer.addTransient<PackageServiceModel>(PackageServiceModel, SERVICE_TYPES.PackageServiceModel);
         this.serviceContainer.addTransient<FetchServiceModel>(FetchServiceModel, SERVICE_TYPES.FetchServiceModel);
+        this.serviceContainer.addTransient<TransformServiceModel>(TransformServiceModel, SERVICE_TYPES.TransformServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -77,6 +79,7 @@ export class App {
             UserSettingServiceModel.routes,
             PackageServiceModel.routes,
             FetchServiceModel.routes,
+            TransformServiceModel.routes,
         ]);
     }
 
