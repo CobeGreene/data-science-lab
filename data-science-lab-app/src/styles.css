@@ -95,6 +95,11 @@
     --join-dataset-card: #353535;
     --join-dataset-background-selected: #2191862f;
     --join-dataset-border-selected: #219186;
+    --dataset-table-th: #323232;
+    --dataset-table-tr-even: #353535;
+    --dataset-table-scroll-background: #303030;
+    --dataset-table-scroll-foreground: #3655B5;
+
 
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;

@@ -51,6 +51,8 @@ import { SplitDatasetComponent } from './dataset/split-dataset/split-dataset.com
 import { JoinDatasetComponent } from './dataset/join-dataset/join-dataset.component';
 import { JoinDatasetCardComponent } from './dataset/join-dataset/join-dataset-card/join-dataset-card.component';
 import { UnjoinDatasetCardComponent } from './dataset/join-dataset/unjoin-dataset-card/unjoin-dataset-card.component';
+import { PreviewCardComponent } from './preview-card/preview-card.component';
+import { PreviewPipe } from './pipes/preview.pipe';
 
 @NgModule({
     declarations: [
@@ -62,6 +64,7 @@ import { UnjoinDatasetCardComponent } from './dataset/join-dataset/unjoin-datase
         PackageBadgePipe,
         PackageSearchPipe,
         PluginSearchPipe,
+        PreviewPipe,
         NotificationComponent,
         DropdownComponent,
         SelectComponent,
@@ -95,6 +98,7 @@ import { UnjoinDatasetCardComponent } from './dataset/join-dataset/unjoin-datase
         JoinDatasetComponent,
         JoinDatasetCardComponent,
         UnjoinDatasetCardComponent,
+        PreviewCardComponent,
     ],
     imports: [
         CommonModule,
@@ -124,11 +128,13 @@ import { UnjoinDatasetCardComponent } from './dataset/join-dataset/unjoin-datase
         PackageBadgePipe,
         PackageSearchPipe,
         DropdownComponent,
+        PreviewCardComponent,
         PluginSelectionComponent,
         PluginSetupComponent,
         PluginInputComponent,
         PluginFeaturesComponent,
         PluginHeaderComponent,
+        ObjectCardComponent,
         SelectComponent,
         CheckboxComponent,
         CommonModule,

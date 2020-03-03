@@ -9,6 +9,7 @@ import { DatasetDetailsComponent } from './dataset-details/dataset-details.compo
 import { DatasetHeaderComponent } from './dataset-details/dataset-header/dataset-header.component';
 import { DatasetFeaturesComponent } from './dataset-details/dataset-features/dataset-features.component';
 import { DatasetExamplesComponent } from './dataset-details/dataset-examples/dataset-examples.component';
+import { DatasetFeatureHeaderComponent } from './dataset-details/dataset-examples/dataset-feature-header/dataset-feature-header.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { DatasetExamplesComponent } from './dataset-details/dataset-examples/dat
         DatasetHeaderComponent,
         DatasetFeaturesComponent,
         DatasetExamplesComponent,
+        DatasetFeatureHeaderComponent,
     ],
     imports: [
         CommonModule,

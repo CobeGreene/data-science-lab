@@ -1,0 +1,61 @@
+:host {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'options examples' 'blank examples';
+    gap: 1.5rem 1rem;
+    width: 100%;
+}
+
+.options {
+    background-color: var(--experiment-dataset-card-background);
+    border-radius: 0.5em;
+    border: 2px solid var(--experiment-dataset-card-border);
+    box-shadow: 0px 5px 2px 3px var(--experiment-dataset-card-shadow);
+    grid-area: options;
+    text-align: center;
+}
+
+.examples {
+    grid-area: examples;
+    overflow-x: auto;
+}
+
+.table {
+    border-collapse: collapse;
+}
+
+.table th {
+    white-space: nowrap;
+    background: var(--dataset-table-th);
+}
+
+.table td {
+    white-space: nowrap;
+    text-align: center;
+}
+
+.index {
+    text-align: right;
+}
+
+.table tr:nth-child(even) {
+    background-color: var(--dataset-table-tr-even);
+}
+
+.examples::-webkit-scrollbar {
+    height: 2px;
+}
+
+.examples::-webkit-scrollbar-track {
+    background: var(--dataset-table-scroll-background);
+}
+
+.examples::-webkit-scrollbar-thumb {
+    background: var(--dataset-table-scroll-background);
+    border-radius: 10%;
+}
+
+.examples:hover::-webkit-scrollbar-thumb {
+    background: var(--dataset-table-scroll-foreground);
+}

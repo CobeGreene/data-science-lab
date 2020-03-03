@@ -12,8 +12,8 @@ export class DatasetTabBuilder extends BaseTabBuilder {
 
     constructor(id: number, name: string, public base: ExperimentTabBuilder) {
         super(base.tab);
-        this.tab.data.datasetId = id;
-        this.tab.name = name;
+        this.base.tab.data.datasetId = id;
+        this.base.tab.name = name;
         this.buildRoute(`${id}`);
     }
 
@@ -28,7 +28,7 @@ export class DatasetTabBuilder extends BaseTabBuilder {
     buildUpdate(subject: Subject<Dataset>): TabBuilder {
         this.update = subject.subscribe((value) => {
             if (value.id === this.base.tab.data.datasetId) {
-                this.tab.name = `${this.tab.data.prefix}${value.name}`;
+                this.base.tab.name = `${this.tab.data.prefix}${value.name}`;
             }
         });
         return this;

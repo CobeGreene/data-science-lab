@@ -30,7 +30,7 @@ export class ExperimentHeaderComponent implements OnInit, OnDestroy {
     .subscribe(() => {
       this.area = this.coreAreaService.getWorkspace();
     });
-    
+
     this.area = this.coreAreaService.getWorkspace();
     this.isExpanded = this.workspaceService.get<boolean>('experiment-header', true);
 

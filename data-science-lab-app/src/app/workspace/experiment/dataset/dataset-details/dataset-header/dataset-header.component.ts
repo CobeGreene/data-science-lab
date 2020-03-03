@@ -24,9 +24,9 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private routerService: RouterService,
-    private datasetService: DatasetService) { 
+    private datasetService: DatasetService) {
 
-    }
+  }
 
   ngOnInit() {
     this.id = this.routerService.data().datasetId;
@@ -37,6 +37,13 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
         if (value.id === this.id) {
           this.name = value.name;
         }
+      });
+
+    this.routerService.changed()
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.id = this.routerService.data().datasetId;
+        this.name = this.datasetService.get(this.id).name;
       });
 
     this.name = this.datasetService.get(this.id).name;

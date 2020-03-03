@@ -28,6 +28,13 @@ export class ExperimentTitleComponent implements OnInit, OnDestroy {
         }
       });
 
+    this.router.changed()
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.id = this.router.data().id;
+        this.title = this.experimentService.get(this.id).title;
+      });
+
     this.id = this.router.data().id;
     this.title = this.experimentService.get(this.id).title;
   }
@@ -35,7 +42,7 @@ export class ExperimentTitleComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
 
   }
-  
+
   onUpdate(event: MouseEvent) {
     this.updateComponent.open(event);
   }

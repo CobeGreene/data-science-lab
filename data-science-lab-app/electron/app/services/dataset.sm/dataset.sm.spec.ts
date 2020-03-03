@@ -30,6 +30,7 @@ describe('Elecron Dataset Service Model', () => {
     });
 
     it('all should call producer and data service', () => {
+        (datasetService.all as jasmine.Spy).and.returnValue([]);
         serviceModel.all();
 
         expect(producer.send).toHaveBeenCalled();
@@ -73,6 +74,7 @@ describe('Elecron Dataset Service Model', () => {
     });
 
     it('load should call dataservice load once', () => {
+        (datasetService.all as jasmine.Spy).and.returnValue([]);
         datasetService.load(1);
 
         expect(datasetService.load).toHaveBeenCalledTimes(1);

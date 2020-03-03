@@ -1,1 +1,17 @@
-<p>dataset-features works!</p>
+<div class="options p-3">
+    <h2 class="mb-0 pb-0">Features</h2>
+    <p class="mt-0 pt-0">
+        {{ dataset.features.length }} Features
+    </p>
+    <h4 class="text-accent1 pointer" (click)="onTransform()">
+        <u><i>Transform</i></u>
+    </h4>
+    <h4 class="text-accent4 pointer" (click)="onVisualize()">
+        <u><i>Visualize</i></u>
+    </h4>
+</div>
+<div class="features p-3">
+    <ng-container *ngFor="let feature of dataset.features">
+        <app-object-card [object]="feature"></app-object-card>
+    </ng-container>
+</div>
