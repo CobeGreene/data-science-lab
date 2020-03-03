@@ -1,6 +1,6 @@
 <div class="container p-5">
     <app-experiment-create-dataset-card class="card" (click)="onCreate($event)"></app-experiment-create-dataset-card>
     <ng-container *ngFor="let dataset of datasets; let i = index">
-        <app-experiment-dataset-card class="card" [dataset]="dataset" (click)="onOpen($event, i)"></app-experiment-dataset-card>
+        <app-experiment-dataset-card class="card" [id]="dataset.id" (click)="onOpen($event, i)"></app-experiment-dataset-card>
     </ng-container>
 </div>

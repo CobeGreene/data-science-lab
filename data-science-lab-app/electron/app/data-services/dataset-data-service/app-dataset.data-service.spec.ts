@@ -330,5 +330,151 @@ describe('Electron Dataset Data Service', () => {
         datasetService.deleteByExperiment(2);
     });
 
+    it('join should delete one datasets and increase the other', () => {
+        (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
+            return [
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 2,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [1, 2 ] },
+                        { name: 'F2', type: 'number', examples: [1, 2 ] },
+                        { name: 'F3', type: 'number', examples: [1, 2 ] },
+                    ],
+                },
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 2,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [3, 4 ] },
+                        { name: 'F2', type: 'number', examples: [3, 4 ] },
+                        { name: 'F3', type: 'number', examples: [3, 4 ] },
+                    ],
+                }
+            ];
+        });
+        const ids = datasetService.create(2, { examples: [], features: [] });
+        const { updateId, deletedIds } = datasetService.join(ids); 
+
+        expect(updateId).toBe(ids[0]);
+        expect(deletedIds.length).toBe(1);
+        expect(deletedIds[0]).toBe(ids[1]);
+
+        const dataset = datasetService.get(updateId);
+        expect(dataset.examples).toBe(4);
+        expect(dataset.features.length).toBe(3);
+        expect(dataset.features[0].examples.length).toBe(4);
+        expect(dataset.features[1].examples.length).toBe(4);
+        expect(dataset.features[2].examples.length).toBe(4);
+
+        expect(() => {
+            datasetService.get(deletedIds[0]);
+        }).toThrow();
+
+    });
+    
+    it('join should throw for one ids', () => {
+        (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
+            return [
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 2,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [1, 2 ] },
+                        { name: 'F2', type: 'number', examples: [1, 2 ] },
+                        { name: 'F3', type: 'number', examples: [1, 2 ] },
+                    ],
+                }
+            ];
+        });
+        const ids = datasetService.create(2, { examples: [], features: [] });
+        
+        expect(() => {
+            datasetService.join(ids);
+        }).toThrow();
+    });
+    
+    it('join should throw for zero ids', () => {
+        expect(() => {
+            datasetService.join([]);
+        }).toThrow();
+    });
+
+    it('join should throw for different names', () => {
+        (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
+            return [
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 2,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [1, 2 ] },
+                        { name: 'F2', type: 'number', examples: [1, 2 ] },
+                        { name: 'F3', type: 'number', examples: [1, 2 ] },
+                    ],
+                },
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 2,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [3, 4 ] },
+                        { name: 'F2', type: 'number', examples: [3, 4 ] },
+                        { name: 'F4', type: 'number', examples: [3, 4 ] },
+                    ],
+                }
+            ];
+        });
+        const ids = datasetService.create(2, { examples: [], features: [] });
+        
+        expect(() => {
+            datasetService.join(ids); 
+        }).toThrow();
+    });
+    
+    it('join should throw for different type', () => {
+        (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
+            return [
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 2,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [1, 2 ] },
+                        { name: 'F2', type: 'number', examples: [1, 2 ] },
+                        { name: 'F3', type: 'number', examples: [1, 2 ] },
+                    ],
+                },
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 2,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [3, 4 ] },
+                        { name: 'F2', type: 'number', examples: [3, 4 ] },
+                        { name: 'F3', type: 'string', examples: ['3', '4' ] },
+                    ],
+                }
+            ];
+        });
+        const ids = datasetService.create(2, { examples: [], features: [] });
+        
+        expect(() => {
+            datasetService.join(ids); 
+        }).toThrow();
+    });
+
+
+
 });
 

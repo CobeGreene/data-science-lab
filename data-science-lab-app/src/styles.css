@@ -92,6 +92,9 @@
     --experiment-dataset-card-background: #323232;
     --experiment-dataset-card-border: #404040;
     --experiment-dataset-card-shadow: rgba(0, 0, 0, .1);
+    --join-dataset-card: #353535;
+    --join-dataset-background-selected: #2191862f;
+    --join-dataset-border-selected: #219186;
 
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;

@@ -33,5 +33,6 @@ export abstract class DatasetService extends Service {
     abstract delete(id: number): void;
     abstract rename(id: number, name: string): void;
     abstract split(id: number, split: number): void;
+    abstract join(ids: number[]): void;
 }
 

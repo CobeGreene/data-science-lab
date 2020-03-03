@@ -48,6 +48,9 @@ import { PluginSearchPipe } from './pipes/plugin-search.pipe';
 import { EditDatasetComponent } from './dataset/edit-dataset/edit-dataset.component';
 import { DeleteDatasetComponent } from './dataset/delete-dataset/delete-dataset.component';
 import { SplitDatasetComponent } from './dataset/split-dataset/split-dataset.component';
+import { JoinDatasetComponent } from './dataset/join-dataset/join-dataset.component';
+import { JoinDatasetCardComponent } from './dataset/join-dataset/join-dataset-card/join-dataset-card.component';
+import { UnjoinDatasetCardComponent } from './dataset/join-dataset/unjoin-dataset-card/unjoin-dataset-card.component';
 
 @NgModule({
     declarations: [
@@ -89,6 +92,9 @@ import { SplitDatasetComponent } from './dataset/split-dataset/split-dataset.com
         EditDatasetComponent,
         DeleteDatasetComponent,
         SplitDatasetComponent,
+        JoinDatasetComponent,
+        JoinDatasetCardComponent,
+        UnjoinDatasetCardComponent,
     ],
     imports: [
         CommonModule,
@@ -113,6 +119,7 @@ import { SplitDatasetComponent } from './dataset/split-dataset/split-dataset.com
         EditDatasetComponent,
         DeleteDatasetComponent,
         SplitDatasetComponent,
+        JoinDatasetComponent,
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,

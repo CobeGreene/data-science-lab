@@ -101,6 +101,10 @@ export class AppDatasetService extends DatasetService {
     split(id: number, split: number): void {
         this.messenger.publish(DatasetEvents.Split, id, split);
     }
+
+    join(ids: number[]): void {
+        this.messenger.publish(DatasetEvents.Join, ids);
+    }
 }
 
 

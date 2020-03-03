@@ -212,6 +212,67 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         return splitDataset.id;
     }
 
+    join(ids: number[]): { updateId: number, deletedIds: number[] } {
+        if (ids.length < 2) {
+            throw this.unableToJoin(ids);
+        }
+        const original = this.get(ids[0]);
+        const dataset: DatasetObject = {
+            id: original.id,
+            experimentId: original.experimentId,
+            examples: original.examples,
+            name: original.name,
+            previewExamples: original.previewExamples,
+            features: this.sortFeatures(original.features.slice())
+        };
+        
+        for (const id of ids.slice(1)) {
+            const next = this.get(id);
+            const features = this.sortFeatures(next.features);
+            if (dataset.features.length !== features.length) {
+                throw this.joinFailWrapper(dataset, ids);
+            }
+            for (let i = 0; i < features.length; ++i) {
+                if (dataset.features[i].name !== features[i].name) {
+                    throw this.joinFailWrapper(dataset, ids);
+                } else if (dataset.features[i].type !== features[i].type) {
+                    throw this.joinFailWrapper(dataset, ids);
+                }
+                dataset.features[i].examples.push(...features[i].examples.slice());
+            }
+            dataset.examples += next.examples;
+        }
+        
+        this.update(dataset);
+        ids.slice(1).forEach((id) => this.delete(id));
+        return { updateId: ids[0], deletedIds: ids.slice(1) };
+    }
+
+    joinFailWrapper(dataset: DatasetObject, ids: number[]) {
+        delete dataset.features;
+        return this.unableToJoin(ids);
+    }
+
+    unableToJoin(ids: number[]): SystemError {
+        return {
+            header: 'Dataset Join Error',
+            description: `Unable to join dataset for the following ids: ${ids.join(', ')}`,
+            type: ErrorTypes.Error
+        };
+    }
+
+    sortFeatures(features: FeatureObject[]): FeatureObject[] {
+        return features.sort((lhs: FeatureObject, rhs: FeatureObject) => {
+            if (lhs.name < rhs.name) {
+                return -1;
+            }
+            if (lhs.name > rhs.name) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+
 }
 
 

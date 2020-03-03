@@ -1,0 +1,46 @@
+<ng-template #overlayCmp>
+    <div class="modal">
+        <app-modal-header [header]="'Join Datasets'"></app-modal-header>
+        <p class="m-0 p-0">
+            This will join all the datasets on the left. 
+        </p>
+        <div class="container w-100">
+            <div class="selected pr-1">
+                <h4 class="mt-1 mb-0">Selected</h4>
+                <p class="m-0 p-0">
+                    {{ totalExamples() }} examples in total
+                </p>
+            </div>
+            <div class="others pl-2">
+                <h4 class="mt-1 mb-0">Click join to select</h4>
+            </div>
+            <div class="selected-dataset pr-1" [ngClass]="{ 'selected': joinDatasets.length > 0 }">
+                <div *ngIf="joinDatasets.length > 0">
+                    <ng-container *ngFor="let dataset of joinDatasets; let i = index">
+                        <app-unjoin-dataset-card class="join-card pt-1 pb-1 pl-2 pr-2 m-4" [dataset]="dataset" (emitUnjoin)="onUnjoin(i)">
+                            
+                        </app-unjoin-dataset-card>
+                    </ng-container>
+                </div>
+                <div *ngIf="joinDatasets.length === 0">
+                    <p class="m-0 p-0">
+                        None selected.
+                    </p>
+                </div>
+            </div>
+            <div class="others-dataset pl-1">
+                <ng-container *ngFor="let dataset of otherDatasets; let i = index">
+                    <app-join-dataset-card class="join-card pt-1 pb-1 pl-2 pr-2 m-4" [dataset]="dataset" (emitJoin)="onJoin(i)">
+
+                    </app-join-dataset-card>
+                </ng-container>
+            </div>
+        </div>
+        <div class="pt-2">
+            <button type="button" (click)="onJoinDatasets($event)" class="btn btn-lg btn-accent6"
+                [ngClass]="{ 'disabled': !(joinDatasets.length > 1) }">
+                Join
+            </button>
+        </div>
+    </div>
+</ng-template>

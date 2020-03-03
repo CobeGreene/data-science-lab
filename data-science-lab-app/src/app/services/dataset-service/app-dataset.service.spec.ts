@@ -137,6 +137,15 @@ describe('Angular App Dataset Service', () => {
         });
         service.split(1, 50);
     });
+    
+    it('join should call messegner', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event, ids) => {
+            expect(event).toBe(DatasetEvents.Join);
+            expect(ids.length).toBe(0);
+            done();
+        });
+        service.join([]);
+    });
 
 });
 
