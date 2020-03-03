@@ -81,6 +81,7 @@ describe('Elecron Dataset Service Model', () => {
     });
 
     it('load should call producer with all', (done) => {
+        (datasetService.all as jasmine.Spy).and.returnValue([]);
         (producer.send as jasmine.Spy).and.callFake((event, dataset) => {
             expect(event).toBe(DatasetEvents.All);
             done();
