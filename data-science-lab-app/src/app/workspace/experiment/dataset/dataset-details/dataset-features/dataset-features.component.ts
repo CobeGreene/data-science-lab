@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Dataset } from '../../../../../../../shared/models';
 import { RouterService } from '../../../../../services/router-service';
 import { DatasetService } from '../../../../../services/dataset-service';
+import { TransformSessionService } from '../../../../../session-services/transform-session-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
@@ -16,7 +17,8 @@ export class DatasetFeaturesComponent implements OnInit, OnDestroy {
 
   constructor(
     private routerService: RouterService,
-    private datasetService: DatasetService
+    private datasetService: DatasetService,
+    private transformService: TransformSessionService 
   ) { }
 
   ngOnInit() {
@@ -41,8 +43,16 @@ export class DatasetFeaturesComponent implements OnInit, OnDestroy {
 
   }
 
+  onTransform() {
+    this.transformService.create(this.id, {
+      currentRoute: this.routerService.current(),
+      newTab: true,
+    }, this.dataset.features.map((_, index) => index));
+  }
+
   ngOnDestroy() {
 
   }
+
 
 }

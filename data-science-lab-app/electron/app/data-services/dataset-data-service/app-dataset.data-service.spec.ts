@@ -7,6 +7,7 @@ import { AppDatasetDataService } from './app-dataset.data-service';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as zlib from 'zlib';
+import { PluginData } from 'data-science-lab-core';
 
 describe('Electron Dataset Data Service', () => {
     let datasetService: DatasetDataService;
@@ -339,9 +340,9 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 2,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2 ] },
-                        { name: 'F2', type: 'number', examples: [1, 2 ] },
-                        { name: 'F3', type: 'number', examples: [1, 2 ] },
+                        { name: 'F1', type: 'number', examples: [1, 2] },
+                        { name: 'F2', type: 'number', examples: [1, 2] },
+                        { name: 'F3', type: 'number', examples: [1, 2] },
                     ],
                 },
                 {
@@ -350,15 +351,15 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 2,
                     features: [
-                        { name: 'F1', type: 'number', examples: [3, 4 ] },
-                        { name: 'F2', type: 'number', examples: [3, 4 ] },
-                        { name: 'F3', type: 'number', examples: [3, 4 ] },
+                        { name: 'F1', type: 'number', examples: [3, 4] },
+                        { name: 'F2', type: 'number', examples: [3, 4] },
+                        { name: 'F3', type: 'number', examples: [3, 4] },
                     ],
                 }
             ];
         });
         const ids = datasetService.create(2, { examples: [], features: [] });
-        const { updateId, deletedIds } = datasetService.join(ids); 
+        const { updateId, deletedIds } = datasetService.join(ids);
 
         expect(updateId).toBe(ids[0]);
         expect(deletedIds.length).toBe(1);
@@ -376,7 +377,7 @@ describe('Electron Dataset Data Service', () => {
         }).toThrow();
 
     });
-    
+
     it('join should throw for one ids', () => {
         (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
             return [
@@ -386,20 +387,20 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 2,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2 ] },
-                        { name: 'F2', type: 'number', examples: [1, 2 ] },
-                        { name: 'F3', type: 'number', examples: [1, 2 ] },
+                        { name: 'F1', type: 'number', examples: [1, 2] },
+                        { name: 'F2', type: 'number', examples: [1, 2] },
+                        { name: 'F3', type: 'number', examples: [1, 2] },
                     ],
                 }
             ];
         });
         const ids = datasetService.create(2, { examples: [], features: [] });
-        
+
         expect(() => {
             datasetService.join(ids);
         }).toThrow();
     });
-    
+
     it('join should throw for zero ids', () => {
         expect(() => {
             datasetService.join([]);
@@ -415,9 +416,9 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 2,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2 ] },
-                        { name: 'F2', type: 'number', examples: [1, 2 ] },
-                        { name: 'F3', type: 'number', examples: [1, 2 ] },
+                        { name: 'F1', type: 'number', examples: [1, 2] },
+                        { name: 'F2', type: 'number', examples: [1, 2] },
+                        { name: 'F3', type: 'number', examples: [1, 2] },
                     ],
                 },
                 {
@@ -426,20 +427,20 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 2,
                     features: [
-                        { name: 'F1', type: 'number', examples: [3, 4 ] },
-                        { name: 'F2', type: 'number', examples: [3, 4 ] },
-                        { name: 'F4', type: 'number', examples: [3, 4 ] },
+                        { name: 'F1', type: 'number', examples: [3, 4] },
+                        { name: 'F2', type: 'number', examples: [3, 4] },
+                        { name: 'F4', type: 'number', examples: [3, 4] },
                     ],
                 }
             ];
         });
         const ids = datasetService.create(2, { examples: [], features: [] });
-        
+
         expect(() => {
-            datasetService.join(ids); 
+            datasetService.join(ids);
         }).toThrow();
     });
-    
+
     it('join should throw for different type', () => {
         (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
             return [
@@ -449,9 +450,9 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 2,
                     features: [
-                        { name: 'F1', type: 'number', examples: [1, 2 ] },
-                        { name: 'F2', type: 'number', examples: [1, 2 ] },
-                        { name: 'F3', type: 'number', examples: [1, 2 ] },
+                        { name: 'F1', type: 'number', examples: [1, 2] },
+                        { name: 'F2', type: 'number', examples: [1, 2] },
+                        { name: 'F3', type: 'number', examples: [1, 2] },
                     ],
                 },
                 {
@@ -460,19 +461,241 @@ describe('Electron Dataset Data Service', () => {
                     name: 'New Dataset',
                     examples: 2,
                     features: [
-                        { name: 'F1', type: 'number', examples: [3, 4 ] },
-                        { name: 'F2', type: 'number', examples: [3, 4 ] },
-                        { name: 'F3', type: 'string', examples: ['3', '4' ] },
+                        { name: 'F1', type: 'number', examples: [3, 4] },
+                        { name: 'F2', type: 'number', examples: [3, 4] },
+                        { name: 'F3', type: 'string', examples: ['3', '4'] },
                     ],
                 }
             ];
         });
         const ids = datasetService.create(2, { examples: [], features: [] });
-        
+
         expect(() => {
-            datasetService.join(ids); 
+            datasetService.join(ids);
         }).toThrow();
+
+        datasetService.deleteByExperiment(2);
     });
+
+    it('extract should return two plugin data', () => {
+        (pluginConverter.convert as jasmine.Spy).and.callFake(() => {
+            return [
+                {
+                    id: 0,
+                    experimentId: 0,
+                    name: 'New Dataset',
+                    examples: 2,
+                    features: [
+                        { name: 'F1', type: 'number', examples: [1, 2] },
+                        { name: 'F2', type: 'number', examples: [3, 4] },
+                        { name: 'F3', type: 'number', examples: [5, 6] },
+                    ],
+                },
+            ];
+        });
+
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
+
+        const data = datasetService.extract(id, {
+            input: [0, 1],
+            output: [2]
+        });
+
+        expect(data.input.features.length).toBe(2);
+        expect(data.input.features[0]).toBe('F1');
+        expect(data.input.features[1]).toBe('F2');
+        expect(data.input.examples.length).toBe(2);
+        expect(data.input.examples[0].length).toBe(2);
+        expect(data.input.examples[0][0]).toBe(1);
+        expect(data.input.examples[0][1]).toBe(3);
+        expect(data.input.examples[1][0]).toBe(2);
+        expect(data.input.examples[1][1]).toBe(4);
+        expect(data.input.examples[1].length).toBe(2);
+        expect(data.output.features.length).toBe(1);
+        expect(data.output.examples.length).toBe(2);
+        expect(data.output.features[0]).toBe('F3');
+        expect(data.output.examples.length).toBe(2);
+        expect(data.output.examples[0].length).toBe(1);
+        expect(data.output.examples[0][0]).toBe(5);
+        expect(data.output.examples[1][0]).toBe(6);
+
+        datasetService.deleteByExperiment(2);
+    });
+
+    it('transform should convert features to number', () => {
+        (pluginConverter.convert as jasmine.Spy).and.returnValues([
+            {
+                id: 0,
+                experimentId: 0,
+                name: 'New Dataset',
+                examples: 2,
+                features: [
+                    { name: 'F1', type: 'string', examples: ['1', '2'] },
+                    { name: 'F2', type: 'string', examples: ['3', '4'] },
+                    { name: 'F3', type: 'string', examples: ['5', '6'] },
+                ],
+            },
+        ], [
+            {
+                id: 0,
+                experimentId: 0,
+                name: 'New Dataset',
+                examples: 2,
+                features: [
+                    { name: 'F1', type: 'number', examples: [1, 2] },
+                    { name: 'F2', type: 'number', examples: [3, 4] },
+                    { name: 'F3', type: 'number', examples: [5, 6] },
+                ],
+            },
+        ]);
+
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
+
+        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0, 1, 2]);
+
+        expect(updateId).toBe(id);
+        expect(createIds.length).toBe(0);
+
+        const dataset = datasetService.get(id);
+        expect(dataset.examples).toBe(2);
+        expect(dataset.features[0].type).toBe('number');
+        expect(dataset.features[1].type).toBe('number');
+        expect(dataset.features[2].type).toBe('number');
+
+        datasetService.deleteByExperiment(2);
+    });
+
+    it('transform should add a feature row for multiple two', () => {
+        (pluginConverter.convert as jasmine.Spy).and.returnValues([
+            {
+                id: 0,
+                experimentId: 0,
+                name: 'New Dataset',
+                examples: 2,
+                features: [
+                    { name: 'F1', type: 'number', examples: [1, 2] },
+                    { name: 'F2', type: 'number', examples: [3, 4] },
+                ],
+            },
+        ], [
+            {
+                id: 0,
+                experimentId: 0,
+                name: 'New Dataset',
+                examples: 2,
+                features: [
+                    { name: 'F1 * F2', type: 'number', examples: [3, 8] },
+                ],
+            },
+        ]);
+
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
+
+        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0, 1]);
+
+        expect(updateId).toBe(id);
+        expect(createIds.length).toBe(0);
+
+        const dataset = datasetService.get(id);
+        expect(dataset.examples).toBe(2);
+        expect(dataset.features.length).toBe(3);
+        expect(dataset.features[0].type).toBe('number');
+        expect(dataset.features[1].type).toBe('number');
+        expect(dataset.features[2].type).toBe('number');
+
+        datasetService.deleteByExperiment(2);
+    });
+
+    it('transform should create a new dataset for half feature', () => {
+        (pluginConverter.convert as jasmine.Spy).and.returnValues([
+            {
+                id: 0,
+                experimentId: 0,
+                name: 'New Dataset',
+                examples: 2,
+                features: [
+                    { name: 'F1', type: 'number', examples: [1, 2] },
+                    { name: 'F2', type: 'number', examples: [3, 4] },
+                ],
+            },
+        ], [
+            {
+                id: 0,
+                experimentId: 0,
+                name: 'New Dataset',
+                examples: 1,
+                features: [
+                    { name: 'F1', type: 'number', examples: [1] },
+                ],
+            },
+        ]);
+
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
+
+        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0]);
+
+        expect(updateId).toBe(id);
+        expect(createIds.length).toBe(1);
+
+        const dataset = datasetService.get(id);
+        expect(dataset.examples).toBe(2);
+        expect(dataset.features.length).toBe(1);
+        expect(dataset.features[0].name).toBe('F2');
+
+        const newDataset = datasetService.get(createIds[0]);
+        expect(newDataset.examples).toBe(1);
+        expect(newDataset.features.length).toBe(1);
+        expect(newDataset.features[0].name).toBe('F1');
+
+        datasetService.deleteByExperiment(2);
+    });
+    
+    it('transform should create a new dataset but keep feature for half feature', () => {
+        (pluginConverter.convert as jasmine.Spy).and.returnValues([
+            {
+                id: 0,
+                experimentId: 0,
+                name: 'New Dataset',
+                examples: 2,
+                features: [
+                    { name: 'F1', type: 'number', examples: [1, 2] },
+                    { name: 'F2', type: 'number', examples: [3, 4] },
+                ],
+            },
+        ], [
+            {
+                id: 0,
+                experimentId: 0,
+                name: 'New Dataset',
+                examples: 1,
+                features: [
+                    { name: 'Half F1', type: 'number', examples: [1] },
+                ],
+            },
+        ]);
+
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
+
+        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0]);
+
+        expect(updateId).toBe(id);
+        expect(createIds.length).toBe(1);
+
+        const dataset = datasetService.get(id);
+        expect(dataset.examples).toBe(2);
+        expect(dataset.features.length).toBe(2);
+        expect(dataset.features[0].name).toBe('F1');
+        expect(dataset.features[1].name).toBe('F2');
+
+        const newDataset = datasetService.get(createIds[0]);
+        expect(newDataset.examples).toBe(1);
+        expect(newDataset.features.length).toBe(1);
+        expect(newDataset.features[0].name).toBe('Half F1');
+
+        datasetService.deleteByExperiment(2);
+    });
+
+
 
 
 

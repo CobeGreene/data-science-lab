@@ -30,7 +30,7 @@ export abstract class SessionService extends ServiceModel {
     abstract get eventSelect(): string;
     abstract get eventOptions(): string;
     abstract get eventCommand(): string;
-    abstract get eventInput(): string;
+    abstract get eventInputs(): string;
     abstract get eventPrevious(): string;
 
     abstract pluginActivate(plugin: any): Promise<void>;
@@ -114,7 +114,7 @@ export abstract class SessionService extends ServiceModel {
         });
     }
 
-    async input(id: number, inputDict: { [id: string]: number[]; }) {
+    async inputs(id: number, inputDict: { [id: string]: number[]; }) {
         await this.eventWrapper(async () => {
             const session = this.dataService.get(id);
 
