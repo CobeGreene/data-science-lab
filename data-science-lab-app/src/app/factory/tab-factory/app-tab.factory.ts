@@ -9,9 +9,11 @@ import { FetchDatasetTabBuilder } from './fetch-dataset-tab.builder';
 import { TabBuilder } from './tab.builder';
 import { FetchSessionService } from '../../session-services/fetch-session-service';
 import { TransformSessionService } from '../../session-services/transform-session-service';
+import { AlgorithmSessionService } from '../../session-services/algorithm-session-service';
 import { DatasetService } from '../../services/dataset-service';
 import { DatasetTabBuilder } from './dataset-tab.builder';
 import { TransformDatasetTabBuilder } from './transform-dataset-tab.builder';
+import { CreateAlgorithmTabBuilder } from './create-algorithm-tab.builder';
 
 @Injectable()
 export class AppTabFactory extends TabFactory {
@@ -21,7 +23,8 @@ export class AppTabFactory extends TabFactory {
         private experimentService: ExperimentService,
         private datasetService: DatasetService,
         private fetchSessionService: FetchSessionService,
-        private transformSessionService: TransformSessionService
+        private transformSessionService: TransformSessionService,
+        private algorithmSessionService: AlgorithmSessionService
     ) {
         super();
     }
@@ -62,7 +65,7 @@ export class AppTabFactory extends TabFactory {
                 if (handler.get(0) === 'dataset') {
                     handler.skip(1);
                     builder.buildRoute('dataset');
-    
+
                     if (handler.get(0) === 'fetch') {
                         builder = new FetchDatasetTabBuilder(+handler.get(1), handler.get(2), builder as ExperimentTabBuilder);
                         builder.buildPrefix('Fetch for ')
@@ -78,7 +81,7 @@ export class AppTabFactory extends TabFactory {
                         builder.buildUpdate(this.datasetService.datasetUpdated)
                             .buildDelete(this.datasetService.datasetDeleted);
                         handler.skip(1);
-    
+
                         if (handler.has(0)) {
                             if (handler.get(0) === 'transform') {
                                 builder = new TransformDatasetTabBuilder(+handler.get(1), handler.get(2), builder as DatasetTabBuilder);
@@ -88,7 +91,7 @@ export class AppTabFactory extends TabFactory {
                                     .buildFinish(this.transformSessionService.sessionFinished)
                                     .buildClose(this.transformSessionService.attemptDelete);
                             }
-    
+
                             handler.skip(3);
                         }
                     }
@@ -102,7 +105,15 @@ export class AppTabFactory extends TabFactory {
                                 .buildRoute('dataset')
                                 .buildPrefix('Algorithm for ');
                             handler.skip(2);
-                        } 
+                        } else {
+                            builder = new CreateAlgorithmTabBuilder(+handler.get(1), handler.get(2), builder as ExperimentTabBuilder);
+                            builder.buildPrefix('Algorithm for ')
+                                .buildUpdate(this.algorithmSessionService.sessionUpdated)
+                                .buildDelete(this.algorithmSessionService.sessionDeleted)
+                                .buildFinish(this.algorithmSessionService.sessionFinished)
+                                .buildClose(this.algorithmSessionService.attemptDelete);
+                            handler.skip(3);
+                        }
                     }
                 }
 

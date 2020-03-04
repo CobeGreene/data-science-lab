@@ -4,6 +4,7 @@ import { TabService } from '../../../../services/tab-service';
 import { TabFactory } from '../../../../factory/tab-factory';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DatasetService } from '../../../../services/dataset-service';
+import { AlgorithmSessionService } from '../../../../session-services/algorithm-session-service';
 import { Dataset } from '../../../../../../shared/models';
 
 @Component({
@@ -19,7 +20,8 @@ export class AlgorithmDatasetCreateComponent implements OnInit, OnDestroy {
     private routerService: RouterService,
     private tabFactory: TabFactory,
     private tabService: TabService,
-    private datasetService: DatasetService
+    private datasetService: DatasetService,
+    private algorithmSessionService: AlgorithmSessionService
   ) { }
 
   ngOnInit() {
@@ -56,6 +58,12 @@ export class AlgorithmDatasetCreateComponent implements OnInit, OnDestroy {
     this.tabService.replaceTab(this.routerService.current(), tab);
   }
 
+  onSelect(event: Dataset) {
+    this.algorithmSessionService.create(event.id, {
+      currentRoute: this.routerService.current(),
+      newTab: false,
+    }, event.features.map((_, index) => index), this.routerService.current());
+  }
 
 
 }

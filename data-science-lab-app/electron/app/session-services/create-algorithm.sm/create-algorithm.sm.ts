@@ -8,7 +8,7 @@ import { SessionService } from '../session-service';
 
 export class CreateAlgorithmServiceModel extends SessionService {
     static routes: ServiceModelRoutes = {
-        service: SERVICE_TYPES.TransformServiceModel,
+        service: SERVICE_TYPES.CreateAlgorithmServiceModel,
         routes: [
             { path: AlgorithmCreateEvents.Create, method: 'create' },
             { path: AlgorithmCreateEvents.Delete, method: 'delete' },

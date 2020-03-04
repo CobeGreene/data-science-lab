@@ -7,6 +7,7 @@ import { ExperimentService } from '../experiment-service';
 import { FetchSessionService } from '../../session-services/fetch-session-service';
 import { DatasetService } from '../dataset-service';
 import { TransformSessionService } from '../../session-services/transform-session-service';
+import { AlgorithmSessionService } from '../../session-services/algorithm-session-service';
 
 @Injectable()
 export class AppCreationService extends CreationService implements OnDestroy {
@@ -17,7 +18,8 @@ export class AppCreationService extends CreationService implements OnDestroy {
         private experimentService: ExperimentService,
         private datasetService: DatasetService,
         private fetchSessionService: FetchSessionService,
-        private transformSessionService: TransformSessionService) {
+        private transformSessionService: TransformSessionService,
+        private algorithmSessionService: AlgorithmSessionService) {
         super();
         this.subscribe();
     }
@@ -54,20 +56,34 @@ export class AppCreationService extends CreationService implements OnDestroy {
             .subscribe((id) => {
                 const session = this.transformSessionService.get(id);
                 const experimentId = this.datasetService.get(session.keyId).experimentId;
-                const tab = this.tabFactory.create(['experiment', experimentId, 'dataset', session.keyId, 'transform', id, session.state ]);
+                const tab = this.tabFactory.create(['experiment', experimentId, 'dataset', session.keyId, 'transform', id, session.state]);
                 if (session.sessionOptions.newTab) {
                     this.tabService.openTab(tab);
                 } else {
                     this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
                 }
             });
-        
+
+        this.algorithmSessionService.sessionCreated
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((id) => {
+                const session = this.algorithmSessionService.get(id);
+                const experimentId = this.datasetService.get(session.keyId).experimentId;
+                const tab = this.tabFactory.create(['experiment', experimentId, 'algorithm', 'create', id, session.state]);
+                if (session.sessionOptions.newTab) {
+                    this.tabService.openTab(tab);
+                } else {
+                    this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
+                }
+            });
+
         this.datasetService.datasetCreated
             .pipe(untilComponentDestroyed(this))
             .subscribe((dataset) => {
                 const tab = this.tabFactory.create(['experiment', dataset.experimentId, 'dataset', dataset.id]);
                 this.tabService.openTab(tab);
             });
+
 
     }
 
