@@ -59,7 +59,7 @@ export class FetchServiceModel extends SessionService {
         return FetchEvents.Command;
     }
 
-    get eventInput(): string {
+    get eventInputs(): string {
         throw new Error(`Fetch Event Input doesn't exists`);
     }
 

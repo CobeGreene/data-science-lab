@@ -25,6 +25,9 @@ import { DatasetDataService, AppDatasetDataService } from './data-services/datas
 import { SessionDataService, AppSessionDataService } from './data-services/session-data-service';
 import { AppQueuePluginContext } from './contexts/plugin-context/app-queue-plugin.context';
 import { DatasetServiceModel } from './services/dataset.sm';
+import { TransformServiceModel } from './session-services/transform.sm/transform.sm';
+import { SessionPluginDataService, AppSessionPluginDataService } from './data-services/session-plugin-data-service';
+import { SessionPluginServiceModel } from './services/session-plugin.sm';
 
 export let win: BrowserWindow;
 
@@ -54,7 +57,9 @@ export class App {
         this.serviceContainer.addSingleton<PackageDataService>(AppPackageDataService, SERVICE_TYPES.PackageDataService);
         this.serviceContainer.addSingleton<DatasetDataService>(AppDatasetDataService, SERVICE_TYPES.DatasetDataService);
         this.serviceContainer.addSingleton<SessionDataService>(AppSessionDataService, SERVICE_TYPES.SessionDataService);
+        this.serviceContainer.addSingleton<SessionPluginDataService>(AppSessionPluginDataService, SERVICE_TYPES.SessionPluginDataService);
         
+
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
         this.serviceContainer.addTransient<FileService>(AppFileCoreService, SERVICE_TYPES.FileService);
@@ -68,6 +73,8 @@ export class App {
         this.serviceContainer.addTransient<UserSettingServiceModel>(UserSettingServiceModel, SERVICE_TYPES.UserSettingServiceModel);
         this.serviceContainer.addTransient<PackageServiceModel>(PackageServiceModel, SERVICE_TYPES.PackageServiceModel);
         this.serviceContainer.addTransient<FetchServiceModel>(FetchServiceModel, SERVICE_TYPES.FetchServiceModel);
+        this.serviceContainer.addTransient<TransformServiceModel>(TransformServiceModel, SERVICE_TYPES.TransformServiceModel);
+        this.serviceContainer.addTransient<SessionPluginServiceModel>(SessionPluginServiceModel, SERVICE_TYPES.SessionPluginServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -76,7 +83,9 @@ export class App {
             OpenLinkServiceModel.routes,
             UserSettingServiceModel.routes,
             PackageServiceModel.routes,
+            SessionPluginServiceModel.routes,
             FetchServiceModel.routes,
+            TransformServiceModel.routes,
         ]);
     }
 

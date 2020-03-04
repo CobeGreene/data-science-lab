@@ -17,8 +17,10 @@ export const enum SERVICE_TYPES {
     OpenLinkServiceModel,
     UserSettingServiceModel,
     DatasetServiceModel,
+    SessionPluginServiceModel,
     // Session Service Models
     FetchServiceModel,
+    TransformServiceModel,
     // Data Services
     ExperimentDataService,
     ThemeDataService,
@@ -26,6 +28,7 @@ export const enum SERVICE_TYPES {
     PackageDataService,
     SessionDataService,
     DatasetDataService,
+    SessionPluginDataService,
     // Core Services
     WebService,
     FileService,

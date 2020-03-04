@@ -17,4 +17,6 @@ export interface DatasetDataService {
     update(dataset: DatasetObject): void;
     split(id: number, split: number): number;
     join(ids: number[]): { updateId: number, deletedIds: number[] };
+    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData };
+    transform(id: number, pluginData: PluginData[] | PluginData, features: number[]): { updateId: number, createIds: number[] };
 }

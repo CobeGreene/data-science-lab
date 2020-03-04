@@ -1,11 +1,11 @@
 import { TabBuilder } from './tab.builder';
-import { ExperimentTabBuilder } from './experiment-tab.builder';
 import { Tab } from '../../models';
 import { BaseTabBuilder } from './base-tab.builder';
 import { Subject, Subscription } from 'rxjs';
 import { Session } from '../../../../shared/models';
+import { DatasetTabBuilder } from './dataset-tab.builder';
 
-export class FetchDatasetTabBuilder extends BaseTabBuilder {
+export class TransformDatasetTabBuilder extends BaseTabBuilder {
 
     public update: Subscription;
     public delete: Subscription;
@@ -14,30 +14,28 @@ export class FetchDatasetTabBuilder extends BaseTabBuilder {
     get tabService() {
         return this.base.tabService;
     }
-    
+
     get tabFactory() {
         return this.base.tabFactory;
     }
 
-    get experiment() {
-        return this.base;
-    }
-
-    constructor(id: number, state: string, public base: ExperimentTabBuilder) {
+    constructor(id: number, state: string, public base: DatasetTabBuilder) {
         super(base.tab);
         this.tab.data.sessionId = id;
-        this.buildRoute(`fetch`)
-        .buildRoute(`${id}`)
-        .buildRoute(state);
+        this.buildRoute(`transform`)
+            .buildRoute(`${id}`)
+            .buildRoute(state);
     }
-    
+
     build(): Tab {
-        this.tab.sub = this.base
-            .update.add(this.base.delete)
+        this.base.experiment.update.unsubscribe();
+        this.tab.sub = this.base.experiment.delete
+            .add(this.base.update)
+            .add(this.base.delete)
             .add(this.update)
             .add(this.delete)
             .add(this.finish);
-        return this.base.tab;
+        return this.tab;
     }
 
     buildUpdate(subject: Subject<Session>): TabBuilder {
@@ -64,7 +62,7 @@ export class FetchDatasetTabBuilder extends BaseTabBuilder {
     buildFinish(subject: Subject<number>): TabBuilder {
         this.finish = subject.subscribe((value) => {
             if (value === this.tab.data.sessionId) {
-                const tab = this.tabFactory.create(['experiment', this.tab.data.id ]);
+                const tab = this.tabFactory.create(['experiment', this.tab.data.id]);
                 this.tabService.replaceTab(this.tab.route, tab);
             }
         });
@@ -72,13 +70,11 @@ export class FetchDatasetTabBuilder extends BaseTabBuilder {
     }
 
     buildClose(close: (id: number) => void): TabBuilder {
-        this.base.tab.close = () => {
+        this.tab.close = () => {
             close(this.tab.data.sessionId);
         };
         return this;
     }
-
-
 
 }
 

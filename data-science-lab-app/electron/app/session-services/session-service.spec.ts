@@ -33,7 +33,7 @@ class MockSessionService extends SessionService {
     get eventCommand(): string {
         return 'Command';
     }
-    get eventInput(): string {
+    get eventInputs(): string {
         return 'Input';
     }
     get eventPrevious(): string {
@@ -480,7 +480,7 @@ describe('Electron Session Service', () => {
             done();
         });
 
-        await serviceModel.input(1, {});
+        await serviceModel.inputs(1, {});
     });
     
     it('input should call session update', async (done) => {
@@ -501,7 +501,7 @@ describe('Electron Session Service', () => {
             done();
         });
 
-        await serviceModel.input(1, {});
+        await serviceModel.inputs(1, {});
     });
 
     it('input should finish session for no options', async () => {
@@ -520,7 +520,7 @@ describe('Electron Session Service', () => {
             return new Promise((resolve, _) => resolve());
         });
 
-        await serviceModel.input(1, {});
+        await serviceModel.inputs(1, {});
 
         expect(sessionFinish).toHaveBeenCalledTimes(1);
         expect(context.deactivate).toHaveBeenCalledTimes(1);

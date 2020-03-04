@@ -51,7 +51,7 @@ export class AppPackageDataService extends Service implements PackageDataService
     all() {
         if (!this.retrieve) {
             this.retrieve = true;
-            this.getPackageFromApi();
+            this.getPackagesFromApi();
         }
         return this.packages;
     }
@@ -105,7 +105,7 @@ export class AppPackageDataService extends Service implements PackageDataService
         };
     }
 
-    async getPackageFromApi() {
+    async getPackagesFromApi() {
         const api = this.settings.get<ApiSettings>(this.api);
         try {
             const response = await this.web.send({

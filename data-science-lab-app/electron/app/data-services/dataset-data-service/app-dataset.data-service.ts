@@ -225,7 +225,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             previewExamples: original.previewExamples,
             features: this.sortFeatures(original.features.slice())
         };
-        
+
         for (const id of ids.slice(1)) {
             const next = this.get(id);
             const features = this.sortFeatures(next.features);
@@ -242,7 +242,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             }
             dataset.examples += next.examples;
         }
-        
+
         this.update(dataset);
         ids.slice(1).forEach((id) => this.delete(id));
         return { updateId: ids[0], deletedIds: ids.slice(1) };
@@ -272,6 +272,123 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             return 0;
         });
     }
+
+    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData } {
+        const data: { [id: string]: PluginData } = {};
+
+        const dataset = this.get(id);
+
+        for (const key in inputs) {
+            if (inputs[key] === undefined) {
+                continue;
+            }
+
+            const features: string[] = [];
+            const examples: any[][] = [];
+
+            for (let i = 0; i < dataset.examples; ++i) {
+                examples.push([]);
+                for (const _ of inputs[key]) {
+                    examples[i].push(undefined);
+                }
+            }
+
+            for (let j = 0; j < inputs[key].length; ++j) {
+                features.push(dataset.features[inputs[key][j]].name);
+                for (let i = 0; i < dataset.features[inputs[key][j]].examples.length; ++i) {
+                    examples[i][j] = dataset.features[inputs[key][j]].examples[i];
+                }
+            }
+
+            data[key] = new PluginData({
+                features,
+                examples
+            });
+        }
+
+        return data;
+    }
+
+    transform(id: number, pluginData: PluginData[] | PluginData, features: number[]): { updateId: number, createIds: number[] } {
+        const current = this.get(id);
+
+        if (!(pluginData instanceof Array)) {
+            pluginData = [pluginData];
+        }
+
+        const setting = this.user.find(Settings.DatasetDefaultPreview);
+        const defaultPreview = (setting === undefined) ? 10 : setting.value;
+        const datasets: DatasetObject[] = [].concat(...pluginData.map(value => this.converter.convert(value)));
+
+        const newDatasets: DatasetObject[] = [];
+        const indicesToRemove: number[] = [];
+
+        for (const dataset of datasets) {
+            const possible: DatasetObject = {
+                name: dataset.name,
+                experimentId: current.experimentId,
+                examples: dataset.examples,
+                features: [],
+                id: 0,
+                previewExamples: defaultPreview
+            };
+
+            for (const feature of dataset.features) {
+                let inCurrent = false;
+                let indexOfCurrent = -1;
+
+                for (let j = 0; j < features.length; ++j) {
+                    if (current.features[features[j]].name === feature.name) {
+                        indexOfCurrent = j;
+                        inCurrent = true;
+                        break;
+                    }
+                }
+                // in current
+                if (inCurrent) {
+                    // if the dataset example is the same size we keep it.
+                    if (dataset.examples === current.examples) {
+                        current.features.splice(features[indexOfCurrent], 1, feature);
+                    } else {
+                        // else we remove from current and create a new dataset
+                        indicesToRemove.push(features[indexOfCurrent]);
+                        features.splice(indexOfCurrent, 1);
+                        possible.features.push(feature);
+                    }
+                } else {
+                    // if the dataset is the same as current we add feature
+                    if (dataset.examples === current.examples) {
+                        current.features.push(feature);
+                    } else {
+                        // else we create new dataset.
+                        possible.features.push(feature);
+                    }
+                }
+            }
+
+            if (possible.features.length > 0) {
+                newDatasets.push(possible);
+            }
+        }
+
+        current.features = current.features.filter((x, i) => indicesToRemove.indexOf(i) === -1);
+
+
+        this.update(current);
+        const createIds: number[] = [];
+
+        newDatasets.forEach((value) => {
+            value.id = this.idGenerator.next();
+            createIds.push(value.id);
+        });
+
+        this.datasets.push(...newDatasets);
+
+        this.saveGenerator();
+        return { updateId: current.id, createIds };
+    }
+
+
 
 }
 

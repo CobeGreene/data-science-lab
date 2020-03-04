@@ -94,5 +94,12 @@
   },
   "rulesDirectory": [
     "codelyzer"
-  ]
+  ],
+  "linterOptions": {
+    "exclude": [
+      "dist",
+      "release",
+      "e2e"
+    ]
+  }
 }

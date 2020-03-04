@@ -32,6 +32,7 @@ export class PackageServiceModel extends ServiceModel {
         this.dataService.install(pluginPackage)
             .then(() => {
                 this.producer.send(PackageEvents.All, this.dataService.all());
+                this.producer.send(PackageEvents.Install, pluginPackage);
             }).catch((value) => {
                 this.producer.send(ErrorEvent, value);
             });
@@ -41,6 +42,7 @@ export class PackageServiceModel extends ServiceModel {
         this.dataService.uninstall(pluginPackage)
             .then(() => {
                 this.producer.send(PackageEvents.All, this.dataService.all());
+                this.producer.send(PackageEvents.Uninstall, pluginPackage);
             }).catch((value) => {
                 this.producer.send(ErrorEvent, value);
             });

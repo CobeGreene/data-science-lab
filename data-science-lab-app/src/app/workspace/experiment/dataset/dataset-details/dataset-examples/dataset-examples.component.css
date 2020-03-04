@@ -25,6 +25,7 @@
     border-collapse: collapse;
 }
 
+
 .table th {
     white-space: nowrap;
     background: var(--dataset-table-th);
@@ -33,10 +34,6 @@
 .table td {
     white-space: nowrap;
     text-align: center;
-}
-
-.index {
-    text-align: right;
 }
 
 .table tr:nth-child(even) {

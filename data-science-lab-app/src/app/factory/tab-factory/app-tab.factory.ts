@@ -8,8 +8,10 @@ import { RoutesHandler } from './routes-handler';
 import { FetchDatasetTabBuilder } from './fetch-dataset-tab.builder';
 import { TabBuilder } from './tab.builder';
 import { FetchSessionService } from '../../session-services/fetch-session-service';
+import { TransformSessionService } from '../../session-services/transform-session-service';
 import { DatasetService } from '../../services/dataset-service';
 import { DatasetTabBuilder } from './dataset-tab.builder';
+import { TransformDatasetTabBuilder } from './transform-dataset-tab.builder';
 
 @Injectable()
 export class AppTabFactory extends TabFactory {
@@ -18,7 +20,8 @@ export class AppTabFactory extends TabFactory {
         private tabService: TabService,
         private experimentService: ExperimentService,
         private datasetService: DatasetService,
-        private fetchSessionService: FetchSessionService
+        private fetchSessionService: FetchSessionService,
+        private transformSessionService: TransformSessionService
     ) {
         super();
     }
@@ -67,7 +70,6 @@ export class AppTabFactory extends TabFactory {
                         .buildFinish(this.fetchSessionService.sessionFinished)
                         .buildClose(this.fetchSessionService.attemptDelete);
                     handler.skip(3);
-
                 } else if (handler.isNumber(0)) {
                     const datasetId = +handler.get(0);
                     const datasetName = this.datasetService.get(datasetId).name;
@@ -75,6 +77,19 @@ export class AppTabFactory extends TabFactory {
                     builder.buildUpdate(this.datasetService.datasetUpdated)
                         .buildDelete(this.datasetService.datasetDeleted);
                     handler.skip(1);
+
+                    if (handler.has(0)) {
+                        if (handler.get(0) === 'transform') {
+                            builder = new TransformDatasetTabBuilder(+handler.get(1), handler.get(2), builder as DatasetTabBuilder);
+                            builder.buildPrefix('Transform for ')
+                                .buildUpdate(this.transformSessionService.sessionUpdated)
+                                .buildDelete(this.transformSessionService.sessionDeleted)
+                                .buildFinish(this.transformSessionService.sessionFinished)
+                                .buildClose(this.transformSessionService.attemptDelete);
+                        }
+
+                        handler.skip(3);
+                    }
                 }
             }
 

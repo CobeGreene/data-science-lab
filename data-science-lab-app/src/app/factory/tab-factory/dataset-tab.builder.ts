@@ -10,16 +10,28 @@ export class DatasetTabBuilder extends BaseTabBuilder {
     public update: Subscription;
     public delete: Subscription;
 
+    get tabService() {
+        return this.base.tabService;
+    }
+
+    get tabFactory() {
+        return this.base.tabFactory;
+    }
+
+    get experiment() {
+        return this.base;
+    }
+
     constructor(id: number, name: string, public base: ExperimentTabBuilder) {
         super(base.tab);
-        this.base.tab.data.datasetId = id;
-        this.base.tab.name = name;
+        this.tab.data.datasetId = id;
+        this.tab.name = name;
         this.buildRoute(`${id}`);
     }
 
     build(): Tab {
-        this.base.update.unsubscribe();
-        this.base.tab.sub = this.base.delete
+        this.experiment.update.unsubscribe();
+        this.tab.sub = this.base.delete
             .add(this.update)
             .add(this.delete);
         return this.base.tab;
@@ -27,8 +39,8 @@ export class DatasetTabBuilder extends BaseTabBuilder {
 
     buildUpdate(subject: Subject<Dataset>): TabBuilder {
         this.update = subject.subscribe((value) => {
-            if (value.id === this.base.tab.data.datasetId) {
-                this.base.tab.name = `${this.tab.data.prefix}${value.name}`;
+            if (value.id === this.tab.data.datasetId) {
+                this.tab.name = `${this.tab.data.prefix}${value.name}`;
             }
         });
         return this;
@@ -36,8 +48,8 @@ export class DatasetTabBuilder extends BaseTabBuilder {
 
     buildDelete(subject: Subject<number>): TabBuilder {
         this.delete = subject.subscribe((id) => {
-            if (id === this.base.tab.data.datasetId) {
-                this.base.tabService.removeTab(this.base.tab.route);
+            if (id === this.tab.data.datasetId) {
+                this.tabService.removeTab(this.base.tab.route);
             }
         });
         return this;
