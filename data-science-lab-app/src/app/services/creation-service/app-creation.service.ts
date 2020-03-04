@@ -6,6 +6,7 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ExperimentService } from '../experiment-service';
 import { FetchSessionService } from '../../session-services/fetch-session-service';
 import { DatasetService } from '../dataset-service';
+import { TransformSessionService } from '../../session-services/transform-session-service';
 
 @Injectable()
 export class AppCreationService extends CreationService implements OnDestroy {
@@ -15,7 +16,8 @@ export class AppCreationService extends CreationService implements OnDestroy {
         private tabFactory: TabFactory,
         private experimentService: ExperimentService,
         private datasetService: DatasetService,
-        private fetchSessionService: FetchSessionService) {
+        private fetchSessionService: FetchSessionService,
+        private transformSessionService: TransformSessionService) {
         super();
         this.subscribe();
     }
@@ -46,6 +48,19 @@ export class AppCreationService extends CreationService implements OnDestroy {
                     this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
                 }
             });
+
+        this.transformSessionService.sessionCreated
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((id) => {
+                const session = this.transformSessionService.get(id);
+                const experimentId = this.datasetService.get(session.keyId).experimentId;
+                const tab = this.tabFactory.create(['experiment', experimentId, 'dataset', session.keyId, 'transform', id, session.state ]);
+                if (session.sessionOptions.newTab) {
+                    this.tabService.openTab(tab);
+                } else {
+                    this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
+                }
+            });
         
         this.datasetService.datasetCreated
             .pipe(untilComponentDestroyed(this))
@@ -53,6 +68,7 @@ export class AppCreationService extends CreationService implements OnDestroy {
                 const tab = this.tabFactory.create(['experiment', dataset.experimentId, 'dataset', dataset.id]);
                 this.tabService.openTab(tab);
             });
+
     }
 
     ngOnDestroy() {

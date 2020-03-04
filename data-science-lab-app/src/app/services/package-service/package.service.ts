@@ -10,7 +10,7 @@ export abstract class PackageService extends Service {
     constructor(messenger: Messenger, zone: NgZone) {
         super(messenger, zone);
 
-        this.packagesChanged = new  Subject<Package[]>();
+        this.packagesChanged = new Subject<Package[]>();
     }
 
     destorySubjects() {

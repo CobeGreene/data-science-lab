@@ -41,9 +41,33 @@ describe('Electron Package Service Model', () => {
             .returnValue(new Promise((resolve) => resolve()));
         
         (producer.send as jasmine.Spy).and.callFake((event, value) => {
-            expect(event).toBe(PackageEvents.All);
-            expect(value.length).toBe(0);
-            done();
+            if (event === PackageEvents.All) {
+                expect(event).toBe(PackageEvents.All);
+                expect(value.length).toBe(0);
+                done();
+            }
+        });
+
+        serviceModel.install({
+            install: false,
+            name: 'Name',
+            owner: 'Owner',
+            plugins: [],
+            repositoryName: 'Repo',
+            username: 'User'
+        });
+    });
+    
+    it('install should call producer install', (done) => {
+        (dataService.all as jasmine.Spy).and.returnValue([]);
+        (dataService.install as jasmine.Spy).and
+            .returnValue(new Promise((resolve) => resolve()));
+        
+        (producer.send as jasmine.Spy).and.callFake((event, value) => {
+            if (event === PackageEvents.Install) {
+                expect(event).toBe(PackageEvents.Install);
+                done();
+            }
         });
 
         serviceModel.install({
@@ -82,9 +106,33 @@ describe('Electron Package Service Model', () => {
             .returnValue(new Promise((resolve) => resolve()));
         
         (producer.send as jasmine.Spy).and.callFake((event, value) => {
-            expect(event).toBe(PackageEvents.All);
-            expect(value.length).toBe(0);
-            done();
+            if (event === PackageEvents.All) {
+                expect(event).toBe(PackageEvents.All);
+                expect(value.length).toBe(0);
+                done();
+            }
+        });
+
+        serviceModel.uninstall({
+            install: false,
+            name: 'Name',
+            owner: 'Owner',
+            plugins: [],
+            repositoryName: 'Repo',
+            username: 'User'
+        });
+    });
+    
+    it('uninstall should call producer uninstall', (done) => {
+        (dataService.all as jasmine.Spy).and.returnValue([]);
+        (dataService.uninstall as jasmine.Spy).and
+            .returnValue(new Promise((resolve) => resolve()));
+        
+        (producer.send as jasmine.Spy).and.callFake((event, value) => {
+            if (event === PackageEvents.Uninstall) {
+                expect(event).toBe(PackageEvents.Uninstall);
+                done();
+            }
         });
 
         serviceModel.uninstall({

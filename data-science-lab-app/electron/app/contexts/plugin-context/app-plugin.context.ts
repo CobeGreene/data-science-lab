@@ -42,23 +42,23 @@ export class AppPluginContext implements PluginContext {
             const find = this.manager.list().forEach(element => {
                 return element.name === pluginPackage.repositoryName;
             });
-            if (find == null) {
-                try {
+            try {
+                if (find == null) {
                     await this.install(pluginPackage);
                     const main = this.manager.require(pluginPackage.repositoryName);
                     // tslint:disable-next-line: new-parens
                     resolve(new main[`${plugin.className}`] as T);
-                } catch (reason) {
-                    reject(reason);
+                } else {
+                    const main = this.manager.require(pluginPackage.repositoryName);
+                    // tslint:disable-next-line: new-parens
+                    resolve(new main[`${plugin.className}`] as T);
                 }
-            } else {
-                const main = this.manager.require(pluginPackage.repositoryName);
-                // tslint:disable-next-line: new-parens
-                resolve(new main[`${plugin.className}`] as T);
+            } catch (reason) {
+                reject(this.pluginError(pluginPackage, plugin));
             }
         });
     }
-    
+
     deactivate(pluginPackage: Package, _plugin: Plugin): Promise<void> {
         // return this.uninstall(pluginPackage);
         return new Promise((resolve) => resolve());
