@@ -1,1 +1,4 @@
-<p>dataset-inputs-transform works!</p>
+<app-plugin-input (emitExit)="onQuit()" (emitReturn)="onReturn()" (emitSubmit)="onSubmit($event)"
+    [isWaiting]="session.isWaiting" [inputDict]="session.inputDict" (emitValues)="onValues($event)"
+    [plugin]="session.plugin" [features]="features" [inputs]="session.plugin.inputs">
+</app-plugin-input>
