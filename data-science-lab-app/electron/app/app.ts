@@ -28,6 +28,7 @@ import { DatasetServiceModel } from './services/dataset.sm';
 import { TransformServiceModel } from './session-services/transform.sm/transform.sm';
 import { SessionPluginDataService, AppSessionPluginDataService } from './data-services/session-plugin-data-service';
 import { SessionPluginServiceModel } from './services/session-plugin.sm';
+import { CreateAlgorithmServiceModel } from './session-services/create-algorithm.sm';
 
 export let win: BrowserWindow;
 
@@ -74,7 +75,8 @@ export class App {
         this.serviceContainer.addTransient<PackageServiceModel>(PackageServiceModel, SERVICE_TYPES.PackageServiceModel);
         this.serviceContainer.addTransient<FetchServiceModel>(FetchServiceModel, SERVICE_TYPES.FetchServiceModel);
         this.serviceContainer.addTransient<TransformServiceModel>(TransformServiceModel, SERVICE_TYPES.TransformServiceModel);
-        this.serviceContainer.addTransient<SessionPluginServiceModel>(SessionPluginServiceModel, SERVICE_TYPES.SessionPluginServiceModel);
+        this.serviceContainer.addTransient<CreateAlgorithmServiceModel>(CreateAlgorithmServiceModel, SERVICE_TYPES.TransformServiceModel);
+        this.serviceContainer.addTransient<SessionPluginServiceModel>(SessionPluginServiceModel, SERVICE_TYPES.CreateAlgorithmServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -86,6 +88,7 @@ export class App {
             SessionPluginServiceModel.routes,
             FetchServiceModel.routes,
             TransformServiceModel.routes,
+            CreateAlgorithmServiceModel.routes
         ]);
     }
 
