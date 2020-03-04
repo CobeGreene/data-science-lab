@@ -8,7 +8,7 @@ export abstract class SessionService extends Service {
     public sessionCreated: Subject<number>;
     public sessionUpdated: Subject<Session>;
     public sessionDeleted: Subject<number>;
-    public sessionFinished: Subject<number>;
+    public sessionFinished: Subject<{ id: number, returnPath?: string }>;
 
     sessions: Session[];
 
@@ -18,7 +18,7 @@ export abstract class SessionService extends Service {
         this.sessionCreated = new Subject<number>();
         this.sessionUpdated = new Subject<Session>();
         this.sessionDeleted = new Subject<number>();
-        this.sessionFinished = new Subject<number>();
+        this.sessionFinished = new Subject<{ id: number, returnPath?: string }>();
 
         this.sessions = [];
         this.registerEvents();
@@ -77,12 +77,12 @@ export abstract class SessionService extends Service {
         });
     }
 
-    private finishEvent = (_event, id: number) => {
+    private finishEvent = (_event, id: number, returnPath?: string) => {
         this.zone.run(() => {
             const find = this.sessions.findIndex(value => value.id === id);
             if (find >= 0) {
                 this.sessions.splice(find, 1);
-                this.sessionFinished.next(id);
+                this.sessionFinished.next({ id, returnPath });
             }
         });
     }

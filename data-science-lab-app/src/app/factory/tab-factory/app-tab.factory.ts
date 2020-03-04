@@ -58,40 +58,47 @@ export class AppTabFactory extends TabFactory {
                 .buildUpdate(this.experimentService.experimentUpdated)
                 .buildDelete(this.experimentService.experimentDeleted);
 
-            if (handler.has(0) && handler.get(0) === 'dataset') {
-                handler.skip(1);
-                builder.buildRoute('dataset');
-
-                if (handler.get(0) === 'fetch') {
-                    builder = new FetchDatasetTabBuilder(+handler.get(1), handler.get(2), builder as ExperimentTabBuilder);
-                    builder.buildPrefix('Fetch for ')
-                        .buildUpdate(this.fetchSessionService.sessionUpdated)
-                        .buildDelete(this.fetchSessionService.sessionDeleted)
-                        .buildFinish(this.fetchSessionService.sessionFinished)
-                        .buildClose(this.fetchSessionService.attemptDelete);
-                    handler.skip(3);
-                } else if (handler.isNumber(0)) {
-                    const datasetId = +handler.get(0);
-                    const datasetName = this.datasetService.get(datasetId).name;
-                    builder = new DatasetTabBuilder(datasetId, datasetName, builder as ExperimentTabBuilder);
-                    builder.buildUpdate(this.datasetService.datasetUpdated)
-                        .buildDelete(this.datasetService.datasetDeleted);
+            if (handler.has(0)) {
+                if (handler.get(0) === 'dataset') {
                     handler.skip(1);
-
-                    if (handler.has(0)) {
-                        if (handler.get(0) === 'transform') {
-                            builder = new TransformDatasetTabBuilder(+handler.get(1), handler.get(2), builder as DatasetTabBuilder);
-                            builder.buildPrefix('Transform for ')
-                                .buildUpdate(this.transformSessionService.sessionUpdated)
-                                .buildDelete(this.transformSessionService.sessionDeleted)
-                                .buildFinish(this.transformSessionService.sessionFinished)
-                                .buildClose(this.transformSessionService.attemptDelete);
-                        }
-
+                    builder.buildRoute('dataset');
+    
+                    if (handler.get(0) === 'fetch') {
+                        builder = new FetchDatasetTabBuilder(+handler.get(1), handler.get(2), builder as ExperimentTabBuilder);
+                        builder.buildPrefix('Fetch for ')
+                            .buildUpdate(this.fetchSessionService.sessionUpdated)
+                            .buildDelete(this.fetchSessionService.sessionDeleted)
+                            .buildFinish(this.fetchSessionService.sessionFinished)
+                            .buildClose(this.fetchSessionService.attemptDelete);
                         handler.skip(3);
+                    } else if (handler.isNumber(0)) {
+                        const datasetId = +handler.get(0);
+                        const datasetName = this.datasetService.get(datasetId).name;
+                        builder = new DatasetTabBuilder(datasetId, datasetName, builder as ExperimentTabBuilder);
+                        builder.buildUpdate(this.datasetService.datasetUpdated)
+                            .buildDelete(this.datasetService.datasetDeleted);
+                        handler.skip(1);
+    
+                        if (handler.has(0)) {
+                            if (handler.get(0) === 'transform') {
+                                builder = new TransformDatasetTabBuilder(+handler.get(1), handler.get(2), builder as DatasetTabBuilder);
+                                builder.buildPrefix('Transform for ')
+                                    .buildUpdate(this.transformSessionService.sessionUpdated)
+                                    .buildDelete(this.transformSessionService.sessionDeleted)
+                                    .buildFinish(this.transformSessionService.sessionFinished)
+                                    .buildClose(this.transformSessionService.attemptDelete);
+                            }
+    
+                            handler.skip(3);
+                        }
                     }
+                } else if (handler.get(0) === 'algorithm') {
+                    handler.skip(1);
+                    builder.buildRoute('algorithm');
                 }
+
             }
+
 
 
             if (handler.done()) {

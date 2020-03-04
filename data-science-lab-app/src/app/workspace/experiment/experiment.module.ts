@@ -12,6 +12,11 @@ import { ExperimentDatasetCardComponent } from './experiment-datasets/experiment
 import {
     ExperimentCreateDatasetCardComponent
 } from './experiment-datasets/experiment-create-dataset-card/experiment-create-dataset-card.component';
+import { ExperimentAlgorithmsComponent } from './experiment-algorithms/experiment-algorithms.component';
+import { ExperimentAlgorithmCardComponent } from './experiment-algorithms/experiment-algorithm-card/experiment-algorithm-card.component';
+import {
+    ExperimentCreateAlgorithmCardComponent
+} from './experiment-algorithms/experiment-create-algorithm-card/experiment-create-algorithm-card.component';
 
 @NgModule({
     declarations: [
@@ -23,6 +28,9 @@ import {
         ExperimentDatasetsComponent,
         ExperimentDatasetCardComponent,
         ExperimentCreateDatasetCardComponent,
+        ExperimentAlgorithmsComponent,
+        ExperimentAlgorithmCardComponent,
+        ExperimentCreateAlgorithmCardComponent,
     ],
     imports: [
         CommonModule,
