@@ -93,8 +93,17 @@ export class AppTabFactory extends TabFactory {
                         }
                     }
                 } else if (handler.get(0) === 'algorithm') {
-                    handler.skip(1);
                     builder.buildRoute('algorithm');
+                    handler.skip(1);
+
+                    if (handler.has(0)) {
+                        if (handler.get(0) === 'create' && handler.get(1) === 'dataset') {
+                            builder.buildRoute('create')
+                                .buildRoute('dataset')
+                                .buildPrefix('Algorithm for ');
+                            handler.skip(2);
+                        } 
+                    }
                 }
 
             }

@@ -53,6 +53,8 @@ import { JoinDatasetCardComponent } from './dataset/join-dataset/join-dataset-ca
 import { UnjoinDatasetCardComponent } from './dataset/join-dataset/unjoin-dataset-card/unjoin-dataset-card.component';
 import { PreviewCardComponent } from './preview-card/preview-card.component';
 import { PreviewPipe } from './pipes/preview.pipe';
+import { SelectDatasetComponent } from './dataset/select-dataset/select-dataset.component';
+import { SelectDatasetCardComponent } from './dataset/select-dataset/select-dataset-card/select-dataset-card.component';
 
 @NgModule({
     declarations: [
@@ -99,6 +101,8 @@ import { PreviewPipe } from './pipes/preview.pipe';
         JoinDatasetCardComponent,
         UnjoinDatasetCardComponent,
         PreviewCardComponent,
+        SelectDatasetComponent,
+        SelectDatasetCardComponent,
     ],
     imports: [
         CommonModule,
@@ -124,6 +128,7 @@ import { PreviewPipe } from './pipes/preview.pipe';
         DeleteDatasetComponent,
         SplitDatasetComponent,
         JoinDatasetComponent,
+        SelectDatasetComponent,
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,

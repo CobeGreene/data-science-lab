@@ -4,3 +4,4 @@
         Select a dataset from the list to train an algorithm on.
     </p>
 </app-plugin-header>
+<app-select-dataset [datasets]="datasets" (emitDataset)="onSelect($event)"></app-select-dataset>

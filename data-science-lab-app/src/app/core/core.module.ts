@@ -49,6 +49,7 @@ import { FetchSessionService, AppFetchSessionService } from '../session-services
 import { AppTransformSessionService, TransformSessionService } from '../session-services/transform-session-service';
 import { DatasetService, AppDatasetService } from '../services/dataset-service';
 import { SessionPluginService, AppSessionPluginService } from '../services/session-plugin-service';
+import { AlgorithmSessionService, AppAlgorithmSessionService } from '../session-services/algorithm-session-service';
 
 @NgModule({
     declarations: [
@@ -98,6 +99,7 @@ import { SessionPluginService, AppSessionPluginService } from '../services/sessi
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: FetchSessionService, useClass: AppFetchSessionService },
         { provide: TransformSessionService, useClass: AppTransformSessionService },
+        { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
         { provide: NotificationService, useClass: AppNotificationService },
         { provide: ErrorService, useClass: AppErrorService },
         { provide: UserSettingService, useClass: AppUserSettingService },
