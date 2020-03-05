@@ -5,15 +5,19 @@
         <fa name="pencil"></fa>
     </span>
 </div>
-<div class="header">
-    <h4>At Iteration {{ algorithm.iteration }} - {{ algorithm.iterationTime }}ms Between Iteration 
-        <ng-container *ngIf="algorithm.isTraining">
-            - Training in Progress
-        </ng-container>
-        <ng-container *ngIf="algorithm.isFinish">
-            - Training has Finish
-        </ng-container>
-    </h4>
+<div class="header mb-1">
+    <div>
+        <h4 class="m-0 p-0">At Iteration {{ algorithm.iteration }}</h4>
+        <h4 class="m-0 p-0"> 
+            {{ algorithm.iterationTime }}ms Between Iteration 
+            <ng-container *ngIf="algorithm.isTraining">
+                - Training in Progress
+            </ng-container>
+            <ng-container *ngIf="algorithm.isFinish">
+                - Training has Finish
+            </ng-container>
+        </h4>
+    </div>
 </div>
 <div class="header" *ngIf="!algorithm.isFinish">
     <button class="btn btn-accent1" type="button" *ngIf="algorithm.isTraining" (click)="onStop($event)">
@@ -33,3 +37,5 @@
         </li>
     </ul>
 </app-dropdown>
+<app-edit-algorithm [id]="id" #editCmp></app-edit-algorithm>
+<app-delete-algorithm [id]="id" #deleteCmp></app-delete-algorithm>

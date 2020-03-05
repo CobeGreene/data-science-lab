@@ -55,6 +55,8 @@ import { PreviewCardComponent } from './preview-card/preview-card.component';
 import { PreviewPipe } from './pipes/preview.pipe';
 import { SelectDatasetComponent } from './dataset/select-dataset/select-dataset.component';
 import { SelectDatasetCardComponent } from './dataset/select-dataset/select-dataset-card/select-dataset-card.component';
+import { DeleteAlgorithmComponent } from './algorithm/delete-algorithm/delete-algorithm.component';
+import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorithm.component';
 
 @NgModule({
     declarations: [
@@ -103,6 +105,8 @@ import { SelectDatasetCardComponent } from './dataset/select-dataset/select-data
         PreviewCardComponent,
         SelectDatasetComponent,
         SelectDatasetCardComponent,
+        DeleteAlgorithmComponent,
+        EditAlgorithmComponent,
     ],
     imports: [
         CommonModule,
@@ -129,6 +133,8 @@ import { SelectDatasetCardComponent } from './dataset/select-dataset/select-data
         SplitDatasetComponent,
         JoinDatasetComponent,
         SelectDatasetComponent,
+        DeleteAlgorithmComponent,
+        EditAlgorithmComponent,
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,

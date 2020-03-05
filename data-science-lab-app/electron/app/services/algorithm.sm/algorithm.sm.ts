@@ -53,12 +53,13 @@ export class AlgorithmServiceModel extends ServiceModel {
     update(id: number, name: string, time: number) {
         const obj = this.algorithmService.get(id);
         obj.name = name;
-        if (obj.iterationTime === time && obj.isTraining) {
+        if (obj.iterationTime !== time && obj.isTraining) {
             this.algorithmService.stop(id);
             obj.iterationTime = time;
             this.algorithmService.update(obj);
             this.algorithmService.start(id);
         } else {
+            obj.iterationTime = time;
             this.algorithmService.update(obj);
         }
         this.producer.send(AlgorithmEvents.Update, this.algorithmService.view(id));
