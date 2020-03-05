@@ -1,10 +1,11 @@
 import { SERVICE_TYPES, ServiceContainer } from '../../service-container';
 import { ServiceModelRoutes, Producer } from '../../pipeline';
-import { AlgorithmCreateEvents } from '../../../../shared/events';
+import { AlgorithmCreateEvents, AlgorithmEvents } from '../../../../shared/events';
 import { Session } from '../../../../shared/models';
 import { AlgorithmPlugin } from 'data-science-lab-core';
 import { SessionService } from '../session-service';
-
+import { AlgorithmDataService } from '../../data-services/algorithm-data-service';
+import { DatasetDataService } from '../../data-services/dataset-data-service';
 
 export class CreateAlgorithmServiceModel extends SessionService {
     static routes: ServiceModelRoutes = {
@@ -20,10 +21,14 @@ export class CreateAlgorithmServiceModel extends SessionService {
         ]
     };
 
+    private algorithmService: AlgorithmDataService;
+    private datasetService: DatasetDataService;
 
     constructor(serviceContainer: ServiceContainer, producer: Producer) {
         super(serviceContainer, producer);
 
+        this.algorithmService = this.serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService);
+        this.datasetService = this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService);
     }
 
     get eventCreate(): string {
@@ -67,7 +72,11 @@ export class CreateAlgorithmServiceModel extends SessionService {
     }   
 
     async sessionFinish(session: Session, plugin: AlgorithmPlugin) {
-     
+        const dataset = this.datasetService.get(session.keyId);
+        plugin.getInputs().submit(this.datasetService.extract(dataset.id, session.inputDict));   
+        plugin.initialize();
+        const id = this.algorithmService.create(dataset.experimentId, session.plugin, plugin);
+        this.producer.send(AlgorithmEvents.Create, this.algorithmService.view(id));
     }
 }
 

@@ -17,7 +17,6 @@ import { PluginContext } from '../../contexts/plugin-context';
 import { Settings } from '../../../../shared/settings';
 import { AlgorithmRecorderService } from '../../core-services/recorder-service';
 import { Producer } from '../../pipeline';
-import { doesNotThrow } from 'assert';
 
 describe('Electron App Algorithm Data Service', () => {
     let algorithmService: AppAlgorithmDataService;
