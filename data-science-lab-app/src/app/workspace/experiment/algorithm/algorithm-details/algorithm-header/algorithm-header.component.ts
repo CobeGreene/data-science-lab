@@ -49,4 +49,12 @@ export class AlgorithmHeaderComponent implements OnInit, OnDestroy {
 
   }
 
+  onStart(_: Event) {
+    this.algorithmService.start(this.id);
+  }
+
+  onStop(_: Event) {
+    this.algorithmService.stop(this.id);
+  }
+
 }

@@ -31,6 +31,7 @@ import { SessionPluginDataService, AppSessionPluginDataService } from './data-se
 import { SessionPluginServiceModel } from './services/session-plugin.sm';
 import { CreateAlgorithmServiceModel } from './session-services/create-algorithm.sm';
 import { AlgorithmServiceModel } from './services/algorithm.sm';
+import { AlgorithmRecorderService, AppRecorderService } from './core-services/recorder-service';
 
 export let win: BrowserWindow;
 
@@ -66,6 +67,7 @@ export class App {
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
         this.serviceContainer.addTransient<FileService>(AppFileCoreService, SERVICE_TYPES.FileService);
+        this.serviceContainer.addTransient<AlgorithmRecorderService>(AppRecorderService, SERVICE_TYPES.RecorderService);
 
         // Service Models
         this.serviceContainer.addTransient<Producer>(Producer, SERVICE_TYPES.Producer);
@@ -82,6 +84,7 @@ export class App {
             .addTransient<CreateAlgorithmServiceModel>(CreateAlgorithmServiceModel, SERVICE_TYPES.CreateAlgorithmServiceModel);
         this.serviceContainer.addTransient<SessionPluginServiceModel>(SessionPluginServiceModel, SERVICE_TYPES.SessionPluginServiceModel);
 
+        
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
             ExperimentServiceModel.routes,
