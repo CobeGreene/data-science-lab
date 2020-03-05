@@ -14,7 +14,7 @@ export interface AlgorithmDataService {
     delete(id: number): Promise<number>;
     deleteByExperiment(experimentId: number): Promise<number[]>;
     view(id: number): Algorithm;
-    load(experimentId: number): void;
+    load(experimentId: number): Promise<void>;
     save(experimentId: number): void;
     update(algorithm: AlgorithmObject): void;
     start(id: number): void;

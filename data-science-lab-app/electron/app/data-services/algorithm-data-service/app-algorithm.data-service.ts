@@ -1,4 +1,4 @@
-import { AlgorithmObject } from '../../models';
+import { AlgorithmObject, AlgorithmData } from '../../models';
 import { Algorithm, Package, Plugin } from '../../../../shared/models';
 import { ServiceContainer, SERVICE_TYPES, Service } from '../../service-container';
 import { AlgorithmDataService } from './algorithm.data-service';
@@ -148,12 +148,51 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
         return ids;
     }
 
-    load(experimentId: number) {
-        throw new Error('Not Implemented');
+    async load(experimentId: number) {
+        const algorithmPath = this.settings.get<string>(this.path);
+        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
+        if (fs.existsSync(experimentPath)) {
+            const buffer = fs.readFileSync(experimentPath);
+            const data: AlgorithmData[] = JSON.parse(`${zlib.unzipSync(buffer)}`);
+            for (const datum of data) {
+                const algorithmPlugin = await this.context.activate<AlgorithmPlugin>(this.dataService.find(datum.plugin), datum.plugin);
+                const algorithm = algorithmPlugin.import(datum.algorithm);
+                const obj: AlgorithmObject = {
+                    id: datum.id,
+                    name: datum.name,
+                    experimentId: datum.experimentId,
+                    isTraining: false,
+                    isFinish: datum.isFinish,
+                    iteration: datum.iteration,
+                    plugin: datum.plugin,
+                    algorithm,
+                    iterationTime: datum.iterationTime,
+                };
+                this.algorithms.push(obj);
+            }
+        }
     }
 
     save(experimentId: number) {
-        throw new Error('Not Implemented');
+        const algorithms = this.all(experimentId);
+        if (algorithms.length > 0) {
+            const algorithmPath = this.settings.get<string>(this.path);
+            const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
+            const data: AlgorithmData[] = algorithms.map((value): AlgorithmData => {
+                return {
+                    id: value.id,
+                    name: value.name,
+                    experimentId: value.experimentId,
+                    isFinish: value.isFinish,
+                    iteration: value.iteration,
+                    iterationTime: value.iterationTime,
+                    plugin: value.plugin,
+                    algorithm: value.algorithm.export()
+                };
+            });
+            const buffer = zlib.gzipSync(JSON.stringify(data));
+            fs.writeFileSync(experimentPath, buffer);
+        }
     }
 
     update(algorithm: AlgorithmObject) {

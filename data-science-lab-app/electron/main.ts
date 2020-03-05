@@ -25,6 +25,12 @@ if (!fs.existsSync(datasetsPath)) {
 }
 settings.set('datasets-path', datasetsPath);
 
+const algorithmsPath = path.join(__dirname, '../algorithms');
+if (!fs.existsSync(algorithmsPath)) {
+    fs.mkdirSync(algorithmsPath);
+}
+settings.set('algorithms-path', algorithmsPath)
+
 
 const preload = path.join(__dirname, 'preload.js');
 const angularApp = url.format({

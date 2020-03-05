@@ -7,7 +7,6 @@ export interface AlgorithmData {
     experimentId: number;
     plugin: Plugin;
     algorithm: string;
-    isTraining: boolean;
     isFinish: boolean;
     iteration: number;
     iterationTime: number;

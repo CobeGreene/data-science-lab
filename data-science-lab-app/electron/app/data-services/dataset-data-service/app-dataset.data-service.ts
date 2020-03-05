@@ -104,7 +104,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         if (datasets.length > 0) {
             const datasetPath = this.context.get<string>(this.path);
             const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
-            const buffer = zlib.gzipSync(JSON.stringify(this.all(experimentId)));
+            const buffer = zlib.gzipSync(JSON.stringify(datasets));
             fs.writeFileSync(experimentPath, buffer);
         }
     }
