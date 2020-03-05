@@ -155,6 +155,7 @@ import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorith
         AngularResizedEventModule,
         HttpClientModule,
         NgxMdModule,
+        PopupComponent,
     ]
 })
 export class SharedModule {

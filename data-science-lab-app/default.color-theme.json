@@ -94,5 +94,9 @@
     "dataset-table-tr-even": "#353535",
     "dataset-table-scroll-background": "#303030",
     "dataset-table-scroll-foreground": "#3655B5",
-    "algorithm-select-dataset-background": "#353535"
+    "algorithm-select-dataset-background": "#353535",
+    "trackers-table-th": "#323232",
+    "trackers-table-tr-even": "#353535",
+    "trackers-table-scroll-background": "#303030",
+    "trackers-table-scroll-foreground": "#3655B5"
 }

@@ -51,6 +51,8 @@ import { DatasetService, AppDatasetService } from '../services/dataset-service';
 import { AlgorithmService, AppAlgorithmService } from '../services/algorithm-service';
 import { SessionPluginService, AppSessionPluginService } from '../services/session-plugin-service';
 import { AlgorithmSessionService, AppAlgorithmSessionService } from '../session-services/algorithm-session-service';
+import { AppTrackerService } from '../services/tracker-service/app-tracker.service';
+import { TrackerService } from '../services/tracker-service/tracker.service';
 
 @NgModule({
     declarations: [
@@ -96,6 +98,7 @@ import { AlgorithmSessionService, AppAlgorithmSessionService } from '../session-
         { provide: ExperimentService, useClass: AppExperimentService },
         { provide: DatasetService, useClass: AppDatasetService },
         { provide: AlgorithmService, useClass: AppAlgorithmService },
+        { provide: TrackerService, useClass: AppTrackerService },
         { provide: PackageService, useClass: AppPackageService },
         { provide: SessionPluginService, useClass: AppSessionPluginService },
         { provide: SidebarService, useClass: AppSidebarService },
