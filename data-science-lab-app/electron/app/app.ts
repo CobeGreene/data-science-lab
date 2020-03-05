@@ -30,6 +30,7 @@ import { TransformServiceModel } from './session-services/transform.sm/transform
 import { SessionPluginDataService, AppSessionPluginDataService } from './data-services/session-plugin-data-service';
 import { SessionPluginServiceModel } from './services/session-plugin.sm';
 import { CreateAlgorithmServiceModel } from './session-services/create-algorithm.sm';
+import { AlgorithmServiceModel } from './services/algorithm.sm';
 
 export let win: BrowserWindow;
 
@@ -71,6 +72,7 @@ export class App {
         this.serviceContainer.addTransient<ThemeServiceModel>(ThemeServiceModel, SERVICE_TYPES.ThemeServiceModel);
         this.serviceContainer.addTransient<ExperimentServiceModel>(ExperimentServiceModel, SERVICE_TYPES.ExperimentServiceModel);
         this.serviceContainer.addTransient<DatasetServiceModel>(DatasetServiceModel, SERVICE_TYPES.DatasetServiceModel);
+        this.serviceContainer.addTransient<AlgorithmServiceModel>(AlgorithmServiceModel, SERVICE_TYPES.AlgorithmServiceModel);
         this.serviceContainer.addTransient<OpenLinkServiceModel>(OpenLinkServiceModel, SERVICE_TYPES.OpenLinkServiceModel);
         this.serviceContainer.addTransient<UserSettingServiceModel>(UserSettingServiceModel, SERVICE_TYPES.UserSettingServiceModel);
         this.serviceContainer.addTransient<PackageServiceModel>(PackageServiceModel, SERVICE_TYPES.PackageServiceModel);
@@ -84,6 +86,7 @@ export class App {
             ThemeServiceModel.routes,
             ExperimentServiceModel.routes,
             DatasetServiceModel.routes,
+            AlgorithmServiceModel.routes,
             OpenLinkServiceModel.routes,
             UserSettingServiceModel.routes,
             PackageServiceModel.routes,

@@ -19,6 +19,7 @@ export const enum SERVICE_TYPES {
     DatasetServiceModel,
     SessionPluginServiceModel,
     CreateAlgorithmServiceModel,
+    AlgorithmServiceModel,
     // Session Service Models
     FetchServiceModel,
     TransformServiceModel,
