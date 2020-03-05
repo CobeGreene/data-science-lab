@@ -33,4 +33,5 @@ export const enum SERVICE_TYPES {
     // Core Services
     WebService,
     FileService,
+    RecorderService,
 }

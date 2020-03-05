@@ -7,6 +7,8 @@ export { FetchEvents } from './fetch.events';
 export { DatasetEvents } from './dataset.events';
 export { TransformEvents } from './transform.events';
 export { AlgorithmCreateEvents } from './algorithm-create.events';
+export { AlgorithmEvents } from './algorithm.events';
+
 
 export const OpenLinkEvent = 'open-link-event';
 export const ErrorEvent = 'error-event';

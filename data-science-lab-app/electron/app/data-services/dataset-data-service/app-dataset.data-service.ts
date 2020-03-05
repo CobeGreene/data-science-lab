@@ -56,10 +56,11 @@ export class AppDatasetDataService extends Service implements DatasetDataService
 
     create(experimentId: number, data: PluginData): number[] {
         const datasets = this.converter.convert(data);
+        
+        const setting = this.user.find(Settings.DatasetDefaultPreview);
+        const defaultPreview = (setting === undefined) ? 10 : setting.value;
 
         datasets.forEach((value) => {
-            const setting = this.user.find(Settings.DatasetDefaultPreview);
-            const defaultPreview = (setting === undefined) ? 10 : setting.value;
             value.id = this.idGenerator.next();
             value.experimentId = experimentId;
             value.previewExamples = (defaultPreview < value.examples) ? defaultPreview : value.examples;
