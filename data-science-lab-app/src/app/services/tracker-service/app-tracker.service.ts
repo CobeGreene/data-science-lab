@@ -40,6 +40,7 @@ export class AppTrackerService extends TrackerService {
 
     private createEvent = (_event, tracker: AlgorithmTracker) => {
         this.zone.run(() => {
+            console.log('Tracker create');
             const find = this.trackers.find(value => value.algorithmId === tracker.algorithmId);
             if (find === undefined) {
                 this.trackers.push(tracker);
@@ -62,6 +63,7 @@ export class AppTrackerService extends TrackerService {
 
     private updateEvent = (_event, tracker: AlgorithmTracker) => {
         this.zone.run(() => {
+            console.log('Tracker update');
             const find = this.trackers.findIndex(value => value.algorithmId === tracker.algorithmId);
             if (find >= 0) {
                 this.trackers.splice(find, 1, tracker);

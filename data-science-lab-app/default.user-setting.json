@@ -26,5 +26,14 @@
         "default": 200,
         "min": 5,
         "max": 10000
+    },
+    {
+        "key": "tracker.recent.iteration",
+        "title": "Number of Iterations ",
+        "description": "Sets the number of past iterations to show for an algorithms",
+        "value": 5,
+        "default": 5,
+        "min": 1,
+        "max": 100
     }
 ]

@@ -32,6 +32,8 @@ import { SessionPluginServiceModel } from './services/session-plugin.sm';
 import { CreateAlgorithmServiceModel } from './session-services/create-algorithm.sm';
 import { AlgorithmServiceModel } from './services/algorithm.sm';
 import { AlgorithmRecorderService, AppRecorderService } from './core-services/recorder-service';
+import { TrackerDataService, AppTrackerDataService } from './data-services/tracker-data-service';
+import { TrackerServiceModel } from './services/tracker.sm';
 
 export let win: BrowserWindow;
 
@@ -63,6 +65,7 @@ export class App {
         this.serviceContainer.addSingleton<SessionDataService>(AppSessionDataService, SERVICE_TYPES.SessionDataService);
         this.serviceContainer.addSingleton<SessionPluginDataService>(AppSessionPluginDataService, SERVICE_TYPES.SessionPluginDataService);
         this.serviceContainer.addSingleton<AlgorithmDataService>(AppAlgorithmDataService, SERVICE_TYPES.AlgorithmDataService);
+        this.serviceContainer.addSingleton<TrackerDataService>(AppTrackerDataService, SERVICE_TYPES.TrackerDataService);
 
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
@@ -83,13 +86,14 @@ export class App {
         this.serviceContainer
             .addTransient<CreateAlgorithmServiceModel>(CreateAlgorithmServiceModel, SERVICE_TYPES.CreateAlgorithmServiceModel);
         this.serviceContainer.addTransient<SessionPluginServiceModel>(SessionPluginServiceModel, SERVICE_TYPES.SessionPluginServiceModel);
-
+        this.serviceContainer.addTransient<TrackerServiceModel>(TrackerServiceModel, SERVICE_TYPES.TrackerServiceModel);
         
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
             ExperimentServiceModel.routes,
             DatasetServiceModel.routes,
             AlgorithmServiceModel.routes,
+            TrackerServiceModel.routes,
             OpenLinkServiceModel.routes,
             UserSettingServiceModel.routes,
             PackageServiceModel.routes,
