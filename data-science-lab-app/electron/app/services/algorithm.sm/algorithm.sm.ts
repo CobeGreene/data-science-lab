@@ -15,6 +15,8 @@ export class AlgorithmServiceModel extends ServiceModel {
             { path: AlgorithmEvents.Start, method: 'start' },
             { path: AlgorithmEvents.Stop, method: 'stop' },
             { path: AlgorithmEvents.Update, method: 'update' },
+            { path: ExperimentEvents.Load, method: 'load' },
+            { path: ExperimentEvents.Save, method: 'save', isListener: true },
         ]
     };
 
@@ -63,5 +65,14 @@ export class AlgorithmServiceModel extends ServiceModel {
             this.algorithmService.update(obj);
         }
         this.producer.send(AlgorithmEvents.Update, this.algorithmService.view(id));
+    }
+
+    async load(experimentId: number) {
+        await this.algorithmService.load(experimentId);
+        this.producer.send(AlgorithmEvents.All, this.algorithmService.allView());
+    }
+
+    save(experimentId: number) {
+        this.algorithmService.save(experimentId);
     }
 }
