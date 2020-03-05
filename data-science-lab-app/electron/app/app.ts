@@ -22,6 +22,7 @@ import { PluginDataConverter } from './converters/plugin-data-converter/plugin-d
 import { AppPluginDataConverter } from './converters/plugin-data-converter/app-plugin-data.converter';
 import { AppFileCoreService } from './core-services/file-core-service/app-file.service';
 import { DatasetDataService, AppDatasetDataService } from './data-services/dataset-data-service';
+import { AlgorithmDataService, AppAlgorithmDataService } from './data-services/algorithm-data-service';
 import { SessionDataService, AppSessionDataService } from './data-services/session-data-service';
 import { AppQueuePluginContext } from './contexts/plugin-context/app-queue-plugin.context';
 import { DatasetServiceModel } from './services/dataset.sm';
@@ -59,13 +60,13 @@ export class App {
         this.serviceContainer.addSingleton<DatasetDataService>(AppDatasetDataService, SERVICE_TYPES.DatasetDataService);
         this.serviceContainer.addSingleton<SessionDataService>(AppSessionDataService, SERVICE_TYPES.SessionDataService);
         this.serviceContainer.addSingleton<SessionPluginDataService>(AppSessionPluginDataService, SERVICE_TYPES.SessionPluginDataService);
-
+        this.serviceContainer.addSingleton<AlgorithmDataService>(AppAlgorithmDataService, SERVICE_TYPES.AlgorithmDataService);
 
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
         this.serviceContainer.addTransient<FileService>(AppFileCoreService, SERVICE_TYPES.FileService);
 
-        // Service Models 
+        // Service Models
         this.serviceContainer.addTransient<Producer>(Producer, SERVICE_TYPES.Producer);
         this.serviceContainer.addTransient<ThemeServiceModel>(ThemeServiceModel, SERVICE_TYPES.ThemeServiceModel);
         this.serviceContainer.addTransient<ExperimentServiceModel>(ExperimentServiceModel, SERVICE_TYPES.ExperimentServiceModel);
@@ -109,6 +110,7 @@ export class App {
         this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext).configure();
         this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService).configure();
         this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService).configure();
+        this.serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService).configure();
     }
 
     private createWindow() {
@@ -124,7 +126,7 @@ export class App {
             }
         });
 
-        // win.setMenu(null); // to allow some of the shortcuts. 
+        // win.setMenu(null); // to allow some of the shortcuts.
 
 
         this.configure();

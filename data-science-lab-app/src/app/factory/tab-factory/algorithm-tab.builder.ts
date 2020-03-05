@@ -3,10 +3,10 @@ import { ExperimentTabBuilder } from './experiment-tab.builder';
 import { Tab } from '../../models';
 import { BaseTabBuilder } from './base-tab.builder';
 import { Subject, Subscription } from 'rxjs';
-import { Dataset } from '../../../../shared/models';
+import { Algorithm } from '../../../../shared/models';
 
-export class DatasetTabBuilder extends BaseTabBuilder {
 
+export class AlgorithmTabBuilder extends BaseTabBuilder {
     public update: Subscription;
     public delete: Subscription;
 
@@ -24,7 +24,8 @@ export class DatasetTabBuilder extends BaseTabBuilder {
 
     constructor(id: number, name: string, public base: ExperimentTabBuilder) {
         super(base.tab);
-        this.tab.data.datasetId = id;
+
+        this.tab.data.algorithmId = id;
         this.tab.name = name;
         this.buildRoute(`${id}`);
     }
@@ -37,9 +38,9 @@ export class DatasetTabBuilder extends BaseTabBuilder {
         return this.base.tab;
     }
 
-    buildUpdate(subject: Subject<Dataset>): TabBuilder {
+    buildUpdate(subject: Subject<Algorithm>): TabBuilder {
         this.update = subject.subscribe((value) => {
-            if (value.id === this.tab.data.datasetId) {
+            if (value.id === this.tab.data.algorithmId) {
                 this.tab.name = `${this.tab.data.prefix}${value.name}`;
             }
         });
@@ -48,7 +49,7 @@ export class DatasetTabBuilder extends BaseTabBuilder {
 
     buildDelete(subject: Subject<number>): TabBuilder {
         this.delete = subject.subscribe((id) => {
-            if (id === this.tab.data.datasetId) {
+            if (id === this.tab.data.algorithmId) {
                 this.tabService.removeTab(this.tab.route);
             }
         });
@@ -56,11 +57,11 @@ export class DatasetTabBuilder extends BaseTabBuilder {
     }
 
     buildFinish(subject: Subject<any>): TabBuilder {
-        throw new Error(`Dataset route does not have a finish`);
+        throw new Error(`Algorithm route does not have a finish`);
     }
 
     buildClose(_: (id: number) => void): TabBuilder {
-        throw new Error(`Dataset route does not have a close`);
+        throw new Error(`Algorithm route does not have a close`);
     }
 
 }

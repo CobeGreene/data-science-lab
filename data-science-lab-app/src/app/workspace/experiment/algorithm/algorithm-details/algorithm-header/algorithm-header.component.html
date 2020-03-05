@@ -1,0 +1,35 @@
+<div class="header">
+    <fa name="code" class="pr-2 icon" size="2x"></fa>
+    <h2 class="m-0 p-0">{{ algorithm.name }}</h2>
+    <span class="pl-1 edit pointer" (click)="onOptions($event)" #optionsCmp>
+        <fa name="pencil"></fa>
+    </span>
+</div>
+<div class="header">
+    <h4>At Iteration {{ algorithm.iteration }} - {{ algorithm.iterationTime }}ms Between Iteration 
+        <ng-container *ngIf="algorithm.isTraining">
+            - Training in Progress
+        </ng-container>
+        <ng-container *ngIf="algorithm.isFinish">
+            - Training has Finish
+        </ng-container>
+    </h4>
+</div>
+<div class="header" *ngIf="!algorithm.isFinish">
+    <button class="btn btn-accent1" type="button" *ngIf="algorithm.isTraining" (click)="onStop($event)">
+        Stop Training
+    </button>
+    <button class="btn btn-accent3" type="button" *ngIf="!algorithm.isTraining" (click)="onStart($event)">
+        Start Training
+    </button>
+</div>
+<app-dropdown #optionsDropdown>
+    <ul class="list-unstyled dropdown-list">
+        <li (click)="onEdit($event)">
+            Edit Algorithm
+        </li>
+        <li (click)="onDelete($event)">
+            Delete Algorithm
+        </li>
+    </ul>
+</app-dropdown>

@@ -5,6 +5,7 @@ import { AlgorithmDatasetCreateComponent } from './algorithm-dataset-create/algo
 import { AlgorithmSelectCreateComponent } from './algorithm-select-create/algorithm-select-create.component';
 import { AlgorithmInputsCreateComponent } from './algorithm-inputs-create/algorithm-inputs-create.component';
 import { AlgorithmSetupCreateComponent } from './algorithm-setup-create/algorithm-setup-create.component';
+import { AlgorithmDetailsComponent } from './algorithm-details/algorithm-details.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
             { path: 'create/:sessionId/select', component: AlgorithmSelectCreateComponent },
             { path: 'create/:sessionId/input', component: AlgorithmInputsCreateComponent },
             { path: 'create/:sessionId/setup', component: AlgorithmSetupCreateComponent },
+            { path: ':algorithmId', component: AlgorithmDetailsComponent }
         ]
     }
 ];

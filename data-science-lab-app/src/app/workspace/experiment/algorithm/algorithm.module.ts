@@ -7,6 +7,10 @@ import { AlgorithmDatasetCreateComponent } from './algorithm-dataset-create/algo
 import { AlgorithmSelectCreateComponent } from './algorithm-select-create/algorithm-select-create.component';
 import { AlgorithmInputsCreateComponent } from './algorithm-inputs-create/algorithm-inputs-create.component';
 import { AlgorithmSetupCreateComponent } from './algorithm-setup-create/algorithm-setup-create.component';
+import { AlgorithmDetailsComponent } from './algorithm-details/algorithm-details.component';
+import { AlgorithmHeaderComponent } from './algorithm-details/algorithm-header/algorithm-header.component';
+import { AlgorithmTrackersComponent } from './algorithm-details/algorithm-trackers/algorithm-trackers.component';
+import { AlgorithmTestReportsComponent } from './algorithm-details/algorithm-test-reports/algorithm-test-reports.component';
 
 
 
@@ -17,6 +21,10 @@ import { AlgorithmSetupCreateComponent } from './algorithm-setup-create/algorith
         AlgorithmSelectCreateComponent,
         AlgorithmInputsCreateComponent,
         AlgorithmSetupCreateComponent,
+        AlgorithmDetailsComponent,
+        AlgorithmHeaderComponent,
+        AlgorithmTrackersComponent,
+        AlgorithmTestReportsComponent,
     ],
     imports: [
         CommonModule,

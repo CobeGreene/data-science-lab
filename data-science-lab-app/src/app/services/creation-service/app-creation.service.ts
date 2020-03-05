@@ -6,6 +6,7 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ExperimentService } from '../experiment-service';
 import { FetchSessionService } from '../../session-services/fetch-session-service';
 import { DatasetService } from '../dataset-service';
+import { AlgorithmService } from '../algorithm-service';
 import { TransformSessionService } from '../../session-services/transform-session-service';
 import { AlgorithmSessionService } from '../../session-services/algorithm-session-service';
 
@@ -17,6 +18,7 @@ export class AppCreationService extends CreationService implements OnDestroy {
         private tabFactory: TabFactory,
         private experimentService: ExperimentService,
         private datasetService: DatasetService,
+        private algorithmService: AlgorithmService,
         private fetchSessionService: FetchSessionService,
         private transformSessionService: TransformSessionService,
         private algorithmSessionService: AlgorithmSessionService) {
@@ -84,6 +86,13 @@ export class AppCreationService extends CreationService implements OnDestroy {
                 this.tabService.openTab(tab);
             });
 
+        this.algorithmService.algorithmCreated
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((algorithm) => {
+                const tab = this.tabFactory.create(['experiment', algorithm.experimentId, 'algorithm', algorithm.id]);
+                this.tabService.openTab(tab);
+            });
+
 
     }
 
@@ -92,4 +101,3 @@ export class AppCreationService extends CreationService implements OnDestroy {
     }
 
 }
-

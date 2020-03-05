@@ -48,6 +48,7 @@ import { AppOpenLinkService, OpenLinkService } from '../services/open-link-servi
 import { FetchSessionService, AppFetchSessionService } from '../session-services/fetch-session-service';
 import { AppTransformSessionService, TransformSessionService } from '../session-services/transform-session-service';
 import { DatasetService, AppDatasetService } from '../services/dataset-service';
+import { AlgorithmService, AppAlgorithmService } from '../services/algorithm-service';
 import { SessionPluginService, AppSessionPluginService } from '../services/session-plugin-service';
 import { AlgorithmSessionService, AppAlgorithmSessionService } from '../session-services/algorithm-session-service';
 
@@ -94,6 +95,7 @@ import { AlgorithmSessionService, AppAlgorithmSessionService } from '../session-
         { provide: OverlayService, useClass: AppOverlayService },
         { provide: ExperimentService, useClass: AppExperimentService },
         { provide: DatasetService, useClass: AppDatasetService },
+        { provide: AlgorithmService, useClass: AppAlgorithmService },
         { provide: PackageService, useClass: AppPackageService },
         { provide: SessionPluginService, useClass: AppSessionPluginService },
         { provide: SidebarService, useClass: AppSidebarService },

@@ -11,7 +11,9 @@ import { FetchSessionService } from '../../session-services/fetch-session-servic
 import { TransformSessionService } from '../../session-services/transform-session-service';
 import { AlgorithmSessionService } from '../../session-services/algorithm-session-service';
 import { DatasetService } from '../../services/dataset-service';
+import { AlgorithmService } from '../../services/algorithm-service';
 import { DatasetTabBuilder } from './dataset-tab.builder';
+import { AlgorithmTabBuilder } from './algorithm-tab.builder';
 import { TransformDatasetTabBuilder } from './transform-dataset-tab.builder';
 import { CreateAlgorithmTabBuilder } from './create-algorithm-tab.builder';
 
@@ -22,6 +24,7 @@ export class AppTabFactory extends TabFactory {
         private tabService: TabService,
         private experimentService: ExperimentService,
         private datasetService: DatasetService,
+        private algorithmService: AlgorithmService,
         private fetchSessionService: FetchSessionService,
         private transformSessionService: TransformSessionService,
         private algorithmSessionService: AlgorithmSessionService
@@ -105,7 +108,7 @@ export class AppTabFactory extends TabFactory {
                                 .buildRoute('dataset')
                                 .buildPrefix('Algorithm for ');
                             handler.skip(2);
-                        } else {
+                        } else if (handler.get(0) === 'create') {
                             builder = new CreateAlgorithmTabBuilder(+handler.get(1), handler.get(2), builder as ExperimentTabBuilder);
                             builder.buildPrefix('Algorithm for ')
                                 .buildUpdate(this.algorithmSessionService.sessionUpdated)
@@ -113,6 +116,13 @@ export class AppTabFactory extends TabFactory {
                                 .buildFinish(this.algorithmSessionService.sessionFinished)
                                 .buildClose(this.algorithmSessionService.attemptDelete);
                             handler.skip(3);
+                        } else if (handler.isNumber(0)) {
+                            const algorithmId = +handler.get(0);
+                            const algorithmName = this.algorithmService.get(algorithmId).name;
+                            builder = new AlgorithmTabBuilder(algorithmId, algorithmName, builder as ExperimentTabBuilder);
+                            builder.buildUpdate(this.algorithmService.algorithmUpdated)
+                                .buildDelete(this.algorithmService.algorithmDeleted);
+                            handler.skip(1);
                         }
                     }
                 }
@@ -128,4 +138,3 @@ export class AppTabFactory extends TabFactory {
         throw handler.invalidRoute();
     }
 }
-
