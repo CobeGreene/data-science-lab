@@ -12,3 +12,4 @@ export { Algorithm } from './algorithm';
 export { AlgorithmTracker } from './algorithm-tracker';
 export { TrackerVariable } from './tracker-variable';
 export { Iteration } from './iteration';
+export { TestReport } from './test-report';

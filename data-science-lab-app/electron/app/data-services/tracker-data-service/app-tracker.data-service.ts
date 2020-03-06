@@ -7,6 +7,9 @@ import { SettingsContext } from '../../contexts/settings-context';
 import { UserSettingDataService } from '../user-setting-data-service';
 import { Settings } from '../../../../shared/settings';
 import { SystemError, ErrorTypes } from '../../../../shared/errors';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as zlib from 'zlib';
 
 export class AppTrackerDataService extends Service implements TrackerDataService {
     private readonly key = 'trackers-path';
@@ -92,11 +95,23 @@ export class AppTrackerDataService extends Service implements TrackerDataService
     }
 
     load(algorithmId: number): void {
-        throw new Error('Method not implemented.');
+        const trackerPath = this.context.get<string>(this.key);
+        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}`);
+        if (fs.existsSync(algorithmPath)) {
+            const buffer = fs.readFileSync(algorithmPath);
+            const tracker = JSON.parse(`${zlib.unzipSync(buffer)}`);
+            this.trackers.push(tracker);
+        }
     }
 
     save(algorithmId: number): void {
-        throw new Error('Method not implemented.');
+        if (this.has(algorithmId)) {
+            const tracker = this.get(algorithmId);
+            const trackerPath = this.context.get<string>(this.key);
+            const algorithmPath = path.join(trackerPath, `tracker${algorithmId}`);
+            const buffer = zlib.gzipSync(JSON.stringify(tracker));
+            fs.writeFileSync(algorithmPath, buffer);
+        }
     }
 
     create(algorithmId: number): void {

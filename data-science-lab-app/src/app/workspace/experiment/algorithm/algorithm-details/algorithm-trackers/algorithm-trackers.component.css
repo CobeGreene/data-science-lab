@@ -35,6 +35,7 @@
 .table td {
     white-space: nowrap;
     text-align: center;
+    width: 150px !important;
 }
 
 .table tr:nth-child(even) {

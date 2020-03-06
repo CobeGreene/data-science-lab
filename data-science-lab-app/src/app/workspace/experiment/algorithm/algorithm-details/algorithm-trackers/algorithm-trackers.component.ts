@@ -24,6 +24,9 @@ export class AlgorithmTrackersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.id = this.routerService.data().algorithmId;
+    if (this.trackerService.has(this.id)) {
+      this.tracker = this.trackerService.get(this.id);
+    }    
 
     this.routerService.changed()
       .pipe(untilComponentDestroyed(this))

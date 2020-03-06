@@ -53,6 +53,7 @@ import { SessionPluginService, AppSessionPluginService } from '../services/sessi
 import { AlgorithmSessionService, AppAlgorithmSessionService } from '../session-services/algorithm-session-service';
 import { AppTrackerService } from '../services/tracker-service/app-tracker.service';
 import { TrackerService } from '../services/tracker-service/tracker.service';
+import { TestReportService, AppTestReportService } from '../services/test-report-service';
 
 @NgModule({
     declarations: [
@@ -100,6 +101,7 @@ import { TrackerService } from '../services/tracker-service/tracker.service';
         { provide: AlgorithmService, useClass: AppAlgorithmService },
         { provide: TrackerService, useClass: AppTrackerService },
         { provide: PackageService, useClass: AppPackageService },
+        { provide: TestReportService, useClass: AppTestReportService },
         { provide: SessionPluginService, useClass: AppSessionPluginService },
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: FetchSessionService, useClass: AppFetchSessionService },

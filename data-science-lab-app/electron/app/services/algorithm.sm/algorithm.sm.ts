@@ -1,8 +1,9 @@
 import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
 import { ServiceModelRoutes, Producer, } from '../../pipeline';
-import { ExperimentEvents, AlgorithmEvents } from '../../../../shared/events';
+import { ExperimentEvents, AlgorithmEvents, TrackerEvents } from '../../../../shared/events';
 import { ServiceModel } from '../service-model';
 import { AlgorithmDataService } from '../../data-services/algorithm-data-service';
+import { TrackerDataService } from '../../data-services/tracker-data-service/tracker.data-service';
 
 
 export class AlgorithmServiceModel extends ServiceModel {
@@ -21,11 +22,13 @@ export class AlgorithmServiceModel extends ServiceModel {
     };
 
     private algorithmService: AlgorithmDataService;
+    private trackerService: TrackerDataService;
 
     constructor(serviceContainer: ServiceContainer, producer: Producer) {
         super(serviceContainer, producer);
 
         this.algorithmService = serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService);
+        this.trackerService = serviceContainer.resolve<TrackerDataService>(SERVICE_TYPES.TrackerDataService);
     }
 
     all() {
@@ -69,10 +72,19 @@ export class AlgorithmServiceModel extends ServiceModel {
 
     async load(experimentId: number) {
         await this.algorithmService.load(experimentId);
+        const algorithms = this.algorithmService.all(experimentId);
+        algorithms.forEach((value) => {
+            this.trackerService.load(value.id);
+        });
         this.producer.send(AlgorithmEvents.All, this.algorithmService.allView());
+        this.producer.send(TrackerEvents.All, this.trackerService.allView());
     }
 
     save(experimentId: number) {
+        const algorithms = this.algorithmService.all(experimentId);
+        algorithms.forEach((value) => {
+            this.trackerService.save(value.id);
+        });
         this.algorithmService.save(experimentId);
     }
 }

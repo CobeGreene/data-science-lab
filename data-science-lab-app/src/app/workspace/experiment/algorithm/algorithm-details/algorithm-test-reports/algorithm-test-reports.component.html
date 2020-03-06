@@ -1,1 +1,14 @@
-<p>algorithm-test-reports works!</p>
+<div class="options p-3">
+    <h2 class="mb-0 pb-0">Test Reports</h2>
+    <p class="mt-0 pt-0">
+        Use datasets to test the algorithms 
+    </p>
+    <h4 class="text-accent6 pointer">
+        <u><i>Create Test</i></u>
+    </h4>
+</div>
+<div class="reports">
+    <ng-container *ngFor="let report of reports">
+        <app-algorithm-test-report-card [id]="report.id"></app-algorithm-test-report-card>
+    </ng-container>
+</div>

@@ -29,7 +29,13 @@ const algorithmsPath = path.join(__dirname, '../algorithms');
 if (!fs.existsSync(algorithmsPath)) {
     fs.mkdirSync(algorithmsPath);
 }
-settings.set('algorithms-path', algorithmsPath)
+settings.set('algorithms-path', algorithmsPath);
+
+const trackersPath = path.join(__dirname, '../trackers');
+if (!fs.existsSync(trackersPath)) {
+    fs.mkdirSync(trackersPath);
+}
+settings.set('trackers-path', trackersPath);
 
 
 const preload = path.join(__dirname, 'preload.js');
