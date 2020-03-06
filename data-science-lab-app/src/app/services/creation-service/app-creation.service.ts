@@ -9,6 +9,7 @@ import { DatasetService } from '../dataset-service';
 import { AlgorithmService } from '../algorithm-service';
 import { TransformSessionService } from '../../session-services/transform-session-service';
 import { AlgorithmSessionService } from '../../session-services/algorithm-session-service';
+import { TestReportSessionService } from '../../session-services/test-report-session-service';
 
 @Injectable()
 export class AppCreationService extends CreationService implements OnDestroy {
@@ -21,7 +22,8 @@ export class AppCreationService extends CreationService implements OnDestroy {
         private algorithmService: AlgorithmService,
         private fetchSessionService: FetchSessionService,
         private transformSessionService: TransformSessionService,
-        private algorithmSessionService: AlgorithmSessionService) {
+        private algorithmSessionService: AlgorithmSessionService,
+        private testReportSessionService: TestReportSessionService) {
         super();
         this.subscribe();
     }
@@ -59,6 +61,19 @@ export class AppCreationService extends CreationService implements OnDestroy {
                 const session = this.transformSessionService.get(id);
                 const experimentId = this.datasetService.get(session.keyId).experimentId;
                 const tab = this.tabFactory.create(['experiment', experimentId, 'dataset', session.keyId, 'transform', id, session.state]);
+                if (session.sessionOptions.newTab) {
+                    this.tabService.openTab(tab);
+                } else {
+                    this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
+                }
+            });
+
+        this.testReportSessionService.sessionCreated
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((id) => {
+                const session = this.testReportSessionService.get(id);
+                const experimentId = this.algorithmService.get(session.algorithmId).experimentId;
+                const tab = this.tabFactory.create(['experiment', experimentId, 'algorithm', session.algorithmId, 'test', id, session.state]);
                 if (session.sessionOptions.newTab) {
                     this.tabService.openTab(tab);
                 } else {

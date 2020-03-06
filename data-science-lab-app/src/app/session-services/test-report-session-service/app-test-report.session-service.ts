@@ -1,10 +1,10 @@
 import { TestReportSession, SessionOptions } from '../../../../shared/models';
 import { Messenger } from '../../services/messenger';
-import { NgZone } from '@angular/core';
+import { NgZone, Injectable } from '@angular/core';
 import { TestReportSessionService } from './test-report.session-service';
 import { TestReportCreateEvents } from '../../../../shared/events';
 
-
+@Injectable()
 export class AppTestReportSessionService extends TestReportSessionService {
 
     sessions: TestReportSession[];

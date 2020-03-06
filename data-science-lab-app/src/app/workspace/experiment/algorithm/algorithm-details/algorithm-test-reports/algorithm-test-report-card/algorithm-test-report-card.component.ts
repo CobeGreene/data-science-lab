@@ -24,13 +24,11 @@ export class AlgorithmTestReportCardComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.id = this.routerService.data().algorithmId;
     this.report = this.testReportService.get(this.id);
 
     this.routerService.changed()
       .pipe(untilComponentDestroyed(this))
       .subscribe(() => {
-        this.id = this.routerService.data().algorithmId;
         this.report = this.testReportService.get(this.id);
       });
 

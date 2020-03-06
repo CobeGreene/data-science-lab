@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterService } from '../../../../services/router-service';
-import { TabService } from '../../../../services/tab-service';
-import { TabFactory } from '../../../../factory/tab-factory';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DatasetService } from '../../../../services/dataset-service';
 import { TestReportSessionService } from '../../../../session-services/test-report-session-service';
@@ -26,7 +24,7 @@ export class AlgorithmSelectTestComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routerService.changed()
       .pipe(untilComponentDestroyed(this))
-      .subscribe((value) => {
+      .subscribe((_) => {
         this.id = this.routerService.data().id;
         this.sessionId = this.routerService.data().sessionId;
         this.datasets = this.datasetService.all(this.id);
@@ -57,6 +55,8 @@ export class AlgorithmSelectTestComponent implements OnInit, OnDestroy {
   }
 
   onSelect(event: Dataset) {
+    this.testReportSessionService.select(this.id, event.id,
+      event.features.map((_, index) => index));
   }
 
 }

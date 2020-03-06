@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TestReport } from '../../../../../../../shared/models';
 import { TestReportService } from '../../../../../services/test-report-service';
 import { RouterService } from '../../../../../services/router-service';
+import { TestReportSessionService } from '../../../../../session-services/test-report-session-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
@@ -16,7 +17,8 @@ export class AlgorithmTestReportsComponent implements OnInit, OnDestroy {
 
   constructor(
     private routerService: RouterService,
-    private testReportService: TestReportService
+    private testReportService: TestReportService,
+    private testReportSessionService: TestReportSessionService,
   ) { }
 
   ngOnInit() {
@@ -40,6 +42,13 @@ export class AlgorithmTestReportsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
+  }
+
+  onCreate() {
+    this.testReportSessionService.create(this.id, {
+      currentRoute: this.routerService.current(),
+      newTab: true
+    }, this.routerService.current());
   }
 
 }

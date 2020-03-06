@@ -16,6 +16,8 @@ import { DatasetTabBuilder } from './dataset-tab.builder';
 import { AlgorithmTabBuilder } from './algorithm-tab.builder';
 import { TransformDatasetTabBuilder } from './transform-dataset-tab.builder';
 import { CreateAlgorithmTabBuilder } from './create-algorithm-tab.builder';
+import { CreateTestReportTabBuilder } from './create-test-report-tab.builder';
+import { TestReportSessionService } from '../../session-services/test-report-session-service';
 
 @Injectable()
 export class AppTabFactory extends TabFactory {
@@ -27,7 +29,8 @@ export class AppTabFactory extends TabFactory {
         private algorithmService: AlgorithmService,
         private fetchSessionService: FetchSessionService,
         private transformSessionService: TransformSessionService,
-        private algorithmSessionService: AlgorithmSessionService
+        private algorithmSessionService: AlgorithmSessionService,
+        private testReportSessionService: TestReportSessionService
     ) {
         super();
     }
@@ -123,6 +126,18 @@ export class AppTabFactory extends TabFactory {
                             builder.buildUpdate(this.algorithmService.algorithmUpdated)
                                 .buildDelete(this.algorithmService.algorithmDeleted);
                             handler.skip(1);
+
+                            if (handler.has(0)) {
+                                if (handler.get(0) === 'test') {
+                                    builder = new CreateTestReportTabBuilder(+handler.get(1), handler.get(2), builder as AlgorithmTabBuilder);
+                                    builder.buildPrefix(`Test for `)
+                                        .buildUpdate(this.testReportSessionService.sessionUpdated)
+                                        .buildDelete(this.testReportSessionService.sessionDeleted)
+                                        .buildFinish(this.testReportSessionService.sessionFinished)
+                                        .buildClose(this.testReportSessionService.attemptDelete);
+                                    handler.skip(3);
+                                }
+                            }
                         }
                     }
                 }

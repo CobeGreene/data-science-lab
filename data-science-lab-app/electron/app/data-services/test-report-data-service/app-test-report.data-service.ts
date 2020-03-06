@@ -64,7 +64,7 @@ export class AppTestReportDataService extends Service implements TestReportDataS
 
     load(algorithmId: number) {
         const dirPath = this.settings.get<string>(this.path);
-        const reportPath = path.join(dirPath, `reports${algorithmId}`);
+        const reportPath = path.join(dirPath, `reports${algorithmId}.gzip`);
         if (fs.existsSync(reportPath)) {
             const buffer = fs.readFileSync(reportPath);
             const reports = JSON.parse(`${zlib.unzipSync(buffer)}`);
@@ -76,8 +76,8 @@ export class AppTestReportDataService extends Service implements TestReportDataS
         const reports = this.reports.filter(value => value.algorithmId === algorithmId);
         if (reports.length > 0) {
             const dirPath = this.settings.get<string>(this.path);
-            const reportPath = path.join(dirPath, `reports${algorithmId}`);
-            const buffer = zlib.gzipSync(JSON.stringify(JSON.stringify(reports)));
+            const reportPath = path.join(dirPath, `reports${algorithmId}.gzip`);
+            const buffer = zlib.gzipSync(JSON.stringify(reports));
             fs.writeFileSync(reportPath, buffer);
         }
     }

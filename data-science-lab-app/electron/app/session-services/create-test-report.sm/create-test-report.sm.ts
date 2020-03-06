@@ -45,6 +45,7 @@ export class CreateTestReportServiceModel extends ServiceModel {
             algorithmId,
             isWaiting: false,
             sessionOptions: options,
+            plugin: obj.plugin,
             state: SessionState.Select,
             returnPath,
             inputs: input.concat(output),

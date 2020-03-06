@@ -9,7 +9,7 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
   selector: 'app-algorithm-inputs-create',
   templateUrl: './algorithm-inputs-create.component.html'
 })
-export class AlgorithmInputsCreateComponent implements OnInit {
+export class AlgorithmInputsCreateComponent implements OnInit, OnDestroy {
 
   id: number;
   dataset: Dataset;
