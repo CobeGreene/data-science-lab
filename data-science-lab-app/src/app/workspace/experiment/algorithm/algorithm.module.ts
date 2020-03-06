@@ -11,8 +11,11 @@ import { AlgorithmDetailsComponent } from './algorithm-details/algorithm-details
 import { AlgorithmHeaderComponent } from './algorithm-details/algorithm-header/algorithm-header.component';
 import { AlgorithmTrackersComponent } from './algorithm-details/algorithm-trackers/algorithm-trackers.component';
 import { AlgorithmTestReportsComponent } from './algorithm-details/algorithm-test-reports/algorithm-test-reports.component';
-import { AlgorithmTestReportCardComponent } from './algorithm-details/algorithm-test-reports/algorithm-test-report-card/algorithm-test-report-card.component';
-
+import {
+    AlgorithmTestReportCardComponent
+} from './algorithm-details/algorithm-test-reports/algorithm-test-report-card/algorithm-test-report-card.component';
+import { AlgorithmSelectTestComponent } from './algorithm-select-test/algorithm-select-test.component';
+import { AlgorithmInputsTestComponent } from './algorithm-inputs-test/algorithm-inputs-test.component';
 
 
 @NgModule({
@@ -27,6 +30,8 @@ import { AlgorithmTestReportCardComponent } from './algorithm-details/algorithm-
         AlgorithmTrackersComponent,
         AlgorithmTestReportsComponent,
         AlgorithmTestReportCardComponent,
+        AlgorithmSelectTestComponent,
+        AlgorithmInputsTestComponent,
     ],
     imports: [
         CommonModule,
