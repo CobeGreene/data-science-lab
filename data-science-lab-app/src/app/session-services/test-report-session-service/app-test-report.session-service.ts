@@ -1,4 +1,4 @@
-import { TestReportSession } from '../../../../shared/models';
+import { TestReportSession, SessionOptions } from '../../../../shared/models';
 import { Messenger } from '../../services/messenger';
 import { NgZone } from '@angular/core';
 import { TestReportSessionService } from './test-report.session-service';
@@ -72,8 +72,8 @@ export class AppTestReportSessionService extends TestReportSessionService {
         });
     }
 
-    create(algorithmId: number): void {
-        this.messenger.publish(TestReportCreateEvents.Create, algorithmId);
+    create(algorithmId: number, options: SessionOptions, returnPath?: string): void {
+        this.messenger.publish(TestReportCreateEvents.Create, algorithmId, options, returnPath);
     }
 
     get(id: number): TestReportSession {

@@ -37,6 +37,12 @@ if (!fs.existsSync(trackersPath)) {
 }
 settings.set('trackers-path', trackersPath);
 
+const testReportsPath = path.join(__dirname, '../test-reports');
+if (!fs.existsSync(testReportsPath)) {
+    fs.mkdirSync(testReportsPath);
+}
+settings.set('test-reports-path', testReportsPath);
+
 
 const preload = path.join(__dirname, 'preload.js');
 const angularApp = url.format({

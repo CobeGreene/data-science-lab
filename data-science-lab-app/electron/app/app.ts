@@ -37,6 +37,7 @@ import { TrackerServiceModel } from './services/tracker.sm';
 import { TestReportDataService, AppTestReportDataService } from './data-services/test-report-data-service';
 import { TestReportSessionDataService, AppTestReportSessionDataService } from './data-services/test-report-session-data-service';
 import { TestReportServiceModel } from './services/test-report.sm/test-report.sm';
+import { CreateTestReportServiceModel } from './session-services/create-test-report.sm/create-test-report.sm';
 
 export let win: BrowserWindow;
 
@@ -94,6 +95,8 @@ export class App {
         this.serviceContainer.addTransient<SessionPluginServiceModel>(SessionPluginServiceModel, SERVICE_TYPES.SessionPluginServiceModel);
         this.serviceContainer.addTransient<TrackerServiceModel>(TrackerServiceModel, SERVICE_TYPES.TrackerServiceModel);
         this.serviceContainer.addTransient<TestReportServiceModel>(TestReportServiceModel, SERVICE_TYPES.TestReportServiceModel);
+        this.serviceContainer
+        .addTransient<CreateTestReportServiceModel>(CreateTestReportServiceModel, SERVICE_TYPES.CreateTestReportServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -108,7 +111,8 @@ export class App {
             FetchServiceModel.routes,
             TransformServiceModel.routes,
             TestReportServiceModel.routes,
-            CreateAlgorithmServiceModel.routes
+            CreateAlgorithmServiceModel.routes,
+            CreateTestReportServiceModel.routes,
         ]);
     }
 

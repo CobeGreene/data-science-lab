@@ -1,4 +1,5 @@
 import { SessionOptions } from './session-options';
+import { PluginDataInput } from 'data-science-lab-core';
 
 export interface TestReportSession {
     id: number;
@@ -9,4 +10,6 @@ export interface TestReportSession {
     inputDict?: { [id: string]: number[] };
     returnPath?: string;
     selectedFeatures?: number[];
+    inputs: PluginDataInput[];
+    isWaiting: boolean;
 }

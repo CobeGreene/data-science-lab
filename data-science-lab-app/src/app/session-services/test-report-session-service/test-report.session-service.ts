@@ -1,4 +1,4 @@
-import { TestReportSession } from '../../../../shared/models';
+import { TestReportSession, SessionOptions } from '../../../../shared/models';
 import { Subject } from 'rxjs';
 import { Messenger } from '../../services/messenger';
 import { NgZone } from '@angular/core';
@@ -26,7 +26,7 @@ export abstract class TestReportSessionService extends Service {
         this.sessionFinished.complete();
     }
 
-    abstract create(algorithmId: number): void;
+    abstract create(algorithmId: number, options: SessionOptions, returnPath?: string): void;
     abstract get(id: number): TestReportSession;
     abstract delete(id: number): void;
     abstract attemptDelete(id: number): void;
