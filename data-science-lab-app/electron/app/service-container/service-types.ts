@@ -21,6 +21,7 @@ export const enum SERVICE_TYPES {
     CreateAlgorithmServiceModel,
     AlgorithmServiceModel,
     TrackerServiceModel,
+    TestReportServiceModel,
     // Session Service Models
     FetchServiceModel,
     TransformServiceModel,
@@ -34,6 +35,8 @@ export const enum SERVICE_TYPES {
     SessionPluginDataService,
     AlgorithmDataService,
     TrackerDataService,
+    TestReportDataService,
+    TestReportSessionDataService,
     // Core Services
     WebService,
     FileService,

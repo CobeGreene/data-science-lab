@@ -34,6 +34,9 @@ import { AlgorithmServiceModel } from './services/algorithm.sm';
 import { AlgorithmRecorderService, AppRecorderService } from './core-services/recorder-service';
 import { TrackerDataService, AppTrackerDataService } from './data-services/tracker-data-service';
 import { TrackerServiceModel } from './services/tracker.sm';
+import { TestReportDataService, AppTestReportDataService } from './data-services/test-report-data-service';
+import { TestReportSessionDataService, AppTestReportSessionDataService } from './data-services/test-report-session-data-service';
+import { TestReportServiceModel } from './services/test-report.sm/test-report.sm';
 
 export let win: BrowserWindow;
 
@@ -66,6 +69,9 @@ export class App {
         this.serviceContainer.addSingleton<SessionPluginDataService>(AppSessionPluginDataService, SERVICE_TYPES.SessionPluginDataService);
         this.serviceContainer.addSingleton<AlgorithmDataService>(AppAlgorithmDataService, SERVICE_TYPES.AlgorithmDataService);
         this.serviceContainer.addSingleton<TrackerDataService>(AppTrackerDataService, SERVICE_TYPES.TrackerDataService);
+        this.serviceContainer.addSingleton<TestReportDataService>(AppTestReportDataService, SERVICE_TYPES.TestReportDataService);
+        this.serviceContainer.addSingleton<TestReportSessionDataService>(
+            AppTestReportSessionDataService, SERVICE_TYPES.TestReportSessionDataService);
 
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
@@ -87,7 +93,8 @@ export class App {
             .addTransient<CreateAlgorithmServiceModel>(CreateAlgorithmServiceModel, SERVICE_TYPES.CreateAlgorithmServiceModel);
         this.serviceContainer.addTransient<SessionPluginServiceModel>(SessionPluginServiceModel, SERVICE_TYPES.SessionPluginServiceModel);
         this.serviceContainer.addTransient<TrackerServiceModel>(TrackerServiceModel, SERVICE_TYPES.TrackerServiceModel);
-        
+        this.serviceContainer.addTransient<TestReportServiceModel>(TestReportServiceModel, SERVICE_TYPES.TestReportServiceModel);
+
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
             ExperimentServiceModel.routes,
@@ -100,6 +107,7 @@ export class App {
             SessionPluginServiceModel.routes,
             FetchServiceModel.routes,
             TransformServiceModel.routes,
+            TestReportServiceModel.routes,
             CreateAlgorithmServiceModel.routes
         ]);
     }
@@ -121,6 +129,7 @@ export class App {
         this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService).configure();
         this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService).configure();
         this.serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService).configure();
+        this.serviceContainer.resolve<TestReportDataService>(SERVICE_TYPES.TestReportDataService).configure();
     }
 
     private createWindow() {
