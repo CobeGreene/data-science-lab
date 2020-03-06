@@ -56,10 +56,11 @@ export class AppDatasetDataService extends Service implements DatasetDataService
 
     create(experimentId: number, data: PluginData): number[] {
         const datasets = this.converter.convert(data);
+        
+        const setting = this.user.find(Settings.DatasetDefaultPreview);
+        const defaultPreview = (setting === undefined) ? 10 : setting.value;
 
         datasets.forEach((value) => {
-            const setting = this.user.find(Settings.DatasetDefaultPreview);
-            const defaultPreview = (setting === undefined) ? 10 : setting.value;
             value.id = this.idGenerator.next();
             value.experimentId = experimentId;
             value.previewExamples = (defaultPreview < value.examples) ? defaultPreview : value.examples;
@@ -103,7 +104,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         if (datasets.length > 0) {
             const datasetPath = this.context.get<string>(this.path);
             const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
-            const buffer = zlib.gzipSync(JSON.stringify(this.all(experimentId)));
+            const buffer = zlib.gzipSync(JSON.stringify(datasets));
             fs.writeFileSync(experimentPath, buffer);
         }
     }

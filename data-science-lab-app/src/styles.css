@@ -92,6 +92,9 @@
     --experiment-dataset-card-background: #323232;
     --experiment-dataset-card-border: #404040;
     --experiment-dataset-card-shadow: rgba(0, 0, 0, .1);
+    --experiment-algorithm-card-background: #323232;
+    --experiment-algorithm-card-border: #404040;
+    --experiment-algorithm-card-shadow: rgba(0, 0, 0, .1);
     --join-dataset-card: #353535;
     --join-dataset-background-selected: #2191862f;
     --join-dataset-border-selected: #219186;
@@ -99,7 +102,11 @@
     --dataset-table-tr-even: #353535;
     --dataset-table-scroll-background: #303030;
     --dataset-table-scroll-foreground: #3655B5;
-
+    --algorithm-select-dataset-background: #353535;
+    --trackers-table-th: #323232;
+    --trackers-table-tr-even: #353535;
+    --trackers-table-scroll-background: #303030;
+    --trackers-table-scroll-foreground: #3655B5;
 
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;

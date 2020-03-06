@@ -1,0 +1,4 @@
+<app-plugin-input (emitExit)="onQuit()" (emitReturn)="onReturn()" (emitSubmit)="onSubmit($event)"
+    [isWaiting]="session.isWaiting" [inputDict]="session.inputDict" (emitValues)="onValues($event)"
+    [plugin]="session.plugin" [features]="features" [inputs]="session.inputs">
+</app-plugin-input>

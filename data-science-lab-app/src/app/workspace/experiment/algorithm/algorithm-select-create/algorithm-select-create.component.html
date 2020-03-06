@@ -1,0 +1,8 @@
+<app-plugin-header class="w-100 mb-3" (emitReturn)="onReturn()" (emitExit)="onExit()">
+    <h2>Select a Algorithm Plugin</h2>
+    <p>
+        Select a plugin from the list to use its algorithm to train on these features, or go to plugins to install a package.
+    </p>
+</app-plugin-header>
+<app-plugin-features [features]="dataset.features" [selected]="session.selectedFeatures" (emitValues)="onValues($event)"></app-plugin-features>
+<app-plugin-selection (emitPlugin)="onPlugin($event)" [plugins]="plugins"></app-plugin-selection>

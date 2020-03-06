@@ -2,12 +2,15 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ExperimentComponent } from './experiment.component';
 import { ExperimentDatasetsComponent } from './experiment-datasets/experiment-datasets.component';
+import { ExperimentAlgorithmsComponent } from './experiment-algorithms/experiment-algorithms.component';
 
 const routes: Routes = [
     {
         path: ':id', component: ExperimentComponent, children: [
             { path: '', component: ExperimentDatasetsComponent, pathMatch: 'full' },
-            { path: 'dataset', loadChildren: './dataset/dataset.module#DatasetModule' }
+            { path: 'algorithm', component: ExperimentAlgorithmsComponent, pathMatch: 'full' },
+            { path: 'dataset', loadChildren: './dataset/dataset.module#DatasetModule' },
+            { path: 'algorithm', loadChildren: './algorithm/algorithm.module#AlgorithmModule' },
         ]
     }
 ];

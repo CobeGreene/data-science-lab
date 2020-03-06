@@ -13,9 +13,27 @@
     {
         "key": "dataset.default.preview",
         "title": "Dataset Default Preview Examples",
-        "description": "The default number of examples to preview",
+        "description": "The default number of examples to preview.",
         "value": 10,
         "default": 10,
         "min": 0
+    },
+    {
+        "key": "algorithm.default.time",
+        "title": "Algorithm Default Interval Between Iterations",
+        "description": "Sets the rate at which a step occurs in an algorithm (in milliseconds).",
+        "value": 200,
+        "default": 200,
+        "min": 5,
+        "max": 10000
+    },
+    {
+        "key": "tracker.recent.iteration",
+        "title": "Number of Iterations ",
+        "description": "Sets the number of past iterations to show for an algorithms",
+        "value": 5,
+        "default": 5,
+        "min": 1,
+        "max": 100
     }
 ]

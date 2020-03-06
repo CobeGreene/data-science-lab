@@ -22,12 +22,22 @@ import { PluginDataConverter } from './converters/plugin-data-converter/plugin-d
 import { AppPluginDataConverter } from './converters/plugin-data-converter/app-plugin-data.converter';
 import { AppFileCoreService } from './core-services/file-core-service/app-file.service';
 import { DatasetDataService, AppDatasetDataService } from './data-services/dataset-data-service';
+import { AlgorithmDataService, AppAlgorithmDataService } from './data-services/algorithm-data-service';
 import { SessionDataService, AppSessionDataService } from './data-services/session-data-service';
 import { AppQueuePluginContext } from './contexts/plugin-context/app-queue-plugin.context';
 import { DatasetServiceModel } from './services/dataset.sm';
 import { TransformServiceModel } from './session-services/transform.sm/transform.sm';
 import { SessionPluginDataService, AppSessionPluginDataService } from './data-services/session-plugin-data-service';
 import { SessionPluginServiceModel } from './services/session-plugin.sm';
+import { CreateAlgorithmServiceModel } from './session-services/create-algorithm.sm';
+import { AlgorithmServiceModel } from './services/algorithm.sm';
+import { AlgorithmRecorderService, AppRecorderService } from './core-services/recorder-service';
+import { TrackerDataService, AppTrackerDataService } from './data-services/tracker-data-service';
+import { TrackerServiceModel } from './services/tracker.sm';
+import { TestReportDataService, AppTestReportDataService } from './data-services/test-report-data-service';
+import { TestReportSessionDataService, AppTestReportSessionDataService } from './data-services/test-report-session-data-service';
+import { TestReportServiceModel } from './services/test-report.sm/test-report.sm';
+import { CreateTestReportServiceModel } from './session-services/create-test-report.sm/create-test-report.sm';
 
 export let win: BrowserWindow;
 
@@ -41,7 +51,7 @@ export class App {
 
     public initialize() {
         this.serviceContainer.addSingleton<IpcService>(AppIpcService, SERVICE_TYPES.IpcService);
-        
+
         // Context
         this.serviceContainer.addSingleton<SettingsContext>(AppSettingsContext, SERVICE_TYPES.SettingsContext);
         this.serviceContainer.addSingleton<PluginContext>(AppPluginContext, SERVICE_TYPES.OriginalPluginContext);
@@ -58,41 +68,58 @@ export class App {
         this.serviceContainer.addSingleton<DatasetDataService>(AppDatasetDataService, SERVICE_TYPES.DatasetDataService);
         this.serviceContainer.addSingleton<SessionDataService>(AppSessionDataService, SERVICE_TYPES.SessionDataService);
         this.serviceContainer.addSingleton<SessionPluginDataService>(AppSessionPluginDataService, SERVICE_TYPES.SessionPluginDataService);
-        
+        this.serviceContainer.addSingleton<AlgorithmDataService>(AppAlgorithmDataService, SERVICE_TYPES.AlgorithmDataService);
+        this.serviceContainer.addSingleton<TrackerDataService>(AppTrackerDataService, SERVICE_TYPES.TrackerDataService);
+        this.serviceContainer.addSingleton<TestReportDataService>(AppTestReportDataService, SERVICE_TYPES.TestReportDataService);
+        this.serviceContainer.addSingleton<TestReportSessionDataService>(
+            AppTestReportSessionDataService, SERVICE_TYPES.TestReportSessionDataService);
 
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
         this.serviceContainer.addTransient<FileService>(AppFileCoreService, SERVICE_TYPES.FileService);
+        this.serviceContainer.addTransient<AlgorithmRecorderService>(AppRecorderService, SERVICE_TYPES.RecorderService);
 
-        // Service Models 
+        // Service Models
         this.serviceContainer.addTransient<Producer>(Producer, SERVICE_TYPES.Producer);
         this.serviceContainer.addTransient<ThemeServiceModel>(ThemeServiceModel, SERVICE_TYPES.ThemeServiceModel);
         this.serviceContainer.addTransient<ExperimentServiceModel>(ExperimentServiceModel, SERVICE_TYPES.ExperimentServiceModel);
         this.serviceContainer.addTransient<DatasetServiceModel>(DatasetServiceModel, SERVICE_TYPES.DatasetServiceModel);
+        this.serviceContainer.addTransient<AlgorithmServiceModel>(AlgorithmServiceModel, SERVICE_TYPES.AlgorithmServiceModel);
         this.serviceContainer.addTransient<OpenLinkServiceModel>(OpenLinkServiceModel, SERVICE_TYPES.OpenLinkServiceModel);
         this.serviceContainer.addTransient<UserSettingServiceModel>(UserSettingServiceModel, SERVICE_TYPES.UserSettingServiceModel);
         this.serviceContainer.addTransient<PackageServiceModel>(PackageServiceModel, SERVICE_TYPES.PackageServiceModel);
         this.serviceContainer.addTransient<FetchServiceModel>(FetchServiceModel, SERVICE_TYPES.FetchServiceModel);
         this.serviceContainer.addTransient<TransformServiceModel>(TransformServiceModel, SERVICE_TYPES.TransformServiceModel);
+        this.serviceContainer
+            .addTransient<CreateAlgorithmServiceModel>(CreateAlgorithmServiceModel, SERVICE_TYPES.CreateAlgorithmServiceModel);
         this.serviceContainer.addTransient<SessionPluginServiceModel>(SessionPluginServiceModel, SERVICE_TYPES.SessionPluginServiceModel);
+        this.serviceContainer.addTransient<TrackerServiceModel>(TrackerServiceModel, SERVICE_TYPES.TrackerServiceModel);
+        this.serviceContainer.addTransient<TestReportServiceModel>(TestReportServiceModel, SERVICE_TYPES.TestReportServiceModel);
+        this.serviceContainer
+        .addTransient<CreateTestReportServiceModel>(CreateTestReportServiceModel, SERVICE_TYPES.CreateTestReportServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
             ExperimentServiceModel.routes,
             DatasetServiceModel.routes,
+            AlgorithmServiceModel.routes,
+            TrackerServiceModel.routes,
             OpenLinkServiceModel.routes,
             UserSettingServiceModel.routes,
             PackageServiceModel.routes,
             SessionPluginServiceModel.routes,
             FetchServiceModel.routes,
             TransformServiceModel.routes,
+            TestReportServiceModel.routes,
+            CreateAlgorithmServiceModel.routes,
+            CreateTestReportServiceModel.routes,
         ]);
     }
 
     public destory() {
         const dataService = this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
         const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
-        
+
         dataService.all().forEach(experiment => {
             producer.send(ExperimentEvents.Save, experiment.id);
         });
@@ -105,6 +132,8 @@ export class App {
         this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext).configure();
         this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService).configure();
         this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService).configure();
+        this.serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService).configure();
+        this.serviceContainer.resolve<TestReportDataService>(SERVICE_TYPES.TestReportDataService).configure();
     }
 
     private createWindow() {
@@ -120,7 +149,7 @@ export class App {
             }
         });
 
-        // win.setMenu(null); // to allow some of the shortcuts. 
+        // win.setMenu(null); // to allow some of the shortcuts.
 
 
         this.configure();

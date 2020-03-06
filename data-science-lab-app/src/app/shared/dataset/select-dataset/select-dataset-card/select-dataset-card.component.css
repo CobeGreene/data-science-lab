@@ -1,0 +1,29 @@
+.container {
+    background-color: var(--algorithm-select-dataset-background);
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-template-rows: 1fr min-content;
+    gap: 0.5rem;
+    grid-template-areas: 'icon examples' 'name action';
+}
+
+
+.icon {
+    grid-area: icon;
+    color: var(--experiment-dataset);
+}
+
+.examples {
+    text-align: right;
+    white-space: nowrap;
+    grid-area: examples;
+}
+
+.name {
+    grid-area: name;
+}
+
+.action {
+    grid-area: action;
+    display: block;
+}

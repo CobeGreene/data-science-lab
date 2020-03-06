@@ -106,12 +106,13 @@ describe('Angular Session Service', () => {
     it('finish should call subject finish', (done) => {
         // tslint:disable-next-line: no-string-literal
         dict['Create']('Create', { id: 1, keyId: 2 });
-        service.sessionFinished.subscribe((value) => {
-            expect(value).toBe(1);
+        service.sessionFinished.subscribe(({ id, returnPath }) => {
+            expect(id).toBe(1);
+            expect(returnPath).toBe('return');
             done();
         });
         // tslint:disable-next-line: no-string-literal
-        dict['Finish']('Finish', 1);
+        dict['Finish']('Finish', 1, 'return');
     });
 
     it('attempt delete should not call if session doesn\'t exists', () => {

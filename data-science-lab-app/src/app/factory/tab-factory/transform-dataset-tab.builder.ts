@@ -59,10 +59,10 @@ export class TransformDatasetTabBuilder extends BaseTabBuilder {
         return this;
     }
 
-    buildFinish(subject: Subject<number>): TabBuilder {
-        this.finish = subject.subscribe((value) => {
-            if (value === this.tab.data.sessionId) {
-                const tab = this.tabFactory.create(['experiment', this.tab.data.id]);
+    buildFinish(subject: Subject<{ id: number, returnPath?: string }>): TabBuilder {
+        this.finish = subject.subscribe(({ id }) => {
+            if (id === this.tab.data.sessionId) {
+                const tab = this.tabFactory.create(['experiment', this.tab.data.id, 'dataset', this.tab.data.datasetId]);
                 this.tabService.replaceTab(this.tab.route, tab);
             }
         });

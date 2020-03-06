@@ -39,13 +39,28 @@ export class ExperimentNavigationComponent implements OnInit, OnDestroy {
 
   private getState() {
     const route = this.routerService.current();
-    if (route.startsWith(`/experiment/${this.id}/algorithms`)) {
+    if (route.startsWith(`/experiment/${this.id}/algorithm`)) {
       this.state = 'algorithm';
-    } else if (route.startsWith(`/experiment/${this.id}/visuals`)) {
+    } else if (route.startsWith(`/experiment/${this.id}/visual`)) {
       this.state = 'visual';
     } else {
       this.state = 'dataset';
     }
+  }
+
+  onDataset() {
+    const tab = this.tabFactory.create(['experiment', this.id]);
+    this.tabService.replaceTab(this.routerService.current(), tab);
+  }
+
+  onAlgorithms() {
+    const tab = this.tabFactory.create(['experiment', this.id, 'algorithm']);
+    this.tabService.replaceTab(this.routerService.current(), tab);
+  }
+
+  onVisuals() {
+    const tab = this.tabFactory.create(['experiment', this.id, 'visual']);
+    this.tabService.replaceTab(this.routerService.current(), tab);
   }
 
 }

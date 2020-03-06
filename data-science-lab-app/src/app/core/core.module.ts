@@ -48,7 +48,13 @@ import { AppOpenLinkService, OpenLinkService } from '../services/open-link-servi
 import { FetchSessionService, AppFetchSessionService } from '../session-services/fetch-session-service';
 import { AppTransformSessionService, TransformSessionService } from '../session-services/transform-session-service';
 import { DatasetService, AppDatasetService } from '../services/dataset-service';
+import { AlgorithmService, AppAlgorithmService } from '../services/algorithm-service';
 import { SessionPluginService, AppSessionPluginService } from '../services/session-plugin-service';
+import { AlgorithmSessionService, AppAlgorithmSessionService } from '../session-services/algorithm-session-service';
+import { AppTrackerService } from '../services/tracker-service/app-tracker.service';
+import { TrackerService } from '../services/tracker-service/tracker.service';
+import { TestReportService, AppTestReportService } from '../services/test-report-service';
+import { TestReportSessionService, AppTestReportSessionService } from '../session-services/test-report-session-service';
 
 @NgModule({
     declarations: [
@@ -93,11 +99,16 @@ import { SessionPluginService, AppSessionPluginService } from '../services/sessi
         { provide: OverlayService, useClass: AppOverlayService },
         { provide: ExperimentService, useClass: AppExperimentService },
         { provide: DatasetService, useClass: AppDatasetService },
+        { provide: AlgorithmService, useClass: AppAlgorithmService },
+        { provide: TrackerService, useClass: AppTrackerService },
         { provide: PackageService, useClass: AppPackageService },
+        { provide: TestReportService, useClass: AppTestReportService },
         { provide: SessionPluginService, useClass: AppSessionPluginService },
+        { provide: TestReportSessionService, useClass: AppTestReportSessionService },
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: FetchSessionService, useClass: AppFetchSessionService },
         { provide: TransformSessionService, useClass: AppTransformSessionService },
+        { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
         { provide: NotificationService, useClass: AppNotificationService },
         { provide: ErrorService, useClass: AppErrorService },
         { provide: UserSettingService, useClass: AppUserSettingService },

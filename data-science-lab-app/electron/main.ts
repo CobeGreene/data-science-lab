@@ -25,6 +25,24 @@ if (!fs.existsSync(datasetsPath)) {
 }
 settings.set('datasets-path', datasetsPath);
 
+const algorithmsPath = path.join(__dirname, '../algorithms');
+if (!fs.existsSync(algorithmsPath)) {
+    fs.mkdirSync(algorithmsPath);
+}
+settings.set('algorithms-path', algorithmsPath);
+
+const trackersPath = path.join(__dirname, '../trackers');
+if (!fs.existsSync(trackersPath)) {
+    fs.mkdirSync(trackersPath);
+}
+settings.set('trackers-path', trackersPath);
+
+const testReportsPath = path.join(__dirname, '../test-reports');
+if (!fs.existsSync(testReportsPath)) {
+    fs.mkdirSync(testReportsPath);
+}
+settings.set('test-reports-path', testReportsPath);
+
 
 const preload = path.join(__dirname, 'preload.js');
 const angularApp = url.format({

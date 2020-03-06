@@ -49,7 +49,7 @@ export class DatasetTabBuilder extends BaseTabBuilder {
     buildDelete(subject: Subject<number>): TabBuilder {
         this.delete = subject.subscribe((id) => {
             if (id === this.tab.data.datasetId) {
-                this.tabService.removeTab(this.base.tab.route);
+                this.tabService.removeTab(this.tab.route);
             }
         });
         return this;
@@ -64,5 +64,3 @@ export class DatasetTabBuilder extends BaseTabBuilder {
     }
 
 }
-
-
