@@ -11,6 +11,8 @@ export { AlgorithmEvents } from './algorithm.events';
 export { TrackerEvents } from './tracker.events';
 export { TestReportEvents } from './test-report.events';
 export { TestReportCreateEvents } from './test-report-create.events';
+export { VisualEvents } from './visual.events';
+export { DatasetVisualsEvents } from './dataset-visual.events';
 
 export const OpenLinkEvent = 'open-link-event';
 export const ErrorEvent = 'error-event';

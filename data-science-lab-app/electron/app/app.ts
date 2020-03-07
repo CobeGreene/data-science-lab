@@ -35,9 +35,12 @@ import { AlgorithmRecorderService, AppRecorderService } from './core-services/re
 import { TrackerDataService, AppTrackerDataService } from './data-services/tracker-data-service';
 import { TrackerServiceModel } from './services/tracker.sm';
 import { TestReportDataService, AppTestReportDataService } from './data-services/test-report-data-service';
+import { VisualDataService, AppVisualDataService } from './data-services/visual-data-service';
 import { TestReportSessionDataService, AppTestReportSessionDataService } from './data-services/test-report-session-data-service';
 import { TestReportServiceModel } from './services/test-report.sm/test-report.sm';
 import { CreateTestReportServiceModel } from './session-services/create-test-report.sm/create-test-report.sm';
+import { VisualServiceModel } from './services/visual.sm';
+import { DatasetVisualServiceModel } from './session-services/dataset-visua.sm';
 
 export let win: BrowserWindow;
 
@@ -71,8 +74,10 @@ export class App {
         this.serviceContainer.addSingleton<AlgorithmDataService>(AppAlgorithmDataService, SERVICE_TYPES.AlgorithmDataService);
         this.serviceContainer.addSingleton<TrackerDataService>(AppTrackerDataService, SERVICE_TYPES.TrackerDataService);
         this.serviceContainer.addSingleton<TestReportDataService>(AppTestReportDataService, SERVICE_TYPES.TestReportDataService);
+        this.serviceContainer.addSingleton<VisualDataService>(AppVisualDataService, SERVICE_TYPES.VisualDataService);
         this.serviceContainer.addSingleton<TestReportSessionDataService>(
             AppTestReportSessionDataService, SERVICE_TYPES.TestReportSessionDataService);
+        this.serviceContainer.addSingleton<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
 
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
@@ -97,6 +102,8 @@ export class App {
         this.serviceContainer.addTransient<TestReportServiceModel>(TestReportServiceModel, SERVICE_TYPES.TestReportServiceModel);
         this.serviceContainer
         .addTransient<CreateTestReportServiceModel>(CreateTestReportServiceModel, SERVICE_TYPES.CreateTestReportServiceModel);
+        this.serviceContainer.addTransient<VisualServiceModel>(VisualServiceModel, SERVICE_TYPES.VisualServiceModel);
+        this.serviceContainer.addTransient<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -113,6 +120,8 @@ export class App {
             TestReportServiceModel.routes,
             CreateAlgorithmServiceModel.routes,
             CreateTestReportServiceModel.routes,
+            VisualServiceModel.routes,
+            DatasetVisualServiceModel.routes,
         ]);
     }
 
