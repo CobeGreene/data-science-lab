@@ -175,9 +175,10 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
 
     save(experimentId: number) {
         const algorithms = this.all(experimentId);
+        const algorithmPath = this.settings.get<string>(this.path);
+        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
+
         if (algorithms.length > 0) {
-            const algorithmPath = this.settings.get<string>(this.path);
-            const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
             const data: AlgorithmData[] = algorithms.map((value): AlgorithmData => {
                 return {
                     id: value.id,
@@ -192,6 +193,8 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
             });
             const buffer = zlib.gzipSync(JSON.stringify(data));
             fs.writeFileSync(experimentPath, buffer);
+        } else if (fs.existsSync(experimentPath)) {
+            fs.unlinkSync(experimentPath);
         }
     }
 

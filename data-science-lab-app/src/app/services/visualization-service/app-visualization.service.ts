@@ -94,5 +94,13 @@ export class AppVisualizationService extends VisualizationService {
         this.messenger.publish(VisualEvents.Delete, id);
     }
 
+    resize(id: number, width: number, height: number): void {
+        this.messenger.publish(VisualEvents.Resize, id, width, height);
+    }
+    
+    reposition(id: number, top: number, left: number): void {
+        this.messenger.publish(VisualEvents.Reposition, id, top, left);
+    }
+
 }
 

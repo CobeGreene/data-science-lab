@@ -10,7 +10,7 @@
 </div>
 <div class="icon" [style.top.px]="visual.top * 50" [style.left.px]="visual.left * 50 + visual.width * 50 - 50">
     <div class="icon-body p-0 m-0" [style.width.px]="50" [style.height.px]="50">
-        <fa name="trash" class="text-accent1" size="2x"></fa>
+        <fa name="trash" class="text-accent1" size="2x" (click)="onDelete()"></fa>
     </div>
 </div>
 <div class="icon" [style.top.px]="visual.top * 50 + visual.height * 50 - 50" [style.left.px]="visual.left * 50 + visual.width * 50 - 50">

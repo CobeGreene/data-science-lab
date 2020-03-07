@@ -31,6 +31,7 @@ export abstract class VisualizationService extends Service {
     abstract all(experimentId: number): Visual[];
     abstract get(id: number): Visual;
     abstract delete(id: number): void;
-
+    abstract resize(id: number, width: number, height: number): void;
+    abstract reposition(id: number, top: number, left: number): void;
 }
 

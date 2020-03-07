@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Visual } from '../../../../../../shared/models';
+import { VisualizationService } from '../../../../services/visualization-service';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 
 @Component({
@@ -7,18 +9,34 @@ import { Visual } from '../../../../../../shared/models';
   templateUrl: './experiment-visual-card.component.html',
   styleUrls: ['./experiment-visual-card.component.css']
 })
-export class ExperimentVisualCardComponent implements OnInit {
+export class ExperimentVisualCardComponent implements OnInit, OnDestroy {
 
-  @Input() visual: Visual;
+  @Input() id: number;
+  visual: Visual;
 
   @ViewChild('visualCmp', { static: false }) visualComponent: ElementRef<HTMLIFrameElement>;
 
   @Output() emitMove = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
   @Output() emitExpand = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
 
-  constructor() { }
+  constructor(
+    private visualService: VisualizationService
+  ) { }
 
   ngOnInit() {
+    this.visual = this.visualService.get(this.id);
+
+    this.visualService.visualUpdated
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        if (value.id === this.id) {
+          this.visual = value;
+        }
+      });
+  }
+
+  ngOnDestroy() {
+
   }
 
   ngAfterViewInit() {
@@ -31,7 +49,10 @@ export class ExperimentVisualCardComponent implements OnInit {
 
   onMouseDownExpand(event: MouseEvent) {
     this.emitExpand.emit({ event, visual: this.visual });
+  }
 
+  onDelete() {
+    this.visualService.delete(this.id);
   }
 
 }

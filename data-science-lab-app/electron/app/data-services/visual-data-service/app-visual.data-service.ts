@@ -91,11 +91,13 @@ export class AppVisualDataService extends Service implements VisualDataService {
 
     save(experimentId: number) {
         const visuals = this.all(experimentId);
+        const dirPath = this.context.get<string>(this.path);
+        const visualPath = path.join(dirPath, `visuals${experimentId}.gzip`);
         if (visuals.length > 0) {
-            const dirPath = this.context.get<string>(this.path);
-            const visualPath = path.join(dirPath, `visuals${experimentId}.gzip`);
             const buffer = zlib.gzipSync(JSON.stringify(visuals));
             fs.writeFileSync(visualPath, buffer);   
+        } else if (fs.existsSync(visualPath)) {
+            fs.unlinkSync(visualPath);
         }
     }
 

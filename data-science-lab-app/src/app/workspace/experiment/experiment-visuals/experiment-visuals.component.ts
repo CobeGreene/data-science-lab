@@ -122,6 +122,11 @@ export class ExperimentVisualsComponent implements OnInit, OnDestroy, AfterViewI
     if (this.actionOnVisual) {
       this.actionOnVisual.zindex = 1;
     }
+    if (this.isMove) {
+      this.visualizeService.reposition(this.actionOnVisual.id, this.actionOnVisual.top, this.actionOnVisual.left);
+    } else {
+      this.visualizeService.resize(this.actionOnVisual.id, this.actionOnVisual.width, this.actionOnVisual.height);
+    }
     this.actionOnVisual = undefined;
     this.isMove = false;
     this.referenceEvent = undefined;
