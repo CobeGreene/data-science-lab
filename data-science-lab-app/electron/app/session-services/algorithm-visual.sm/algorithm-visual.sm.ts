@@ -10,7 +10,7 @@ import { AlgorithmDataService } from "../../data-services/algorithm-data-service
 
 export class AlgorithmVisualServiceModel extends SessionService {
     static routes: ServiceModelRoutes = {
-        service: SERVICE_TYPES.DatasetVisualServiceModel,
+        service: SERVICE_TYPES.AlgorithmVisualServiceModel,
         routes: [
             { path: AlgorithmVisualsEvents.Create, method: 'create' },
             { path: AlgorithmVisualsEvents.Delete, method: 'delete' },

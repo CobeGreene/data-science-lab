@@ -4,6 +4,7 @@ import { RouterService } from '../../../../../services/router-service';
 import { TrackerService } from '../../../../../services/tracker-service';
 import { AlgorithmTracker } from '../../../../../../../shared/models';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { AlgorithmVisualSessionService } from '../../../../../session-services/algorithm-visual-session-service';
 
 @Component({
   selector: 'app-algorithm-trackers',
@@ -19,7 +20,8 @@ export class AlgorithmTrackersComponent implements OnInit, OnDestroy {
 
   constructor(
     private routerService: RouterService,
-    private trackerService: TrackerService
+    private trackerService: TrackerService,
+    private sessionService: AlgorithmVisualSessionService
   ) { }
 
   ngOnInit() {
@@ -66,7 +68,12 @@ export class AlgorithmTrackersComponent implements OnInit, OnDestroy {
   }
 
   onVisualize() {
-    
+    if (this.tracker !== undefined) {
+      this.sessionService.create(this.tracker.algorithmId, {
+        currentRoute: this.routerService.current(),
+        newTab: true
+      }, this.tracker.variables.map((_, index) => index));
+    }
   }
 
 }

@@ -20,6 +20,8 @@ import { CreateTestReportTabBuilder } from './create-test-report-tab.builder';
 import { TestReportSessionService } from '../../session-services/test-report-session-service';
 import { DatasetVisualSessionService } from '../../session-services/dataset-visual-session-service';
 import { VisualizeDatasetTabBuilder } from './visualize-dataset-tab.builder';
+import { VisualizeAlgorithmTabBuilder } from './visualize-algorithm-tab.builder';
+import { AlgorithmVisualSessionService } from '../../session-services/algorithm-visual-session-service';
 
 @Injectable()
 export class AppTabFactory extends TabFactory {
@@ -33,7 +35,8 @@ export class AppTabFactory extends TabFactory {
         private transformSessionService: TransformSessionService,
         private algorithmSessionService: AlgorithmSessionService,
         private testReportSessionService: TestReportSessionService,
-        private datasetVisualSessionService: DatasetVisualSessionService
+        private datasetVisualSessionService: DatasetVisualSessionService,
+        private algorithmVisualSessionService: AlgorithmVisualSessionService
     ) {
         super();
     }
@@ -145,6 +148,14 @@ export class AppTabFactory extends TabFactory {
                                         .buildDelete(this.testReportSessionService.sessionDeleted)
                                         .buildFinish(this.testReportSessionService.sessionFinished)
                                         .buildClose(this.testReportSessionService.attemptDelete);
+                                    handler.skip(3);
+                                } else if (handler.get(0) === 'visualize') {
+                                    builder = new VisualizeAlgorithmTabBuilder(+handler.get(1), handler.get(2), builder as AlgorithmTabBuilder);
+                                    builder.buildPrefix(`Visual for `)
+                                        .buildUpdate(this.algorithmVisualSessionService.sessionUpdated)
+                                        .buildDelete(this.algorithmVisualSessionService.sessionDeleted)
+                                        .buildFinish(this.algorithmVisualSessionService.sessionFinished)
+                                        .buildClose(this.algorithmVisualSessionService.attemptDelete);
                                     handler.skip(3);
                                 }
                             }

@@ -16,6 +16,9 @@ import {
 } from './algorithm-details/algorithm-test-reports/algorithm-test-report-card/algorithm-test-report-card.component';
 import { AlgorithmSelectTestComponent } from './algorithm-select-test/algorithm-select-test.component';
 import { AlgorithmInputsTestComponent } from './algorithm-inputs-test/algorithm-inputs-test.component';
+import { AlgorithmSelectVisualizeComponent } from './algorithm-select-visualize/algorithm-select-visualize.component';
+import { AlgorithmInputsVisualizeComponent } from './algorithm-inputs-visualize/algorithm-inputs-visualize.component';
+import { AlgorithmSetupVisualizeComponent } from './algorithm-setup-visualize/algorithm-setup-visualize.component';
 
 
 @NgModule({
@@ -32,6 +35,9 @@ import { AlgorithmInputsTestComponent } from './algorithm-inputs-test/algorithm-
         AlgorithmTestReportCardComponent,
         AlgorithmSelectTestComponent,
         AlgorithmInputsTestComponent,
+        AlgorithmSelectVisualizeComponent,
+        AlgorithmInputsVisualizeComponent,
+        AlgorithmSetupVisualizeComponent,
     ],
     imports: [
         CommonModule,

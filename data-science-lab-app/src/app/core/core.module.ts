@@ -57,6 +57,7 @@ import { TestReportService, AppTestReportService } from '../services/test-report
 import { TestReportSessionService, AppTestReportSessionService } from '../session-services/test-report-session-service';
 import { DatasetVisualSessionService, AppDatasetVisualSessionService } from '../session-services/dataset-visual-session-service';
 import { VisualizationService, AppVisualizationService } from '../services/visualization-service';
+import { AppAlgorithmVisualSessionService, AlgorithmVisualSessionService } from '../session-services/algorithm-visual-session-service';
 
 @NgModule({
     declarations: [
@@ -112,6 +113,7 @@ import { VisualizationService, AppVisualizationService } from '../services/visua
         { provide: VisualizationService, useClass: AppVisualizationService },
         { provide: TransformSessionService, useClass: AppTransformSessionService },
         { provide: DatasetVisualSessionService, useClass: AppDatasetVisualSessionService },
+        { provide: AlgorithmVisualSessionService, useClass: AppAlgorithmVisualSessionService },
         { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
         { provide: NotificationService, useClass: AppNotificationService },
         { provide: ErrorService, useClass: AppErrorService },
