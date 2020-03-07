@@ -10,6 +10,7 @@ import { AlgorithmService } from '../algorithm-service';
 import { TransformSessionService } from '../../session-services/transform-session-service';
 import { AlgorithmSessionService } from '../../session-services/algorithm-session-service';
 import { TestReportSessionService } from '../../session-services/test-report-session-service';
+import { DatasetVisualSessionService } from '../../session-services/dataset-visual-session-service';
 
 @Injectable()
 export class AppCreationService extends CreationService implements OnDestroy {
@@ -23,7 +24,8 @@ export class AppCreationService extends CreationService implements OnDestroy {
         private fetchSessionService: FetchSessionService,
         private transformSessionService: TransformSessionService,
         private algorithmSessionService: AlgorithmSessionService,
-        private testReportSessionService: TestReportSessionService) {
+        private testReportSessionService: TestReportSessionService,
+        private datasetVisualSessionService: DatasetVisualSessionService) {
         super();
         this.subscribe();
     }
@@ -67,6 +69,21 @@ export class AppCreationService extends CreationService implements OnDestroy {
                     this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
                 }
             });
+
+            this.datasetVisualSessionService.sessionCreated
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((id) => {
+                const session = this.datasetVisualSessionService.get(id);
+                const experimentId = this.datasetService.get(session.keyId).experimentId;
+                const tab = this.tabFactory.create(['experiment', experimentId, 'dataset', session.keyId, 'visualize', id, session.state]);
+                if (session.sessionOptions.newTab) {
+                    this.tabService.openTab(tab);
+                } else {
+                    this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
+                }
+            });
+
+        
 
         this.testReportSessionService.sessionCreated
             .pipe(untilComponentDestroyed(this))
