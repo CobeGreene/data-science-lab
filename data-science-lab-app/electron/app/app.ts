@@ -40,7 +40,8 @@ import { TestReportSessionDataService, AppTestReportSessionDataService } from '.
 import { TestReportServiceModel } from './services/test-report.sm/test-report.sm';
 import { CreateTestReportServiceModel } from './session-services/create-test-report.sm/create-test-report.sm';
 import { VisualServiceModel } from './services/visual.sm';
-import { DatasetVisualServiceModel } from './session-services/dataset-visua.sm';
+import { DatasetVisualServiceModel } from './session-services/dataset-visual.sm';
+import { AlgorithmVisualServiceModel } from './session-services/algorithm-visual.sm';
 
 export let win: BrowserWindow;
 
@@ -104,6 +105,7 @@ export class App {
         .addTransient<CreateTestReportServiceModel>(CreateTestReportServiceModel, SERVICE_TYPES.CreateTestReportServiceModel);
         this.serviceContainer.addTransient<VisualServiceModel>(VisualServiceModel, SERVICE_TYPES.VisualServiceModel);
         this.serviceContainer.addTransient<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
+        this.serviceContainer.addTransient<AlgorithmVisualServiceModel>(AlgorithmVisualServiceModel, SERVICE_TYPES.AlgorithmVisualServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -122,6 +124,7 @@ export class App {
             CreateTestReportServiceModel.routes,
             VisualServiceModel.routes,
             DatasetVisualServiceModel.routes,
+            AlgorithmVisualServiceModel.routes,
         ]);
     }
 

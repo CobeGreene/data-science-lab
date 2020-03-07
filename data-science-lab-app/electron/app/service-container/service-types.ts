@@ -28,6 +28,7 @@ export const enum SERVICE_TYPES {
     CreateTestReportServiceModel,
     CreateAlgorithmServiceModel,
     DatasetVisualServiceModel,
+    AlgorithmVisualServiceModel,
     // Data Services
     ExperimentDataService,
     ThemeDataService,

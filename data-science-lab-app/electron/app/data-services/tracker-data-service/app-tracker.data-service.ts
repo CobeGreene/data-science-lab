@@ -1,6 +1,6 @@
 import { TrackerObject } from '../../models';
 import { AlgorithmTracker, TrackerVariable, Iteration } from '../../../../shared/models';
-import { VariableTracker } from 'data-science-lab-core';
+import { VariableTracker, PluginData } from 'data-science-lab-core';
 import { Service, SERVICE_TYPES, ServiceContainer } from '../../service-container';
 import { TrackerDataService } from './tracker.data-service';
 import { SettingsContext } from '../../contexts/settings-context';
@@ -172,6 +172,44 @@ export class AppTrackerDataService extends Service implements TrackerDataService
         }
         return typeof data;
     }
+
+    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData } {
+        const data: { [id: string]: PluginData } = {};
+
+        const tracker = this.get(id);
+
+        for (const key in inputs) {
+            if (inputs[key] === undefined) {
+                return undefined;
+            }
+
+            const features: string[] = [];
+            const examples: any[][] = [];
+
+            for (let i = 0; i < tracker.iterations.length; ++i) {
+                examples.push([]);
+                for (const _ of inputs[key]) {
+                    examples[i].push(undefined);
+                }
+            }
+
+            for (let j = 0; j < inputs[key].length; ++j) {
+                features.push(tracker.variables[inputs[key][j]].name);
+                for (let i = 0; i < tracker.iterations.length; ++i) {
+                    examples[i][j] = tracker.iterations[i].values[tracker.variables[inputs[key][j]].name];
+                }
+            }
+
+            data[key] = new PluginData({
+                features,
+                examples
+            });
+            
+        }
+
+        return data;
+    }
+    
 
 }
 
