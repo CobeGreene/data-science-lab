@@ -26,17 +26,28 @@ export class AlgorithmInputsVisualizeComponent implements OnInit, OnDestroy {
     this.id = this.routerService.data().sessionId;
     this.session = this.sessionService.get(this.id);
     this.tracker = this.trackerService.get(this.session.keyId);
-    this.features = this.session.selectedFeatures.map(value => this.tracker.variables[value]);
+    this.features = this.session.selectedFeatures.filter(value => value > 0).map(value => this.tracker.variables[value - 1]);
+    if (this.session.selectedFeatures.indexOf(0) >= 0) {
+      this.features.splice(0, 0, {
+        name: 'Iteration',
+        type: 'number'
+      })
+    }
 
-    
     this.routerService.changed()
       .pipe(untilComponentDestroyed(this))
       .subscribe(() => {
         this.id = this.routerService.data().sessionId;
         this.session = this.sessionService.get(this.id);
         this.tracker = this.trackerService.get(this.session.keyId);
-        this.features = this.session.selectedFeatures.map(value => this.tracker.variables[value]);
-    
+        this.features = this.session.selectedFeatures.filter(value => value > 0).map(value => this.tracker.variables[value - 1]);
+        if (this.session.selectedFeatures.indexOf(0) >= 0) {
+          this.features.splice(0, 0, {
+            name: 'Iteration',
+            type: 'number'
+          })
+        }
+
       });
   }
 

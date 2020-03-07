@@ -72,7 +72,7 @@ export class AlgorithmTrackersComponent implements OnInit, OnDestroy {
       this.sessionService.create(this.tracker.algorithmId, {
         currentRoute: this.routerService.current(),
         newTab: true
-      }, this.tracker.variables.map((_, index) => index));
+      }, [0, ...this.tracker.variables.map((_, index) => index + 1)]);
     }
   }
 

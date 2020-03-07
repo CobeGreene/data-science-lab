@@ -194,10 +194,18 @@ export class AppTrackerDataService extends Service implements TrackerDataService
             }
 
             for (let j = 0; j < inputs[key].length; ++j) {
-                features.push(tracker.variables[inputs[key][j]].name);
-                for (let i = 0; i < tracker.iterations.length; ++i) {
-                    examples[i][j] = tracker.iterations[i].values[tracker.variables[inputs[key][j]].name];
+                if (inputs[key][j] === 0) {
+                    features.push('Iteration');
+                    for (let i = 0; i < tracker.iterations.length; ++i) {
+                        examples[i][j] = tracker.iterations[i].at;
+                    }
+                } else {
+                    features.push(tracker.variables[inputs[key][j] - 1].name);
+                    for (let i = 0; i < tracker.iterations.length; ++i) {
+                        examples[i][j] = tracker.iterations[i].values[tracker.variables[inputs[key][j] - 1].name];
+                    }
                 }
+
             }
 
             data[key] = new PluginData({

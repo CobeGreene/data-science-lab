@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SessionPlugin, Session, AlgorithmTracker } from '../../../../../../shared/models';
+import { SessionPlugin, Session, AlgorithmTracker, TrackerVariable } from '../../../../../../shared/models';
 import { PluginTypes } from 'data-science-lab-core';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { RouterService } from '../../../../services/router-service';
@@ -16,6 +16,7 @@ export class AlgorithmSelectVisualizeComponent implements OnInit, OnDestroy {
   plugins: SessionPlugin[];
   session: Session;
   tracker: AlgorithmTracker;
+  features: TrackerVariable[];
 
   constructor(
     private routerService: RouterService,
@@ -28,7 +29,10 @@ export class AlgorithmSelectVisualizeComponent implements OnInit, OnDestroy {
     const id = this.routerService.data().sessionId;
     this.session = this.sessionService.get(id);
     this.tracker = this.trackerService.get(this.session.keyId);
-
+    this.features = [].concat({
+      name: 'Iteration',
+      type: 'number'
+    } ,...this.tracker.variables);
 
     this.sessionPluginService.pluginsChanged
       .pipe(untilComponentDestroyed(this))
@@ -42,6 +46,10 @@ export class AlgorithmSelectVisualizeComponent implements OnInit, OnDestroy {
         const sessionId = this.routerService.data().sessionId;
         this.session = this.sessionService.get(sessionId);
         this.tracker = this.trackerService.get(this.session.keyId);
+        this.features = [].concat({
+          name: 'Iteration',
+          type: 'number'
+        } ,...this.tracker.variables);
         this.initPlugins();
       });
 
@@ -70,8 +78,14 @@ export class AlgorithmSelectVisualizeComponent implements OnInit, OnDestroy {
   }
 
   initPlugins() {
-    this.plugins = this.sessionPluginService.compatible(PluginTypes.Visualization,
-      this.tracker.variables.filter((_, index) => this.session.selectedFeatures.indexOf(index) >= 0));
+    const features = this.tracker.variables.filter((_, index) => this.session.selectedFeatures.indexOf(index - 1) >= 0);
+    if (this.session.selectedFeatures.indexOf(0) >= 0) {
+      features.push({
+        name: 'Iteration',
+        type: 'number'
+      });
+    } 
+    this.plugins = this.sessionPluginService.compatible(PluginTypes.Visualization, features);
   }
 
 }

@@ -7,7 +7,7 @@ import { VisualDataService } from '../../data-services/visual-data-service';
 
 export class VisualServiceModel extends ServiceModel {
     static routes: ServiceModelRoutes = {
-        service: SERVICE_TYPES.VisualDataService,
+        service: SERVICE_TYPES.VisualServiceModel,
         routes: [
             { path: VisualEvents.All, method: 'all' },
             { path: VisualEvents.Delete, method: 'delete' },
