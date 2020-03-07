@@ -90,6 +90,7 @@ export class DatasetVisualServiceModel extends SessionService {
         }
 
         visual = this.visualService.post(visual);
+        
         this.producer.send(VisualEvents.Create, visual);
     }
 

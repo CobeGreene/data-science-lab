@@ -146,6 +146,7 @@ export class App {
         this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService).configure();
         this.serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService).configure();
         this.serviceContainer.resolve<TestReportDataService>(SERVICE_TYPES.TestReportDataService).configure();
+        this.serviceContainer.resolve<VisualDataService>(SERVICE_TYPES.VisualDataService).configure();
     }
 
     private createWindow() {

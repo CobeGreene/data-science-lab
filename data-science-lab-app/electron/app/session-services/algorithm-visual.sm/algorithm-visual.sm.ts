@@ -93,6 +93,7 @@ export class AlgorithmVisualServiceModel extends SessionService {
             zindex: 1
         }
 
+        
         visual = this.visualService.post(visual);
         this.producer.send(VisualEvents.Create, visual);
     }
