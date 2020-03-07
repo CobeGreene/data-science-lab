@@ -1,0 +1,5 @@
+<div class="container" (mouseleave)="onMouseUp($event)" (mouseup)="onMouseUp($event)" (mouseover)="onMouseMove($event)" (mousemove)="onMouseMove($event)">
+    <ng-container *ngFor="let visual of visuals">
+        <app-experiment-visual-card [visual]="visual" (emitMove)="onMove($event)" (emitExpand)="onExpand($event)"></app-experiment-visual-card>
+    </ng-container>
+</div>

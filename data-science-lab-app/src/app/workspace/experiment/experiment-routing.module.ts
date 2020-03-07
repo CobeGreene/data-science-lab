@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ExperimentComponent } from './experiment.component';
 import { ExperimentDatasetsComponent } from './experiment-datasets/experiment-datasets.component';
 import { ExperimentAlgorithmsComponent } from './experiment-algorithms/experiment-algorithms.component';
+import { ExperimentVisualsComponent } from './experiment-visuals/experiment-visuals.component';
 
 const routes: Routes = [
     {
@@ -11,6 +12,7 @@ const routes: Routes = [
             { path: 'algorithm', component: ExperimentAlgorithmsComponent, pathMatch: 'full' },
             { path: 'dataset', loadChildren: './dataset/dataset.module#DatasetModule' },
             { path: 'algorithm', loadChildren: './algorithm/algorithm.module#AlgorithmModule' },
+            { path: 'visual', component: ExperimentVisualsComponent, pathMatch: 'full' }
         ]
     }
 ];

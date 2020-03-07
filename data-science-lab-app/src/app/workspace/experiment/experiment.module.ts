@@ -17,6 +17,8 @@ import { ExperimentAlgorithmCardComponent } from './experiment-algorithms/experi
 import {
     ExperimentCreateAlgorithmCardComponent
 } from './experiment-algorithms/experiment-create-algorithm-card/experiment-create-algorithm-card.component';
+import { ExperimentVisualsComponent } from './experiment-visuals/experiment-visuals.component';
+import { ExperimentVisualCardComponent } from './experiment-visuals/experiment-visual-card/experiment-visual-card.component';
 
 @NgModule({
     declarations: [
@@ -31,6 +33,8 @@ import {
         ExperimentAlgorithmsComponent,
         ExperimentAlgorithmCardComponent,
         ExperimentCreateAlgorithmCardComponent,
+        ExperimentVisualsComponent,
+        ExperimentVisualCardComponent,
     ],
     imports: [
         CommonModule,

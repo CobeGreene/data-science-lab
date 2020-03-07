@@ -150,6 +150,9 @@ export class AppTabFactory extends TabFactory {
                             }
                         }
                     }
+                } else if (handler.get(0) === 'visual') {
+                    builder.buildRoute('visual');
+                    handler.skip(1);   
                 }
 
             }

@@ -56,6 +56,7 @@ import { TrackerService } from '../services/tracker-service/tracker.service';
 import { TestReportService, AppTestReportService } from '../services/test-report-service';
 import { TestReportSessionService, AppTestReportSessionService } from '../session-services/test-report-session-service';
 import { DatasetVisualSessionService, AppDatasetVisualSessionService } from '../session-services/dataset-visual-session-service';
+import { VisualizationService, AppVisualizationService } from '../services/visualization-service';
 
 @NgModule({
     declarations: [
@@ -108,6 +109,7 @@ import { DatasetVisualSessionService, AppDatasetVisualSessionService } from '../
         { provide: TestReportSessionService, useClass: AppTestReportSessionService },
         { provide: SidebarService, useClass: AppSidebarService },
         { provide: FetchSessionService, useClass: AppFetchSessionService },
+        { provide: VisualizationService, useClass: AppVisualizationService },
         { provide: TransformSessionService, useClass: AppTransformSessionService },
         { provide: DatasetVisualSessionService, useClass: AppDatasetVisualSessionService },
         { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
