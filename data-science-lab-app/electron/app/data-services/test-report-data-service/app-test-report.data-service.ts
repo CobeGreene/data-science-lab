@@ -74,11 +74,13 @@ export class AppTestReportDataService extends Service implements TestReportDataS
 
     save(algorithmId: number) {
         const reports = this.reports.filter(value => value.algorithmId === algorithmId);
+        const dirPath = this.settings.get<string>(this.path);
+        const reportPath = path.join(dirPath, `reports${algorithmId}.gzip`);
         if (reports.length > 0) {
-            const dirPath = this.settings.get<string>(this.path);
-            const reportPath = path.join(dirPath, `reports${algorithmId}.gzip`);
             const buffer = zlib.gzipSync(JSON.stringify(reports));
             fs.writeFileSync(reportPath, buffer);
+        } else if (fs.existsSync(reportPath)) {
+            fs.unlinkSync(reportPath);
         }
     }
 

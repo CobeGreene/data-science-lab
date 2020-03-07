@@ -1,6 +1,6 @@
 import { AlgorithmObject } from '../../models';
 import { Algorithm, Plugin } from '../../../../shared/models';
-import { AlgorithmPlugin } from 'data-science-lab-core';
+import { AlgorithmPlugin, PluginData } from 'data-science-lab-core';
 
 
 export interface AlgorithmDataService {

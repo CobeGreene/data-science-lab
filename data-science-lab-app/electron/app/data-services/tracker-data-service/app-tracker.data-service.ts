@@ -1,6 +1,6 @@
 import { TrackerObject } from '../../models';
 import { AlgorithmTracker, TrackerVariable, Iteration } from '../../../../shared/models';
-import { VariableTracker } from 'data-science-lab-core';
+import { VariableTracker, PluginData } from 'data-science-lab-core';
 import { Service, SERVICE_TYPES, ServiceContainer } from '../../service-container';
 import { TrackerDataService } from './tracker.data-service';
 import { SettingsContext } from '../../contexts/settings-context';
@@ -105,12 +105,15 @@ export class AppTrackerDataService extends Service implements TrackerDataService
     }
 
     save(algorithmId: number): void {
+        const trackerPath = this.context.get<string>(this.key);
+        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}`);
+
         if (this.has(algorithmId)) {
             const tracker = this.get(algorithmId);
-            const trackerPath = this.context.get<string>(this.key);
-            const algorithmPath = path.join(trackerPath, `tracker${algorithmId}`);
             const buffer = zlib.gzipSync(JSON.stringify(tracker));
             fs.writeFileSync(algorithmPath, buffer);
+        } else if (fs.existsSync(algorithmPath)) {
+            fs.unlinkSync(algorithmPath);
         }
     }
 
@@ -172,6 +175,52 @@ export class AppTrackerDataService extends Service implements TrackerDataService
         }
         return typeof data;
     }
+
+    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData } {
+        const data: { [id: string]: PluginData } = {};
+
+        const tracker = this.get(id);
+
+        for (const key in inputs) {
+            if (inputs[key] === undefined) {
+                return undefined;
+            }
+
+            const features: string[] = [];
+            const examples: any[][] = [];
+
+            for (let i = 0; i < tracker.iterations.length; ++i) {
+                examples.push([]);
+                for (const _ of inputs[key]) {
+                    examples[i].push(undefined);
+                }
+            }
+
+            for (let j = 0; j < inputs[key].length; ++j) {
+                if (inputs[key][j] === 0) {
+                    features.push('Iteration');
+                    for (let i = 0; i < tracker.iterations.length; ++i) {
+                        examples[i][j] = tracker.iterations[i].at;
+                    }
+                } else {
+                    features.push(tracker.variables[inputs[key][j] - 1].name);
+                    for (let i = 0; i < tracker.iterations.length; ++i) {
+                        examples[i][j] = tracker.iterations[i].values[tracker.variables[inputs[key][j] - 1].name];
+                    }
+                }
+
+            }
+
+            data[key] = new PluginData({
+                features,
+                examples
+            });
+            
+        }
+
+        return data;
+    }
+    
 
 }
 

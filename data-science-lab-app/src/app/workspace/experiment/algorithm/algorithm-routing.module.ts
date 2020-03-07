@@ -8,6 +8,9 @@ import { AlgorithmSetupCreateComponent } from './algorithm-setup-create/algorith
 import { AlgorithmDetailsComponent } from './algorithm-details/algorithm-details.component';
 import { AlgorithmSelectTestComponent } from './algorithm-select-test/algorithm-select-test.component';
 import { AlgorithmInputsTestComponent } from './algorithm-inputs-test/algorithm-inputs-test.component';
+import { AlgorithmSelectVisualizeComponent } from './algorithm-select-visualize/algorithm-select-visualize.component';
+import { AlgorithmInputsVisualizeComponent } from './algorithm-inputs-visualize/algorithm-inputs-visualize.component';
+import { AlgorithmSetupVisualizeComponent } from './algorithm-setup-visualize/algorithm-setup-visualize.component';
 
 
 const routes: Routes = [
@@ -20,6 +23,9 @@ const routes: Routes = [
             { path: ':algorithmId', component: AlgorithmDetailsComponent },
             { path: ':algorithmId/test/:sessionId/select', component: AlgorithmSelectTestComponent },
             { path: ':algorithmId/test/:sessionId/input', component: AlgorithmInputsTestComponent },
+            { path: ':algorithmId/visualize/:sessionId/select', component: AlgorithmSelectVisualizeComponent },
+            { path: ':algorithmId/visualize/:sessionId/input', component: AlgorithmInputsVisualizeComponent },
+            { path: ':algorithmId/visualize/:sessionId/setup', component: AlgorithmSetupVisualizeComponent },
         ]
     }
 ];

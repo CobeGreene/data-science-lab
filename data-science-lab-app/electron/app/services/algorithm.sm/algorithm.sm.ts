@@ -43,8 +43,8 @@ export class AlgorithmServiceModel extends ServiceModel {
         this.producer.send(AlgorithmEvents.Update, algorithm);
     }
 
-    delete(id: number) {
-        this.algorithmService.delete(id);
+    async delete(id: number) {
+        await this.algorithmService.delete(id);
         this.producer.send(AlgorithmEvents.Delete, id);
     }
 

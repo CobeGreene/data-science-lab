@@ -14,3 +14,5 @@ export { TrackerVariable } from './tracker-variable';
 export { Iteration } from './iteration';
 export { TestReport } from './test-report';
 export { TestReportSession } from './test-report-session';
+export { Visual } from './visual';
+

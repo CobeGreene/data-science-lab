@@ -7,6 +7,9 @@ import { DatasetSetupFetchComponent } from './dataset-setup-fetch/dataset-setup-
 import { DatasetInputsTransformComponent } from './dataset-inputs-transform/dataset-inputs-transform.component';
 import { DatasetSetupTransformComponent } from './dataset-setup-transform/dataset-setup-transform.component';
 import { DatasetDetailsComponent } from './dataset-details/dataset-details.component';
+import { DatasetSetupVisualizeComponent } from './dataset-setup-visualize/dataset-setup-visualize.component';
+import { DatasetInputsVisualizeComponent } from './dataset-inputs-visualize/dataset-inputs-visualize.component';
+import { DatasetSelectVisualizeComponent } from './dataset-select-visualize/dataset-select-visualize.component';
 
 const routes: Routes = [
     {
@@ -16,6 +19,9 @@ const routes: Routes = [
             { path: ':datasetId/transform/:sessionId/select', component: DatasetSelectTransformComponent },
             { path: ':datasetId/transform/:sessionId/input', component: DatasetInputsTransformComponent },
             { path: ':datasetId/transform/:sessionId/setup', component: DatasetSetupTransformComponent },
+            { path: ':datasetId/visualize/:sessionId/select', component: DatasetSelectVisualizeComponent },
+            { path: ':datasetId/visualize/:sessionId/input', component: DatasetInputsVisualizeComponent },
+            { path: ':datasetId/visualize/:sessionId/setup', component: DatasetSetupVisualizeComponent },
             { path: ':datasetId', component: DatasetDetailsComponent }
         ] 
     }

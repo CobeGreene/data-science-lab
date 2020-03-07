@@ -4,6 +4,7 @@ import { RouterService } from '../../../../../services/router-service';
 import { DatasetService } from '../../../../../services/dataset-service';
 import { TransformSessionService } from '../../../../../session-services/transform-session-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { DatasetVisualSessionService } from '../../../../../session-services/dataset-visual-session-service';
 
 @Component({
   selector: 'app-dataset-features',
@@ -18,7 +19,8 @@ export class DatasetFeaturesComponent implements OnInit, OnDestroy {
   constructor(
     private routerService: RouterService,
     private datasetService: DatasetService,
-    private transformService: TransformSessionService 
+    private transformService: TransformSessionService,
+    private visualizeService: DatasetVisualSessionService
   ) { }
 
   ngOnInit() {
@@ -45,6 +47,13 @@ export class DatasetFeaturesComponent implements OnInit, OnDestroy {
 
   onTransform() {
     this.transformService.create(this.id, {
+      currentRoute: this.routerService.current(),
+      newTab: true,
+    }, this.dataset.features.map((_, index) => index));
+  }
+
+  onVisualize() {
+    this.visualizeService.create(this.id, {
       currentRoute: this.routerService.current(),
       newTab: true,
     }, this.dataset.features.map((_, index) => index));

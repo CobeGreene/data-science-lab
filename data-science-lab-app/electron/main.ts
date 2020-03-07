@@ -43,6 +43,12 @@ if (!fs.existsSync(testReportsPath)) {
 }
 settings.set('test-reports-path', testReportsPath);
 
+const visualPath = path.join(__dirname, '../visuals');
+if (!fs.existsSync(visualPath)) {
+    fs.mkdirSync(visualPath);
+}
+settings.set('visuals-path', visualPath);
+
 
 const preload = path.join(__dirname, 'preload.js');
 const angularApp = url.format({

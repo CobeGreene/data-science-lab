@@ -98,5 +98,9 @@
     "trackers-table-th": "#323232",
     "trackers-table-tr-even": "#353535",
     "trackers-table-scroll-background": "#303030",
-    "trackers-table-scroll-foreground": "#3655B5"
+    "trackers-table-scroll-foreground": "#3655B5",
+    "experiment-visualization-grid-lines": "#505050",
+    "experiment-visualization-frame-background": "white",
+    "experiment-visualization-card-icon-body": "#40404081",
+    "experiment-visualization-card-icon-body-hover": "#404040"
 }

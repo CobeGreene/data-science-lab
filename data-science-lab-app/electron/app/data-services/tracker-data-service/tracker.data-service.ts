@@ -1,6 +1,6 @@
 import { TrackerObject } from '../../models';
 import { AlgorithmTracker } from '../../../../shared/models';
-import { VariableTracker } from 'data-science-lab-core';
+import { VariableTracker, PluginData } from 'data-science-lab-core';
 
 export interface TrackerDataService {
     all(): TrackerObject[];
@@ -13,4 +13,5 @@ export interface TrackerDataService {
     save(algorithmId: number): void;
     create(algorithmId: number): void;
     push(algorithmId: number, iteration: number, variables: VariableTracker[]): void;
+    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData };
 }
