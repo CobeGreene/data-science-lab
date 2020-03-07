@@ -278,7 +278,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         });
     }
 
-    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData } {
+    extract(id: number, inputs: { [id: string]: number[] }, selectedFeatures: number[]): { [id: string]: PluginData } {
         const data: { [id: string]: PluginData } = {};
 
         const dataset = this.get(id);
@@ -299,9 +299,9 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             }
 
             for (let j = 0; j < inputs[key].length; ++j) {
-                features.push(dataset.features[inputs[key][j]].name);
-                for (let i = 0; i < dataset.features[inputs[key][j]].examples.length; ++i) {
-                    examples[i][j] = dataset.features[inputs[key][j]].examples[i];
+                features.push(dataset.features[selectedFeatures[inputs[key][j]]].name);
+                for (let i = 0; i < dataset.features[selectedFeatures[inputs[key][j]]].examples.length; ++i) {
+                    examples[i][j] = dataset.features[selectedFeatures[inputs[key][j]]].examples[i];
                 }
             }
 

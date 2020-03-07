@@ -52,7 +52,7 @@ export class ExperimentDatasetsComponent implements OnInit, OnDestroy {
 
   onOpen(_: MouseEvent, index: number) {
     const tab = this.tabFactory.create(['experiment', this.id, 'dataset', this.datasets[index].id]);
-    this.tabService.openTab(tab);
+    this.tabService.replaceTab(this.routerService.current(),tab);
   }
 
 }

@@ -21,7 +21,7 @@ export class SettingCardComponent implements OnInit {
   }
 
   type() {
-    return typeof(this.setting.value);
+    return typeof(this.setting.default);
   }
 
   onChange(value: any) {

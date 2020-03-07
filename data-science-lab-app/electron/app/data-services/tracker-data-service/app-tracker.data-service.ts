@@ -176,7 +176,7 @@ export class AppTrackerDataService extends Service implements TrackerDataService
         return typeof data;
     }
 
-    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData } {
+    extract(id: number, inputs: { [id: string]: number[] }, selectedFeatures: number[]): { [id: string]: PluginData } {
         const data: { [id: string]: PluginData } = {};
 
         const tracker = this.get(id);
@@ -197,15 +197,15 @@ export class AppTrackerDataService extends Service implements TrackerDataService
             }
 
             for (let j = 0; j < inputs[key].length; ++j) {
-                if (inputs[key][j] === 0) {
+                if (selectedFeatures[inputs[key][j]] === 0) {
                     features.push('Iteration');
                     for (let i = 0; i < tracker.iterations.length; ++i) {
                         examples[i][j] = tracker.iterations[i].at;
                     }
                 } else {
-                    features.push(tracker.variables[inputs[key][j] - 1].name);
+                    features.push(tracker.variables[selectedFeatures[inputs[key][j]] - 1].name);
                     for (let i = 0; i < tracker.iterations.length; ++i) {
-                        examples[i][j] = tracker.iterations[i].values[tracker.variables[inputs[key][j] - 1].name];
+                        examples[i][j] = tracker.iterations[i].values[tracker.variables[selectedFeatures[inputs[key][j]] - 1].name];
                     }
                 }
 

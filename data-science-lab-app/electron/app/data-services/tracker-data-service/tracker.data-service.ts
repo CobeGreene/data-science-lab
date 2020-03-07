@@ -13,5 +13,5 @@ export interface TrackerDataService {
     save(algorithmId: number): void;
     create(algorithmId: number): void;
     push(algorithmId: number, iteration: number, variables: VariableTracker[]): void;
-    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData };
+    extract(id: number, inputs: { [id: string]: number[] }, selectedFeatures: number[]): { [id: string]: PluginData };
 }

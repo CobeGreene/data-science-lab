@@ -51,6 +51,9 @@ export class SettingNumberCardComponent implements OnInit, AfterViewInit, OnDest
   }
 
   isInteger(num: number) {
+    if (num === undefined) {
+      return false;
+    }
     return Number.isInteger(num);
   }
 

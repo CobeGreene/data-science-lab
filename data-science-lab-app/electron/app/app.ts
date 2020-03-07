@@ -42,6 +42,7 @@ import { CreateTestReportServiceModel } from './session-services/create-test-rep
 import { VisualServiceModel } from './services/visual.sm';
 import { DatasetVisualServiceModel } from './session-services/dataset-visual.sm';
 import { AlgorithmVisualServiceModel } from './session-services/algorithm-visual.sm';
+import { ExperimentState } from '../../shared/models';
 
 export let win: BrowserWindow;
 
@@ -132,7 +133,7 @@ export class App {
         const dataService = this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
         const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
 
-        dataService.all().forEach(experiment => {
+        dataService.all().filter(value => value.state === ExperimentState.Loaded).forEach(experiment => {
             producer.send(ExperimentEvents.Save, experiment.id);
         });
     }

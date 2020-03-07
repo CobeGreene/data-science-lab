@@ -60,10 +60,11 @@ export abstract class SessionService extends ServiceModel {
         this.producer.send(this.eventDelete, id);
     }
 
-    async select(id: number, plugin: SessionPlugin | Plugin) {
+    async select(id: number, plugin: SessionPlugin | Plugin, selectedFeatures?: number[]) {
         await this.eventWrapper(async () => {
             const session = this.dataService.get(id);
             session.plugin = plugin;
+            session.selectedFeatures = selectedFeatures;
             session.isWaiting = false;
 
             const sessionPlugin = await this.context.activate<any>(this.packageService.find(plugin), plugin);

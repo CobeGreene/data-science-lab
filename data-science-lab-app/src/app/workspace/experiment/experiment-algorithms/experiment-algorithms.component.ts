@@ -54,6 +54,6 @@ export class ExperimentAlgorithmsComponent implements OnInit, OnDestroy {
 
   onOpen(event: MouseEvent, index: number) {
     const tab = this.tabFactory.create(['experiment', this.id, 'algorithm', this.algorithms[index].id]);
-    this.tabService.openTab(tab);
+    this.tabService.replaceTab(this.routerService.current(), tab);
   }
 }

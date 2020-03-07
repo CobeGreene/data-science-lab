@@ -68,7 +68,7 @@ export class DatasetSelectTransformComponent implements OnInit, OnDestroy {
   }
 
   onPlugin(plugin: SessionPlugin) {
-    this.transformSessionService.select(this.session.id, plugin);
+    this.transformSessionService.select(this.session.id, plugin, this.session.selectedFeatures);
   }
 
   initPlugins() {

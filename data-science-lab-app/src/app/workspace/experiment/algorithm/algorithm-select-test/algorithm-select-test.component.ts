@@ -55,7 +55,7 @@ export class AlgorithmSelectTestComponent implements OnInit, OnDestroy {
   }
 
   onSelect(event: Dataset) {
-    this.testReportSessionService.select(this.id, event.id,
+    this.testReportSessionService.select(this.sessionId, event.id,
       event.features.map((_, index) => index));
   }
 

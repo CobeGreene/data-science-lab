@@ -499,7 +499,7 @@ describe('Electron Dataset Data Service', () => {
         const data = datasetService.extract(id, {
             input: [0, 1],
             output: [2]
-        });
+        }, [0, 1, 2]);
 
         expect(data.input.features.length).toBe(2);
         expect(data.input.features[0]).toBe('F1');
