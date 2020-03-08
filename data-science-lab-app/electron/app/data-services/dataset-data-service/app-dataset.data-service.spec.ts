@@ -228,6 +228,7 @@ describe('Electron Dataset Data Service', () => {
         datasetService.save(2);
 
         datasetService.deleteByExperiment(2);
+        datasetService.save(2);
         expect(fs.existsSync(path.join(experimentPath, `datasets${2}.gzip`))).toBeFalsy();
     });
 

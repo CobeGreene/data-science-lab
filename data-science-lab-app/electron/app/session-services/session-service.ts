@@ -210,6 +210,7 @@ export abstract class SessionService extends ServiceModel {
             this.producer.send(this.eventFinish, session.id);
             await this.sessionFinish(session, plugin);
             await this.deactivatePlugin(session.plugin);
+            this.dataService.delete(session.id);
         } catch (error) {
             this.dataService.delete(session.id);
             throw error;
