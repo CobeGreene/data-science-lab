@@ -95,8 +95,10 @@ export class AppTestReportDataService extends Service implements TestReportDataS
         return report;
     }
 
-    deleteByAlgorithm(algorithmId: number) {
-        this.reports = this.reports.filter(value => value.algorithmId === algorithmId);
+    deleteByAlgorithm(algorithmId: number): number[] {
+        const ids = this.reports.filter(value => value.algorithmId === algorithmId).map(value => value.id);
+        this.reports = this.reports.filter(value => value.algorithmId !== algorithmId);
+        return ids;
     }
 
     notFound(id: number): SystemError {

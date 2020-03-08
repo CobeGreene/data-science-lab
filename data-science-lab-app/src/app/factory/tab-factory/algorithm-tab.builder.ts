@@ -32,10 +32,8 @@ export class AlgorithmTabBuilder extends BaseTabBuilder {
 
     build(): Tab {
         this.experiment.update.unsubscribe();
-        this.tab.sub = this.base.delete
-            .add(this.update)
-            .add(this.delete);
-        return this.base.tab;
+        this.tab.sub = [this.base.delete, this.update, this.delete];
+        return this.tab;
     }
 
     buildUpdate(subject: Subject<Algorithm>): TabBuilder {

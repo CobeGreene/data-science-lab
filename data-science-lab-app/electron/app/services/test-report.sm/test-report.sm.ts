@@ -1,6 +1,6 @@
 import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
 import { ServiceModelRoutes, Producer, } from '../../pipeline';
-import { TestReportEvents } from '../../../../shared/events';
+import { TestReportEvents, AlgorithmEvents } from '../../../../shared/events';
 import { ServiceModel } from '../service-model';
 import { TestReportDataService } from '../../data-services/test-report-data-service';
 
@@ -8,7 +8,7 @@ export class TestReportServiceModel extends ServiceModel {
     static routes: ServiceModelRoutes = {
         service: SERVICE_TYPES.TestReportServiceModel,
         routes: [
-            { path: TestReportEvents.All, method: 'all' },
+            { path: TestReportEvents.All, method: 'all' },  
             { path: TestReportEvents.Rename, method: 'rename' },
             { path: TestReportEvents.Delete, method: 'delete' },
         ]
@@ -37,5 +37,6 @@ export class TestReportServiceModel extends ServiceModel {
         this.dataService.delete(id);
         this.producer.send(TestReportEvents.Delete, id);
     }
+    
 }
 

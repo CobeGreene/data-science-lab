@@ -8,7 +8,7 @@ export interface VisualDataService {
     get(id: number): Visual;
     post(visual: Visual): Visual;
     delete(id: number): void;
-    deleteByExperiment(experimentId: number): void;
+    deleteByExperiment(experimentId: number): number[];
     update(visual: Visual): void;
     load(experimentId: number): void;
     save(experimentId: number): void;

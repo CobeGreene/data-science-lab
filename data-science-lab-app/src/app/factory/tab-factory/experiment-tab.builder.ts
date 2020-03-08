@@ -21,7 +21,7 @@ export class ExperimentTabBuilder extends BaseTabBuilder {
     }
 
     build(): Tab {
-        this.tab.sub = this.update.add(this.delete);
+        this.tab.sub = [this.update, this.delete];
         return this.tab;
     }
 

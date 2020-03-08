@@ -59,8 +59,10 @@ export class AppVisualDataService extends Service implements VisualDataService {
         }
     }
 
-    deleteByExperiment(experimentId: number) {
-
+    deleteByExperiment(experimentId: number): number[] {
+        const ids = this.visuals.filter(value => value.experimentId === experimentId).map(value => value.id);
+        this.visuals = this.visuals.filter(value => value.experimentId !== experimentId);
+        return ids;
     }
 
     update(visual: Visual) {

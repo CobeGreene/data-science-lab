@@ -29,11 +29,7 @@ export class CreateAlgorithmTabBuilder extends BaseTabBuilder {
     }
 
     build(): Tab {
-        this.tab.sub = this.base.delete
-            .add(this.base.update)
-            .add(this.update)
-            .add(this.delete)
-            .add(this.finish);
+        this.tab.sub = [this.base.delete, this.base.update, this.update, this.delete, this.finish];
         return this.tab;
     }
 

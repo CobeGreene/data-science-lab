@@ -131,6 +131,15 @@ export class AppTrackerDataService extends Service implements TrackerDataService
         this.trackers.push(tracker);
     }
 
+    delete(algorithmId: number) {
+        const find = this.trackers.findIndex(value => value.algorithmId === algorithmId);
+        if (find >= 0) {
+            this.trackers.splice(find, 1);            
+        } else {
+            throw this.notFound(algorithmId);
+        }
+    }
+
     push(algorithmId: number, current: number, variables: VariableTracker[]): void {
         const obj = this.get(algorithmId);
 

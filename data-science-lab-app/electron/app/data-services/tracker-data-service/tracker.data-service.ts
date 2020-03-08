@@ -10,6 +10,7 @@ export interface TrackerDataService {
     has(algorithmId: number): boolean;
     view(algorithmId: number): AlgorithmTracker;
     load(algorithmId: number): void;
+    delete(algorithmId: number): void;
     save(algorithmId: number): void;
     create(algorithmId: number): void;
     push(algorithmId: number, iteration: number, variables: VariableTracker[]): void;

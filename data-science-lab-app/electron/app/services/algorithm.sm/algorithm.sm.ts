@@ -18,6 +18,7 @@ export class AlgorithmServiceModel extends ServiceModel {
             { path: AlgorithmEvents.Stop, method: 'stop' },
             { path: AlgorithmEvents.Update, method: 'update' },
             { path: ExperimentEvents.Load, method: 'load' },
+            { path: ExperimentEvents.Delete, method: 'deleteByExperiment', isListener: true },
             { path: ExperimentEvents.Save, method: 'save', isListener: true },
         ]
     };
@@ -46,6 +47,20 @@ export class AlgorithmServiceModel extends ServiceModel {
     async delete(id: number) {
         await this.algorithmService.delete(id);
         this.producer.send(AlgorithmEvents.Delete, id);
+    }
+    
+    async deleteByExperiment(experimentId: number) {
+        const ids = await this.algorithmService.deleteByExperiment(experimentId);
+        ids.forEach((id) => {
+            if (this.trackerService.has(id)) {
+                this.trackerService.delete(id);
+            }
+            this.reportService.deleteByAlgorithm(id);
+        });
+        
+        this.producer.send(AlgorithmEvents.All, this.algorithmService.allView());
+        this.producer.send(TrackerEvents.All, this.trackerService.allView());
+        this.producer.send(TestReportEvents.All, this.reportService.all());
     }
 
     start(id: number) {

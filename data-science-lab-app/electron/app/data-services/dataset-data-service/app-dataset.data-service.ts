@@ -133,12 +133,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     deleteByExperiment(experimentId: number) {
         const ids = this.all(experimentId).map(value => value.id);
         ids.forEach(id => this.delete(id));
-
-        const datasetPath = this.context.get<string>(this.path);
-        const experimentPath = path.join(datasetPath, `datasets${experimentId}.gzip`);
-        if (fs.existsSync(experimentPath)) {
-            fs.unlinkSync(experimentPath);
-        }
+        return ids;
     }
 
     view(id: number): Dataset {

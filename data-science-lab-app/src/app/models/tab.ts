@@ -5,7 +5,7 @@ export interface Tab {
     name: string;
     route: string;
     data?: ExperimentRoute;
-    sub?: Subscription;
+    sub?: Subscription[] | Subscription;
     close?: () => void;
 }
 

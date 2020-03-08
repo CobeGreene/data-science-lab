@@ -8,7 +8,7 @@ export interface TestReportDataService {
     get(id: number): TestReport;
     update(report: TestReport): void;
     delete(id: number): void;
-    deleteByAlgorithm(id: number): void;
+    deleteByAlgorithm(id: number): number[];
     load(algorithmId: number);
     save(algorithmId: number);
 }

@@ -10,7 +10,7 @@ export interface DatasetDataService {
     create(experimentId: number, data: PluginData): number[];
     get(id: number): DatasetObject;
     delete(id: number): void;
-    deleteByExperiment(experimentId: number): void;
+    deleteByExperiment(experimentId: number): number[];
     view(id: number): Dataset;
     load(experimentId: number): void;
     save(experimentId: number): void;

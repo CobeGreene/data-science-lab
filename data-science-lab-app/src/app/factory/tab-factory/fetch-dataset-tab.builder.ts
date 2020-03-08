@@ -32,11 +32,7 @@ export class FetchDatasetTabBuilder extends BaseTabBuilder {
     }
     
     build(): Tab {
-        this.tab.sub = this.base
-            .update.add(this.base.delete)
-            .add(this.update)
-            .add(this.delete)
-            .add(this.finish);
+        this.tab.sub = [this.base.update, this.base.delete, this.update, this.delete, this.finish];
         return this.base.tab;
     }
 
@@ -53,7 +49,8 @@ export class FetchDatasetTabBuilder extends BaseTabBuilder {
     }
 
     buildDelete(subject: Subject<number>): TabBuilder {
-        this.delete = subject.subscribe((value) => {
+        this.delete = subject
+            .subscribe((value) => {
             if (value === this.tab.data.sessionId) {
                 this.tabService.removeTab(this.tab.route);
             }

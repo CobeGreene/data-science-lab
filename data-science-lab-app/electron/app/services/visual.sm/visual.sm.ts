@@ -14,6 +14,7 @@ export class VisualServiceModel extends ServiceModel {
             { path: VisualEvents.Resize, method: 'resize' },
             { path: VisualEvents.Reposition, method: 'reposition' },
             { path: ExperimentEvents.Load, method: 'load' },
+            { path: ExperimentEvents.Delete, method: 'deleteByExperiment', isListener: true },
             { path: ExperimentEvents.Save, method: 'save', isListener: true }
         ]
     }
@@ -58,6 +59,11 @@ export class VisualServiceModel extends ServiceModel {
         visual.left = left;
         this.dataService.update(visual);
         this.producer.send(VisualEvents.Update, visual);
+    }
+
+    deleteByExperiment(experimentId: number) {
+        const ids = this.dataService.deleteByExperiment(experimentId);
+        ids.forEach(id => this.producer.send(VisualEvents.Delete, id));
     }
 
 
