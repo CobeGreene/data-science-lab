@@ -105,6 +105,10 @@ export class AppDatasetService extends DatasetService {
     join(ids: number[]): void {
         this.messenger.publish(DatasetEvents.Join, ids);
     }
+
+    show(id: number): void {
+        this.messenger.publish(DatasetEvents.Show, id);
+    }
 }
 
 

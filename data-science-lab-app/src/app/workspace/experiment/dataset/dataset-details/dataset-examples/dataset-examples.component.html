@@ -32,7 +32,7 @@
                 </td>
             </tr>
             <tr *ngIf="dataset.previewExamples.length !== examples">
-                <td [attr.colspan]="dataset.features.length + 1" class="pointer p-3" (click)="onShowMore()" >
+                <td [attr.colspan]="dataset.features.length + 1" class="pointer p-3 show" (click)="onShowMore()" >
                     Click to show more
                 </td>
             </tr>

@@ -58,7 +58,7 @@ export class DatasetExamplesComponent implements OnInit, OnDestroy {
   }
 
   onShowMore() {
-    // this.datasetService.loadExamples(this.id);
+    this.datasetService.show(this.id);
   }
 
 

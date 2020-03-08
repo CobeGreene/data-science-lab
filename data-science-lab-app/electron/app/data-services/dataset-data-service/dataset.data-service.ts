@@ -14,6 +14,7 @@ export interface DatasetDataService {
     view(id: number): Dataset;
     load(experimentId: number): void;
     save(experimentId: number): void;
+    show(id: number): void;
     update(dataset: DatasetObject): void;
     split(id: number, split: number): number;
     join(ids: number[]): { updateId: number, deletedIds: number[] };

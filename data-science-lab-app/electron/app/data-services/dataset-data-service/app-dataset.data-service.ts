@@ -56,7 +56,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
 
     create(experimentId: number, data: PluginData): number[] {
         const datasets = this.converter.convert(data);
-        
+
         const setting = this.user.find(Settings.DatasetDefaultPreview);
         const defaultPreview = (setting === undefined) ? 10 : setting.value;
 
@@ -276,6 +276,21 @@ export class AppDatasetDataService extends Service implements DatasetDataService
             }
             return 0;
         });
+    }
+
+    show(id: number): void {
+        const dataset = this.get(id);
+
+        const setting = this.user.find(Settings.DatasetDefaultPreview);
+        const defaultPreview = (setting === undefined) ? 10 : setting.value;
+
+        if (dataset.previewExamples + defaultPreview > dataset.examples) {
+            dataset.previewExamples = dataset.examples;
+        } else {
+            dataset.previewExamples = dataset.previewExamples + defaultPreview;
+        }
+
+        this.update(dataset);
     }
 
     extract(id: number, inputs: { [id: string]: number[] }, selectedFeatures: number[]): { [id: string]: PluginData } {

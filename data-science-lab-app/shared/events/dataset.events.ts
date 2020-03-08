@@ -7,7 +7,7 @@ export namespace DatasetEvents {
     export const Rename = 'dataset-rename';
     export const Split = 'dataset-split';
     export const Join = 'dataset-join';
-    export const LoadExamples = 'dataset-load-examples';
+    export const Show = 'dataset-show';
     export const RenameFeature = 'dataset-rename-feature';
     export const DeleteFeature = 'dataset-delete-feature';
 }

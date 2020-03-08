@@ -13,6 +13,7 @@ export class DatasetServiceModel extends ServiceModel {
             { path: DatasetEvents.Rename, method: 'rename' },
             { path: DatasetEvents.Split, method: 'split' },
             { path: DatasetEvents.Join, method: 'join' },
+            { path: DatasetEvents.Show, method: 'show' },
             { path: ExperimentEvents.Load, method: 'load' },
             { path: ExperimentEvents.Save, method: 'save', isListener: true },
         ]
@@ -62,6 +63,11 @@ export class DatasetServiceModel extends ServiceModel {
         deletedIds.forEach((id) => {
             this.producer.send(DatasetEvents.Delete, id);
         });
+    }
+
+    show(id: number) {
+        this.datasetService.show(id);
+        this.producer.send(DatasetEvents.Update, this.datasetService.view(id));
     }
 }
 
