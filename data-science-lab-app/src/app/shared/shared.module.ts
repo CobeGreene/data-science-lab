@@ -58,6 +58,8 @@ import { SelectDatasetCardComponent } from './dataset/select-dataset/select-data
 import { DeleteAlgorithmComponent } from './algorithm/delete-algorithm/delete-algorithm.component';
 import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorithm.component';
 import { PackageExplorerLinkComponent } from './package-explorer-link/package-explorer-link.component';
+import { DeleteTestReportComponent } from './test-report/delete-test-report/delete-test-report.component';
+import { EditTestReportComponent } from './test-report/edit-test-report/edit-test-report.component';
 
 @NgModule({
     declarations: [
@@ -109,6 +111,8 @@ import { PackageExplorerLinkComponent } from './package-explorer-link/package-ex
         DeleteAlgorithmComponent,
         EditAlgorithmComponent,
         PackageExplorerLinkComponent,
+        DeleteTestReportComponent,
+        EditTestReportComponent,
     ],
     imports: [
         CommonModule,
@@ -141,6 +145,8 @@ import { PackageExplorerLinkComponent } from './package-explorer-link/package-ex
         PackageBadgePipe,
         PackageSearchPipe,
         DropdownComponent,
+        DeleteTestReportComponent,
+        EditTestReportComponent,
         PreviewCardComponent,
         PluginSelectionComponent,
         PluginSetupComponent,
