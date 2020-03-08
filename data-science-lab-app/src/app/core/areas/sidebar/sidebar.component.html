@@ -33,7 +33,17 @@
 </div>
 <div class="settings">
     <div class="text-center icon my-2 px-4">
-        <fa name="gear" title="settings" size="2x"></fa>
+        <fa name="gear" title="settings" size="2x" (click)="onSettingsClick()" (contextmenu)="onSettingsContext($event)"></fa>
         <!-- Settings -->
     </div>
+    <app-dropdown #settingsCmp>
+        <ul class="list-unstyled dropdown-list">
+            <li (click)="onWelcomeClick()">
+                Welcome
+            </li>
+            <li (click)="onSettingsClick()">
+                Settings
+            </li>
+        </ul>
+    </app-dropdown>
 </div>
