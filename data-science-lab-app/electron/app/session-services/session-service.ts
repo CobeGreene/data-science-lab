@@ -206,10 +206,14 @@ export abstract class SessionService extends ServiceModel {
     }
 
     private async sessionFinishWrapper(session: Session, plugin: any) {
-        await this.sessionFinish(session, plugin);
-        await this.deactivatePlugin(session.plugin);
-        this.dataService.delete(session.id);
-        this.producer.send(this.eventFinish, session.id);
+        try {
+            this.producer.send(this.eventFinish, session.id);
+            await this.sessionFinish(session, plugin);
+            await this.deactivatePlugin(session.plugin);
+        } catch (error) {
+            this.dataService.delete(session.id);
+            throw error;
+        }
     } 
 
 
