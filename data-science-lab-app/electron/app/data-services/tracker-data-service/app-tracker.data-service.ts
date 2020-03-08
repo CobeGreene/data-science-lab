@@ -66,7 +66,7 @@ export class AppTrackerDataService extends Service implements TrackerDataService
         const setting = this.user.find(Settings.TrackerRecentIteration);
         const defaultRecent = (setting === undefined) ? 5 : setting.value;
 
-        const start = (tracker.iterations.length - defaultRecent < 0) ? tracker.iterations.length :
+        const start = (tracker.iterations.length - defaultRecent < 0) ? 0 :
             tracker.iterations.length - defaultRecent;
 
         return {
