@@ -1,8 +1,8 @@
 {
     "api-settings": {
         "protocol": "https:",
-        "hostname": "localhost",
-        "port": 44339,
+        "hostname": "data-science-lab.azurewebsites.net",
+        "port": 443,
         "pathPackages": "/api/packages"
     }
 }
