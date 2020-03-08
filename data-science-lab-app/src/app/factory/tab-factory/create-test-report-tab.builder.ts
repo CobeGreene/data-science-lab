@@ -58,7 +58,7 @@ export class CreateTestReportTabBuilder extends BaseTabBuilder {
         this.finish = subject.subscribe(({ id, returnPath }) => {
             if (id === this.tab.data.sessionId) {
                 if (returnPath === undefined) {
-                    const tab = this.tabFactory.create(['experiment', this.tab.data.id, 'algorithm']);
+                    const tab = this.tabFactory.create(['experiment', this.tab.data.id, 'algorithm', this.tab.data.algorithmId]);
                     this.tabService.replaceTab(this.tab.route, tab);
                 } else {
                     const tab = this.tabFactory.create(returnPath.split('/').slice(1));

@@ -160,14 +160,15 @@ export class App {
             width: size.width, height: size.height,
             webPreferences: {
                 preload: this.preload
-            }
+            },
+            title: 'Data Science Lab'
         });
 
-        // win.setMenu(null); // to allow some of the shortcuts.
-
+        win.setMenu(null); // to allow some of the shortcuts.
 
         this.configure();
         win.loadURL(this.indexPage);
+
 
         win.on('close', (event: Event) => {
             event.preventDefault();
