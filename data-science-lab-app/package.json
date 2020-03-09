@@ -50,7 +50,8 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "icon": "./src/data-science-lab-icon.ico"
     },
     "nsis": {
       "runAfterFinish": true,
