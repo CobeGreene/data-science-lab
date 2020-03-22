@@ -1,6 +1,6 @@
 {
   "name": "data-science-lab-app",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "dist/electron/main.js",
   "author": {
     "name": "Cobe Greene",
