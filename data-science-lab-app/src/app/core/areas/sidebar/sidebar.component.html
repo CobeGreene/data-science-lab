@@ -1,0 +1,49 @@
+<div class="extended" *ngIf="isExpanded">
+    <app-sidebar-experiment class="h-100v" *ngIf="choice === 'experiments'"></app-sidebar-experiment>
+    <app-sidebar-package class="h-100v" *ngIf="choice === 'packages'"></app-sidebar-package>
+</div>
+<div class="icons">
+    <div class="space"></div>
+    <ul class='list-unstyled'>
+        <li class="text-center pointer icon my-2 px-4" (click)='onPick("experiments", $event)'
+            [ngClass]="{ 'active': choice === 'experiments' }">
+            <fa name="flask" size="2x" title="experiments">
+            </fa>
+            <!-- Experiments -->
+        </li>
+        <li class="text-center pointer icon my-2 px-4" (click)='onPick("data", $event)' [ngClass]="{ 'active': choice === 'data' }">
+            <fa name="table" size="2x" title="datasets"></fa>
+            <!-- Data -->
+        </li>
+        <li class="text-center pointer icon my-2 px-4" (click)='onPick("visuals", $event)' [ngClass]="{ 'active': choice === 'visuals' }">
+            <fa name="bar-chart" title="visuals" size="2x"></fa>
+            <!-- Visuals -->
+        </li>
+        <li class="text-center pointer icon my-2 px-4" (click)='onPick("algorithms", $event)'
+            [ngClass]="{ 'active': choice === 'algorithms' }">
+            <fa name="code" title="algorithms" size="2x"></fa>
+            <!-- Algorithms -->
+        </li>
+        <li class="text-center pointer icon my-2 px-4" (click)='onPick("packages", $event)'
+            [ngClass]="{ 'active': choice === 'packages' }">
+            <fa name="puzzle-piece" title="packages" size="2x"></fa>
+            <!-- Packages -->
+        </li>
+    </ul>
+</div>
+<div class="settings">
+    <div class="text-center icon my-2 px-4">
+        <fa name="gear" title="settings" size="2x" (click)="onSettingsClick()" (contextmenu)="onSettingsContext($event)"></fa>
+        <!-- Settings -->
+    </div>
+    <app-dropdown #settingsCmp>
+        <ul class="list-unstyled dropdown-list">
+            <li (click)="onWelcomeClick()">
+                Welcome
+            </li>
+            <li (click)="onSettingsClick()">
+                Settings
+            </li>
+        </ul>
+    </app-dropdown>
+</div>

@@ -2,32 +2,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { WelcomeComponent } from './welcome/welcome.component';
-import { AppIpcService } from './services/';
-import { IpcService } from '../../shared/services';
-import { PackagesModule } from './packages/packages.module';
-import { ErrorService, AppErrorService } from './services/error-services';
-import { ErrorNotificationsComponent } from './error-exceptions/error-notifications/error-notifications.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ExperimentsModule } from './experiments/experiments.module';
+import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WelcomeComponent,
-    ErrorNotificationsComponent,
   ],
   imports: [
     BrowserModule,
+    SharedModule,
+    CoreModule,
     AppRoutingModule,
-    PackagesModule,
-    ExperimentsModule,
-    NgbModule
   ],
   bootstrap: [AppComponent],
-  providers: [
-    { provide: IpcService, useClass: AppIpcService },
-    { provide: ErrorService, useClass: AppErrorService }
-  ]
+  providers: []
 })
 export class AppModule { }

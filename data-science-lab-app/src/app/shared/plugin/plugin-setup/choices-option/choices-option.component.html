@@ -1,0 +1,6 @@
+<p class="m-0">
+    {{ option.label }}
+</p>
+<app-select [options]="option.choices" (emitChange)="onChange($event)" [value]="value" class="w-100">
+
+</app-select>

@@ -1,71 +1,120 @@
 import { AppExperimentDataService } from './app-experiment.data-service';
-import { Experiment } from '../../../../shared/models';
-import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
-import { MockDocumentContext } from '../../contexts';
+import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
+import { SettingsContext } from '../../contexts/settings-context';
+import { Experiment, ExperimentState } from '../../../../shared/models';
 
-describe('Electron App Experiment Data Service Tests', () => {
-    let experimentDataService: AppExperimentDataService;
-    let serviceContainer: MockServiceContainer;
+
+describe('Electron App Experiment Data Service', () => {
+    let dataService: AppExperimentDataService;
+    let serviceContainer: ServiceContainer;
+    let context: SettingsContext;
+    let original: Experiment[];
 
     beforeEach(() => {
-        serviceContainer = new MockServiceContainer();
-        serviceContainer.getType = (type) => {
-            switch (type) {
-                case SERVICE_TYPES.DocumentContext:
-                    return new MockDocumentContext();
-                default: 
-                    throw new Error(`Can't find type ${type}`);
+        original = [
+            {
+                id: 1, created: new Date(),
+                state: ExperimentState.Loaded,
+                title: 'Title'
             }
-        };
-        experimentDataService = new AppExperimentDataService(serviceContainer);
+        ];
+        context = jasmine.createSpyObj('SettingsContext', ['get', 'set']);
+        (context.get as jasmine.Spy).and.returnValue(original);
+
+        serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
+        (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
+            if (type === SERVICE_TYPES.SettingsContext) {
+                return context;
+            }
+            throw new Error(`Couldn't resolve type ${type}.`);
+        });
+        dataService = new AppExperimentDataService(serviceContainer);
+        dataService.configure();
     });
 
-    it('all should return empty list', () => {
-        const experimentList = experimentDataService.all();
-        expect(experimentList.experiments.length).toEqual(0);
+    it('should return 1 for all', () => {
+        const experiments = dataService.all();
+        expect(experiments.length).toBe(1);
     });
 
-    it('create should create with id one', () => {
-        const experiment = experimentDataService.create(new Experiment({
-        }));
-        expect(experiment.id).toBe(1);
+    it('should return experiment for get of 1', () => {
+        const experiment = dataService.get(1);
+
+        expect(experiment.title).toBe('Title');
+        expect(experiment.state).toBe(ExperimentState.Unloaded);
     });
 
-
-    it('create should add one to the list', () => {
-        experimentDataService.create(new Experiment({}));
-        expect(experimentDataService.all().experiments.length).toBe(1);
-    });
-
-    it('create twice should create experiment with id of 2', () => {
-        experimentDataService.create(new Experiment({}));
-        experimentDataService.create(new Experiment({}));
-        expect(experimentDataService.read(2).id).toBe(2);
-    });
-
-    it('read should throw for experiment not found', () => {
+    it('should throw for get of 2', () => {
         expect(() => {
-            experimentDataService.read(404);
-        }).toThrowError();
+            dataService.get(2);
+        }).toThrow();
     });
 
-    it('delete should throw for not found', () => {
+    it('should call context set with zero experiments after delete', (done) => {
+        (context.set as jasmine.Spy).and.callFake((_key, value) => {
+            expect(value.length).toBe(0);
+            done();
+        });
+        dataService.delete(1);
+    });
+
+    it('should throw for delete of 2', () => {
         expect(() => {
-            expect(experimentDataService.delete(404));
-        }).toThrowError();
+            dataService.delete(2);
+        }).toThrow();
+    });
+
+    it('should create for post with id of 2', () => {
+        const experiment = dataService.post({
+            id: 0,
+            created: new Date(),
+            state: ExperimentState.Loaded,
+            title: 'New Title',
+            description: 'Description'
+        });
+        expect(experiment.id).toBe(2);
+    });
+
+    it('should save for post', (done) => {
+        (context.set as jasmine.Spy).and.callFake((_key, value) => {
+            expect(value.length).toBe(2);
+            done();
+        });
+        dataService.post({
+            id: 0,
+            created: new Date(),
+            state: ExperimentState.Loaded,
+            title: 'New Title',
+            description: 'Description'
+        }); 
     });
     
-    it('delete should decrement list', () => {
-        const experiment = experimentDataService.create(new Experiment({}));
-        experimentDataService.delete(experiment.id);
-        expect(experimentDataService.all().experiments.length).toBe(0);
+    it('should save for update', (done) => {
+        (context.set as jasmine.Spy).and.callFake((_key, value) => {
+            expect(value.length).toBe(1);
+            done();
+        });
+        dataService.update({
+            id: 1,
+            created: new Date(),
+            state: ExperimentState.Loaded,
+            title: 'New Title',
+            description: 'Description'
+        }); 
     });
 
-    it('update should change experiment list', () => {
-        const experiment = experimentDataService.create(new Experiment({}));
-        const date = new Date();
-        experiment.dateCreated = date;
-        experimentDataService.update(experiment);
-        expect(experimentDataService.read(experiment.id).dateCreated).toEqual(date);
+    it('should throw for update of id 2', () => {
+        expect(() => {
+            dataService.update({
+                id: 2,
+                created: new Date(),
+                state: ExperimentState.Loaded,
+                title: 'New Title',
+                description: 'Description'
+            }); 
+        }).toThrow();
     });
+
+
+
 });

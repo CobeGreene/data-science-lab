@@ -1,10 +1,20 @@
-import { TestReportViewModel } from '../../../../shared/view-models';
+import { TestReport } from '../../../../shared/models';
+
 
 export interface TestReportDataService {
-    all(algorithmId?: number): TestReportViewModel[];
-    create(report: TestReportViewModel): TestReportViewModel;
-    read(id: number): TestReportViewModel;
-    update(report: TestReportViewModel): void;
+    configure(): void;
+    all(): TestReport[];
+    post(report: TestReport): TestReport;
+    get(id: number): TestReport;
+    update(report: TestReport): void;
     delete(id: number): void;
-    load(reports: TestReportViewModel[]): void;
+    deleteByAlgorithm(id: number): number[];
+    load(algorithmId: number);
+    save(algorithmId: number);
 }
+
+
+
+
+
+

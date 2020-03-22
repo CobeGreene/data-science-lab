@@ -1,0 +1,23 @@
+<div class="setting mt-4">
+    <span class="icon pointer" (click)="onOptions($event)" #gearCmp>
+        <fa name="gear"></fa>
+    </span>
+    <h4 class="m-0">
+        {{ setting.title }}
+    </h4>
+</div>
+<ng-container [ngSwitch]="type()">
+    <app-setting-string-card *ngSwitchCase="'string'" [setting]="setting" (emitChange)="onChange($event)">
+    </app-setting-string-card>
+    <app-setting-boolean-card *ngSwitchCase="'boolean'" [setting]="setting" (emitChange)="onChange($event)">
+    </app-setting-boolean-card>
+    <app-setting-number-card *ngSwitchCase="'number'" [setting]="setting" (emitChange)="onChange($event)">
+    </app-setting-number-card>
+</ng-container>
+<app-dropdown #optionsCmp>
+    <ul class="list-unstyled dropdown-list">
+        <li (click)="onReset()">
+            Reset
+        </li>
+    </ul>
+</app-dropdown>

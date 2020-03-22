@@ -1,0 +1,18 @@
+<div class="sel pointer py-1 px-2" (click)="toggleOpen($event)" #selectCmp>
+    <div>
+        {{ value }}
+    </div>
+    <div class="icon">
+        <fa name="chevron-down"></fa>
+    </div>
+</div>
+<ng-template #optionsCmp>
+    <div [ngStyle]="{ 'width.px': selectComponent.nativeElement.offsetWidth }">
+        <ul class="opt list-unstyled pointer">
+            <li class="py-1 px-2" *ngFor="let option of options; let i = index" (click)="onSelected(i)">
+                {{ option }}
+                <fa *ngIf="i === selected" name="bullseye"></fa>
+            </li>
+        </ul>
+    </div>
+</ng-template>

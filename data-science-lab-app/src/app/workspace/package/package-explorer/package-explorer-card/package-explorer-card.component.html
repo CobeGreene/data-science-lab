@@ -1,0 +1,29 @@
+<div class="container p-3 my-2 pointer" (click)="onClick()">
+    <div class="header">
+        <div>
+            <img class="image" [src]="'https://github.com/' + pluginPackage.owner + '.png'">
+        </div>
+        <div class="pl-1">
+            <h3 class="m-0">
+                {{ pluginPackage.name }}
+            </h3>
+            <p class="m-0">
+                <i>{{ pluginPackage.owner }}</i>
+            </p>
+        </div>
+    </div>
+    <div class="status">
+        <div class="installed" *ngIf="pluginPackage.install">
+            Installed
+        </div>
+        <div *ngIf="!pluginPackage.install">
+            <fa class="icon" name="puzzle-piece" size="2x"></fa>
+        </div>
+    </div>
+    <div class="plugins desc">
+        Contains the plugins 
+        <ng-container *ngFor="let plugin of pluginPackage.plugins">
+            {{ plugin.name }} ({{ plugin.type }})
+        </ng-container>
+    </div>
+</div>

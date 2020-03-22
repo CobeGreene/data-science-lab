@@ -9,5 +9,6 @@ namespace data_science_lab_site.Constants
     {
         public const string Admin = "Admin";
         public const string Contributor = "Contributor";
+        public const string Both = "Admin,Contributor";
     }
 }

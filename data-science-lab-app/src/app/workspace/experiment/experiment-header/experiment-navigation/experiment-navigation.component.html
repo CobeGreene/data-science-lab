@@ -1,0 +1,20 @@
+<ul class="list-unstyled">
+    <li class="nav-item dataset pointer" (click)="onDataset()" [ngClass]="{ 'active': state === 'dataset' }">
+        <fa name="table" class="pr-1 icon"></fa>
+        <h4 class="m-0 p-0 pointer">
+            Datasets
+        </h4>
+    </li>
+    <li class="nav-item visualization" (click)="onVisuals()" [ngClass]="{ 'active': state === 'visual' }">
+        <fa name="bar-chart" class="pr-1 icon"></fa>
+        <h4 class="m-0 p-0 pointer">
+            Visuals
+        </h4>
+    </li>
+    <li class="nav-item algorithm pointer" (click)="onAlgorithms()" [ngClass]="{ 'active': state === 'algorithm' }">
+        <fa name="code" class="pr-1 icon"></fa>
+        <h4 class="m-0 p-0 pointer">
+            Algorithms
+        </h4>
+    </li>
+</ul>

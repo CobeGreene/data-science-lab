@@ -1,0 +1,26 @@
+:host {
+    width: 100%;
+}
+
+.sel {
+    display: flex;
+    justify-content: space-between;
+    background: var(--select-background);
+    color: var(--select-word);
+}
+
+.opt {
+    background: var(--select-option-background);
+    color: var(--select-word);
+}
+
+.opt li {
+    display: flex;
+    justify-content: space-between;
+}
+
+.opt li:hover {
+    background: var(--select-option-hover);
+    
+}
+

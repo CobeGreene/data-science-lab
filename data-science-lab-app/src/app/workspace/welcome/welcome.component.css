@@ -1,0 +1,46 @@
+:host {
+    position: absolute;
+    bottom: 0px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 2fr;
+    grid-template-areas: 'header logo' 'options logo';
+    text-align: right;
+    overflow: hidden;
+}
+
+.header {
+    grid-area: header;
+}
+
+.options {
+    grid-area: options;
+    color: var(--welcome-options);
+}
+
+.option:hover {
+    color: var(--welcome-options-focus);
+}
+
+.logo {
+    grid-area: logo;
+}
+
+.logo svg {
+    transform: rotate(-87deg);
+}
+
+.title {
+    color: var(--welcome-title);
+}
+
+.selected {
+    color: var(--welcome-options-focus);
+}
+
+.faded {
+    color: var(--welcome-options-faded);
+}

@@ -88,9 +88,18 @@
     "use-pipe-transform-interface": true,
     "variable-name": false,
     "no-internal-module": false,
-    "no-namespace": false
+    "no-namespace": false,
+    "no-implicit-dependencies": false,
+    "no-submodule-imports": false
   },
   "rulesDirectory": [
     "codelyzer"
-  ]
+  ],
+  "linterOptions": {
+    "exclude": [
+      "dist",
+      "release",
+      "e2e"
+    ]
+  }
 }

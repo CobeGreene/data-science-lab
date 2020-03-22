@@ -1,0 +1,18 @@
+.next {
+    display: flex;
+    align-items: center;
+    color: var(--plugin-body-next);
+}
+
+.waiting {
+    color: var(--plugin-body-next);
+}
+
+.icon {
+    transform: scale(0.8);
+    transition: all 200ms ease-in-out;
+}
+
+.icon:hover {
+    transform: scale(1);
+}

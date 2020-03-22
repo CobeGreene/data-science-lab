@@ -1,0 +1,15 @@
+:host {
+    display: flex;
+    align-self: flex-start;
+    justify-self: right;
+    color: var(--accent1);
+}
+
+.icon {
+    transform: scale(0.8);
+    transition: all 200ms ease-in-out;
+}
+
+.icon:hover {
+    transform: scale(1);
+}

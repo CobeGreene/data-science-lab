@@ -1,0 +1,28 @@
+.container {
+    background: var(--experiment-header);
+    display: grid;
+    position: fixed;
+    box-shadow: 0 5px 2px var(--experiment-header-shadow);
+    height: inherit;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'title expander nav';
+    z-index: 100;
+    transition: height 400ms ease-in-out;
+}
+
+.title {
+    grid-area: title;
+}
+
+.expander {
+    grid-area: expander;
+    text-align: center;
+    align-self: flex-end;
+}
+
+.nav {
+    grid-area: nav;
+    display: flex;
+    align-items: flex-end;
+}

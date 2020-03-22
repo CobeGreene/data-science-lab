@@ -1,157 +1,156 @@
+import { Service, ServiceContainer, SERVICE_TYPES } from '../../service-container';
 import { PackageDataService } from './package.data-service';
-import { PluginPackage, PluginPackageList, Plugin } from '../../../../shared/models';
-import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
-import { DocumentContext, PluginContext } from '../../contexts';
-import { WebService, Request } from 'data-science-lab-core';
-import { SettingsDataService } from '../settings-data-service';
+import { Plugin, Package } from '../../../../shared/models';
+import { SettingsContext } from '../../contexts/settings-context';
+import { PluginContext } from '../../contexts/plugin-context';
+import { SystemError, ErrorTypes } from '../../../../shared/errors';
+import { Producer } from '../../pipeline';
+import { WebService } from 'data-science-lab-core';
+import { ApiSettings } from '../../models';
+import { PackageEvents, ErrorEvent } from '../../../../shared/events';
 
-export class AppPackageDataService implements PackageDataService {
+export class AppPackageDataService extends Service implements PackageDataService {
+    private readonly key = 'packages';
+    private readonly api = 'api-settings';
+    private packages: Package[];
+    private retrieve: boolean;
 
-    readonly INSTALL_PACKAGES = 'install-packages-list';
-    private pluginPackageList: PluginPackageList;
-    private gotInstalled: boolean;
-    private hasFetch: boolean;
-
-    constructor(private serviceContainer: ServiceContainer) {
-        this.pluginPackageList = new PluginPackageList();
-        this.hasFetch = false;
-        this.gotInstalled = false;
+    get settings(): SettingsContext {
+        return this.serviceContainer.resolve<SettingsContext>(SERVICE_TYPES.SettingsContext);
     }
 
-    initial() {
-        if (!this.gotInstalled) {
-            const context = this.serviceContainer.resolve<DocumentContext>(SERVICE_TYPES.DocumentContext);
-            this.pluginPackageList = context.get<PluginPackageList>(this.INSTALL_PACKAGES, new PluginPackageList());
-            this.gotInstalled = true;
+    get producer(): Producer {
+        return this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
+    }
+
+    get web(): WebService {
+        return this.serviceContainer.resolve<WebService>(SERVICE_TYPES.WebService);
+    }
+
+    get context(): PluginContext {
+        return this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
+    }
+
+    constructor(serviceContainer: ServiceContainer) {
+        super(serviceContainer);
+
+        this.packages = [];
+        this.retrieve = false;
+    }
+
+    configure() {
+        this.packages = this.settings.get<Package[]>(this.key, []);
+        this.packages.forEach(value => value.install = true);
+    }
+
+    private save() {
+        const installed = this.packages.filter(value => value.install);
+        this.settings.set(this.key, installed);
+    }
+
+    all() {
+        if (!this.retrieve) {
+            this.retrieve = true;
+            this.getPackagesFromApi();
         }
+        return this.packages;
     }
 
-    all(callback?: (pluginPackageList: PluginPackageList) => void, error?: (reason: any) => void): PluginPackageList {
-        this.initial();
-        if (!this.hasFetch) {
-            if (callback) {
-                this.getPackagesFromApi().then(callback).catch(error);
-                this.hasFetch = true;
-            }
-        }
-        return this.pluginPackageList;
+    async install(pluginPackage: Package): Promise<Package> {
+        const find = this.read(pluginPackage.name);
+        await this.context.install(pluginPackage);
+        find.install = true;
+        this.save();
+        return find;
     }
 
-    private async getPackagesFromApi(): Promise<PluginPackageList> {
-        return new Promise<PluginPackageList>(async (resolve, reject) => {
-            try {
-                const webservice = this.serviceContainer.resolve<WebService>(SERVICE_TYPES.WebService);
-                const settingsDataService = this.serviceContainer.resolve<SettingsDataService>(SERVICE_TYPES.SettingsDataService);
-                const apiSettings = settingsDataService.readApiSettings();
-                const request = new Request({
-                    method: 'GET',
-                    protocol: apiSettings.protocol,
-                    hostname: apiSettings.hostname,
-                    port: apiSettings.port,
-                    path: apiSettings.pathPackages
-                });
-                const response = await webservice.send(request);
-                if (response.statusCode === 200) {
-                    const obj = JSON.parse(response.body.toString()) as any[];
-                    obj.forEach(element => {
-                        const find = this.pluginPackageList.packages.find((value: PluginPackage) => {
-                            return value.name === element.name;
-                        });
-                        if (find == null) {
-                            const pluginPackage = new PluginPackage({
-                                name: element.name,
-                                owner: element.owner,
-                                repositoryName: element.repositoryName,
-                                username: element.username,
-                                plugins: element.plugins
-                            });
-                            this.pluginPackageList.packages.push(pluginPackage);
-                        }
-                    });
-                    resolve(this.pluginPackageList);
-                } else {
-                    throw new Error(`Didn't get an OK response code from API.`);
-                }
-            } catch (reason) {
-                reject(reason);
-            }
-        });
+    async uninstall(pluginPackage: Package): Promise<Package> {
+        const find = this.read(pluginPackage.name);
+        await this.context.uninstall(pluginPackage);
+        find.install = false;
+        this.save();
+        return find;
     }
 
-    read(name: string): PluginPackage {
-        this.initial();
-        const find = this.pluginPackageList.packages.find((value) => {
-            return value.name === name;
-        });
-        if (find) {
-            return find;
-        }
-        throw new Error(`Couldn't find plugin package with name: ${name}.`);
-    }
-
-    find(plugin: Plugin): PluginPackage {
-        this.initial();
-        const find = this.pluginPackageList.packages.find((value) => {
+    find(plugin: Plugin): Package {
+        const find = this.packages.find((value) => {
             return value.name === plugin.packageName;
         });
         return find;
     }
 
-    install(pluginPackage: PluginPackage): Promise<void> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                this.initial();
-                const find = this.pluginPackageList.packages.findIndex((value) => {
-                    return value.name === pluginPackage.name;
-                });
-                if (find < 0) {
-                    throw new Error(`Couldn't find plugin package with name ${pluginPackage.name}.`);
-                } else if (this.pluginPackageList.packages[find].install) {
-                    throw new Error(`Plugin package with name ${pluginPackage.name} is already installed`);
-                }
-                const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
-                await pluginContext.install(this.pluginPackageList.packages[find]);
-                this.pluginPackageList.packages[find].install = true;
-                this.saveInstalledPackages();   
-                resolve();
-            } catch (error) {
-                reject(error);
-            }
+    read(name: string): Package {
+        const find = this.packages.find((value) => {
+            return value.name === name;
         });
+        if (find) {
+            return find;
+        }
+        throw this.notFound(name);
     }
 
+    notFound(name: string): SystemError {
+        return {
+            header: 'Package Error',
+            description: `Unable to find package with name: ${name}`,
+            type: ErrorTypes.Error
+        };
+    }
 
+    unableConnect(): SystemError {
+        return {
+            header: 'API Connection',
+            description: 'Unable to get packages from api will only used the ones install.',
+            type: ErrorTypes.Warning
+        };
+    }
 
-    uninstall(name: string): Promise<void> {
-        return new Promise(async (resolve, reject) => {
-            this.initial();
-            const find = this.pluginPackageList.packages.findIndex((value) => {
-                return value.name === name;
+    async getPackagesFromApi() {
+        const api = this.settings.get<ApiSettings>(this.api);
+        try {
+            const response = await this.web.send({
+                method: 'GET',
+                protocol: api.protocol,
+                hostname: api.hostname,
+                port: api.port,
+                path: api.pathPackages
             });
-            if (find < 0) {
-                reject(new Error(`Couldn't find plugin package with name: ${name}.`));
-            } else if (!this.pluginPackageList.packages[find].install) {
-                reject(new Error(`Plugin package with name ${name} is not installed`));
+    
+            if (response.statusCode === 200) {
+                const obj = JSON.parse(response.body.toString()) as any[];
+    
+                obj.forEach(element => {
+                    const find = this.packages.find((value: Package) => {
+                        return value.name === element.name;
+                    });
+                    if (find == null) {
+                        const pluginPackage = {
+                            name: element.name,
+                            owner: element.owner,
+                            repositoryName: element.repositoryName,
+                            username: element.username,
+                            install: false,
+                            plugins: element.plugins.map(value => ({
+                                name: value.name,
+                                className: value.className,
+                                description: value.description,
+                                type: value.type,
+                                packageName: element.name
+                            }))
+                        };
+                        this.packages.push(pluginPackage);
+                    }
+                });
+    
+                this.producer.send(PackageEvents.Change);
             } else {
-                try {
-                    const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
-                    await pluginContext.uninstall(this.pluginPackageList.packages[find]);
-                    this.pluginPackageList.packages[find].install = false;
-                    this.saveInstalledPackages();
-                    resolve();
-                } catch (error) {
-                    reject(error);
-                }
+                this.producer.send(ErrorEvent, this.unableConnect());
             }
-        });
-    }
+        } catch (error) {
+            console.log(error);
+            this.producer.send(ErrorEvent, this.unableConnect());
+        }
 
-    private saveInstalledPackages(): void {
-        const context = this.serviceContainer.resolve<DocumentContext>(SERVICE_TYPES.DocumentContext);
-        const installPackageList = new PluginPackageList(this.pluginPackageList.packages.filter((value) => {
-            return value.install;
-        }));
-        context.set(this.INSTALL_PACKAGES, installPackageList);
     }
-
 }
+

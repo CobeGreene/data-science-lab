@@ -25,6 +25,13 @@
 <dl>
     <dt>@Html.DisplayNameFor(model => model.Package.Owner)</dt>
     <dd>@Html.DisplayTextFor(model => model.Package.Owner)</dd>
+    @if(!string.IsNullOrWhiteSpace(Model.Package.User.ProfileMineType))
+    {
+        <dt>@Html.DisplayNameFor(model => model.Package.User.Profile)</dt>
+        <dd>
+            <img src="/api/users/profile/@Model.Package.User.Email" class="img-thumbnail" />
+        </dd>
+    }
     <dt>@Html.DisplayNameFor(model => model.Package.RepositoryName)</dt>
     <dd>@Html.DisplayTextFor(model => model.Package.RepositoryName)</dd>
 </dl>

@@ -21,10 +21,12 @@
     ],
   },
   "include": [
-    "shared/models",
-    "shared/events",
     "shared/services", 
-    "shared/view-models",
+    "shared/events",
+    "shared/shortcuts",
+    "shared/models",
+    "shared/errors",
+    "shared/settings",
   ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

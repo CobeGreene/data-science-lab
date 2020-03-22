@@ -1,0 +1,18 @@
+<div class="container p-2">
+    <div class="icon">
+        <fa name="database" size="lg"></fa>
+    </div>
+    <div class="examples">
+        {{ dataset.examples }} Examples
+    </div>
+    <div class="name">
+        {{ dataset.name }}
+    </div>
+    <div class="action">
+        <div class="float-right">
+            <button type="button" class="pointer btn btn-accent6" (click)="onSelect()">
+                Select
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,157 +1,291 @@
-import { ExperimentAlgorithmDataService } from './algorithm.data-service';
-import { ExperimentAlgorithm } from '../../models';
-import { SERVICE_TYPES, ServiceContainer } from '../../services-container';
-import { PluginContext } from '../../contexts';
-import { Plugin, PluginPackage } from '../../../../shared/models';
-import { AlgorithmUpdateProducer } from '../../producers';
-import { AlgorithmPlugin } from 'data-science-lab-core';
+import { AlgorithmObject, AlgorithmData } from '../../models';
+import { Algorithm, Package, Plugin } from '../../../../shared/models';
+import { ServiceContainer, SERVICE_TYPES, Service } from '../../service-container';
+import { AlgorithmDataService } from './algorithm.data-service';
+import { PluginData, AlgorithmPlugin } from 'data-science-lab-core';
+import { SettingsContext } from '../../contexts/settings-context';
+import { UserSettingDataService } from '../../data-services/user-setting-data-service';
+import { PackageDataService } from '../../data-services/package-data-service';
+import { IdGenerator } from '../../data-structures';
+import { SystemError, ErrorTypes } from '../../../../shared/errors';
+import { AlgorithmEvents } from '../../../../shared/events';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as zlib from 'zlib';
+import { PluginContext } from '../../contexts/plugin-context';
+import { Settings } from '../../../../shared/settings';
+import { AlgorithmRecorderService } from '../../core-services/recorder-service';
+import { Producer } from '../../pipeline';
 
-export class AppAlgorithmDataService implements ExperimentAlgorithmDataService {
+export class AppAlgorithmDataService extends Service implements AlgorithmDataService {
+    private readonly key = 'algorithms';
+    private readonly path = 'algorithms-path';
 
-    private algorithms: ExperimentAlgorithm[];
-    private nextId: number;
+    private algorithms: AlgorithmObject[];
+    private idGenerator: IdGenerator;
 
-    constructor(private serviceContainer: ServiceContainer) {
-        this.algorithms = [];
-        this.nextId = 1;
+    get settings(): SettingsContext {
+        return this.serviceContainer.resolve<SettingsContext>(SERVICE_TYPES.SettingsContext);
     }
 
-    all(experimentId?: number): ExperimentAlgorithm[] {
-        if (experimentId) {
-            return this.algorithms.filter((value) => {
-                return value.experimentId === experimentId;
-            });
-        } else {
+    get user(): UserSettingDataService {
+        return this.serviceContainer.resolve<UserSettingDataService>(SERVICE_TYPES.UserSettingDataService);
+    }
+
+    get context(): PluginContext {
+        return this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
+    }
+
+    get dataService(): PackageDataService {
+        return this.serviceContainer.resolve<PackageDataService>(SERVICE_TYPES.PackageDataService);
+    }
+
+    get producer(): Producer {
+        return this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
+    }
+
+    recorder(id: number, iteration: number): AlgorithmRecorderService {
+        return this.serviceContainer.resolve<AlgorithmRecorderService>(SERVICE_TYPES.RecorderService, id, iteration);
+    }
+
+    constructor(serviceContainer: ServiceContainer) {
+        super(serviceContainer);
+
+        this.algorithms = [];
+        this.idGenerator = new IdGenerator();
+    }
+
+    configure() {
+        const id = this.settings.get<number>(this.key, 1);
+        this.idGenerator = new IdGenerator(id);
+    }
+
+    all(): AlgorithmObject[];
+    // tslint:disable-next-line: unified-signatures
+    all(experimentId: number): AlgorithmObject[];
+    all(experimentId?: number): AlgorithmObject[] {
+        if (experimentId === undefined) {
             return this.algorithms;
         }
+        return this.algorithms.filter((value) => value.experimentId === experimentId);
     }
 
-    create(algorithm: ExperimentAlgorithm): ExperimentAlgorithm {
-        algorithm.id = this.nextId++;
-        this.algorithms.push(algorithm);
-        return algorithm;
+    allView(): Algorithm[] {
+        return this.algorithms.map(value => this.toView(value));
     }
 
-    read(id: number): ExperimentAlgorithm {
-        const find = this.algorithms.find((value) => {
-            return value.id === id;
-        });
-        if (find) {
-            return find;
+    get(id: number): AlgorithmObject {
+        const find = this.algorithms.find(value => value.id === id);
+        if (find === undefined) {
+            throw this.notFound(id);
         }
-        throw new Error(`Couldn't find experiment algorithm with id ${id}`);
+        return find;
     }
 
-    update(algorithm: ExperimentAlgorithm): void {
-        const findIndex = this.algorithms.findIndex((value) => {
-            return value.id === algorithm.id;
-        });
-        if (findIndex >= 0) {
-            this.algorithms[findIndex] = algorithm;
+    create(experimentId: number, plugin: Plugin, algorithm: AlgorithmPlugin): number {
+        const setting = this.user.find(Settings.AlgorithmDefaultTime);
+        const defaultTime = (setting === undefined) ? 200 : setting.value;
+
+        const obj: AlgorithmObject = {
+            id: this.idGenerator.next(),
+            experimentId,
+            isFinish: algorithm.finishTraining(),
+            isTraining: false,
+            iteration: 0,
+            algorithm,
+            name: `New Algorithm`,
+            plugin,
+            iterationTime: defaultTime,
+        };
+
+        this.algorithms.push(obj);
+        
+        this.saveGenerator();
+        return obj.id;
+    }
+
+    saveGenerator() {
+        this.settings.set(this.key, this.idGenerator.at());
+    }
+
+    view(id: number): Algorithm {
+        const algorithm = this.get(id);
+        return this.toView(algorithm);
+    }
+
+    toView(algorithm: AlgorithmObject): Algorithm {
+        return {
+            id: algorithm.id,
+            experimentId: algorithm.experimentId,
+            isFinish: algorithm.isFinish,
+            isTraining: algorithm.isTraining,
+            iteration: algorithm.iteration,
+            iterationTime: algorithm.iterationTime,
+            name: algorithm.name
+        };
+    }
+
+    async delete(id: number): Promise<number> {
+        const find = this.algorithms.findIndex(value => value.id === id);
+        if (find >= 0) {
+            const obj = this.algorithms[find];
+            if (obj.trainer !== undefined) {
+                clearInterval(obj.trainer);
+            }
+            await this.context.deactivate(this.dataService.find(obj.plugin), obj.plugin);
+            this.algorithms.splice(find, 1);
+            return id;
         } else {
-            throw new Error(`Couldn't find experiment algorithm with id ${algorithm.id}.`);
+            throw this.notFound(id);
         }
     }
 
-    // load(algorithms: ExperimentAlgorithm[], jsons: string[]) {
-    //     algorithms.forEach(async (value, index) => {
-    //         const algorithm = Object.setPrototypeOf(value, ExperimentAlgorithm.prototype) as ExperimentAlgorithm;
-    //         algorithm.plugin = Object.setPrototypeOf(algorithm.plugin, Plugin.prototype) as Plugin;
-    //         algorithm.pluginPackage = Object.setPrototypeOf(algorithm.pluginPackage, PluginPackage.prototype) as PluginPackage;
-    //         algorithm.pluginPackage.plugins = algorithm.pluginPackage.plugins
-    //             .map(plugin => Object.setPrototypeOf(plugin, Plugin.prototype) as Plugin);
-
-    //         algorithm.updateProducer = this.serviceContainer.resolve<AlgorithmUpdateProducer>(SERVICE_TYPES.AlgorithmUpdateProducer);
-
-    //         const pluginContext = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext); 
-    //         const algorithmPlugin = await pluginContext.activate<AlgorithmPlugin>(algorithm.pluginPackage, algorithm.plugin);
-
-    //         algorithm.algorithmPlugin = algorithmPlugin.import(jsons[index]);
-
-    //         this.algorithms.push(algorithm);
-    //     });
-    // }
-
-    export(algorithms: ExperimentAlgorithm[]): string[] {
-        const jsons: string[] = [];
-
-        algorithms.forEach((value) => {
-            const json = {
-                id: value.id,
-                label: value.label,
-                experimentId: value.experimentId,
-                dataGroupTrainId: value.dataGroupTrainId,
-                dataGroupFeatures: value.dataGroupFeatures,
-                pluginPackage: value.pluginPackage,
-                plugin: value.plugin,
-                algorithmPlugin: value.algorithmPlugin.export(),
-                hasInitialize: value.hasInitialize,
-                hasStarted: false,
-                iteration: value.iteration
-            };
-            jsons.push(JSON.stringify(json));
-        });
-
-        return jsons; 
+    async deleteByExperiment(experimentId: number): Promise<number[]> {
+        const ids = this.all(experimentId).map(value => value.id);
+        for (const id of ids) {
+            await this.delete(id);
+        }
+        return ids;
     }
 
-    load(jsons: string[]) {
-        jsons.forEach(async (value) => {
-            const json = JSON.parse(value);
-            const plugin = Object.setPrototypeOf(json.plugin, Plugin.prototype) as Plugin;
-            const pluginPackage = Object.setPrototypeOf(json.pluginPackage, PluginPackage.prototype) as PluginPackage;
-            pluginPackage.plugins = pluginPackage.plugins.map(v => Object.setPrototypeOf(v, Plugin.prototype) as Plugin);
+    async load(experimentId: number) {
+        const algorithmPath = this.settings.get<string>(this.path);
+        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
+        if (fs.existsSync(experimentPath)) {
+            const buffer = fs.readFileSync(experimentPath);
+            const data: AlgorithmData[] = JSON.parse(`${zlib.unzipSync(buffer)}`);
+            for (const datum of data) {
+                const algorithmPlugin = await this.context.activate<AlgorithmPlugin>(this.dataService.find(datum.plugin), datum.plugin);
+                const algorithm = algorithmPlugin.import(datum.algorithm);
+                const obj: AlgorithmObject = {
+                    id: datum.id,
+                    name: datum.name,
+                    experimentId: datum.experimentId,
+                    isTraining: false,
+                    isFinish: datum.isFinish,
+                    iteration: datum.iteration,
+                    plugin: datum.plugin,
+                    algorithm,
+                    iterationTime: datum.iterationTime,
+                };
+                this.algorithms.push(obj);
+            }
+        }
+    }
 
-            const context = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
-            let algorithmPlugin = await context.activate<AlgorithmPlugin>(pluginPackage, plugin);
-            algorithmPlugin =  algorithmPlugin.import(json.algorithmPlugin);
+    save(experimentId: number) {
+        const algorithms = this.all(experimentId);
+        const algorithmPath = this.settings.get<string>(this.path);
+        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
 
-            const experimentAlgorithm = new ExperimentAlgorithm({
-                id: json.id,
-                label: json.label,
-                plugin,
-                pluginPackage,
-                algorithmPlugin,
-                experimentId: json.experimentId,
-                dataGroupFeatures: json.dataGroupFeatures,
-                dataGroupTrainId: json.dataGroupTrainId
+        if (algorithms.length > 0) {
+            const data: AlgorithmData[] = algorithms.map((value): AlgorithmData => {
+                return {
+                    id: value.id,
+                    name: value.name,
+                    experimentId: value.experimentId,
+                    isFinish: value.isFinish,
+                    iteration: value.iteration,
+                    iterationTime: value.iterationTime,
+                    plugin: value.plugin,
+                    algorithm: value.algorithm.export()
+                };
             });
-            experimentAlgorithm.updateProducer = this.serviceContainer
-                .resolve<AlgorithmUpdateProducer>(SERVICE_TYPES.AlgorithmUpdateProducer);
-            experimentAlgorithm.hasInitialize = json.hasInitialize;
-            experimentAlgorithm.iteration = json.iteration;
-
-            this.algorithms.push(experimentAlgorithm);
-        });
-    }
-
-    delete(id: number): void {
-        const findIndex = this.algorithms.findIndex((value) => {
-            return value.id === id;
-        });
-        if (findIndex >= 0) {
-            const context = this.serviceContainer.resolve<PluginContext>(SERVICE_TYPES.PluginContext);
-            context.deactivate(this.algorithms[findIndex].pluginPackage,
-                this.algorithms[findIndex].plugin)
-                .then(() => { })
-                .catch(() => { });
-
-            this.algorithms.splice(findIndex, 1);
-        } else {
-            throw new Error(`Couldn't find experiment algorithm with id ${id}`);
+            const buffer = zlib.gzipSync(JSON.stringify(data));
+            fs.writeFileSync(experimentPath, buffer);
+        } else if (fs.existsSync(experimentPath)) {
+            fs.unlinkSync(experimentPath);
         }
     }
-    deleteByExperiment(experimentId: number): void {
-        this.algorithms.filter((value) => {
-            return value.experimentId === experimentId;
-        }).map((value) => {
-            return value.id;
-        }).forEach((value) => {
-            this.delete(value);
-        });
+
+    update(algorithm: AlgorithmObject) {
+        const find = this.algorithms.findIndex(value => value.id === algorithm.id);
+        if (find < 0) {
+            throw this.notFound(algorithm.id);
+        }
+        this.algorithms.splice(find, 1, algorithm);
+    }
+
+    start(id: number) {
+        const algorithmObject = this.get(id);
+        if (algorithmObject.isTraining) {
+            throw this.alreadyTraining(algorithmObject.name);
+        }
+
+        if (algorithmObject.isFinish) {
+            throw this.finishTraining(algorithmObject.name);
+        }
+
+        const recorder = this.recorder(algorithmObject.id, algorithmObject.iteration);
+        algorithmObject.recorder = recorder;
+        algorithmObject.isTraining = true;
+        algorithmObject.algorithm.setRecorderService(recorder);
+        algorithmObject.trainer = setInterval(() => {
+            this.step(algorithmObject);
+        }, algorithmObject.iterationTime);
+
+        this.update(algorithmObject);
+    }
+
+    step(obj: AlgorithmObject) {
+        ++obj.iteration;
+        obj.recorder.current(obj.iteration);
+        obj.algorithm.step();
+        if (obj.algorithm.finishTraining()) {
+            obj.isFinish = true;
+            obj.isTraining = false;
+            clearInterval(obj.trainer);
+            obj.trainer = undefined;
+        }
+
+        this.update(obj);
+        this.producer.send(AlgorithmEvents.Change, obj.id);
+    }
+
+    stop(id: number) {
+        const algorithmObject = this.get(id);
+        if (!algorithmObject.isTraining) {
+            throw this.notTraining(algorithmObject.name);
+        }
+
+        algorithmObject.isTraining = false;
+        clearInterval(algorithmObject.trainer);
+        algorithmObject.trainer = undefined;
+
+        this.update(algorithmObject);
     }
 
 
+    notFound(id: number): SystemError {
+        return {
+            header: 'Algorithm Error',
+            description: `Couldn't find algorithm with id ${id}`,
+            type: ErrorTypes.Error
+        };
+    }
 
+    alreadyTraining(name: string): SystemError {
+        return {
+            header: 'Algorithm Error',
+            description: `Algorithm ${name} is already in trainings`,
+            type: ErrorTypes.Warning
+        };
+    }
+
+    finishTraining(name: string): SystemError {
+        return {
+            header: 'Algorithm Error',
+            description: `Algorithm ${name} is finish training`,
+            type: ErrorTypes.Warning
+        };
+    }
+
+    notTraining(name: string): SystemError {
+        return {
+            header: 'Algorithm Error',
+            description: `Algorithm ${name} is not currently training.`,
+            type: ErrorTypes.Error
+        };
+    }
 }
 

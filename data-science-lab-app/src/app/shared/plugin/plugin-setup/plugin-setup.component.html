@@ -1,0 +1,28 @@
+<app-plugin-header class="w-100" (emitReturn)="onReturn()" (emitExit)="onExit()">
+    <h2>Setup {{ plugin.name }}</h2>
+    <p>
+        {{ plugin.name }} is asking for these inputs.
+    </p>
+</app-plugin-header>
+<app-plugin-body>
+    <ng-container *ngFor="let option of optionList.options; let i = index">
+        <div class="mt-3 mb-3">
+            <ng-container [ngSwitch]="option.type">
+                <app-text-option *ngSwitchCase="optionTypes.Text" [option]="option"
+                    (emitChange)="onOptionChange(i, $event)" [submitted]="submitted" [value]="values[option.id]">
+                </app-text-option>
+                <app-number-option *ngSwitchCase="optionTypes.Number" [option]="option"
+                    (emitChange)="onOptionChange(i, $event)" [submitted]="submitted" [value]="values[option.id]">
+                </app-number-option>
+                <app-command-option *ngSwitchCase="optionTypes.Command" [option]="option"
+                    (emitCommand)="onCommand($event)"></app-command-option>
+                <app-choices-option *ngSwitchCase="optionTypes.Choices" [option]="option"
+                    (emitChange)="onOptionChange(i, $event)" [value]="values[option.id]"></app-choices-option>
+                <app-checkbox-option *ngSwitchCase="optionTypes.Checkbox" [option]="option"
+                    (emitChange)="onOptionChange(i, $event)" [value]="values[option.id]">
+                </app-checkbox-option>
+            </ng-container>
+        </div>
+    </ng-container>
+    <app-plugin-next class="mt-3" (emitNext)="onSubmit()" [valid]="valid" [isWaiting]="isWaiting"></app-plugin-next>
+</app-plugin-body>

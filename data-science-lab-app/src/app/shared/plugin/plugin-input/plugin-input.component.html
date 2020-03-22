@@ -1,0 +1,75 @@
+<app-plugin-header class="w-100" (emitReturn)="onReturn()" (emitExit)="onExit()">
+    <h2>{{ plugin.name }}'s Inputs</h2>
+    <p>
+        {{ plugin.name }}'s is asking for the following inputs. Click to either select or remove.
+    </p>
+</app-plugin-header>
+<app-plugin-body class="pt-5 w-100">
+    <button class="btn btn-accent3 mr-1" type="button" (click)="onMinAutofill()" [ngClass]="{ 'disabled': isWaiting }">
+        Min Autofill
+    </button>
+    <button class="btn btn-accent3 mr-1" type="button" (click)="onMaxAutofill()" [ngClass]="{ 'disabled': isWaiting }">
+        Max Autofill
+    </button>
+    <button class="btn btn-accent1" type="button" (click)="onRestart()" [ngClass]="{ 'disabled': isWaiting }">
+        Restart
+    </button>
+    <div class="container">
+        <div class="compatible">
+            <h3 class="mb-0 pb-0">
+                Compatible Features
+            </h3>
+            <div>
+                <ng-container *ngFor="let feature of compatibleFeatures">
+                    <app-object-card [object]="feature.value" (click)="onSelect($event, feature.index)">
+                    </app-object-card>
+                </ng-container>
+            </div>
+        </div>
+        <div class="remaining">
+            <h3 class="mb-0 pb-0">
+                Remaining Features
+            </h3>
+            <div>
+                <ng-container *ngFor="let feature of remainingFeatures">
+                    <app-object-card [object]="feature.value">
+                    </app-object-card>
+                </ng-container>
+            </div>
+        </div>
+        <div class="current">
+            <h4 class="m-0">
+                Select plugin input
+            </h4>
+            <app-select [value]="inputs[current].label" [options]="inputLabels"
+                (emitIndexChange)="onInputSelect($event)"></app-select>
+            <div class="input-card mt-3 p-3">
+                <h2 class="m-0 p-0">
+                    {{ inputs[current].label }}
+                </h2>
+                <h4 class="m-0 p-0">
+                    type: {{ inputs[current].type }}
+                </h4>
+                <p class="mt-0 pt-0">
+                    minimum: {{ inputs[current].min }} <ng-container *ngIf="inputs[current].max !== undefined">maximum:
+                        {{ inputs[current].max }}</ng-container>
+                </p>
+                <div>
+                    <ng-container *ngFor="let i of inputDict[inputs[current].id];">
+                        <app-object-card [object]="features[i]" (click)="onUnselect($event, $index)">
+                        </app-object-card>
+                    </ng-container>
+                </div>
+                <div class="footer mt-3">
+                    <app-plugin-input-valid [valid]="currentValid"></app-plugin-input-valid>
+                    <div class="selectors" *ngIf="inputs.length !== 1">
+                        <fa class="icon pr-2 pl-2" size="2x" name="angle-left" (click)="onLeft()"></fa>
+                        <fa class="icon pr-2 pl-2" size="2x" name="angle-right" (click)="onRight()"></fa>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-plugin-next class="mt-3" (emitNext)="onSubmit()" [valid]="valid" [isWaiting]="isWaiting"></app-plugin-next>
+</app-plugin-body>
+<app-popup #popupCmp></app-popup>

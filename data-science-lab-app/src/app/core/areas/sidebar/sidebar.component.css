@@ -1,0 +1,77 @@
+:host(.rightSidebar) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr 1fr min-content;
+    grid-template-areas: 'extended icons' 'extended icons' 'extended settings';
+    height: 100%;
+}
+
+:host(.leftSidebar) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr 1fr min-content;
+    grid-template-areas: 'icons extended' 'icons extended' 'settings extended';
+    height: 100%;
+}
+
+.space {
+    height: var(--tabs-height) !important;
+}
+
+.extended {
+    grid-area: extended;
+    width: var(--sidebar-expanded-width);
+}
+
+.hidden {
+    width: 0px;
+    display: none;
+}
+
+.icons {
+    grid-area: icons;
+}
+
+:host(.rightSidebar) .icon {
+    border-right: 2px solid transparent;
+}
+
+:host(.leftSidebar) .icon {
+    border-left: 2px solid transparent;
+}
+
+:host(.rightSidebar) .icon.active {
+    border-right: 2px solid var(--sidebar-icon-active);
+}
+
+:host(.rightSidebar) .icon:hover.active {
+    border-right: 2px solid var(--sidebar-icon-active);
+}
+
+:host(.leftSidebar) .icon.active {
+    border-left: 2px solid var(--sidebar-icon-active);
+}
+
+:host(.leftSidebar) .icon:hover.active {
+    border-left: 2px solid var(--sidebar-icon-active);
+}
+
+.settings {
+    grid-area: settings;
+}
+
+.icon {
+    color: var(--sidebar-icon);
+}
+
+.icon:hover {
+    color: var(--sidebar-icon-hover);
+}
+
+.icon.active {
+    color: var(--sidebar-icon-active);
+}
+
+.icon:hover.active {
+    color: var(--sidebar-icon-active);
+}

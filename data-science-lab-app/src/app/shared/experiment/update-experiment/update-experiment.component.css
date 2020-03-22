@@ -1,0 +1,10 @@
+.desc-cont > h4 {
+    background-color: var(--update-experiment-desc-background);
+}
+
+.desc {
+    resize: vertical;
+    max-height: 20vh;
+    min-height: 10vh;
+    overflow-y: auto;
+}

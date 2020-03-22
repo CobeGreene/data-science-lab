@@ -164,6 +164,10 @@ namespace data_science_lab_site.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<byte[]>("Profile");
+
+                    b.Property<string>("ProfileMineType");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");

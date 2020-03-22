@@ -1,0 +1,7 @@
+.desc {
+    color: var(--package-desc);
+}
+
+.search {
+    display: flex;
+}

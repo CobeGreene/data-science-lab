@@ -1,0 +1,6 @@
+<div class="m-5">
+    <app-settings-header></app-settings-header>
+    <ng-container *ngFor="let setting of settings">
+        <app-setting-card [setting]="setting"></app-setting-card>
+    </ng-container>
+</div>

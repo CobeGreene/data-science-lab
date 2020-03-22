@@ -1,0 +1,32 @@
+.container {
+    display: grid;
+    cursor: pointer;
+    grid-template-columns: auto min-content;
+    grid-template-rows: 1fr auto;
+    grid-template-areas: 'name plugins' 'owner owner';
+}
+
+.list-item-name {
+    grid-area: name;
+}
+
+.list-item-plugins {
+    grid-area: plugins;
+    text-align: right;
+}
+
+.list-item-owner {
+    grid-area: owner;
+}
+
+.circle {
+    width: var(--plugin-badge);
+    height: var(--plugin-badge);
+    border-radius: 50%;
+    box-sizing: border-box;
+    text-align: center;
+    display: inline-block;
+    line-height: var(--plugin-badge);
+    background-color: var(--sidebar-plugin-badge);
+    font-size: smaller;
+}

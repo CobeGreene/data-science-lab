@@ -1,0 +1,39 @@
+<div class="p-3">
+    <div class="header">
+        <div class="name">
+            <h3 class="mt-1">
+                {{ report.name }}
+            </h3>
+            <span class="pl-1 edit pointer" (click)="onOptions($event)" #optionsCmp>
+                <fa name="pencil"></fa>
+            </span>
+        </div>
+        <div>
+            <h1 class="m-0 text-accent4 float-right">
+                <strong>{{ report.correct * 100 / report.total | number:'2.0-0' }}%</strong>
+            </h1>
+        </div>
+    </div>
+    <div class="body">
+        <div class="desc">
+            <h4 class="m-0 p-0">
+                Got {{ report.correct }} correct out of {{ report.total }}
+            </h4>
+            <p class="m-0 p-0">
+                Perform on {{ report.datasetName }} on iteration {{ report.iteration }}
+            </p>
+        </div>
+    </div>
+</div>
+<app-dropdown #optionsDropdown>
+    <ul class="list-unstyled dropdown-list">
+        <li (click)="onEdit($event)">
+            Edit Test Report
+        </li>
+        <li (click)="onDelete($event)">
+            Delete Test Report
+        </li>
+    </ul>
+</app-dropdown>
+<app-edit-test-report [id]="report.id" #editCmp></app-edit-test-report>
+<app-delete-test-report [id]="report.id" #deleteCmp></app-delete-test-report>

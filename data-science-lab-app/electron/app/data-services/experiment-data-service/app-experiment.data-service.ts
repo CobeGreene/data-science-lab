@@ -1,79 +1,87 @@
+import { Service, ServiceContainer, SERVICE_TYPES } from '../../service-container';
 import { ExperimentDataService } from './experiment.data-service';
-import { Experiment, ExperimentList } from '../../../../shared/models';
-import { ServiceContainer, SERVICE_TYPES } from '../../services-container';
-import { DocumentContext } from '../../contexts';
+import { Experiment, ExperimentState } from '../../../../shared/models';
+import { SettingsContext } from '../../contexts/settings-context';
+import { IdGenerator } from '../../data-structures';
+import { SystemError, ErrorTypes } from '../../../../shared/errors';
 
-export class AppExperimentDataService implements ExperimentDataService {
-    
-    readonly EXPERIMENT_LIST = 'experiment-list';
+export class AppExperimentDataService extends Service implements ExperimentDataService {
+    private readonly key = 'experiments';
 
-    private experimentList: ExperimentList;
-    private nextId: number;
+    private experiments: Experiment[];
+    private idGenerator: IdGenerator;
 
-    constructor(private serviceContainer: ServiceContainer) {
-        const context = this.serviceContainer.resolve<DocumentContext>(SERVICE_TYPES.DocumentContext);
-        this.experimentList = context.get<ExperimentList>(this.EXPERIMENT_LIST, new ExperimentList());
-        
-        this.nextId = this.experimentList.experiments.length > 0 ? 
-            Math.max(...this.experimentList.experiments.map(value => value.id)) + 1 : 1;
+    get context(): SettingsContext {
+        return this.serviceContainer.resolve<SettingsContext>(SERVICE_TYPES.SettingsContext);
+    }
 
-        this.experimentList.experiments.forEach((value) => {
-            value.isLoaded = false;
+    constructor(serviceContainer: ServiceContainer) {
+        super(serviceContainer);
+
+        this.experiments = [];
+        this.idGenerator = new IdGenerator();
+    }
+
+    configure() {
+        this.experiments = this.context.get<Experiment[]>(this.key, []);
+        this.experiments.forEach((value) => {
+            value.state = ExperimentState.Unloaded;
         });
+
+        const id = this.experiments.length > 0 ?
+            Math.max(...this.experiments.map(value => value.id)) + 1 : 1;
+
+        this.idGenerator = new IdGenerator(id);
     }
 
-    private saveExperiments(): void {
-        const context = this.serviceContainer.resolve<DocumentContext>(SERVICE_TYPES.DocumentContext);
-        context.set(this.EXPERIMENT_LIST, this.experimentList); 
+    private save() {
+        this.context.set(this.key, this.experiments);
     }
-    
-    all(): ExperimentList {
-        return this.experimentList;
-    }    
-    
-    create(experiment: Experiment): Experiment {
-        experiment.id = this.nextId++;
-        experiment.isLoaded = true;
-        this.experimentList.experiments.push(experiment);
-        this.saveExperiments();
+
+    all() {
+        return this.experiments;
+    }
+
+    get(id: number) {
+        const find = this.experiments.find(value => value.id === id);
+        if (find === undefined) {
+            throw this.notFound(id); 
+        } 
+        return find;
+    }
+
+    delete(id: number) {
+        const find = this.experiments.findIndex((value) => value.id === id);
+        if (find < 0) {
+            throw this.notFound(id); 
+        }
+        this.experiments.splice(find, 1);
+        this.save();
+    }
+
+    post(experiment: Experiment): Experiment {
+        experiment.id = this.idGenerator.next();
+        this.experiments.push(experiment);
+        this.save();
         return experiment;
     }
-    
-    read(id: number): Experiment {
-        const find = this.experimentList.experiments.find((value) => {
-            return value.id === id;
-        });
-        if (find) {
-            return find;
+
+    update(experiment: Experiment) {
+        const find = this.experiments.findIndex((value) => value.id === experiment.id);
+        if (find < 0) {
+            throw this.notFound(experiment.id); 
         }
-        throw new Error(`Couldn't find experiment with id ${id}.`);
-    }
-    
-    update(experiment: Experiment): void {
-        const findIndex = this.experimentList.experiments.findIndex((value) => {
-            return value.id === experiment.id;
-        });
-        if (findIndex >= 0) {
-            this.experimentList[findIndex] = experiment;
-        } else {
-            throw new Error(`Couldn't find experiment with id ${experiment.id}.`);
-        }
-        this.saveExperiments();
-    }
-    
-    delete(id: number): void {
-        const findIndex = this.experimentList.experiments.findIndex((value) => {
-            return value.id === id;
-        });
-        if (findIndex >= 0) {
-            this.experimentList.experiments.splice(findIndex, 1);
-        } else {
-            throw new Error(`Couldn't find experiment with id ${id}.`);
-        }
-        this.saveExperiments();
+        this.experiments.splice(find, 1, experiment);
+        this.save();
     }
 
-
-
+    notFound(id: number): SystemError {
+        return {
+            header: 'Experiment Data Service',
+            description: `Couldn't find experiment with id ${id}.`,
+            type: ErrorTypes.Error
+        };        
+    }
 }
+
 

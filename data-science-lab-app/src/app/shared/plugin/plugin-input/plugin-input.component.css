@@ -1,0 +1,49 @@
+.icon {
+    transform: scale(0.8);
+    transition: all 200ms ease-in-out;
+}
+
+.icon:hover {
+    transform: scale(1);
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: "compatible current" "remaining current";
+    width: 100%;
+}
+
+.compatible {
+    grid-area: compatible;
+    width: 100%;
+}
+
+.remaining {
+    grid-area: remaining;
+    width: 100%;
+}
+
+.current {
+    width: 100%;
+    grid-area: current;
+}
+
+.input-card {
+    background-color: var(--plugin-input-card-background);
+    border-radius: 0.5em;
+    border: 2px solid var(--plugin-input-card-border);
+    box-shadow: 0px 5px 2px 3px var(--plugin-input-card-shadow);
+    text-align: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.selectors {
+    display: flex;
+}

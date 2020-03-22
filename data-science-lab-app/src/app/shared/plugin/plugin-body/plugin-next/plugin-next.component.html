@@ -1,0 +1,9 @@
+<button class="float-right next" [ngClass]="{ 'disabled': !valid }" (click)="onNext()" *ngIf="!isWaiting">
+    <h3 class="pointer">Next</h3>
+    <fa class="icon pl-2" size="2x" name="angle-right"></fa>
+</button>
+<div class="float-right waiting" *ngIf="isWaiting">
+    <h3>
+        Waiting...
+    </h3>
+</div>

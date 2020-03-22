@@ -11,5 +11,9 @@ namespace data_science_lab_site.Data.Models
     {
         [DisplayName("Packages")]
         public IList<PluginPackage> Packages { get; set; } = new List<PluginPackage>();
+        [DisplayName("Profile")]
+        public byte[] Profile { get; set; }
+        [DisplayName("Profile Mine Type")]
+        public string ProfileMineType { get; set; }
     }
 }

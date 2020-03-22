@@ -1,0 +1,14 @@
+
+.input-valid {
+    border-radius: 0.5em;
+}
+
+.input-valid.valid {
+    color: var(--plugin-input-card-valid);
+    border: 1px solid var(--plugin-input-card-valid);
+}
+
+.input-valid.invalid {
+    color: var(--invalid);
+    border: 1px solid var(--invalid);
+}

@@ -6,6 +6,8 @@ using data_science_lab_site.Data;
 using data_science_lab_site.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace data_science_lab_site.Pages.Packages
 {
@@ -25,8 +27,9 @@ namespace data_science_lab_site.Pages.Packages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Package = await _context.Packages.FindAsync(Id);
-
+            Package = await _context.Packages.Include(p => p.User)
+                .SingleOrDefaultAsync(p => p.Id == Id);
+            
             if (Package == null) return NotFound();
 
             return Page();

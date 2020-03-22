@@ -1,9 +1,6 @@
 import { PluginData } from 'data-science-lab-core';
-import { ExperimentDataGroup } from '../../models';
+import { DatasetObject } from '../../models';
 
 export interface PluginDataConverter {
-
-    toDataGroups(data: PluginData): ExperimentDataGroup[];
-
-    
+    convert(data: PluginData): DatasetObject[];
 }

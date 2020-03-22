@@ -1,0 +1,10 @@
+<div>
+    <div class="container">
+        <ng-container *ngFor="let plugin of plugins">
+            <app-plugin-selection-card (emitSelect)="onSelect($event)" class="plugin p-5" [plugin]="plugin" #pluginCmp></app-plugin-selection-card>
+        </ng-container>
+    </div>
+</div>
+<ng-container *ngFor="let box of boxes; let i = index">
+    <app-plugin-selection-box [box]="box" [id]="i"></app-plugin-selection-box>
+</ng-container>

@@ -1,2 +1,1 @@
-export { AppFileCoreService } from './app-file.core-service';
-
+export { AppFileCoreService } from './app-file.service';

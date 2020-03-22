@@ -1,0 +1,16 @@
+<app-sidebar-header class="header" [header]="'PACKAGES'"></app-sidebar-header>
+<app-sidebar-package-explorer class="explorer py-1"></app-sidebar-package-explorer>
+<app-sidebar-list-header class="install-package-header"
+    [header]="'INSTALL-PACKAGES'" [isHidden]="true"></app-sidebar-list-header>
+<app-sidebar-list-body class="install-package-list">
+    <ng-container *ngFor="let pluginPackage of installPackages; let i = index">
+        <app-sidebar-list-card #packageCmp (click)="onInstallSelected(i)" (touch)="onInstallSelected(i)"
+            class="pointer"
+            [ngClass]="{ 'selected': data.installSelected === i }">
+            <app-sidebar-package-card [pluginPackage]="pluginPackage"></app-sidebar-package-card>
+        </app-sidebar-list-card>
+    </ng-container>
+</app-sidebar-list-body>
+<div class="bottom">
+
+</div>
