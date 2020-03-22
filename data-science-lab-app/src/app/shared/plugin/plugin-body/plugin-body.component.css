@@ -1,0 +1,10 @@
+:host {
+    display: grid;
+    grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+    grid-template-rows: 1fr;
+    grid-template-areas: 'left body right';
+}
+
+.body {
+    grid-area: body;
+}

@@ -1,0 +1,16 @@
+:host {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'header blank close';
+    color: var(--modal-word);
+}
+
+.header {
+    grid-area: header;
+}
+
+.close {
+    grid-area: close;
+
+}

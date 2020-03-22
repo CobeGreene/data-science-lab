@@ -1,0 +1,54 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas: 'header status'
+    'plugins plugins';
+    background: var(--package-card-background);
+    height: min-content;
+    border-radius: 0.5em;
+    border: 2px solid var(--package-card-border);
+    box-shadow: 0px 5px 2px 3px var(--package-card-shadow);
+    transform: scaleY(0.95);
+}
+
+.container:hover {
+    transform: scaleY(1);
+    transition: all 200ms ease-in-out;
+}
+
+.installed {
+    color: var(--package-install);
+}
+
+.icon {
+    color: var(--package-icon);
+}
+
+
+.header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.status {
+    grid-area: status;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.plugins {
+    grid-area: plugins;
+}
+
+.image {
+    width: 100%;
+    max-width: 50px;
+    height: auto;
+}
+
+.desc {
+    color: var(--package-desc);
+}

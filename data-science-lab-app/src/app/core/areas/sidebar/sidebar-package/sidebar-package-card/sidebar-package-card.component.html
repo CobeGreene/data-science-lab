@@ -1,0 +1,17 @@
+<div class="container py-1 pr-4 pl-1">
+    <div class="list-item-name">
+        <h3 class="m-0">
+            {{ pluginPackage.name }}
+        </h3>
+    </div>
+    <div class="list-item-plugins">
+        <div class="circle">
+            {{ pluginPackage.plugins.length | packageBadge }}
+        </div>
+    </div>
+    <div class="list-item-owner">
+        <i>
+            {{ pluginPackage.owner }}
+        </i>
+    </div>
+</div>

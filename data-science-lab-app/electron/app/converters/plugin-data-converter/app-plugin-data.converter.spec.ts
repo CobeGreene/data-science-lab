@@ -1,8 +1,8 @@
 import { PluginData } from 'data-science-lab-core';
-import { ExperimentDataGroup } from '../../models';
+import { DatasetObject, FeatureObject } from '../../models';
 import { AppPluginDataConverter } from './app-plugin-data.converter';
 
-describe('Electron App Plugin Data Converter Tests', () => {
+describe('Electron App Plugin Data Converter', () => {
 
     let converter: AppPluginDataConverter;
 
@@ -55,7 +55,7 @@ describe('Electron App Plugin Data Converter Tests', () => {
             features: ['foo'],
             examples: [[1]]
         });
-        const dataGroup = converter.toDataGroups(fetchPluginData);
+        const dataGroup = converter.convert(fetchPluginData);
         expect(dataGroup[0].features[0].name).toBe('foo');
         expect(dataGroup[0].features[0].type).toBe('number');
         expect(dataGroup[0].features[0].examples[0]).toBe(1);
@@ -66,7 +66,7 @@ describe('Electron App Plugin Data Converter Tests', () => {
             features: [],
             examples: [[1]]
         });
-        const dataGroup = converter.toDataGroups(fetchPluginData);
+        const dataGroup = converter.convert(fetchPluginData);
         expect(dataGroup[0].features[0].name.length).toBeGreaterThan(1);
         expect(dataGroup[0].features[0].type).toBe('number');
         expect(dataGroup[0].features[0].examples[0]).toBe(1);
@@ -77,7 +77,7 @@ describe('Electron App Plugin Data Converter Tests', () => {
             features: ['one', 'two'],
             examples: [[1]]
         });
-        const dataGroup = converter.toDataGroups(fetchPluginData);
+        const dataGroup = converter.convert(fetchPluginData);
         expect(dataGroup[0].features[0].name).toBe('one');
         expect(dataGroup[0].features.length).toBe(1);
         expect(dataGroup[0].features[0].type).toBe('number');
@@ -89,7 +89,7 @@ describe('Electron App Plugin Data Converter Tests', () => {
             features: ['one', 'two', 'three'],
             examples: [[1, true, '3'], [1, false, '3'], [1, true, '3']]
         });
-        const dataGroup = converter.toDataGroups(fetchPluginData);
+        const dataGroup = converter.convert(fetchPluginData);
         expect(dataGroup[0].features.length).toBe(3);
         expect(dataGroup[0].features[0].name).toBe('one');
         expect(dataGroup[0].features[1].name).toBe('two');
@@ -104,7 +104,7 @@ describe('Electron App Plugin Data Converter Tests', () => {
             features: ['one', 'two', 'three'],
             examples: [[1, true, '3'], [1, false, '3'], [1, true, '3'], [1]]
         });
-        const dataGroups = converter.toDataGroups(fetchPluginData);
+        const dataGroups = converter.convert(fetchPluginData);
         expect(dataGroups.length).toBe(2);
         expect(dataGroups[0].features.length).toBe(1);
         expect(dataGroups[1].features.length).toBe(2);

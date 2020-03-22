@@ -1,0 +1,3 @@
+<ng-container *ngFor="let dataset of datasets">
+    <app-select-dataset-card [dataset]="dataset" (emitSelect)="onSelect($event)"></app-select-dataset-card>
+</ng-container>

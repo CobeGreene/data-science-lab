@@ -1,0 +1,44 @@
+.popup {
+    position: relative;
+    border-radius: 0.2rem;
+}
+
+.popup::after {
+    content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-bottom: 0;
+	margin-left: -10px;
+	margin-bottom: -10px;
+}
+
+.popup.error {
+    background: var(--popup-error);
+    color: var(--popup-word);
+}
+
+.popup.error::after {
+    border-top-color: var(--popup-error);
+}
+
+.popup.warning {
+    background: var(--popup-warning);
+    color: var(--popup-word);
+}
+
+.popup.warning::after {
+    border-top-color: var(--pop-warning);
+}
+
+.popup.info {
+    background: var(--popup-info);
+    color: var(--popup-word);
+}
+
+.popup.info::after {
+    border-top-color: var(--popup-info);
+}

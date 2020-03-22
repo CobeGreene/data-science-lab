@@ -1,9 +1,13 @@
-import { PluginPackage, PluginPackageList, Plugin } from '../../../../shared/models';
+import { Package, Plugin } from '../../../../shared/models';
+
 
 export interface PackageDataService {
-    all(callback?: (pluginPackageList: PluginPackageList) => void, error?: (reason: any) => void): PluginPackageList;
-    read(name: string): PluginPackage;
-    install(pluginPackage: PluginPackage): Promise<void>;
-    uninstall(name: string): Promise<void>;
-    find(plugin: Plugin): PluginPackage;
+    configure(): void;
+    all(): Package[];
+    install(pluginPackage: Package): Promise<Package>;
+    uninstall(pluginPackage: Package): Promise<Package>;
+    find(plugin: Plugin): Package;
+    read(name: string): Package;
+
 }
+

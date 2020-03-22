@@ -1,157 +1,327 @@
 import { AppPackageDataService } from './app-package.data-service';
-import { PluginPackage, PluginPackageList, Plugin } from '../../../../shared/models';
-import { MockDocumentContext, MockPluginContext } from '../../contexts';
-import { MockServiceContainer, SERVICE_TYPES } from '../../services-container';
-import { MockSettingsDataService } from '../settings-data-service';
-import { MockWebCoreService } from '../../core-services';
-import { Response } from 'data-science-lab-core';
+import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
+import { SettingsContext } from '../../contexts/settings-context';
+import { Plugin, Package } from '../../../../shared/models';
+import { PluginContext } from '../../contexts/plugin-context';
+import { WebService, Response, Request } from 'data-science-lab-core';
+import { Producer } from '../../pipeline';
+import { PackageEvents } from '../../../../shared/events';
 
 
-describe('Electron App Package Data Service Tests', () => {
-
-    let packageDataService: AppPackageDataService;
-    let documentContext: MockDocumentContext;
-    let serviceContainer: MockServiceContainer;
-    let pluginPackageList: PluginPackageList;
-    let pluginContext: MockPluginContext;
-    let settingService: MockSettingsDataService;
-    let webService: MockWebCoreService;
-    let packageToInstall: PluginPackage;
-
-    const documentGet = (): any => {
-        return pluginPackageList;
-    };
+describe('Electron App Package Data Service', () => {
+    let dataService: AppPackageDataService;
+    let serviceContainer: ServiceContainer;
+    let web: WebService;
+    let settings: SettingsContext;
+    let context: PluginContext;
+    let producer: Producer;
+    let packages: Package[];
 
     beforeEach(() => {
-        packageToInstall = new PluginPackage({
-            name: 'new', owner: 'owner', repositoryName: 'repo', username: 'user'
+        packages = [
+            {
+                install: true,
+                name: 'Unique',
+                owner: 'Owner',
+                plugins: [
+                    {
+                        packageName: 'Unique',
+                        className: 'Class',
+                        description: 'Desc',
+                        name: 'Plugin',
+                        type: 'Fetch'
+                    }
+                ],
+                repositoryName: 'Repo',
+                username: 'User',
+            }
+        ];
+
+        settings = jasmine.createSpyObj('SettingsContext', ['get', 'set']);
+        (settings.get as jasmine.Spy).and.callFake((value: string) => {
+            if (value === 'api-settings') {
+                return {
+                    protocol: 'protocol',
+                    hostname: 'hostname',
+                    port: 300,
+                    path: 'path'
+                };
+            } else if (value === 'packages') {
+                return packages;
+            } else {
+                throw new Error(`Invalid key for settings ${value}`);
+            }
         });
-        pluginPackageList = new PluginPackageList([
-            new PluginPackage({ name: 'name1', owner: 'owner1', repositoryName: 'repo1', username: 'user1', install: true }),
-            new PluginPackage({ name: 'name2', owner: 'owner2', repositoryName: 'repo2', username: 'user2', install: true }),
-        ]);
-        settingService = new MockSettingsDataService();
-        webService = new MockWebCoreService();
-        webService.send = (request) => {
-            return new Promise<Response>((resolve) => {
+
+        web = jasmine.createSpyObj('WebService', ['send']);
+        producer = jasmine.createSpyObj('Producer', ['send']);
+        context = jasmine.createSpyObj('PluginContext', ['install', 'uninstall']);
+
+        serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
+        (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
+            if (type === SERVICE_TYPES.SettingsContext) {
+                return settings;
+            } else if (type === SERVICE_TYPES.Producer) {
+                return producer;
+            } else if (type === SERVICE_TYPES.WebService) {
+                return web;
+            } else if (type === SERVICE_TYPES.PluginContext) {
+                return context;
+            }
+            throw new Error(`Couldn't resolve type ${type}.`);
+        });
+
+        dataService = new AppPackageDataService(serviceContainer);
+        dataService.configure();
+    });
+
+    it('read should get package from settings', () => {
+        const pluginPackage = dataService.read('Unique');
+
+        expect(pluginPackage.repositoryName).toBe('Repo');
+    });
+
+    it('find should get package from settings', () => {
+        const pluginPackage = dataService.find(packages[0].plugins[0]);
+
+        expect(pluginPackage.repositoryName).toBe('Repo');
+    });
+
+    it('find should return undefined for not found', () => {
+        expect(dataService.find({
+            name: 'Plugin',
+            className: 'Class',
+            description: 'Desc',
+            type: 'Type',
+            packageName: 'Not Found'
+        })).toBe(undefined);
+    });
+
+    it('all should call web service', (done) => {
+        (web.send as jasmine.Spy).and.callFake(async () => {
+            return new Response({
+                statusCode: 200,
+                body: Buffer.from(`${JSON.stringify([])}`)
+            });
+        });
+        (producer.send as jasmine.Spy).and.callFake((event) => {
+            expect(event).toBe(PackageEvents.Change);
+            done();
+        });
+        dataService.all();
+    });
+
+    it('all should return packages', () => {
+        (web.send as jasmine.Spy).and.callFake(() => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(new Response({
+                        statusCode: 200,
+                        body: Buffer.from(`${JSON.stringify([])}`)
+                    }));
+                }, 10);
+            });
+        });
+        expect(dataService.all().length).toBe(packages.length);
+    });
+
+    it('all should return package with increase one', (done) => {
+        (web.send as jasmine.Spy).and.callFake(() => {
+            return new Promise((resolve) => {
                 resolve(new Response({
                     statusCode: 200,
-                    body: Buffer.from(JSON.stringify([
-                        pluginPackageList.packages[0],
-                        pluginPackageList.packages[1],
-                        packageToInstall,
-                    ]))
+                    body: Buffer.from(`${JSON.stringify([
+                        {
+                            name: 'New Unique',
+                            owner: 'Owner',
+                            plugins: [],
+                            repositoryName: 'Repo',
+                            username: 'User',
+                        },
+                        {
+                            name: 'Unique',
+                            owner: 'Owner',
+                            plugins: [],
+                            repositoryName: 'Repo',
+                            username: 'User',
+                        },
+                    ])}`)
                 }));
             });
-        };
-        serviceContainer = new MockServiceContainer();
-        documentContext = new MockDocumentContext();
-        pluginContext = new MockPluginContext();
-        packageDataService = new AppPackageDataService(serviceContainer);
-        documentContext.get = <T>(path: string, defaultValue?: T): T => {
-            return documentGet() as T;
-        };
-        serviceContainer.getType = (type: SERVICE_TYPES) => {
-            switch (type) {
-                case SERVICE_TYPES.DocumentContext:
-                    return documentContext;
-                case SERVICE_TYPES.PluginContext:
-                    return pluginContext;
-                case SERVICE_TYPES.WebService:
-                    return webService;
-                case SERVICE_TYPES.SettingsDataService:
-                    return settingService;
-                default:
-                    throw new Error(`Couldn't find type.`);
-            }
-        };
+        });
+        dataService.all();
+        (producer.send as jasmine.Spy).and.callFake((event) => {
+            expect(dataService.all().length).toBe(2);
+            done();
+        });
     });
 
-    it('all should return list pf plugins.', () => {
-        const list = packageDataService.all();
-        expect(list.packages.length).toBe(pluginPackageList.packages.length);
-    });
-
-    it('read should return first package.', () => {
-        const pluginPackage = packageDataService.read(pluginPackageList.packages[0].name);
-        expect(pluginPackage.owner).toBe(pluginPackageList.packages[0].owner);
-    });
-
-    it('read should throw for not found package.', () => {
-        expect(() => {
-            packageDataService.read('not found');
-        }).toThrowError();
-    });
-
-    it('install should throw exception for whats already in list', (done) => {
-        packageDataService.install(pluginPackageList.packages[0])
-            .then((_) => {
-                done.fail(`Didn't expect successful execution.`);
-            }).catch((reason) => {
-                expect().nothing();
-                done();
+    it('install should return package that\'s install', async (done) => {
+        (context.install as jasmine.Spy).and.callFake(() => {
+            return new Promise((resolve) => resolve());
+        });
+        (web.send as jasmine.Spy).and.callFake(() => {
+            return new Promise((resolve) => {
+                resolve(new Response({
+                    statusCode: 200,
+                    body: Buffer.from(`${JSON.stringify([
+                        {
+                            name: 'New Unique',
+                            owner: 'Owner',
+                            plugins: [],
+                            repositoryName: 'Repo',
+                            username: 'User',
+                        }
+                    ])}`)
+                }));
             });
-    });
-
-    it('install should add to installed package list', (done) => {
-        const expected = pluginPackageList.packages.length + 1;
-        packageDataService.all((list) => {
-            packageDataService.install(packageToInstall)
-                .then(() => {
-                    expect(packageDataService.all().packages.filter((value) => {
-                        return value.install;
-                    }).length).toBe(expected);
-                    done();
-                });
         });
-    });
 
-    it('uninstall should remove from install package list', async () => {
-        packageDataService.all();
-        const expected = pluginPackageList.packages.length - 1;
-        await packageDataService.uninstall(pluginPackageList.packages[0].name);
-        expect(packageDataService.all().packages.filter((value) => {
-            return value.install;
-        }).length).toBe(expected);
-    });
 
-    it('uninstall should reject for not found package', (done) => {
-        packageDataService.all();
-        packageDataService.uninstall('not found')
-            .then(() => {
-                done.fail(`Didn't expect successful execution.`);
-            }).catch((reason) => {
-                expect().nothing();
-                done();
+        (producer.send as jasmine.Spy).and.callFake(async (value) => {
+            const pluginPackage = await dataService.install({
+                name: 'New Unique',
+                owner: 'Owner',
+                plugins: [],
+                repositoryName: 'Repo',
+                username: 'User',
+                install: false,
             });
+            expect(pluginPackage.install).toBeTruthy();
+            expect(context.install).toHaveBeenCalled();
+            done();
+        });
+
+        dataService.all();
     });
 
-    it('find should get package with plugin that has its name', () => {
-        const plugin = new Plugin({
-            name: 'plugin',
-            className: 'class',
-            description: 'desc',
-            type: 'type',
-            packageName: pluginPackageList.packages[0].name
+    it('install should call save package that\'s install', async (done) => {
+        (context.install as jasmine.Spy).and.callFake(() => {
+            return new Promise((resolve) => resolve());
         });
-        const find = packageDataService.find(plugin);
-        expect(find.owner).toEqual(pluginPackageList.packages[0].owner);
-    }); 
+        (settings.set as jasmine.Spy).and.callFake((_key, value) => {
+            expect(value.length).toBe(2);
+            expect(context.install).toHaveBeenCalled();
+            done();
+        });
+        (web.send as jasmine.Spy).and.callFake(() => {
+            return new Promise((resolve) => {
+                resolve(new Response({
+                    statusCode: 200,
+                    body: Buffer.from(`${JSON.stringify([
+                        {
+                            name: 'New Unique',
+                            owner: 'Owner',
+                            plugins: [],
+                            repositoryName: 'Repo',
+                            username: 'User',
+                        }
+                    ])}`)
+                }));
+            });
+        });
 
-    
-    it('find should return undefined for not found', () => {
-        const plugin = new Plugin({
-            name: 'plugin',
-            className: 'class',
-            description: 'desc',
-            type: 'type',
-            packageName: 'not found'
+
+        (producer.send as jasmine.Spy).and.callFake(async (value) => {
+            await dataService.install({
+                name: 'New Unique',
+                owner: 'Owner',
+                plugins: [],
+                repositoryName: 'Repo',
+                username: 'User',
+                install: false,
+            });
         });
-        const find = packageDataService.find(plugin);
-        expect(find).toBeUndefined();
-    }); 
+
+        dataService.all();
+
+    });
+
+    it('uninstall should set package install to false', async () => {
+        const pluginPackage = await dataService.uninstall({
+            name: 'Unique',
+            owner: 'Owner',
+            plugins: [],
+            repositoryName: 'Repo',
+            username: 'User',
+            install: true,
+        });
+
+        expect(pluginPackage.install).toBeFalsy();
+    });
+
+
+    it('uninstall should save packages', async (done) => {
+        (context.uninstall as jasmine.Spy).and.callFake(() => {
+            return new Promise((resolve) => resolve());
+        });
+        (settings.set as jasmine.Spy).and.callFake((_key, value) => {
+            expect(value.length).toBe(packages.length - 1);
+            expect(context.uninstall).toHaveBeenCalled();
+            done();
+        });
+        await dataService.uninstall({
+            name: 'Unique',
+            owner: 'Owner',
+            plugins: [],
+            repositoryName: 'Repo',
+            username: 'User',
+            install: true,
+        });
+    });
+
+
+    it('all should call error when web returns a  non positive status', (done) => {
+        (web.send as jasmine.Spy).and.callFake((value) => {
+            return new Response({
+                statusCode: 404,
+            });
+        });
+        (producer.send as jasmine.Spy).and.callFake((value) => {
+            done();
+        });
+
+        dataService.all();
+    });
+
+    it('install should throw for unknown package', async (done) => {
+        try {
+            await dataService.install({
+                name: '404',
+                owner: 'Owner',
+                plugins: [],
+                repositoryName: 'Repo',
+                username: 'User',
+                install: false
+            });
+            done.fail();
+        } catch (error) {
+            expect().nothing();
+            done();
+        }
+    });
+
+
+    it('uninstall should throw for unknown package', async (done) => {
+        try {
+            await dataService.uninstall({
+                name: '404',
+                owner: 'Owner',
+                plugins: [],
+                repositoryName: 'Repo',
+                username: 'User',
+                install: false
+            });
+            done.fail();
+        } catch (error) {
+            expect().nothing();
+            done();
+        }
+    });
+
 
 
 
 });
+
 

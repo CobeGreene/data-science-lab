@@ -1,0 +1,9 @@
+.header {
+    background-color: var(--tabs-background);
+    border: 2px solid transparent;
+    height: calc(var(--tabs-actual-height) - 4px);
+    display: flex;
+    align-items: center;
+    padding-left: var(--sidebar-list-header-icon-width);
+}
+

@@ -1,13 +1,24 @@
-import { ExperimentAlgorithm } from '../../models';
+import { AlgorithmObject } from '../../models';
+import { Algorithm, Plugin } from '../../../../shared/models';
+import { AlgorithmPlugin, PluginData } from 'data-science-lab-core';
 
 
-export interface ExperimentAlgorithmDataService {
-    all(experimentId?: number): ExperimentAlgorithm[];
-    create(algorithm: ExperimentAlgorithm): ExperimentAlgorithm;
-    read(id: number): ExperimentAlgorithm;
-    update(algorithm: ExperimentAlgorithm): void;
-    delete(id: number): void;
-    deleteByExperiment(experimentId: number): void;
-    load(jsons: string[]);
-    export(algorithms: ExperimentAlgorithm[]): string [];
+export interface AlgorithmDataService {
+    configure(): void;
+    all(): AlgorithmObject[];
+    // tslint:disable-next-line: unified-signatures
+    all(experimentId: number): AlgorithmObject[];
+    allView(): Algorithm[];
+    get(id: number): AlgorithmObject;
+    create(experimentId: number, plugin: Plugin, algorithm: AlgorithmPlugin): number;
+    delete(id: number): Promise<number>;
+    deleteByExperiment(experimentId: number): Promise<number[]>;
+    view(id: number): Algorithm;
+    load(experimentId: number): Promise<void>;
+    save(experimentId: number): void;
+    update(algorithm: AlgorithmObject): void;
+    start(id: number): void;
+    stop(id: number): void;
 }
+
+

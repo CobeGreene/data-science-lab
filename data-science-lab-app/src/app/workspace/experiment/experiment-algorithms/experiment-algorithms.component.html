@@ -1,0 +1,6 @@
+<div class="container p-5">
+    <app-experiment-create-algorithm-card class="card" (click)="onCreate($event)"></app-experiment-create-algorithm-card>
+    <ng-container *ngFor="let algorithm of algorithms; let i = index">
+        <app-experiment-algorithm-card class="card" [id]="algorithm.id" (click)="onOpen($event, i)"></app-experiment-algorithm-card>
+    </ng-container>    
+</div>

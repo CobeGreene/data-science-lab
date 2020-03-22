@@ -1,0 +1,42 @@
+:host {
+    background: var(--experiment-algorithm-card-background);
+    height: min-content;
+    border-radius: 0.5em;
+    border: 2px solid var(--experiment-algorithm-card-border);
+    box-shadow: 0px 5px 2px 3px var(--experiment-algorithm-card-shadow);
+    transform: scaleX(0.95);
+    cursor: pointer;
+}
+
+:host:hover {
+    transform: scaleX(1);
+    transition: all 200ms ease-in-out;
+}
+
+.body {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.name {
+    display: flex;
+    align-content: center;
+}
+
+
+.edit {
+    align-self: flex-start;
+    opacity: 0.2;
+    transition: all 200ms ease-in-out;
+}
+
+.edit:hover {
+    opacity: 1.0;
+}

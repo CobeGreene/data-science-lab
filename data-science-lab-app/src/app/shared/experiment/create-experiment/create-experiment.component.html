@@ -1,0 +1,27 @@
+<ng-template #overlayCmp>
+    <div class="modal">
+        <app-modal-header [header]="'Create Experiment'"></app-modal-header>
+        <form name="form" #f="ngForm" (ngSubmit)="f.form.valid && onSubmit($event)" novalidate>
+            <div class="m-0 mb-4">
+                <input class="w-100 accent1 input-xlg" tabindex="1" placeholder="Enter title here" name="title"
+                    [(ngModel)]="model.title" #title="ngModel" type="text" required minlength="1" maxlength="60">
+                <div *ngIf="f.submitted && title.invalid">
+                    <div *ngIf="title.errors.required" class="invalid-feedback">Title is required</div>
+                    <div *ngIf="title.errors.minlength || title.errors.maxlength" class="invalid-feedback">Title must be
+                        between 1 and 60 characters.</div>
+                </div>
+            </div>
+            <div class="desc-cont">
+                <h4 class="m-0 p-2 header">Desciption (Optional)</h4>
+                <textarea placeholder="..." tabindex="2" class="input-lg w-100 desc accent1" name="description"
+                    [(ngModel)]="model.description" #description="ngModel" minlength="1"></textarea>
+            </div>
+            <div class="pt-2">
+                <button type="submit" tabindex="3" class="btn btn-accent1 btn-lg"
+                    [ngClass]="{ 'disabled': !f.form.valid }">
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>

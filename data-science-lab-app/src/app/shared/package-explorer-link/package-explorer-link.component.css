@@ -1,0 +1,5 @@
+:host {
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--package-explorer-link);
+}

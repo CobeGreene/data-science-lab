@@ -1,0 +1,28 @@
+<app-sidebar-header class="header" [header]="'EXPERIMENTS'"></app-sidebar-header>
+<app-sidebar-experiment-create class="create py-1"></app-sidebar-experiment-create>
+<app-sidebar-list-header class="open-experiments-header" (click)="onToggleOpenExperiments($event)"
+    [ngClass]="{ 'selected': (!data.openExperiments || openExperiments.length === 0) && data.selected === 0 && data.inFocus }"
+    [header]="'OPEN-EXPERIMENTS'" [isOpen]="data.openExperiments">
+</app-sidebar-list-header>
+<app-sidebar-list-body class="open-experiments-list" [ngClass]="{ 'hidden': !data.openExperiments }">
+    <ng-container *ngFor="let experiment of openExperiments; let i = index">
+        <app-sidebar-list-card #experimentCmp (click)="onOpenSelected(i)" (touch)="onOpenSelected(i)" class="pointer"
+            [ngClass]="{ 'selected': data.selected === 0 && data.openSelected === i, 'faded': data.selected !== 0 && data.openSelected === i }">
+            <app-sidebar-experiment-card [experiment]="experiment"></app-sidebar-experiment-card>
+        </app-sidebar-list-card>
+    </ng-container>
+</app-sidebar-list-body>
+<app-sidebar-list-header class="saved-experiments-header" (click)="onToggleSaveExperiments($event)"
+    [ngClass]="{ 'selected': (!data.savedExperiments || savedExperiments.length === 0) && data.selected === 1 && data.inFocus }"
+    [header]="'SAVED-EXPERIMENTS'" [isOpen]="data.savedExperiments"></app-sidebar-list-header>
+<app-sidebar-list-body class="saved-experiments-list" [ngClass]="{ 'hidden': !data.savedExperiments }">
+    <ng-container *ngFor="let experiment of savedExperiments; let i = index">
+        <app-sidebar-list-card #experimentCmp (click)="onSaveSelected(i)" (touch)="onSaveSelected(i)" class="pointer"
+            [ngClass]="{ 'selected': data.selected === 1 && data.savedSelected === i, 'faded': data.selected !== 1 && data.savedSelected === i }">
+            <app-sidebar-experiment-card [experiment]="experiment"></app-sidebar-experiment-card>
+        </app-sidebar-list-card>
+    </ng-container>
+</app-sidebar-list-body>
+<div class="bottom">
+
+</div>

@@ -1,0 +1,15 @@
+:host {
+    height: var(--tabs-actual-height);
+    display: inline-block;
+    position: relative;
+}
+
+div {
+    background-color: var(--tabs-background);
+    display: inline-flex;
+    color: var(--tabs-word);
+    justify-content: center;
+    align-items: center;
+    height: var(--tabs-height);
+}
+

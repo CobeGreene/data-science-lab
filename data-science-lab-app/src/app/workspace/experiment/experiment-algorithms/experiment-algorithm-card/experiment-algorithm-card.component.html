@@ -1,0 +1,44 @@
+<div class="image p-2">
+    <fa name="code" class="icon-sm" size="lg"></fa>
+    <fa name="code" class="icon-lg" size="5x"></fa>
+</div>
+<div class="p-2">
+    <h3>
+        {{ algorithm.name }}
+    </h3>
+    <div class="body">
+        <div>
+            <p class="m-0 p-0">
+                At iteration {{ algorithm.iteration }}
+            </p>
+            <p class="m-0 p-0">
+                <ng-container *ngIf="algorithm.isTraining">
+                    Training in Progress
+                </ng-container>
+                <ng-container *ngIf="algorithm.isFinish">
+                    Training is Finish
+                </ng-container>
+                <ng-container *ngIf="!algorithm.isTraining && !algorithm.isFinish">
+                    Not Currently Training 
+                </ng-container>
+            </p>
+        </div>
+        <div class="action p-3">
+            <fa name="bolt" size="3x" (click)="onOptions($event)"></fa>
+        </div>
+    </div>
+</div>
+<app-dropdown #optionsCmp>
+    <ul class="list-unstyled dropdown-list">
+        <li *ngIf="!algorithm.isFinish && !algorithm.isTraining" (click)="onStart($event)">
+            Start Training
+        </li>
+        <li *ngIf="algorithm.isTraining" (click)="onStop($event)">
+            Stop Training
+        </li>
+        <li (click)="onDelete($event)">
+            Delete Algorithm
+        </li>
+    </ul>
+    <app-delete-algorithm [id]="id" #deleteCmp></app-delete-algorithm>
+</app-dropdown>

@@ -1,10 +1,10 @@
-import { Experiment, ExperimentList } from '../../../../shared/models';
-
+import { Experiment } from '../../../../shared/models';
 
 export interface ExperimentDataService {
-    all(): ExperimentList;
-    create(experiment: Experiment): Experiment;
-    read(id: number): Experiment;
+    configure(): void;
+    all(): Experiment[];
+    post(experiment: Experiment): Experiment;
+    get(id: number): Experiment;
     update(experiment: Experiment): void;
-    delete(id: number): void;
+    delete(id: number): void;   
 }

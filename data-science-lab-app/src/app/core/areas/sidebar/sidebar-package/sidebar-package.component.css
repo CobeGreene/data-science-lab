@@ -1,0 +1,30 @@
+:host {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content auto auto auto 1fr;
+    grid-template-areas: 'header' 'explorer' 'install-header' 'install-list' 'bottom';
+}
+
+.header {
+    grid-area: header;
+}
+
+.explorer {
+    grid-area: explorer;
+}
+
+.install-package-header {
+    grid-area: install-header;
+}
+
+.install-package-list {
+    grid-area: install-list;
+}
+
+
+.bottom {
+    grid-area: bottom;
+    background-color: var(--sidebar-list-background);
+}
+
+

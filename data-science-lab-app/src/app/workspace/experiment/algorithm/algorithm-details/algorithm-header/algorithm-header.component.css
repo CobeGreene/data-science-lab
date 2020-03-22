@@ -1,0 +1,20 @@
+.header {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    color: var(--experiment-algorithm);
+}
+
+.edit {
+    align-self: flex-start;
+    opacity: 0.2;
+    transition: all 200ms ease-in-out;
+}
+
+.edit:hover {
+    opacity: 1.0;
+}

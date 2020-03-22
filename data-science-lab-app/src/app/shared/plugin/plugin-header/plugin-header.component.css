@@ -1,0 +1,23 @@
+:host {
+    display: grid;
+    grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+    grid-template-rows: auto;
+    grid-template-areas: 'return title exit';
+}
+
+.return {
+    grid-area: return;
+}
+
+.title {
+    grid-area: title;
+    border-bottom: 1px solid var(--plugin-header-title);
+    text-align: center;
+}
+
+.exit {
+    grid-area: exit;
+    display: flex;
+    align-self: flex-start;
+    justify-self: right;
+}

@@ -1,0 +1,60 @@
+<div class="options p-3">
+    <h2 class="mb-0 pb-0">Tracker Variables</h2>
+    <p class="mt-0 pt-0">
+        These are variables reported by the algorithm when running.
+    </p>
+    <h4 class="text-accent1 pointer" (click)="onVisualize()" *ngIf="tracker !== undefined">
+        <u><i>Visualize</i></u>
+    </h4>
+</div>
+<div class="variables p-3">
+    <ng-container *ngIf="tracker !== undefined">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="p-2">
+                        <fa name="bars" class="pr-2 pl-2 invisible"></fa>
+                        Variables
+                    </th>
+                    <th class="p-2" [attr.colspan]="tracker.recentIterations.length">
+                        The last {{ tracker.recentIterations.length }} iterations
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="p-2">
+                        <fa name="bars" class="pr-2 pl-2 invisible"></fa>
+                        Iteration #
+                    </td>
+                    <td *ngFor="let iteration of tracker.recentIterations">
+                        {{ iteration.at }}
+                    </td>
+                </tr>
+                <tr *ngFor="let variable of tracker.variables; let i = index">
+                    <td class="p-2">
+                        <fa name="bars" class="pr-2 pl-2 icon float-left" (click)="onOpenDesc($event, i)"></fa>
+                        {{ variable.name }}
+                    </td>
+                    <ng-container *ngFor="let iteration of tracker.recentIterations">
+                        <td class="p-2 pointer"
+                            *ngIf="iteration.values[variable.name] !== undefined; else undefinedCmp">
+                            <app-preview-card class="pointer" [value]="iteration.values[variable.name]" [feature]="variable">
+
+                            </app-preview-card>
+                        </td>
+                        <ng-template #undefinedCmp>
+                            <td class="p-2 text-accent6">
+                                Missing
+                            </td>
+                        </ng-template>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+    <ng-container *ngIf="tracker === undefined">
+        <p>No variables have been reported yet.</p>
+    </ng-container>
+</div>
+<app-popup #popupCmp></app-popup>
