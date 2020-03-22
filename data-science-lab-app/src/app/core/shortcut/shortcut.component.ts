@@ -13,6 +13,13 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
 
   }
 
+  onKeydown = (event: KeyboardEvent): void => {
+    const shortcut = this.getShortcut(event);
+    if (shortcut === "ctrl + tab" || shortcut === "ctrl + shift + tab") {
+      this.shortcutService.runAction(shortcut);
+    }
+  }
+
   onKeypress = (event: KeyboardEvent): void => {
     const shortcut = this.getShortcut(event);
     this.shortcutService.runAction(shortcut);
@@ -33,6 +40,7 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     document.addEventListener('keypress', this.onKeypress, true);
     document.addEventListener('keyup', this.onKeyup, true);
+    document.addEventListener('keydown', this.onKeydown, true);
   }
 
   getShortcut(event: KeyboardEvent): string {

@@ -10,13 +10,14 @@ export interface DatasetDataService {
     create(experimentId: number, data: PluginData): number[];
     get(id: number): DatasetObject;
     delete(id: number): void;
-    deleteByExperiment(experimentId: number): void;
+    deleteByExperiment(experimentId: number): number[];
     view(id: number): Dataset;
     load(experimentId: number): void;
     save(experimentId: number): void;
+    show(id: number): void;
     update(dataset: DatasetObject): void;
     split(id: number, split: number): number;
     join(ids: number[]): { updateId: number, deletedIds: number[] };
-    extract(id: number, inputs: { [id: string]: number[] }): { [id: string]: PluginData };
+    extract(id: number, inputs: { [id: string]: number[] }, features: number[]): { [id: string]: PluginData };
     transform(id: number, pluginData: PluginData[] | PluginData, features: number[]): { updateId: number, createIds: number[] };
 }

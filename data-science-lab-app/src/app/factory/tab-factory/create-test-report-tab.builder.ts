@@ -29,12 +29,7 @@ export class CreateTestReportTabBuilder extends BaseTabBuilder {
 
     build(): Tab {
         this.base.experiment.update.unsubscribe();
-        this.tab.sub = this.base.experiment.delete
-            .add(this.base.delete)
-            .add(this.base.update)
-            .add(this.update)
-            .add(this.delete)
-            .add(this.finish);
+        this.tab.sub = [this.base.experiment.delete, this.base.delete, this.base.update, this.update, this.delete, this.finish];
         return this.tab;
     }
 
@@ -63,7 +58,7 @@ export class CreateTestReportTabBuilder extends BaseTabBuilder {
         this.finish = subject.subscribe(({ id, returnPath }) => {
             if (id === this.tab.data.sessionId) {
                 if (returnPath === undefined) {
-                    const tab = this.tabFactory.create(['experiment', this.tab.data.id, 'algorithm']);
+                    const tab = this.tabFactory.create(['experiment', this.tab.data.id, 'algorithm', this.tab.data.algorithmId]);
                     this.tabService.replaceTab(this.tab.route, tab);
                 } else {
                     const tab = this.tabFactory.create(returnPath.split('/').slice(1));

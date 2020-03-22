@@ -9,7 +9,7 @@ export class AppWebService implements WebService {
                 const netRequest = net.request({
                     method: request.method,
                     protocol: request.protocol,
-                    hostanme: request.hostname,
+                    hostname: request.hostname,
                     port: request.port,
                     path: request.path
                 });

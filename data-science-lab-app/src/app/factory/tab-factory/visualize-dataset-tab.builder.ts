@@ -29,12 +29,7 @@ export class VisualizeDatasetTabBuilder extends BaseTabBuilder {
 
     build(): Tab {
         this.base.experiment.update.unsubscribe();
-        this.tab.sub = this.base.experiment.delete
-            .add(this.base.update)
-            .add(this.base.delete)
-            .add(this.update)
-            .add(this.delete)
-            .add(this.finish);
+        this.tab.sub = [this.base.experiment.delete, this.base.update, this.base.delete, this.update, this.delete, this.finish];
         return this.tab;
     }
 

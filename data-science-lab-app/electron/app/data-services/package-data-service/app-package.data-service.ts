@@ -147,6 +147,7 @@ export class AppPackageDataService extends Service implements PackageDataService
                 this.producer.send(ErrorEvent, this.unableConnect());
             }
         } catch (error) {
+            console.log(error);
             this.producer.send(ErrorEvent, this.unableConnect());
         }
 

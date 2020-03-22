@@ -76,7 +76,7 @@ export class ExperimentVisualsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   onMouseMove(event: MouseEvent) {
-    if (this.mouseDown) {
+    if (this.mouseDown && this.actionOnVisual !== undefined) {
       const changeInX = Math.floor((event.x - this.referenceEvent.x) / this.length);
       const changeInY = Math.floor((event.y - this.referenceEvent.y) / this.length);
 
@@ -118,18 +118,18 @@ export class ExperimentVisualsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   onMouseUp(event: MouseEvent) {
-    this.mouseDown = false;
-    if (this.actionOnVisual) {
-      this.actionOnVisual.zindex = 1;
+    if (this.actionOnVisual !== undefined) {
+      this.mouseDown = false;
+        this.actionOnVisual.zindex = 1;
+      if (this.isMove) {
+        this.visualizeService.reposition(this.actionOnVisual.id, this.actionOnVisual.top, this.actionOnVisual.left);
+      } else {
+        this.visualizeService.resize(this.actionOnVisual.id, this.actionOnVisual.width, this.actionOnVisual.height);
+      }
+      this.actionOnVisual = undefined;
+      this.isMove = false;
+      this.referenceEvent = undefined;
     }
-    if (this.isMove) {
-      this.visualizeService.reposition(this.actionOnVisual.id, this.actionOnVisual.top, this.actionOnVisual.left);
-    } else {
-      this.visualizeService.resize(this.actionOnVisual.id, this.actionOnVisual.width, this.actionOnVisual.height);
-    }
-    this.actionOnVisual = undefined;
-    this.isMove = false;
-    this.referenceEvent = undefined;
   }
 
   onMove(action: { event: MouseEvent, visual: Visual }) {

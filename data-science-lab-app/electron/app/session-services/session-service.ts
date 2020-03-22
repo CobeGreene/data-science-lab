@@ -60,10 +60,11 @@ export abstract class SessionService extends ServiceModel {
         this.producer.send(this.eventDelete, id);
     }
 
-    async select(id: number, plugin: SessionPlugin | Plugin) {
+    async select(id: number, plugin: SessionPlugin | Plugin, selectedFeatures?: number[]) {
         await this.eventWrapper(async () => {
             const session = this.dataService.get(id);
             session.plugin = plugin;
+            session.selectedFeatures = selectedFeatures;
             session.isWaiting = false;
 
             const sessionPlugin = await this.context.activate<any>(this.packageService.find(plugin), plugin);
@@ -205,10 +206,15 @@ export abstract class SessionService extends ServiceModel {
     }
 
     private async sessionFinishWrapper(session: Session, plugin: any) {
-        await this.sessionFinish(session, plugin);
-        await this.deactivatePlugin(session.plugin);
-        this.dataService.delete(session.id);
-        this.producer.send(this.eventFinish, session.id);
+        try {
+            this.producer.send(this.eventFinish, session.id);
+            await this.sessionFinish(session, plugin);
+            await this.deactivatePlugin(session.plugin);
+            this.dataService.delete(session.id);
+        } catch (error) {
+            this.dataService.delete(session.id);
+            throw error;
+        }
     } 
 
 

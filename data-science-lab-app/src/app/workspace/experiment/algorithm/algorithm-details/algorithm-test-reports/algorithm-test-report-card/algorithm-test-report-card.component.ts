@@ -4,6 +4,8 @@ import { DropdownComponent } from '../../../../../../shared/dropdown/dropdown.co
 import { RouterService } from '../../../../../../services/router-service';
 import { TestReportService } from '../../../../../../services/test-report-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { EditTestReportComponent } from '../../../../../../shared/test-report/edit-test-report/edit-test-report.component';
+import { DeleteTestReportComponent } from '../../../../../../shared/test-report/delete-test-report/delete-test-report.component';
 
 @Component({
   selector: 'app-algorithm-test-report-card',
@@ -17,6 +19,9 @@ export class AlgorithmTestReportCardComponent implements OnInit, OnDestroy {
 
   @ViewChild('optionsCmp', { static: false }) optionsComponent: ElementRef;
   @ViewChild('optionsDropdown', { static: false }) optionsDropdown: DropdownComponent;
+
+  @ViewChild('editCmp', { static: false}) editComponent: EditTestReportComponent;
+  @ViewChild('deleteCmp', { static: false }) deleteComponent: DeleteTestReportComponent;
 
   constructor(
     private routerService: RouterService,
@@ -47,6 +52,14 @@ export class AlgorithmTestReportCardComponent implements OnInit, OnDestroy {
 
   onOptions(event: MouseEvent) {
     this.optionsDropdown.open(event, this.optionsComponent);
+  }
+
+  onEdit(event: MouseEvent) {
+    this.editComponent.open(event);
+  }
+
+  onDelete(event: MouseEvent) {
+    this.deleteComponent.open(event);
   }
 
 }

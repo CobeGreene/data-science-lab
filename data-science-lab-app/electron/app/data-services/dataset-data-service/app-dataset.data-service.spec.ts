@@ -228,6 +228,7 @@ describe('Electron Dataset Data Service', () => {
         datasetService.save(2);
 
         datasetService.deleteByExperiment(2);
+        datasetService.save(2);
         expect(fs.existsSync(path.join(experimentPath, `datasets${2}.gzip`))).toBeFalsy();
     });
 
@@ -499,7 +500,7 @@ describe('Electron Dataset Data Service', () => {
         const data = datasetService.extract(id, {
             input: [0, 1],
             output: [2]
-        });
+        }, [0, 1, 2]);
 
         expect(data.input.features.length).toBe(2);
         expect(data.input.features[0]).toBe('F1');

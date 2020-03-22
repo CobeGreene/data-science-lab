@@ -98,7 +98,14 @@ export class AppTabService extends TabService {
 
     private closeTab(tab: Tab) {
         if (tab.sub !== undefined && tab.sub !== null) {
-            tab.sub.unsubscribe();
+            if (tab.sub instanceof Array) {
+                tab.sub.forEach((sub) => {
+                    sub.unsubscribe();
+                });
+            } else {
+                tab.sub.unsubscribe();
+                tab.sub = null;
+            }
         }
         if (tab.close !== undefined && tab.close !== null) {
             tab.close();

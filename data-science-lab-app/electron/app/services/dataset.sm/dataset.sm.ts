@@ -13,7 +13,9 @@ export class DatasetServiceModel extends ServiceModel {
             { path: DatasetEvents.Rename, method: 'rename' },
             { path: DatasetEvents.Split, method: 'split' },
             { path: DatasetEvents.Join, method: 'join' },
+            { path: DatasetEvents.Show, method: 'show' },
             { path: ExperimentEvents.Load, method: 'load' },
+            { path: ExperimentEvents.Delete, method: 'deleteByExperiment', isListener: true },
             { path: ExperimentEvents.Save, method: 'save', isListener: true },
         ]
     };
@@ -56,12 +58,22 @@ export class DatasetServiceModel extends ServiceModel {
         this.producer.send(DatasetEvents.Create, this.datasetService.view(splitId));
     }
     
+    deleteByExperiment(experimentId: number) {
+        this.datasetService.deleteByExperiment(experimentId);
+        this.producer.send(DatasetEvents.All, this.datasetService.all().map((value) => this.datasetService.view(value.id)));
+    }
+    
     join(ids: number[]) {
         const { updateId, deletedIds } = this.datasetService.join(ids);
         this.producer.send(DatasetEvents.Update, this.datasetService.view(updateId));
         deletedIds.forEach((id) => {
             this.producer.send(DatasetEvents.Delete, id);
         });
+    }
+
+    show(id: number) {
+        this.datasetService.show(id);
+        this.producer.send(DatasetEvents.Update, this.datasetService.view(id));
     }
 }
 

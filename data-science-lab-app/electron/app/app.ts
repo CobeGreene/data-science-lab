@@ -42,6 +42,7 @@ import { CreateTestReportServiceModel } from './session-services/create-test-rep
 import { VisualServiceModel } from './services/visual.sm';
 import { DatasetVisualServiceModel } from './session-services/dataset-visual.sm';
 import { AlgorithmVisualServiceModel } from './session-services/algorithm-visual.sm';
+import { ExperimentState } from '../../shared/models';
 
 export let win: BrowserWindow;
 
@@ -132,7 +133,7 @@ export class App {
         const dataService = this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
         const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
 
-        dataService.all().forEach(experiment => {
+        dataService.all().filter(value => value.state === ExperimentState.Loaded).forEach(experiment => {
             producer.send(ExperimentEvents.Save, experiment.id);
         });
     }
@@ -146,6 +147,7 @@ export class App {
         this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService).configure();
         this.serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService).configure();
         this.serviceContainer.resolve<TestReportDataService>(SERVICE_TYPES.TestReportDataService).configure();
+        this.serviceContainer.resolve<VisualDataService>(SERVICE_TYPES.VisualDataService).configure();
     }
 
     private createWindow() {
@@ -158,14 +160,15 @@ export class App {
             width: size.width, height: size.height,
             webPreferences: {
                 preload: this.preload
-            }
+            },
+            title: 'Data Science Lab'
         });
 
-        // win.setMenu(null); // to allow some of the shortcuts.
-
+        win.setMenu(null); // to allow some of the shortcuts.
 
         this.configure();
         win.loadURL(this.indexPage);
+
 
         win.on('close', (event: Event) => {
             event.preventDefault();

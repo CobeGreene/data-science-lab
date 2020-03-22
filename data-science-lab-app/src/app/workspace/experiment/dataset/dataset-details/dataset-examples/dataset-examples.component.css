@@ -25,6 +25,9 @@
     border-collapse: collapse;
 }
 
+.show:hover {
+    background-color: var(--dataset-show-more-hover);
+}
 
 .table th {
     white-space: nowrap;

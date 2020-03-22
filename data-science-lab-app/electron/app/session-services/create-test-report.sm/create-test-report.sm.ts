@@ -86,8 +86,8 @@ export class CreateTestReportServiceModel extends ServiceModel {
         }
 
         const dataset = this.datasetService.get(session.datasetId);
-        const inputData = this.datasetService.extract(session.datasetId, inputs);
-        const outputData = this.datasetService.extract(session.datasetId, outputs);
+        const inputData = this.datasetService.extract(session.datasetId, inputs, session.selectedFeatures);
+        const outputData = this.datasetService.extract(session.datasetId, outputs, session.selectedFeatures);
 
         const examples = dataset.examples;
         let correct = 0;

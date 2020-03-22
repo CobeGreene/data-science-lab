@@ -77,7 +77,7 @@ export class AlgorithmVisualServiceModel extends SessionService {
     async sessionFinish(session: Session, plugin: VisualizationPlugin) {
         const tracker = this.trackerService.get(session.keyId);
         const algorithm = this.algorithmService.get(tracker.algorithmId);
-        plugin.getInputs().submit(this.trackerService.extract(tracker.algorithmId, session.inputDict));        
+        plugin.getInputs().submit(this.trackerService.extract(tracker.algorithmId, session.inputDict, session.selectedFeatures));        
 
         const srcdoc = plugin.visualization();
 
@@ -93,6 +93,7 @@ export class AlgorithmVisualServiceModel extends SessionService {
             zindex: 1
         }
 
+        
         visual = this.visualService.post(visual);
         this.producer.send(VisualEvents.Create, visual);
     }

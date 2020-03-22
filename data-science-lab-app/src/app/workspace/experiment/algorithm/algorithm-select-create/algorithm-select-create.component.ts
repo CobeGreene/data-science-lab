@@ -65,7 +65,7 @@ export class AlgorithmSelectCreateComponent implements OnInit, OnDestroy {
   }
 
   onPlugin(plugin: SessionPlugin) {
-    this.sessionService.select(this.session.id, plugin);
+    this.sessionService.select(this.session.id, plugin, this.session.selectedFeatures);
   }
 
   initPlugins() {

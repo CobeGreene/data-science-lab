@@ -74,17 +74,11 @@ export class AlgorithmSelectVisualizeComponent implements OnInit, OnDestroy {
   }
 
   onPlugin(plugin: SessionPlugin) {
-    this.sessionService.select(this.session.id, plugin);
+    this.sessionService.select(this.session.id, plugin, this.session.selectedFeatures);
   }
 
   initPlugins() {
-    const features = this.tracker.variables.filter((_, index) => this.session.selectedFeatures.indexOf(index - 1) >= 0);
-    if (this.session.selectedFeatures.indexOf(0) >= 0) {
-      features.push({
-        name: 'Iteration',
-        type: 'number'
-      });
-    } 
+    const features = this.features.filter((_, index) => this.session.selectedFeatures.indexOf(index) >= 0);
     this.plugins = this.sessionPluginService.compatible(PluginTypes.Visualization, features);
   }
 

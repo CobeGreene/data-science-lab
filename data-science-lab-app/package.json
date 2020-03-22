@@ -2,6 +2,11 @@
   "name": "data-science-lab-app",
   "version": "0.0.0",
   "main": "dist/electron/main.js",
+  "author": {
+    "name": "Cobe Greene",
+    "email": "datasciencelabapp@gmail.com",
+    "url": "https://data-science-lab.azurewebsites.net"
+  },
   "scripts": {
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -17,6 +22,7 @@
     "build:settings": "copy default.settings.json dist\\app.settings.json",
     "build:theme": "copy default.color-theme.json dist\\app.color-theme.json",
     "build:user": "copy default.user-setting.json dist\\app.user-setting.json",
+    "build:jsons": "npm run build:settings && npm run build:theme && npm run build:user",
     "start": "electron .",
     "clean:test": "rmdir /q /s test || exit 0",
     "clean:dist": "rmdir /s dist || exit 0",
@@ -44,7 +50,8 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "icon": "./src/data-science-lab-icon.ico"
     },
     "nsis": {
       "runAfterFinish": true,

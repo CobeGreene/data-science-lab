@@ -1,8 +1,11 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ShortcutService } from '../../../services/shortcut-service';
 import { FocusService } from '../../../services/focus-service';
+import { TabFactory } from '../../../factory/tab-factory';
+import { TabService } from '../../../services/tab-service';
 import { FocusAreas } from '../../../constants';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { DropdownComponent } from '../../../shared/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,8 +19,12 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   isExpanded: boolean;
   inFocus: boolean;
 
+  @ViewChild('settingsCmp', { static: false }) settingsComponent: DropdownComponent;
+
   constructor(
     private shortcutService: ShortcutService,
+    private tabFactory: TabFactory,
+    private tabService: TabService,
     private focusService: FocusService) { }
 
   ngOnInit() {
@@ -85,6 +92,20 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isExpanded = false;
       this.focusService.pop();
     }
+  }
+
+  onSettingsClick() {
+    const tab = this.tabFactory.create(['settings']);
+    this.tabService.openTab(tab);
+  }
+
+  onWelcomeClick() {
+    const tab = this.tabFactory.create(['welcome']);
+    this.tabService.openTab(tab);
+  }
+
+  onSettingsContext(event: MouseEvent) {
+    this.settingsComponent.open(event);
   }
 
 }

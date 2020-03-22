@@ -125,8 +125,8 @@ export abstract class SessionService extends Service {
         }
     }
 
-    select(id: number, plugin: Plugin | SessionPlugin): void {
-        this.messenger.publish(this.eventSelect, id, plugin);
+    select(id: number, plugin: Plugin | SessionPlugin, selectedFeatures?: number[]): void {
+        this.messenger.publish(this.eventSelect, id, plugin, selectedFeatures);
     }
 
     inputOptions(id: number, inputs: { [id: string]: any; }): void {

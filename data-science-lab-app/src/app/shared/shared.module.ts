@@ -57,6 +57,9 @@ import { SelectDatasetComponent } from './dataset/select-dataset/select-dataset.
 import { SelectDatasetCardComponent } from './dataset/select-dataset/select-dataset-card/select-dataset-card.component';
 import { DeleteAlgorithmComponent } from './algorithm/delete-algorithm/delete-algorithm.component';
 import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorithm.component';
+import { PackageExplorerLinkComponent } from './package-explorer-link/package-explorer-link.component';
+import { DeleteTestReportComponent } from './test-report/delete-test-report/delete-test-report.component';
+import { EditTestReportComponent } from './test-report/edit-test-report/edit-test-report.component';
 
 @NgModule({
     declarations: [
@@ -107,6 +110,9 @@ import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorith
         SelectDatasetCardComponent,
         DeleteAlgorithmComponent,
         EditAlgorithmComponent,
+        PackageExplorerLinkComponent,
+        DeleteTestReportComponent,
+        EditTestReportComponent,
     ],
     imports: [
         CommonModule,
@@ -139,6 +145,8 @@ import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorith
         PackageBadgePipe,
         PackageSearchPipe,
         DropdownComponent,
+        DeleteTestReportComponent,
+        EditTestReportComponent,
         PreviewCardComponent,
         PluginSelectionComponent,
         PluginSetupComponent,
@@ -148,6 +156,8 @@ import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorith
         ObjectCardComponent,
         SelectComponent,
         CheckboxComponent,
+        PopupComponent,
+        PackageExplorerLinkComponent,
         CommonModule,
         AngularFontAwesomeModule,
         FormsModule,
@@ -155,7 +165,6 @@ import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorith
         AngularResizedEventModule,
         HttpClientModule,
         NgxMdModule,
-        PopupComponent,
     ]
 })
 export class SharedModule {
