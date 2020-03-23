@@ -45,7 +45,7 @@ describe('Electron App Algorithm Data Service', () => {
                     isFinish: false,
                     iteration: 10,
                     iterationTime: 10,
-                    plugin: {},
+                    plugin: { export: function() {}},
                     algorithm: ''
                 }
             ])
@@ -401,8 +401,24 @@ describe('Electron App Algorithm Data Service', () => {
         algorithmService.create(2, {} as any, algorithmPlugin);
         algorithmService.save(2);
 
-        expect(fs.existsSync(path.join(experimentPath, `algorithms2.gzip`)));
+        expect(fs.existsSync(path.join(experimentPath, `algorithms2.gzip`))).toBeTruthy();
         expect(algorithmPlugin.export).toHaveBeenCalledTimes(1);
+    });
+
+    it('delete by experiment and save should unlink zip', async () => {
+        (context.activate as jasmine.Spy).and.callFake( () => {
+            return new Promise((resolve) => {
+                const plugin = jasmine.createSpyObj('AlgorithmPlugin', ['import']);
+                resolve(plugin);
+            });
+        })
+        await algorithmService.load(1);
+        const ids = await algorithmService.deleteByExperiment(1);
+
+        algorithmService.save(1);
+        expect(ids.length).toBe(1);
+        expect(ids[0]).toBe(1);
+        expect(fs.existsSync(path.join(experimentPath, `algorithms1.gzip`))).toBeFalsy();
     });
 
 

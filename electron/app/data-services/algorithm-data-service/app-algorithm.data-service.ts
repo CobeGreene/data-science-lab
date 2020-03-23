@@ -178,7 +178,7 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
     save(experimentId: number) {
         const algorithms = this.all(experimentId);
         const algorithmPath = this.settings.get<string>(this.path);
-        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
+        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}.gzip`);
 
         if (algorithms.length > 0) {
             const data: AlgorithmData[] = algorithms.map((value): AlgorithmData => {
