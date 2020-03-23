@@ -224,11 +224,13 @@ describe('Electron Dataset Data Service', () => {
             ];
         });
 
-        datasetService.create(2, { examples: [], features: [] });
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
         datasetService.save(2);
 
-        datasetService.deleteByExperiment(2);
+        const ids = datasetService.deleteByExperiment(2);
         datasetService.save(2);
+        expect(ids.length).toBe(1);
+        expect(ids[0]).toBe(id);
         expect(fs.existsSync(path.join(experimentPath, `datasets${2}.gzip`))).toBeFalsy();
     });
 
@@ -696,7 +698,23 @@ describe('Electron Dataset Data Service', () => {
         datasetService.deleteByExperiment(2);
     });
 
-
+    it('show should increase the preview of experiment', () => {
+        datasetService.load(1);
+        datasetService.show(1);
+        const dataset = datasetService.get(1);
+        expect(dataset.previewExamples).toBe(2);        
+    });
+    
+    it('show multiple times should increase to length', () => {
+        datasetService.load(1);
+        datasetService.show(1);
+        datasetService.show(1);
+        datasetService.show(1);
+        datasetService.show(1);
+        datasetService.show(1);
+        const dataset = datasetService.get(1);
+        expect(dataset.previewExamples).toBe(3);        
+    });
 
 
 

@@ -87,7 +87,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
                     name: value.name,
                     examples: value.examples,
                     experimentId: value.experimentId,
-                    previewExamples: defaultPreview,
+                    previewExamples: (defaultPreview < value.examples) ? defaultPreview : value.examples,
                     features: (value.features as Array<any>).map((feature) => ({
                         name: feature.name,
                         type: feature.type,
