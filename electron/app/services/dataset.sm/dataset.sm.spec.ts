@@ -6,7 +6,7 @@ import { DatasetEvents } from '../../../../shared/events';
 
 
 
-describe('Elecron Dataset Service Model', () => {
+describe('Electron Dataset Service Model', () => {
     let serviceModel: DatasetServiceModel;
     let serviceContainer: ServiceContainer;
     let datasetService: DatasetDataService;
