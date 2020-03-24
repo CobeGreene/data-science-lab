@@ -88,9 +88,18 @@ describe('Electron Dataset Data Service', () => {
         expect(datasetService.all().length).toBe(0);
     });
 
+    it('all view should return length of 0', () => {
+        expect(datasetService.allView().length).toBe(0);
+    })
+
     it('load should increase all by 2', () => {
         datasetService.load(1);
         expect(datasetService.all(1).length).toBe(2);
+    });
+    
+    it('load should increase allView by 2', () => {
+        datasetService.load(1);
+        expect(datasetService.allView(1).length).toBe(2);
     });
 
     it('create should return ids of new dataset', () => {

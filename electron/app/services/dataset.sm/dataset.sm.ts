@@ -28,7 +28,7 @@ export class DatasetServiceModel extends ServiceModel {
     }
 
     all() {
-        this.producer.send(DatasetEvents.All, this.datasetService.all().map((value) => this.datasetService.view(value.id)));
+        this.producer.send(DatasetEvents.All, this.datasetService.allView());
     }
 
     delete(id: number) {
@@ -45,7 +45,7 @@ export class DatasetServiceModel extends ServiceModel {
 
     load(experimentId: number) {
         this.datasetService.load(experimentId);
-        this.producer.send(DatasetEvents.All, this.datasetService.all().map((value) => this.datasetService.view(value.id)));
+        this.producer.send(DatasetEvents.All, this.datasetService.allView());
     }
 
     save(experimentId: number) {
@@ -60,7 +60,7 @@ export class DatasetServiceModel extends ServiceModel {
     
     deleteByExperiment(experimentId: number) {
         this.datasetService.deleteByExperiment(experimentId);
-        this.producer.send(DatasetEvents.All, this.datasetService.all().map((value) => this.datasetService.view(value.id)));
+        this.producer.send(DatasetEvents.All, this.datasetService.allView());
     }
     
     join(ids: number[]) {

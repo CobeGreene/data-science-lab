@@ -25,16 +25,16 @@ describe('Electron Dataset Service Model', () => {
     beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         datasetService = jasmine.createSpyObj('DatasetDataService',
-            ['delete', 'load', 'save', 'update', 'all', 'get', 'view', 'split', 'join']);
+            ['delete', 'load', 'save', 'update', 'all', 'get', 'view', 'allView', 'split', 'join', 'deleteByExperiment', 'show']);
         serviceModel = new DatasetServiceModel(serviceContainer, producer);
     });
 
     it('all should call producer and data service', () => {
-        (datasetService.all as jasmine.Spy).and.returnValue([]);
+        (datasetService.allView as jasmine.Spy).and.returnValue([]);
         serviceModel.all();
 
         expect(producer.send).toHaveBeenCalled();
-        expect(datasetService.all).toHaveBeenCalled();
+        expect(datasetService.allView).toHaveBeenCalled();
     });
 
     it('delete should call producer and data service', () => {
@@ -137,6 +137,24 @@ describe('Electron Dataset Service Model', () => {
         });
         serviceModel.join([1, 2, 3, 4]);
         expect(producer.send).toHaveBeenCalledTimes(4);
+    });
+
+    it('delete by experiment should call dataset service', () => {
+        (datasetService.allView as jasmine.Spy).and.returnValue([]);
+        serviceModel.deleteByExperiment(1);
+
+        expect(datasetService.deleteByExperiment).toHaveBeenCalledTimes(1);
+        expect(datasetService.deleteByExperiment).toHaveBeenCalledWith(1);
+        expect(producer.send).toHaveBeenCalledWith(DatasetEvents.All, []);
+    });
+
+    it('show should call dataset service', () => {
+        (datasetService.view as jasmine.Spy).and.returnValue({});
+
+        serviceModel.show(1);
+        expect(datasetService.show).toHaveBeenCalledTimes(1);
+        expect(producer.send).toHaveBeenCalledTimes(1);
+        expect(producer.send).toHaveBeenCalledWith(DatasetEvents.Update, {});
     });
 
 
