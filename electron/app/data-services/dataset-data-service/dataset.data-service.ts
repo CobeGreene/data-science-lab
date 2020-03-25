@@ -7,6 +7,9 @@ export interface DatasetDataService {
     all(): DatasetObject[];
     // tslint:disable-next-line: unified-signatures
     all(experimentId: number): DatasetObject[];
+    // tslint:disable-next-line: unified-signatures
+    allView(): Dataset[];
+    allView(experimentId: number): Dataset[];
     create(experimentId: number, data: PluginData): number[];
     get(id: number): DatasetObject;
     delete(id: number): void;

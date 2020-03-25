@@ -96,7 +96,7 @@ export class AppTrackerDataService extends Service implements TrackerDataService
 
     load(algorithmId: number): void {
         const trackerPath = this.context.get<string>(this.key);
-        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}`);
+        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}.gzip`);
         if (fs.existsSync(algorithmPath)) {
             const buffer = fs.readFileSync(algorithmPath);
             const tracker = JSON.parse(`${zlib.unzipSync(buffer)}`);
@@ -106,7 +106,7 @@ export class AppTrackerDataService extends Service implements TrackerDataService
 
     save(algorithmId: number): void {
         const trackerPath = this.context.get<string>(this.key);
-        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}`);
+        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}.gzip`);
 
         if (this.has(algorithmId)) {
             const tracker = this.get(algorithmId);

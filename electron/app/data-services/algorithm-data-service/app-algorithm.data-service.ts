@@ -96,6 +96,7 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
             name: `New Algorithm`,
             plugin,
             iterationTime: defaultTime,
+            takingStep: false
         };
 
         this.algorithms.push(obj);
@@ -150,7 +151,7 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
 
     async load(experimentId: number) {
         const algorithmPath = this.settings.get<string>(this.path);
-        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
+        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}.gzip`);
         if (fs.existsSync(experimentPath)) {
             const buffer = fs.readFileSync(experimentPath);
             const data: AlgorithmData[] = JSON.parse(`${zlib.unzipSync(buffer)}`);
@@ -167,6 +168,7 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
                     plugin: datum.plugin,
                     algorithm,
                     iterationTime: datum.iterationTime,
+                    takingStep: false,
                 };
                 this.algorithms.push(obj);
             }
@@ -176,7 +178,7 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
     save(experimentId: number) {
         const algorithms = this.all(experimentId);
         const algorithmPath = this.settings.get<string>(this.path);
-        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}`);
+        const experimentPath = path.join(algorithmPath, `algorithms${experimentId}.gzip`);
 
         if (algorithms.length > 0) {
             const data: AlgorithmData[] = algorithms.map((value): AlgorithmData => {
@@ -228,18 +230,22 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
     }
 
     step(obj: AlgorithmObject) {
-        ++obj.iteration;
-        obj.recorder.current(obj.iteration);
-        obj.algorithm.step();
-        if (obj.algorithm.finishTraining()) {
-            obj.isFinish = true;
-            obj.isTraining = false;
-            clearInterval(obj.trainer);
-            obj.trainer = undefined;
+        if (!obj.takingStep) {
+            obj.takingStep = true;
+            ++obj.iteration;
+            obj.recorder.current(obj.iteration);
+            obj.algorithm.step();
+            if (obj.algorithm.finishTraining()) {
+                obj.isFinish = true;
+                obj.isTraining = false;
+                clearInterval(obj.trainer);
+                obj.trainer = undefined;
+            }
+            
+            this.update(obj);
+            this.producer.send(AlgorithmEvents.Change, obj.id);
+            obj.takingStep = false;
         }
-
-        this.update(obj);
-        this.producer.send(AlgorithmEvents.Change, obj.id);
     }
 
     stop(id: number) {
