@@ -16,7 +16,7 @@ import { DatasetSetupTransformComponent } from './dataset-setup-transform/datase
 import { DatasetSelectVisualizeComponent } from './dataset-select-visualize/dataset-select-visualize.component';
 import { DatasetInputsVisualizeComponent } from './dataset-inputs-visualize/dataset-inputs-visualize.component';
 import { DatasetSetupVisualizeComponent } from './dataset-setup-visualize/dataset-setup-visualize.component';
-
+import { DatasetFeatureCardComponent } from './dataset-details/dataset-features/dataset-feature-card/dataset-feature-card.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +34,7 @@ import { DatasetSetupVisualizeComponent } from './dataset-setup-visualize/datase
         DatasetSelectVisualizeComponent,
         DatasetInputsVisualizeComponent,
         DatasetSetupVisualizeComponent,
+        DatasetFeatureCardComponent,
     ],
     imports: [
         CommonModule,

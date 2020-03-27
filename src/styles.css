@@ -283,6 +283,10 @@ input.accent4:focus, textarea.accent4:focus {
     color: var(--accent6);
 }
 
+.inline-block {
+    display: inline-block;
+}
+
 .input-lg {
     font-size: larger;
 }

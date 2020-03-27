@@ -1,15 +1,15 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Feature } from '../../../../../../../../shared/models';
+import { DropdownFeatureComponent } from '../../../../../../shared/dataset/dropdown-feature/dropdown-feature.component';
 import { RouterService } from '../../../../../../services/router-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { DropdownFeatureComponent } from '../../../../../../shared/dataset/dropdown-feature/dropdown-feature.component';
 
 
 @Component({
-  selector: 'app-dataset-feature-header',
-  templateUrl: './dataset-feature-header.component.html',
+  selector: 'app-dataset-feature-card',
+  templateUrl: './dataset-feature-card.component.html'
 })
-export class DatasetFeatureHeaderComponent implements OnInit, OnDestroy {
+export class DatasetFeatureCardComponent implements OnInit, OnDestroy {
 
   @Input() index: number;
   @Input() feature: Feature;
@@ -19,9 +19,7 @@ export class DatasetFeatureHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('featureCmp', { static: false }) featureComponent: ElementRef;
   @ViewChild('dropdownCmp', { static: false }) dropdownComponent: DropdownFeatureComponent;
 
-  constructor(private routerService: RouterService) {
-
-  }
+  constructor(private routerService: RouterService) { }
 
   ngOnInit() {
     this.id = this.routerService.data().datasetId;
@@ -29,8 +27,8 @@ export class DatasetFeatureHeaderComponent implements OnInit, OnDestroy {
     this.routerService.changed()
     .pipe(untilComponentDestroyed(this))
     .subscribe((value) => {
-      this.id = this.routerService.data().datasetId;
-      });
+        this.id = this.routerService.data().datasetId;
+        });
   }
 
   ngOnDestroy() {

@@ -11,7 +11,7 @@
     </h4>
 </div>
 <div class="features p-3">
-    <ng-container *ngFor="let feature of dataset.features">
-        <app-object-card [object]="feature"></app-object-card>
+    <ng-container *ngFor="let feature of dataset.features; let i = index">
+        <app-dataset-feature-card [feature]="feature" [index]="i"></app-dataset-feature-card>
     </ng-container>
 </div>

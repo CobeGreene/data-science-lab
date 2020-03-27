@@ -1,0 +1,12 @@
+<ng-template #dropdownCmp>
+    <div class="dropdown">
+        <ul class="list-unstyled dropdown-list">
+            <li (click)="onRename($event)">
+                Rename
+            </li>
+        </ul>
+    </div>
+</ng-template>
+<app-dropdown #renameDropdown>
+    <app-rename-feature [id]="id" [index]="index" #renameCmp></app-rename-feature>
+</app-dropdown>
