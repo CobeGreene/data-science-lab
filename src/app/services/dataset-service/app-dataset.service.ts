@@ -109,6 +109,10 @@ export class AppDatasetService extends DatasetService {
     show(id: number): void {
         this.messenger.publish(DatasetEvents.Show, id);
     }
+
+    renameFeature(id: number, index: number, name: string): void {
+        this.messenger.publish(DatasetEvents.RenameFeature, id, index, name);
+    }
 }
 
 

@@ -3,6 +3,7 @@ import { Producer } from '../../pipeline';
 import { DatasetServiceModel } from './dataset.sm';
 import { DatasetDataService } from '../../data-services/dataset-data-service';
 import { DatasetEvents } from '../../../../shared/events';
+import { DatasetObject } from '../../models';
 
 
 
@@ -154,6 +155,66 @@ describe('Electron Dataset Service Model', () => {
         serviceModel.show(1);
         expect(datasetService.show).toHaveBeenCalledTimes(1);
         expect(producer.send).toHaveBeenCalledTimes(1);
+        expect(producer.send).toHaveBeenCalledWith(DatasetEvents.Update, {});
+    });
+
+    it('rename feature should change feature name', () => {
+        (datasetService.get as jasmine.Spy).and.returnValue({
+            id: 1,
+            name: 'Dataset',
+            examples: 50,
+            experimentId: 1,
+            previewExamples: 5,
+            features: [
+                {
+                    name: 'Feature 1',
+                    type: 'number',
+                    examples: []
+                },
+                {
+                    name: 'Feature 2',
+                    type: 'number',
+                    examples: []
+                },
+                {
+                    name: 'Feature 3',
+                    type: 'number',
+                    examples: []
+                },
+            ]
+        } as DatasetObject);
+        (datasetService.view as jasmine.Spy).and.returnValue({});
+
+        serviceModel.renameFeature(1, 1, 'New Name');
+        expect(datasetService.get).toHaveBeenCalledTimes(1);
+        expect(datasetService.get).toHaveBeenCalledWith(1);
+        expect(datasetService.update).toHaveBeenCalledTimes(1);
+        expect(datasetService.update).toHaveBeenCalledWith({
+            id: 1,
+            name: 'Dataset',
+            examples: 50,
+            experimentId: 1,
+            previewExamples: 5,
+            features: [
+                {
+                    name: 'Feature 1',
+                    type: 'number',
+                    examples: []
+                },
+                {
+                    name: 'New Name',
+                    type: 'number',
+                    examples: []
+                },
+                {
+                    name: 'Feature 3',
+                    type: 'number',
+                    examples: []
+                },
+            ]
+        });
+        expect(datasetService.view).toHaveBeenCalledTimes(1);
+        expect(datasetService.view).toHaveBeenCalledWith(1);
         expect(producer.send).toHaveBeenCalledWith(DatasetEvents.Update, {});
     });
 

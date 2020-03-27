@@ -33,13 +33,11 @@ export class ExperimentTitleComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.id = this.router.data().id;
         this.title = this.experimentService.get(this.id).title;
-        console.log('router id', this.id);
       });
       
       
       this.id = this.router.data().id;
       this.title = this.experimentService.get(this.id).title;
-      console.log('id', this.id);
   }
 
   ngOnDestroy() {

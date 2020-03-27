@@ -13,6 +13,7 @@ export class DatasetServiceModel extends ServiceModel {
             { path: DatasetEvents.Rename, method: 'rename' },
             { path: DatasetEvents.Split, method: 'split' },
             { path: DatasetEvents.Join, method: 'join' },
+            { path: DatasetEvents.RenameFeature, method: 'renameFeature' },
             { path: DatasetEvents.Show, method: 'show' },
             { path: ExperimentEvents.Load, method: 'load' },
             { path: ExperimentEvents.Delete, method: 'deleteByExperiment', isListener: true },
@@ -73,6 +74,13 @@ export class DatasetServiceModel extends ServiceModel {
 
     show(id: number) {
         this.datasetService.show(id);
+        this.producer.send(DatasetEvents.Update, this.datasetService.view(id));
+    }
+
+    renameFeature(id: number, index: number, name: string) {
+        const dataset = this.datasetService.get(id);
+        dataset.features[index].name = name;
+        this.datasetService.update(dataset);
         this.producer.send(DatasetEvents.Update, this.datasetService.view(id));
     }
 }

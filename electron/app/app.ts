@@ -164,7 +164,7 @@ export class App {
             title: 'Data Science Lab'
         });
 
-        win.setMenu(null); // to allow some of the shortcuts.
+        // win.setMenu(null); // to allow some of the shortcuts.
 
         this.configure();
         win.loadURL(this.indexPage);

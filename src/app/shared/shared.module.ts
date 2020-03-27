@@ -60,6 +60,8 @@ import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorith
 import { PackageExplorerLinkComponent } from './package-explorer-link/package-explorer-link.component';
 import { DeleteTestReportComponent } from './test-report/delete-test-report/delete-test-report.component';
 import { EditTestReportComponent } from './test-report/edit-test-report/edit-test-report.component';
+import { DropdownFeatureComponent } from './dataset/dropdown-feature/dropdown-feature.component';
+import { RenameFeatureComponent } from './dataset/dropdown-feature/rename-feature/rename-feature.component';
 
 @NgModule({
     declarations: [
@@ -113,6 +115,8 @@ import { EditTestReportComponent } from './test-report/edit-test-report/edit-tes
         PackageExplorerLinkComponent,
         DeleteTestReportComponent,
         EditTestReportComponent,
+        DropdownFeatureComponent,
+        RenameFeatureComponent
     ],
     imports: [
         CommonModule,
@@ -145,6 +149,7 @@ import { EditTestReportComponent } from './test-report/edit-test-report/edit-tes
         PackageBadgePipe,
         PackageSearchPipe,
         DropdownComponent,
+        DropdownFeatureComponent,
         DeleteTestReportComponent,
         EditTestReportComponent,
         PreviewCardComponent,

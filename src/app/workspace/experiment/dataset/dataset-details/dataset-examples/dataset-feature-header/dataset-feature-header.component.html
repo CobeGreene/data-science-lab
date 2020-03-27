@@ -1,1 +1,4 @@
-{{ feature.name }}
+<span (contextmenu)="onFeatureMenu($event)" #featureCmp>
+    {{ feature.name }}
+</span>
+<app-dropdown-feature #dropdownCmp [id]="id" [index]="index"></app-dropdown-feature>
