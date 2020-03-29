@@ -96,6 +96,22 @@ export class AppTabService extends TabService {
         }
     }
 
+    closeAll(except?: string[]) {
+        if (except === undefined) {
+            except = [];
+        }
+        for (let i = 0; i < this.tabs.length; ++i) {
+            const tab = this.tabs[i];
+            if (except.findIndex(value => tab.route === value) === -1) {
+                this.closeTab(tab);
+            }
+        }
+        this.tabs = this.tabs.filter((tab) => {
+            return except.findIndex(value => tab.route === value) >= 0;
+        });
+        this.tabsChanged.next(this.tabs);
+    }
+
     private closeTab(tab: Tab) {
         if (tab.sub !== undefined && tab.sub !== null) {
             if (tab.sub instanceof Array) {
