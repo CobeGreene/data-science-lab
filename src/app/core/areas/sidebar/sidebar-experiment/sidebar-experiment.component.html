@@ -7,7 +7,7 @@
 <app-sidebar-list-body class="open-experiments-list" [ngClass]="{ 'hidden': !data.openExperiments }">
     <ng-container *ngFor="let experiment of openExperiments; let i = index">
         <app-sidebar-list-card #experimentCmp (click)="onOpenSelected(i)" (touch)="onOpenSelected(i)" class="pointer"
-            [ngClass]="{ 'selected': data.selected === 0 && data.openSelected === i, 'faded': data.selected !== 0 && data.openSelected === i }">
+            [ngClass]="{ 'selected': data.inFocus && data.selected === 0 && data.openSelected === i, 'faded': (data.selected !== 0 && data.openSelected === i) || (!data.inFocus && data.openSelected === i) }">
             <app-sidebar-experiment-card [experiment]="experiment"></app-sidebar-experiment-card>
         </app-sidebar-list-card>
     </ng-container>
@@ -18,7 +18,7 @@
 <app-sidebar-list-body class="saved-experiments-list" [ngClass]="{ 'hidden': !data.savedExperiments }">
     <ng-container *ngFor="let experiment of savedExperiments; let i = index">
         <app-sidebar-list-card #experimentCmp (click)="onSaveSelected(i)" (touch)="onSaveSelected(i)" class="pointer"
-            [ngClass]="{ 'selected': data.selected === 1 && data.savedSelected === i, 'faded': data.selected !== 1 && data.savedSelected === i }">
+            [ngClass]="{ 'selected': data.inFocus && data.selected === 1 && data.savedSelected === i, 'faded': (data.selected !== 1 && data.savedSelected === i) || (!data.inFocus && data.savedSelected === i) }">
             <app-sidebar-experiment-card [experiment]="experiment"></app-sidebar-experiment-card>
         </app-sidebar-list-card>
     </ng-container>

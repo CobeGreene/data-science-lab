@@ -100,6 +100,23 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
     const experiments = this.experimentService.all();
     this.savedExperiments = experiments.filter((value) => value.state === ExperimentState.Unloaded);
     this.openExperiments = experiments.filter((value) => value.state !== ExperimentState.Unloaded);
+
+    if (this.data.openSelected >= this.openExperiments.length && this.openExperiments.length !== 0) {
+      this.data.openSelected = this.openExperiments.length -1;
+    } else if (this.openExperiments.length === 0) {
+      this.data.openSelected = 0;
+    }
+    
+    if (this.data.savedSelected >= this.savedExperiments.length && this.savedExperiments.length !== 0) {
+      this.data.savedSelected = this.savedExperiments.length -1;
+    } else if (this.savedExperiments.length === 0) {
+      this.data.savedSelected = 0;
+    }
+
+    setTimeout(() => {
+      this.scrollIntoViewOpenSelected();
+      this.scrollIntoViewSaveSelected();
+    });
   }
 
   onToggleOpenExperiments(event: MouseEvent) {
@@ -214,7 +231,6 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
 
     if (this.data.savedSelected < this.savedExperiments.length) {
       this.scrollIntoViewSaveSelected();
-  
       this.experimentService.load(this.savedExperiments[selected].id);
     }
 

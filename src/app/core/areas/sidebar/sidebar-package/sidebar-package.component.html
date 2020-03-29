@@ -6,7 +6,7 @@
     <ng-container *ngFor="let pluginPackage of installPackages; let i = index">
         <app-sidebar-list-card #packageCmp (click)="onInstallSelected(i)" (touch)="onInstallSelected(i)"
             class="pointer"
-            [ngClass]="{ 'selected': data.installSelected === i }">
+            [ngClass]="{ 'selected': data.inFocus && data.installSelected === i, 'faded': !data.inFocus && data.installSelected === i }">
             <app-sidebar-package-card [pluginPackage]="pluginPackage"></app-sidebar-package-card>
         </app-sidebar-list-card>
     </ng-container>
