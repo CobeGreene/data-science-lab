@@ -9,7 +9,9 @@
     <h2 class="option" (click)="onCreateExperiment($event)"
         [ngClass]="{ 'selected': selected === 0 && inFocus, 'faded': selected === 0 && !inFocus }">Create Experiment
     </h2>
-    <h2 class="option" [ngClass]="{ 'selected': selected === 1 && inFocus, 'faded': selected === 0 && !inFocus }">Load
+    <h2 class="option"
+        (click)="onLoadExperiment($event)"
+        [ngClass]="{ 'selected': selected === 1 && inFocus, 'faded': selected === 0 && !inFocus }">Load
         Experiment</h2>
     <h2 class="option" (click)="onGoToPackages()"
         [ngClass]="{ 'selected': selected === 2 && inFocus, 'faded': selected === 0 && !inFocus }">Package Explorer</h2>
@@ -127,3 +129,4 @@
     </svg>
 </div>
 <app-create-experiment #createCmp></app-create-experiment>
+<app-load-experiment #loadCmp></app-load-experiment>

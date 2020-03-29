@@ -1,0 +1,13 @@
+<ng-template #overlayCmp>
+    <div class="modal">
+        <app-modal-header [header]="'Load Experiment'"></app-modal-header>
+        <div class="m-0 mb-4" class="container">
+            <ng-container *ngFor="let experiment of experiments; let i = index">
+                <app-load-experiment-card 
+                (click)="onSelected(i)" (touch)="onSelected(i)"
+                class="pointer" [ngClass]="{ 'selected': selected === i }"
+                [experiment]="experiment" #experimentCmp></app-load-experiment-card>
+            </ng-container> 
+        </div>
+    </div>
+</ng-template>
