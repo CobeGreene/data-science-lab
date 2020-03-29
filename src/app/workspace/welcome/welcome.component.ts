@@ -76,6 +76,8 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.onLoadExperiment(new MouseEvent('click'));
       } else if (this.selected === 2) {
         this.onGoToPackages();
+      } else if (this.selected === 3) {
+        this.onGoToShortcuts();
       } else if (this.selected === 4) {
         this.onGoToSettings();
       }
@@ -97,6 +99,11 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onGoToPackages() {
     const tab = this.tabFactory.create(['package']);
+    this.goToTab(tab);
+  }
+
+  onGoToShortcuts() {
+    const tab = this.tabFactory.create(['shortcuts']);
     this.goToTab(tab);
   }
   
