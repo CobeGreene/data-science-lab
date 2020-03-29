@@ -44,12 +44,14 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.shortcutService.subscribe('ctrl + shift + keye', this.onPickExperiments);
     this.shortcutService.subscribe('ctrl + shift + keyp', this.onPickPackages);
+    this.shortcutService.subscribe('ctrl + shift + keya', this.onPickAlgorithms);
     this.shortcutService.subscribe('ctrl + keyb', this.onToggleSidebar);
   }
-
+  
   ngOnDestroy() {
     this.shortcutService.unsubscribe('ctrl + shift + keye', this.onPickExperiments);
     this.shortcutService.unsubscribe('ctrl + shift + keyp', this.onPickPackages);
+    this.shortcutService.unsubscribe('ctrl + shift + keya', this.onPickAlgorithms);
     this.shortcutService.unsubscribe('ctrl + keyb', this.onToggleSidebar);
   }
 
@@ -60,6 +62,11 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   onPickPackages = () => {
     this.onPick('packages');
   }
+
+  onPickAlgorithms = () => {
+    this.onPick('algorithms');
+  }
+
 
   onPick(choice: string, event?: MouseEvent) {
     if (this.isExpanded) {

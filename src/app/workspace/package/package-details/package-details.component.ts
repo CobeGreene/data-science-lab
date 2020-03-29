@@ -22,16 +22,25 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
     this.packageService.packagesChanged
       .pipe(untilComponentDestroyed(this))
       .subscribe(() => {
-        const name = this.route.snapshot.paramMap.get('name');
-        this.pluginPackage = this.packageService.get(name);
+        this.getPluginPackage();
       });
 
-    const packageName = this.route.snapshot.paramMap.get('name');
-    this.pluginPackage = this.packageService.get(packageName);
+    this.getPluginPackage();
+
+    this.route.params
+      .pipe(untilComponentDestroyed(this))
+      .subscribe(() => {
+        this.getPluginPackage();
+      })
   }
 
   ngOnDestroy() {
-    
+
+  }
+
+  getPluginPackage() {
+    const name = this.route.snapshot.paramMap.get('name');
+    this.pluginPackage = this.packageService.get(name);
   }
 
 }

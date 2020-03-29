@@ -1,0 +1,17 @@
+.container {
+    display: grid;
+    cursor: pointer;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+        'name' 
+        'iteration';
+}
+
+.list-item-name {
+    grid-area: name;
+}
+
+.list-item-iteration {
+    grid-area: iteration;
+}

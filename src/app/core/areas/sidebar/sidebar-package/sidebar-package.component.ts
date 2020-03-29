@@ -66,6 +66,14 @@ export class SidebarPackageComponent implements OnInit, OnDestroy, AfterViewInit
   initializePackages() {
     const packages = this.packageService.all();
     this.installPackages = packages.filter((value) => value.install);
+    if (this.data.installSelected >= this.installPackages.length && this.installPackages.length !== 0) {
+      this.data.installSelected = this.installPackages.length - 1;
+    } else if (this.installPackages.length === 0) {
+      this.data.installSelected = 0;
+    }
+    setTimeout(() => {
+      this.scrollIntoViewInstalledSelected();
+    })
   }
 
   ngAfterViewInit() {
@@ -110,6 +118,8 @@ export class SidebarPackageComponent implements OnInit, OnDestroy, AfterViewInit
   onInstallSelected(selected: number) {
     this.data.installSelected = selected;
     this.scrollIntoViewInstalledSelected();
+    const tab = this.tabFactory.create(['package', this.installPackages[selected].name]);
+    this.tabService.openTab(tab);
   }
 
 

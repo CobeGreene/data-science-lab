@@ -1,0 +1,31 @@
+:host {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content auto auto auto 1fr;
+    grid-template-areas: 'header' 'start' 'stop' 'algorithm-header' 'algorithm-list' 'bottom';
+}
+
+.header {
+    grid-area: header;
+}
+
+.start {
+    grid-area: start;
+}
+
+.stop {
+    grid-area: stop;
+}
+
+.open-algorithm-header {
+    grid-area: algorithm-header;
+}
+
+.open-algorithm-list {
+    grid-area: algorithm-list;
+}
+
+.bottom {
+    grid-area: bottom;
+    background-color: var(--sidebar-list-background);
+}
