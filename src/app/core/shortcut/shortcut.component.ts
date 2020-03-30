@@ -7,6 +7,22 @@ import { ShortcutService } from '../../services/shortcut-service';
 })
 export class ShortcutComponent implements OnInit, AfterViewInit {
 
+  // start with
+  // without or without modifiers like shift, alt, and ctrl
+  readonly allCombos: string[] = ['escape', 'f', 'insert', 'tab', 'enter',
+    'home', 'end'
+  ];
+  // exclude key, but include shift + key
+  readonly mustModifier: string[] = ['delete', 'backspace', 'pageup',
+    'pagedown'
+  ];
+  // exclude key and shift + key, but include ctrl + key, alt + key,
+  readonly mustCtrlAltModifier: string[] = ['backquote',
+    'digit', 'minus', 'equal', 'key', 'bracket',
+    'backslash', 'semicolon', 'quote', 'comma', 'period', 'slash',
+    'numpad'
+  ];
+
   constructor(
     private shortcutService: ShortcutService
   ) {
@@ -15,22 +31,23 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
 
   onKeydown = (event: KeyboardEvent): void => {
     const shortcut = this.getShortcut(event);
-    if (shortcut === "ctrl + tab" || shortcut === "ctrl + shift + tab") {
-      this.shortcutService.runAction(shortcut);
+    if (event.code.toLowerCase().startsWith('arrow')) {
+      this.shortcutService.run(shortcut);
     }
   }
 
-  onKeypress = (event: KeyboardEvent): void => {
-    const shortcut = this.getShortcut(event);
-    this.shortcutService.runAction(shortcut);
-  }
-  
   onKeyup = (event: KeyboardEvent): void => {
-    
-    const lowercase = event.key.toLowerCase();
-    if (lowercase === 'escape' || lowercase.startsWith('f') || lowercase.startsWith('arrow')) {
-      const shortcut = this.getShortcut(event);
-      this.shortcutService.runAction(shortcut);
+    const shortcut = this.getShortcut(event);
+    const code = event.code.toLowerCase();
+    if (this.allCombos.findIndex(str => code.startsWith(str)) >= 0) {
+      this.shortcutService.run(shortcut);
+    } else if (
+      this.mustCtrlAltModifier.findIndex(str => code.startsWith(str)) >= 0 &&
+      (event.altKey || event.ctrlKey)) {
+      this.shortcutService.run(shortcut);
+    } else if (this.mustModifier.findIndex(str => code.startsWith(str)) >= 0 &&
+      (event.shiftKey || event.altKey || event.ctrlKey)) {
+      this.shortcutService.run(shortcut);
     }
   }
 
@@ -38,7 +55,6 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    document.addEventListener('keypress', this.onKeypress, true);
     document.addEventListener('keyup', this.onKeyup, true);
     document.addEventListener('keydown', this.onKeydown, true);
   }
@@ -49,11 +65,11 @@ export class ShortcutComponent implements OnInit, AfterViewInit {
     if (event.ctrlKey && event.key !== 'Control') {
       shortcut += 'ctrl + ';
     }
-    if (event.shiftKey && event.key !== 'Shift') {
-      shortcut += 'shift + ';
-    }
     if (event.altKey && event.key !== 'Alt') {
       shortcut += 'alt + ';
+    }
+    if (event.shiftKey && event.key !== 'Shift') {
+      shortcut += 'shift + ';
     }
 
     shortcut += event.code.toLocaleLowerCase();

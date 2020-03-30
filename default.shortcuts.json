@@ -1,0 +1,32 @@
+[
+    {
+        "key": "sidebar.toggle",
+        "label": "Toggle Sidebar",
+        "value": "ctrl + keyb",
+        "default": "ctrl + keyb"
+    },
+    {
+        "key": "sidebar.experiments.toggle",
+        "label": "Toggle Sidebar's Experiments",
+        "value": "ctrl + shift + keye",
+        "default": "ctrl + shift + keye"
+    },
+    {
+        "key": "sidebar.algorithms.toggle",
+        "label": "Toggle Sidebar's Algorithm",
+        "value": "ctrl + shift + keya",
+        "default": "ctrl + shift + keya"
+    },
+    {
+        "key": "sidebar.plugins.toggle",
+        "label": "Toggle Sidebar's Plugins",
+        "value": "ctrl + shift + keyp",
+        "default": "ctrl + shift + keyp"
+    },
+    {
+        "key": "experiment.header.toggle",
+        "label": "Toggle Experiment Header",
+        "value": "ctrl + keyh",
+        "default": "ctrl + keyh"
+    }
+]

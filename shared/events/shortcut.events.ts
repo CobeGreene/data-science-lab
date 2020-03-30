@@ -1,3 +1,4 @@
 export namespace ShortcutEvents {
-    export const Perform = 'shortcut-perform';
+    export const All = 'shortcut-all';
+    export const Update = 'shortcut-update';
 }
