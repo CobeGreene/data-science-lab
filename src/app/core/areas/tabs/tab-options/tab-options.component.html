@@ -1,3 +1,13 @@
 <div class="py-0 px-4">
-    <fa name="ellipsis-h"></fa>
+    <fa name="ellipsis-h" (click)="onOpen($event)"></fa>
 </div>
+<app-dropdown #optionsCmp>
+    <ul class="list-unstyled dropdown-list">
+        <li (click)="onCloseAll()">
+            Close all
+        </li>
+        <li (click)="onKeepCurrent()">
+            Close all but current
+        </li>
+    </ul>
+</app-dropdown>

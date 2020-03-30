@@ -19,4 +19,5 @@ export abstract class TabService {
     abstract removeTab(route: string);
     abstract findOrDefault(route: string): Tab | undefined;
     abstract reopenTab(route: string);
+    abstract closeAll(except?: string[]);
 }

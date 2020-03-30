@@ -62,6 +62,8 @@ import { DeleteTestReportComponent } from './test-report/delete-test-report/dele
 import { EditTestReportComponent } from './test-report/edit-test-report/edit-test-report.component';
 import { DropdownFeatureComponent } from './dataset/dropdown-feature/dropdown-feature.component';
 import { RenameFeatureComponent } from './dataset/dropdown-feature/rename-feature/rename-feature.component';
+import { LoadExperimentComponent } from './experiment/load-experiment/load-experiment.component';
+import { LoadExperimentCardComponent } from './experiment/load-experiment/load-experiment-card/load-experiment-card.component';
 
 @NgModule({
     declarations: [
@@ -116,7 +118,9 @@ import { RenameFeatureComponent } from './dataset/dropdown-feature/rename-featur
         DeleteTestReportComponent,
         EditTestReportComponent,
         DropdownFeatureComponent,
-        RenameFeatureComponent
+        RenameFeatureComponent,
+        LoadExperimentComponent,
+        LoadExperimentCardComponent
     ],
     imports: [
         CommonModule,
@@ -138,6 +142,7 @@ import { RenameFeatureComponent } from './dataset/dropdown-feature/rename-featur
         CreateExperimentComponent,
         UpdateExperimentComponent,
         DeleteExperimentComponent,
+        LoadExperimentComponent,
         EditDatasetComponent,
         DeleteDatasetComponent,
         SplitDatasetComponent,

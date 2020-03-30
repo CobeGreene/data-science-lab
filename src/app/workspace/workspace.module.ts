@@ -11,6 +11,8 @@ import { SettingCardComponent } from './settings/setting-card/setting-card.compo
 import { SettingBooleanCardComponent } from './settings/setting-card/setting-boolean-card/setting-boolean-card.component';
 import { SettingStringCardComponent } from './settings/setting-card/setting-string-card/setting-string-card.component';
 import { SettingNumberCardComponent } from './settings/setting-card/setting-number-card/setting-number-card.component';
+import { ShortcutsComponent } from './shortcuts/shortcuts.component';
+import { ShortcutsHeaderComponent } from './shortcuts/shortcuts-header/shortcuts-header.component';
 
 @NgModule({
     declarations: [
@@ -22,6 +24,8 @@ import { SettingNumberCardComponent } from './settings/setting-card/setting-numb
         SettingBooleanCardComponent,
         SettingStringCardComponent,
         SettingNumberCardComponent,
+        ShortcutsComponent,
+        ShortcutsHeaderComponent,
     ],
     imports: [
         CommonModule,
