@@ -1,14 +1,14 @@
 import { Service, ServiceContainer, SERVICE_TYPES } from '../../service-container';
 import { Producer } from '../../pipeline';
-import { UserSettingDataService } from './user-setting.data-service';
+import { ShortcutDataService } from './shortcut.data-service';
 import { SettingsContext } from '../../contexts/settings-context';
 import * as fs from 'fs';
 import { SystemError, ErrorTypes } from '../../../../shared/errors';
-import { Setting } from '../../../../shared/models';
+import { Shortcut } from '../../../../shared/models';
 
-export class AppUserSettingDataService extends Service implements UserSettingDataService {
+export class AppShortcutDataService extends Service implements ShortcutDataService {
 
-    private readonly key = 'user-setting';
+    private readonly key = 'shortcut';
 
     get context(): SettingsContext {
         return this.serviceContainer.resolve<SettingsContext>(SERVICE_TYPES.SettingsContext);
@@ -18,13 +18,13 @@ export class AppUserSettingDataService extends Service implements UserSettingDat
         super(serviceContainer);
     }
 
-    all() {
+    all(): Shortcut[] {
         const path = this.context.get<string>(this.key);
         if (fs.existsSync(path)) {
             const file = fs.readFileSync(path);
             try {
                 const json = JSON.parse(`${file}`);
-                return json as Setting[];
+                return json as Shortcut[];
             } catch (error) {
                 throw this.parseError(error, path);
             }
@@ -33,47 +33,43 @@ export class AppUserSettingDataService extends Service implements UserSettingDat
         }
     }
 
-    find(key: string): Setting {
+    find(key: string): Shortcut {
         return this.all().find(value => value.key === key);
     }
 
-    update(setting: Setting) {
-        const settings = this.all();
-        const index = settings.findIndex((value) => value.key === setting.key);
+    update(shortcut: Shortcut) {
+        const shortcuts = this.all();
+        const index = shortcuts.findIndex((value) => value.key === shortcut.key);
         if (index >= 0) {
-            settings.splice(index, 1, setting);
+            shortcuts.splice(index, 1, shortcut);
             const path = this.context.get<string>(this.key);
-            fs.writeFileSync(path, JSON.stringify(settings));
+            fs.writeFileSync(path, JSON.stringify(shortcuts));
         } else {
-            throw this.missingSetting(setting);
+            throw this.missingShortcut(shortcut);
         }
     }
 
     parseError(error: SyntaxError, path: string): SystemError {
         return {
-            header: 'Setting Error',
-            description: `File: ${path}, Error: ${error.message} Will use default settings instead.`,
+            header: 'Shortcut Error',
+            description: `File: ${path}, Error: ${error.message}`,
             type: ErrorTypes.Warning
         };
     }
 
-    missingSetting(setting: Setting): SystemError {
+    missingShortcut(shortcut: Shortcut): SystemError {
         return {
-            header: 'Setting Error',
-            description: `Unable to find ${setting.key} - ${setting.title}`,
+            header: 'Shortct Error',
+            description: `Unable to find ${shortcut.key} - ${shortcut.label}`,
             type: ErrorTypes.Error
         };
     }
 
     notFound(path: string): SystemError {
         return {
-            header: 'Setting Error',
-            description: `Couldn't find setting '${path}'. Will use default theme instead.`,
+            header: 'Shortcut Error',
+            description: `Couldn't find shortcuts '${path}'.`,
             type: ErrorTypes.Warning
         };
     }
-
 }
-
-
-

@@ -15,6 +15,9 @@ settings.set('color-theme', path.join(__dirname, '../app.color-theme.json'));
 // Set electron user setting path
 settings.set('user-setting', path.join(__dirname, '../app.user-setting.json'));
 
+// Set electron shortcut path
+settings.set('shortcut', path.join(__dirname, '../app.shortcuts.json'));
+
 // Set electron plugin package path
 settings.set('plugin-package', path.join(__dirname, '../plugin_packages'));
 
