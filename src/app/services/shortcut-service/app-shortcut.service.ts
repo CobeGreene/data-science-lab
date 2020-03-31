@@ -1,9 +1,10 @@
 import { ShortcutService } from "./shortcut.service";
 import { Messenger } from "../messenger";
-import { NgZone } from "@angular/core";
+import { NgZone, Injectable } from "@angular/core";
 import { ShortcutEvents } from "../../../../shared/events";
 import { Shortcut } from "../../../../shared/models";
 
+@Injectable()
 export class AppShortcutService extends ShortcutService {
 
     private shortcuts: Shortcut[];
@@ -39,6 +40,14 @@ export class AppShortcutService extends ShortcutService {
         return this.shortcuts;
     }
 
+    get(key: string): Shortcut {
+        const find = this.shortcuts.find((value) => value.key === key);
+        if (find === undefined) {
+            throw new Error(`Couldn't find shortcut with name ${name}`);
+        }
+        return find;
+    }
+
     subscribe(shortcut: string, action: () => void) {
         if (this.observers[shortcut] !== undefined) {
             this.observers[shortcut].push(action);
@@ -62,13 +71,17 @@ export class AppShortcutService extends ShortcutService {
         if (this.isWatchMode) {
             this.shortcutWatcher.next(shortcut);
         } else {
-            this.shortcuts
-                .filter((userShortcut) => userShortcut.value === shortcut)
-                .forEach((userShortcut) => {
-                    if (this.observers[userShortcut.key] !== undefined) {
-                        this.observers[userShortcut.key].forEach(cmd => cmd());
-                    }
-                })
+            if (shortcut.startsWith('arrow') || shortcut === 'enter') {
+                this.observers[shortcut].forEach(cmd => cmd());
+            } else {
+                this.shortcuts
+                    .filter((userShortcut) => userShortcut.value === shortcut)
+                    .forEach((userShortcut) => {
+                        if (this.observers[userShortcut.key] !== undefined) {
+                            this.observers[userShortcut.key].forEach(cmd => cmd());
+                        }
+                    });
+            }
         }
     }
 

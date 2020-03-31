@@ -45,6 +45,38 @@ describe('Angular App Shortcut Service', () => {
         ]);
     });
 
+    it('get should throw for not found', () => {
+        expect(() => {
+            service.get('404');
+        }).toThrowError();
+    });
+    
+    it('get should throw for not found even with shortcuts', () => {
+        dict[ShortcutEvents.All](ShortcutEvents.All, [
+            {
+                key: 'my.shortcut',
+                label: 'My Shortcut',
+                value: 'ctrl + keya',
+                default: 'ctrl + keya'
+            }
+        ]);
+        expect(() => {
+            service.get('404');
+        }).toThrowError();
+    });
+    
+    it('get should return shortcut that match ey', () => {
+        dict[ShortcutEvents.All](ShortcutEvents.All, [
+            {
+                key: 'my.shortcut',
+                label: 'My Shortcut',
+                value: 'ctrl + keya',
+                default: 'ctrl + keya'
+            }
+        ]);
+        expect(service.get('my.shortcut').value).toBe('ctrl + keya');
+    });
+
     it('subscribe should called action when run', () => {
         dict[ShortcutEvents.All](ShortcutEvents.All, [
             {
@@ -168,6 +200,13 @@ describe('Angular App Shortcut Service', () => {
         service.run('ctrl + keya');
         expect(spy).toHaveBeenCalledTimes(0);
         expect(spy2).toHaveBeenCalledTimes(1);
+    });
+
+    it('subscribe to arrow function should call action', () => {
+        const spy = jasmine.createSpy('func');
+        service.subscribe('arrowup', spy);
+        service.run('arrowup');
+        expect(spy).toHaveBeenCalledTimes(1);
     });
 
 });

@@ -43,6 +43,8 @@ import { VisualServiceModel } from './services/visual.sm';
 import { DatasetVisualServiceModel } from './session-services/dataset-visual.sm';
 import { AlgorithmVisualServiceModel } from './session-services/algorithm-visual.sm';
 import { ExperimentState } from '../../shared/models';
+import { ShortcutDataService, AppShortcutDataService } from './data-services/shortcut-data-service';
+import { ShortcutServiceModel } from './services/shortcut.sm';
 
 export let win: BrowserWindow;
 
@@ -79,7 +81,7 @@ export class App {
         this.serviceContainer.addSingleton<VisualDataService>(AppVisualDataService, SERVICE_TYPES.VisualDataService);
         this.serviceContainer.addSingleton<TestReportSessionDataService>(
             AppTestReportSessionDataService, SERVICE_TYPES.TestReportSessionDataService);
-        this.serviceContainer.addSingleton<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
+        this.serviceContainer.addSingleton<ShortcutDataService>(AppShortcutDataService, SERVICE_TYPES.ShortcutDataService);
 
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
@@ -103,10 +105,12 @@ export class App {
         this.serviceContainer.addTransient<TrackerServiceModel>(TrackerServiceModel, SERVICE_TYPES.TrackerServiceModel);
         this.serviceContainer.addTransient<TestReportServiceModel>(TestReportServiceModel, SERVICE_TYPES.TestReportServiceModel);
         this.serviceContainer
-        .addTransient<CreateTestReportServiceModel>(CreateTestReportServiceModel, SERVICE_TYPES.CreateTestReportServiceModel);
+            .addTransient<CreateTestReportServiceModel>(CreateTestReportServiceModel, SERVICE_TYPES.CreateTestReportServiceModel);
         this.serviceContainer.addTransient<VisualServiceModel>(VisualServiceModel, SERVICE_TYPES.VisualServiceModel);
         this.serviceContainer.addTransient<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
         this.serviceContainer.addTransient<AlgorithmVisualServiceModel>(AlgorithmVisualServiceModel, SERVICE_TYPES.AlgorithmVisualServiceModel);
+        this.serviceContainer.addTransient<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
+        this.serviceContainer.addTransient<ShortcutServiceModel>(ShortcutServiceModel, SERVICE_TYPES.ShortcutServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -126,6 +130,7 @@ export class App {
             VisualServiceModel.routes,
             DatasetVisualServiceModel.routes,
             AlgorithmVisualServiceModel.routes,
+            ShortcutServiceModel.routes
         ]);
     }
 

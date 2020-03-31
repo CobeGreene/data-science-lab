@@ -15,7 +15,7 @@ export class ModalComponent extends OverlayComponent {
     super(overlay, viewContainerRef, overlayService);
   }
 
-  protected onOpen() {
+  protected onOpen(..._:any) {
 
   }
 

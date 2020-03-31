@@ -1,0 +1,8 @@
+.modal {
+    text-align: center;
+}
+
+.shortcut {
+    background: var(--shortcut-edit-background);
+    border: 1px solid var(--shortcut-edit-border);
+}

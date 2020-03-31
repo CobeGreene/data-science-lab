@@ -18,8 +18,8 @@
         "default": "ctrl + shift + keya"
     },
     {
-        "key": "sidebar.plugins.toggle",
-        "label": "Toggle Sidebar's Plugins",
+        "key": "sidebar.packages.toggle",
+        "label": "Toggle Sidebar's Packages",
         "value": "ctrl + shift + keyp",
         "default": "ctrl + shift + keyp"
     },
@@ -28,5 +28,23 @@
         "label": "Toggle Experiment Header",
         "value": "ctrl + keyh",
         "default": "ctrl + keyh"
+    }, 
+    {
+        "key": "workspace.next",
+        "label": "Navigate to the Next Workspace",
+        "value": "ctrl + tab",
+        "default": "ctrl + tab"
+    }, 
+    {
+        "key": "workspace.previous",
+        "label": "Navigate to the Previous Workspace",
+        "value": "ctrl + shift + tab",
+        "default": "ctrl + shift + tab"
+    }, 
+    {
+        "key": "workspace.close",
+        "label": "Close Current Workspace",
+        "value": "ctrl + keyw",
+        "default": "ctrl + keyw"
     }
 ]

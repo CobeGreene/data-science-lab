@@ -8,6 +8,7 @@ import { ShortcutService } from '../../../../services/shortcut-service';
 import { SidebarService } from '../../../../services/sidebar-service';
 import { TabService } from '../../../../services/tab-service';
 import { TabFactory } from '../../../../factory/tab-factory';
+import { Shortcuts } from '../../../../../../shared/shortcuts';
 
 interface SidebarExperimentData {
   openExperiments: boolean;
@@ -80,19 +81,19 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngAfterViewInit() {
-    this.shortcutService.subscribe('arrowup', this.onMoveUp);
-    this.shortcutService.subscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.subscribe('arrowleft', this.onClose);
-    this.shortcutService.subscribe('arrowright', this.onOpen);
-    this.shortcutService.subscribe('enter', this.onEnter);
+    this.shortcutService.subscribe(Shortcuts.ArrowUp, this.onMoveUp);
+    this.shortcutService.subscribe(Shortcuts.ArrowDown, this.onMoveDown);
+    this.shortcutService.subscribe(Shortcuts.ArrowLeft, this.onClose);
+    this.shortcutService.subscribe(Shortcuts.ArrowRight, this.onOpen);
+    this.shortcutService.subscribe(Shortcuts.Enter, this.onEnter);
   }
 
   ngOnDestroy() {
-    this.shortcutService.unsubscribe('arrowup', this.onMoveUp);
-    this.shortcutService.unsubscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.unsubscribe('arrowleft', this.onClose);
-    this.shortcutService.unsubscribe('arrowright', this.onOpen);
-    this.shortcutService.unsubscribe('enter', this.onEnter);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowUp, this.onMoveUp);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowDown, this.onMoveDown);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowLeft, this.onClose);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowRight, this.onOpen);
+    this.shortcutService.unsubscribe(Shortcuts.Enter, this.onEnter);
     this.sidebarService.set('sidebar-experiment', this.data);
   }
 

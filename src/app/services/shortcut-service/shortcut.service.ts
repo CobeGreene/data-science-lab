@@ -22,6 +22,7 @@ export abstract class ShortcutService extends Service {
     }
 
     abstract all(): Shortcut[];
+    abstract get(key: string): Shortcut;
     abstract subscribe(shortcut: string, action: () => void);
     abstract unsubscribe(shortcut: string, action: () => void);
 

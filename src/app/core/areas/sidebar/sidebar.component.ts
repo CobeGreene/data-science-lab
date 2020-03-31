@@ -6,6 +6,7 @@ import { TabService } from '../../../services/tab-service';
 import { FocusAreas } from '../../../constants';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DropdownComponent } from '../../../shared/dropdown/dropdown.component';
+import { Shortcuts } from '../../../../../shared/shortcuts';
 
 @Component({
   selector: 'app-sidebar',
@@ -42,17 +43,17 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.shortcutService.subscribe('ctrl + shift + keye', this.onPickExperiments);
-    this.shortcutService.subscribe('ctrl + shift + keyp', this.onPickPackages);
-    this.shortcutService.subscribe('ctrl + shift + keya', this.onPickAlgorithms);
-    this.shortcutService.subscribe('ctrl + keyb', this.onToggleSidebar);
+    this.shortcutService.subscribe(Shortcuts.ToggleSidebarExperiments, this.onPickExperiments);
+    this.shortcutService.subscribe(Shortcuts.ToggleSidebarPackages, this.onPickPackages);
+    this.shortcutService.subscribe(Shortcuts.ToggleSidebarAlgorithms, this.onPickAlgorithms);
+    this.shortcutService.subscribe(Shortcuts.ToggleSidebar, this.onToggleSidebar);
   }
   
   ngOnDestroy() {
-    this.shortcutService.unsubscribe('ctrl + shift + keye', this.onPickExperiments);
-    this.shortcutService.unsubscribe('ctrl + shift + keyp', this.onPickPackages);
-    this.shortcutService.unsubscribe('ctrl + shift + keya', this.onPickAlgorithms);
-    this.shortcutService.unsubscribe('ctrl + keyb', this.onToggleSidebar);
+    this.shortcutService.unsubscribe(Shortcuts.ToggleSidebarExperiments, this.onPickExperiments);
+    this.shortcutService.unsubscribe(Shortcuts.ToggleSidebarPackages, this.onPickPackages);
+    this.shortcutService.unsubscribe(Shortcuts.ToggleSidebarAlgorithms, this.onPickAlgorithms);
+    this.shortcutService.unsubscribe(Shortcuts.ToggleSidebar, this.onToggleSidebar);
   }
 
   onPickExperiments = () => {
@@ -108,6 +109,11 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onWelcomeClick() {
     const tab = this.tabFactory.create(['welcome']);
+    this.tabService.openTab(tab);
+  }
+
+  onShortcutsClick() {
+    const tab = this.tabFactory.create(['shortcuts']);
     this.tabService.openTab(tab);
   }
 
