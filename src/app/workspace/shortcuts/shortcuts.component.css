@@ -2,3 +2,30 @@
     display: flex;
     justify-content: center;
 }
+
+
+.table {
+    border-collapse: collapse;
+}
+
+.table th {
+    white-space: nowrap;
+    background: var(--shortcut-table-th);
+}
+
+.table td {
+    white-space: nowrap;
+    text-align: center;
+}
+
+.table tr:nth-child(even) {
+    background-color: var(--shortcut-table-tr-even);
+}
+
+.table tr.selected {
+    background-color: var(--shortcut-table-tr-selected);
+}
+
+.table tr.faded {
+    background-color: var(--shortcut-table-tr-faded);
+}

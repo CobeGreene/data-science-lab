@@ -9,6 +9,8 @@ import { TabService } from '../../services/tab-service';
 import { RouterService } from '../../services/router-service';
 import { TabFactory } from '../../factory/tab-factory';
 import { Tab } from '../../models';
+import { ShortcutEvents } from '../../../../shared/events';
+import { Shortcuts } from '../../../../shared/shortcuts';
 
 @Component({
   selector: 'app-welcome',
@@ -43,9 +45,16 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.shortcutService.subscribe('arrowup', this.onMoveUp);
-    this.shortcutService.subscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.subscribe('enter', this.onEnter);
+    this.shortcutService.subscribe(Shortcuts.ArrowUp, this.onMoveUp);
+    this.shortcutService.subscribe(Shortcuts.ArrowDown, this.onMoveDown);
+    this.shortcutService.subscribe(Shortcuts.Enter, this.onEnter);
+  }
+
+  ngOnDestroy() {
+    this.shortcutService.unsubscribe(Shortcuts.ArrowUp, this.onMoveUp);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowDown, this.onMoveDown);
+    this.shortcutService.unsubscribe(Shortcuts.Enter, this.onEnter);
+    this.workspaceService.set('/welcome', { selected: this.selected });
   }
 
   onMoveUp = () => {
@@ -115,11 +124,5 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  ngOnDestroy() {
-    this.workspaceService.set('/welcome', { selected: this.selected });
-    this.shortcutService.unsubscribe('arrowup', this.onMoveUp);
-    this.shortcutService.unsubscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.unsubscribe('enter', this.onEnter);
-  }
 
 }

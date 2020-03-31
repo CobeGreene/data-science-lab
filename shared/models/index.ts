@@ -15,4 +15,5 @@ export { Iteration } from './iteration';
 export { TestReport } from './test-report';
 export { TestReportSession } from './test-report-session';
 export { Visual } from './visual';
+export { Shortcut } from './shortcut';
 

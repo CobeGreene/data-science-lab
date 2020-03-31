@@ -1,3 +1,36 @@
 <div class="m-5">
-    <app-shortcuts-header></app-shortcuts-header>
+    <app-shortcuts-header class="mb-2"></app-shortcuts-header>
+    <div class="shortcuts">
+        <table class="table w-100">
+            <thead>
+                <tr>
+                    <th class="p-3">
+                        Shortcut
+                    </th>
+                    <th class="p-3">
+                        Keybinding
+                    </th>
+                    <th class="p-3">
+    
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let shortcut of shortcuts; let i = index" [ngClass]="{ 'selected': inFocus && i === selected, 'faded': !inFocus && i === selected }">
+                    <td class="p-3 px-5">
+                        {{ shortcut.label }}
+                    </td>
+                    <td class="p-3 px-5 pointer" (click)="onEdit($event, shortcut.key)">
+                        "{{ shortcut.value }}"
+                    </td>
+                    <td class="p-3 px-5">
+                        <span class="btn btn-accent3 pointer p-1" (click)="onRestore(i)">
+                            Restore
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+<app-edit-shortcut #editCmp></app-edit-shortcut>

@@ -64,6 +64,7 @@ import { DropdownFeatureComponent } from './dataset/dropdown-feature/dropdown-fe
 import { RenameFeatureComponent } from './dataset/dropdown-feature/rename-feature/rename-feature.component';
 import { LoadExperimentComponent } from './experiment/load-experiment/load-experiment.component';
 import { LoadExperimentCardComponent } from './experiment/load-experiment/load-experiment-card/load-experiment-card.component';
+import { EditShortcutComponent } from './edit-shortcut/edit-shortcut.component';
 
 @NgModule({
     declarations: [
@@ -100,6 +101,7 @@ import { LoadExperimentCardComponent } from './experiment/load-experiment/load-e
         PluginSelectionCardComponent,
         CheckboxOptionComponent,
         ChoicesOptionComponent,
+        EditShortcutComponent,
         CommandOptionComponent,
         NumberOptionComponent,
         TextOptionComponent,
@@ -150,6 +152,7 @@ import { LoadExperimentCardComponent } from './experiment/load-experiment/load-e
         SelectDatasetComponent,
         DeleteAlgorithmComponent,
         EditAlgorithmComponent,
+        EditShortcutComponent,
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,

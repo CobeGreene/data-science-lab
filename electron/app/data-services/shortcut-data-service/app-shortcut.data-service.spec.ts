@@ -1,32 +1,30 @@
-import { AppUserSettingDataService } from './app-user-setting.data-service';
+import { AppShortcutDataService } from './app-shortcut.data-service';
 import { SettingsContext } from '../../contexts/settings-context';
 import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Setting } from '../../../../shared/models';
+import { Shortcut } from '../../../../shared/models';
 
 
-describe('Electron App User Setting Data Service', () => {
-    let dataService: AppUserSettingDataService;
+describe('Electron App User Shortcut Data Service', () => {
+    let dataService: AppShortcutDataService;
     let serviceContainer: ServiceContainer;
     let context: SettingsContext;
-    const json: Setting[] = [
+    const json: Shortcut[] = [
         {
             key: 'key',
             value: 'value',
             default: 'value',
-            description: 'My description',
-            title: 'Title'
+            label: 'Title'
         },
         {
             key: 'key2',
             value: 'value2',
             default: 'value2',
-            description: 'My description2',
-            title: 'Title2'
+            label: 'Title2'
         },
     ];
-    const jsonPath = path.join(__dirname, 'app-user-setting-data-service.json');
+    const jsonPath = path.join(__dirname, 'app-user-shortcut-data-service.json');
 
     beforeEach(() => {
         fs.writeFileSync(jsonPath, `${JSON.stringify(json)}`);
@@ -41,12 +39,12 @@ describe('Electron App User Setting Data Service', () => {
             throw new Error(`Couldn't resolve type ${type}.`);
         });
 
-        dataService = new AppUserSettingDataService(serviceContainer);
+        dataService = new AppShortcutDataService(serviceContainer);
     });
 
-    it('all should get settings', () => {
-        const settings = dataService.all();
-        expect(settings.length).toBe(2);
+    it('all should get shortcuts', () => {
+        const shortcuts = dataService.all();
+        expect(shortcuts.length).toBe(2);
     });
 
     it('all should throw error for file not found', () => {
@@ -62,7 +60,7 @@ describe('Electron App User Setting Data Service', () => {
             dataService.all();
         }).toThrow();
     });
-    
+
     it('find should throw error for changing the file to have json error', () => {
         fs.appendFileSync(jsonPath, '}');
         expect(() => {
@@ -70,7 +68,7 @@ describe('Electron App User Setting Data Service', () => {
         }).toThrow();
     });
 
-    
+
     it('update should throw error for file not found', () => {
         fs.unlinkSync(jsonPath);
         expect(() => {
@@ -78,8 +76,7 @@ describe('Electron App User Setting Data Service', () => {
                 key: 'key',
                 value: 'value',
                 default: 'value',
-                description: 'My description',
-                title: 'Title'
+                label: 'Title'
             });
         }).toThrow();
     });
@@ -91,36 +88,34 @@ describe('Electron App User Setting Data Service', () => {
                 key: 'key',
                 value: 'value',
                 default: 'value',
-                description: 'My description',
-                title: 'Title'
+                label: 'Title'
             });
         }).toThrow();
     });
 
-    it('find should get setting with key', () => {
-        const setting = dataService.find('key');
+    it('find should get shortcut with key', () => {
+        const shortcut = dataService.find('key');
 
-        expect(setting.value).toBe('value');
+        expect(shortcut.value).toBe('value');
     });
 
     it('find should return undefined for not found', () => {
-        const setting = dataService.find('404');
+        const shortcut = dataService.find('404');
 
-        expect(setting).toBe(undefined);
+        expect(shortcut).toBe(undefined);
     });
 
-    it('update should change setting', () => {
+    it('update should change shortcut', () => {
         dataService.update({
             key: 'key',
             value: 'new value',
             default: 'value',
-            description: 'My description',
-            title: 'Title'
+            label: 'Title'
         });
 
-        const setting = dataService.find('key');
+        const shortcut = dataService.find('key');
 
-        expect(setting.value).toBe('new value');
+        expect(shortcut.value).toBe('new value');
     });
 
 

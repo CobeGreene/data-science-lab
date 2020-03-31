@@ -22,6 +22,7 @@ export const enum SERVICE_TYPES {
     TrackerServiceModel,
     VisualServiceModel,
     TestReportServiceModel,
+    ShortcutServiceModel,
     // Session Service Models
     FetchServiceModel,
     TransformServiceModel,
@@ -42,6 +43,7 @@ export const enum SERVICE_TYPES {
     TestReportDataService,
     VisualDataService,
     TestReportSessionDataService,
+    ShortcutDataService,
     // Core Services
     WebService,
     FileService,

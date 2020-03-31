@@ -104,5 +104,11 @@
     "experiment-visualization-card-icon-body": "#40404081",
     "experiment-visualization-card-icon-body-hover": "#404040",
     "package-explorer-link": "#6089B4",
-    "dataset-show-more-hover": "#404040"
+    "dataset-show-more-hover": "#404040",
+    "shortcut-table-th": "#323232",
+    "shortcut-table-tr-even": "#353535",
+    "shortcut-table-tr-selected": "#606060",
+    "shortcut-table-tr-faded": "#606060",
+    "shortcut-edit-background": "#404040",
+    "shortcut-edit-border": "#3655B5"
 }
