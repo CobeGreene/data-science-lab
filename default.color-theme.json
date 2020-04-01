@@ -110,5 +110,7 @@
     "shortcut-table-tr-selected": "#606060",
     "shortcut-table-tr-faded": "#606060",
     "shortcut-edit-background": "#404040",
-    "shortcut-edit-border": "#3655B5"
+    "shortcut-edit-border": "#3655B5",
+    "preview-expand-hover": "#606060",
+    "preview-scroll": "#3655B5"
 }

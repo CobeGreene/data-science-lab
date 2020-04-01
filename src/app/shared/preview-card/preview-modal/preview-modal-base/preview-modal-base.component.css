@@ -3,5 +3,5 @@
 }
 
 .expandable:hover {
-    background-color: #606060;
+    background-color: var(--preview-expand-hover);
 }

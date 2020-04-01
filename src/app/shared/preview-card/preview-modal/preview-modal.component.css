@@ -13,9 +13,9 @@
 }
 
 .preview::-webkit-scrollbar-thumb {
-    background-color: var(--accent2);
+    background-color: var(--preview-scroll);
 }
 
 .preview:hover::-webkit-scrollbar-thumb {
-    background-color: var(--accent2);
+    background-color: var(--preview-scroll);
 }
