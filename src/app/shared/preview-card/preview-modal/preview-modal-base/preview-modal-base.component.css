@@ -1,0 +1,7 @@
+.expandable {
+    display: flex;
+}
+
+.expandable:hover {
+    background-color: #606060;
+}
