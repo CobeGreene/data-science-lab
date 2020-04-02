@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, Output,
 import { Visual } from '../../../../../../shared/models';
 import { VisualizationService } from '../../../../services/visualization-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { DropdownComponent } from '../../../../shared/dropdown/dropdown.component';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class ExperimentVisualCardComponent implements OnInit, OnDestroy {
   visual: Visual;
 
   @ViewChild('visualCmp', { static: false }) visualComponent: ElementRef<HTMLIFrameElement>;
+  @ViewChild('optionsDropdown', { static: false }) optionsDropdown: DropdownComponent;
 
   @Output() emitMove = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
   @Output() emitExpand = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
@@ -53,6 +55,15 @@ export class ExperimentVisualCardComponent implements OnInit, OnDestroy {
 
   onDelete() {
     this.visualService.delete(this.id);
+  }
+
+  onOpenContext(event: MouseEvent) {
+    this.optionsDropdown.open(event);
+  }
+
+  onShow(event: MouseEvent) {
+    this.visualService.show(this.id);
+    this.optionsDropdown.close();
   }
 
 }
