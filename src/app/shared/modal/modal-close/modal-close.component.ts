@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy,  } from '@angular/core';
 import { OverlayService } from '../../../services/overlay-service';
 import { ShortcutService } from '../../../services/shortcut-service';
 
@@ -19,6 +19,7 @@ export class ModalCloseComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.shortcutService.subscribe('escape', this.onClose);
   }
+
 
   ngOnDestroy() {
     this.shortcutService.unsubscribe('escape', this.onClose);

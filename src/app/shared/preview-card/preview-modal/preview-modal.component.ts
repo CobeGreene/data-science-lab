@@ -7,14 +7,10 @@ import { ModalComponent } from '../../modal/modal.component';
   templateUrl: './preview-modal.component.html',
   styleUrls: ['./preview-modal.component.css']
 })
-export class PreviewModalComponent extends ModalComponent implements OnInit {
+export class PreviewModalComponent extends ModalComponent {
 
   @Input() feature: Feature;
   @Input() value: any;
 
-
-  ngOnInit() {
-    
-  }
 
 }
