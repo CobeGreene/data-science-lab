@@ -65,6 +65,8 @@ import { RenameFeatureComponent } from './dataset/dropdown-feature/rename-featur
 import { LoadExperimentComponent } from './experiment/load-experiment/load-experiment.component';
 import { LoadExperimentCardComponent } from './experiment/load-experiment/load-experiment-card/load-experiment-card.component';
 import { EditShortcutComponent } from './edit-shortcut/edit-shortcut.component';
+import { PreviewModalComponent } from './preview-card/preview-modal/preview-modal.component';
+import { PreviewModalBaseComponent } from './preview-card/preview-modal/preview-modal-base/preview-modal-base.component';
 
 @NgModule({
     declarations: [
@@ -122,7 +124,9 @@ import { EditShortcutComponent } from './edit-shortcut/edit-shortcut.component';
         DropdownFeatureComponent,
         RenameFeatureComponent,
         LoadExperimentComponent,
-        LoadExperimentCardComponent
+        LoadExperimentCardComponent,
+        PreviewModalComponent,
+        PreviewModalBaseComponent
     ],
     imports: [
         CommonModule,
