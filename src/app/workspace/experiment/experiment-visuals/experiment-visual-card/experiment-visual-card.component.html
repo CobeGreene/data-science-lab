@@ -20,6 +20,16 @@
         <fa name="expand" rotate="horizontal" size="2x" (mousedown)="onMouseDownExpand($event)"></fa>
     </div>
 </div>
+<div class="name" [style.top.px]="visual.top * 50 + visual.height * 50"
+    [style.left.px]="visual.left * 50">
+    <div class="name-body m-0" [style.width.px]="visual.width * 50">
+        {{ visual.name }}
+        <span class="pl-1 edit pointer" (click)="onRename($event)">
+            <fa name="pencil"></fa>
+        </span>
+    </div>
+</div>
+<app-rename-visual [id]="visual.id" #renameCmp></app-rename-visual>
 <app-dropdown #optionsDropdown>
     <ul class="list-unstyled dropdown-list">
         <li (click)="onShow($event)">

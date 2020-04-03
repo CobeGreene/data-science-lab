@@ -7,4 +7,5 @@ export namespace VisualEvents {
     export const Resize = 'visual-resize';
     export const Reposition = 'visual-reposition';
     export const Show = 'visual-show';
+    export const Rename = 'visual-rename';
 }

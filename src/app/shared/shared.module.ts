@@ -67,6 +67,7 @@ import { LoadExperimentCardComponent } from './experiment/load-experiment/load-e
 import { EditShortcutComponent } from './edit-shortcut/edit-shortcut.component';
 import { PreviewModalComponent } from './preview-card/preview-modal/preview-modal.component';
 import { PreviewModalBaseComponent } from './preview-card/preview-modal/preview-modal-base/preview-modal-base.component';
+import { RenameVisualComponent } from './visual/rename-visual/rename-visual.component';
 
 @NgModule({
     declarations: [
@@ -126,7 +127,8 @@ import { PreviewModalBaseComponent } from './preview-card/preview-modal/preview-
         LoadExperimentComponent,
         LoadExperimentCardComponent,
         PreviewModalComponent,
-        PreviewModalBaseComponent
+        PreviewModalBaseComponent,
+        RenameVisualComponent
     ],
     imports: [
         CommonModule,
@@ -175,6 +177,7 @@ import { PreviewModalBaseComponent } from './preview-card/preview-modal/preview-
         CheckboxComponent,
         PopupComponent,
         PackageExplorerLinkComponent,
+        RenameVisualComponent,
         CommonModule,
         AngularFontAwesomeModule,
         FormsModule,

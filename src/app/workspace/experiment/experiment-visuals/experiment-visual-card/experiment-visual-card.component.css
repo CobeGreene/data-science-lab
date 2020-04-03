@@ -14,7 +14,7 @@
 }
 
 
-:host:hover .icon, :host:hover .options {
+:host:hover .icon, :host:hover .name {
     display: block;
 }
 
@@ -23,6 +23,19 @@
     position: absolute;
     width: 0px;
     z-index: 11;
+}
+
+.name {
+    display: none;
+    position: absolute;
+    width: 0px;
+    z-index: 11;
+}
+
+.name-body {
+    display: flex;
+    align-items: center;
+    background: var(--experiment-visualization-card-icon-body);
 }
 
 .icon-body {
@@ -35,4 +48,18 @@
 
 .icon-body:hover {
     background: var(--experiment-visualization-card-icon-body-hover);
+}
+
+.name-body:hover {
+    background: var(--experiment-visualization-card-icon-body-hover);
+}
+
+.edit {
+    align-self: flex-start;
+    opacity: 0.2;
+    transition: all 200ms ease-in-out;
+}
+
+.edit:hover {
+    opacity: 1.0;
 }

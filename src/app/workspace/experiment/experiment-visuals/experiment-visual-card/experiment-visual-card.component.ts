@@ -3,6 +3,7 @@ import { Visual } from '../../../../../../shared/models';
 import { VisualizationService } from '../../../../services/visualization-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DropdownComponent } from '../../../../shared/dropdown/dropdown.component';
+import { RenameVisualComponent } from '../../../../shared/visual/rename-visual/rename-visual.component';
 
 
 @Component({
@@ -12,11 +13,12 @@ import { DropdownComponent } from '../../../../shared/dropdown/dropdown.componen
 })
 export class ExperimentVisualCardComponent implements OnInit, OnDestroy {
 
-  @Input() id: number;
-  visual: Visual;
+  @Input() visual: Visual;
 
   @ViewChild('visualCmp', { static: false }) visualComponent: ElementRef<HTMLIFrameElement>;
   @ViewChild('optionsDropdown', { static: false }) optionsDropdown: DropdownComponent;
+  
+  @ViewChild('renameCmp', { static: false }) renameComponent: RenameVisualComponent;
 
   @Output() emitMove = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
   @Output() emitExpand = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
@@ -26,13 +28,11 @@ export class ExperimentVisualCardComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.visual = this.visualService.get(this.id);
-
     this.visualService.visualUpdated
       .pipe(untilComponentDestroyed(this))
       .subscribe((value) => {
-        if (value.id === this.id) {
-          this.visual = value;
+        if (value.id === this.visual.id) {
+          this.visual.name = value.name;
         }
       });
   }
@@ -54,7 +54,12 @@ export class ExperimentVisualCardComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    this.visualService.delete(this.id);
+    this.visualService.delete(this.visual.id);
+  }
+
+  onRename(event: MouseEvent) {
+    this.renameComponent.open(event, this.visualComponent);
+    this.renameComponent.focus();
   }
 
   onOpenContext(event: MouseEvent) {
@@ -62,7 +67,7 @@ export class ExperimentVisualCardComponent implements OnInit, OnDestroy {
   }
 
   onShow(event: MouseEvent) {
-    this.visualService.show(this.id);
+    this.visualService.show(this.visual.id);
     this.optionsDropdown.close();
   }
 

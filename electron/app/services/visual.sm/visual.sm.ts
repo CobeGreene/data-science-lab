@@ -15,6 +15,7 @@ export class VisualServiceModel extends ServiceModel {
             { path: VisualEvents.Resize, method: 'resize' },
             { path: VisualEvents.Reposition, method: 'reposition' },
             { path: VisualEvents.Show, method: 'show' },
+            { path: VisualEvents.Rename, method: 'rename' },
             { path: ExperimentEvents.Load, method: 'load' },
             { path: ExperimentEvents.Delete, method: 'deleteByExperiment', isListener: true },
             { path: ExperimentEvents.Save, method: 'save', isListener: true }
@@ -61,6 +62,13 @@ export class VisualServiceModel extends ServiceModel {
         const visual = this.dataService.get(id);
         visual.top = top;
         visual.left = left;
+        this.dataService.update(visual);
+        this.producer.send(VisualEvents.Update, visual);
+    }
+
+    rename(id: number, name: string) {
+        const visual = this.dataService.get(id);
+        visual.name = name;
         this.dataService.update(visual);
         this.producer.send(VisualEvents.Update, visual);
     }

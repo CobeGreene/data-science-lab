@@ -1,9 +1,9 @@
 .container {
     background: repeating-linear-gradient(to right, var(--experiment-visualization-grid-lines) 0px, var(--experiment-visualization-grid-lines) 1px, transparent 1px, transparent 50px),
                 repeating-linear-gradient(to bottom, var(--experiment-visualization-grid-lines) 0px, var(--experiment-visualization-grid-lines) 1px, transparent 1px, transparent 50px);
-    border: 1px solid var(--experiment-visualization-grid-lines);
     min-height: 100vh;
     min-width: 100vw;
+    border: 1px solid var(--experiment-visualization-grid-lines);
     position: absolute;
 
 }

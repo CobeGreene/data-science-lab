@@ -106,5 +106,9 @@ export class AppVisualizationService extends VisualizationService {
         this.messenger.publish(VisualEvents.Show, id);
     }
 
+    rename(id: number, name: string) {
+        this.messenger.publish(VisualEvents.Rename, id, name);
+    }
+
 }
 
