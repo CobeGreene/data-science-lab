@@ -17,7 +17,7 @@ describe('Electron Visual Service Model', () => {
             if (type === SERVICE_TYPES.VisualDataService) {
                 return visualService;
             } else if (type === SERVICE_TYPES.BrowserDataService) {
-                return jasmine.createSpyObj('BrowserDataService');
+                return jasmine.createSpyObj('BrowserDataService', ['create']);
             }
             throw new Error(`Couldn't resolve type ${type}`);
         });
