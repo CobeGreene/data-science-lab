@@ -14,8 +14,11 @@ export abstract class OverlayComponent {
     protected abstract onOpen(...args: any);
     protected abstract onClose();
     protected abstract templateRef(): TemplateRef<void>;
-
+    
     protected abstract positionStrategy(mouseEvent: MouseEvent, ...args: any): PositionStrategy;
+    protected getWidth(mouseEvent, ... args: any): string | number | undefined {
+        return undefined;
+    }
 
     open(mouseEvent: MouseEvent, ...args: any) {
         this.overlayService.register(this);
@@ -26,7 +29,8 @@ export abstract class OverlayComponent {
         
         this.overlayRef = this.overlay.create({
             positionStrategy,
-            scrollStrategy: this.overlay.scrollStrategies.close()
+            scrollStrategy: this.overlay.scrollStrategies.close(),
+            minWidth: this.getWidth(mouseEvent, ...args)
         });
 
         this.overlayRef.attach(new TemplatePortal(this.templateRef(), this.viewContainerRef));

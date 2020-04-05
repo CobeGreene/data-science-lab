@@ -1,7 +1,5 @@
-<div class="container" #containerCmp
-    [style.width.px]="width" [style.height.px]="height"
-    (mouseleave)="onMouseUp($event)" (mouseup)="onMouseUp($event)" (mouseover)="onMouseMove($event)" (mousemove)="onMouseMove($event)">
-    <ng-container *ngFor="let visual of visuals">
-        <app-experiment-visual-card [visual]="visual" (emitMove)="onMove($event)" (emitExpand)="onExpand($event)"></app-experiment-visual-card>
-    </ng-container>
+<app-experiment-visuals-menu [style.height.px]="30" [view]="view" (emitView)="onView($event)" (emitArrange)="onArrange()"></app-experiment-visuals-menu>
+<div [style.padding-top.px]="30">
+    <app-experiment-visuals-grid *ngIf="view === 'grid'"></app-experiment-visuals-grid>
+    <app-experiment-visuals-workspace *ngIf="view === 'workspace'" #workspaceCmp></app-experiment-visuals-workspace>
 </div>

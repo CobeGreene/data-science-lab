@@ -389,6 +389,7 @@ input.accent4:focus, textarea.accent4:focus {
     background-color: var(--modal-background);
     box-shadow: 0px 5px 1px 3px var(--modal-shadow);
     color: var(--modal-word);
+    width: 100% !important;
 }
 
 .dropdown-list>li {

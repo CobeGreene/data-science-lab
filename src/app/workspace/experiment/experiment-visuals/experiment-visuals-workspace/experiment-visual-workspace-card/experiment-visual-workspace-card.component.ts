@@ -1,18 +1,18 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, HostListener, OnDestroy } from '@angular/core';
-import { Visual } from '../../../../../../shared/models';
-import { VisualizationService } from '../../../../services/visualization-service';
+import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Visual } from '../../../../../../../shared/models';
+import { VisualizationService } from '../../../../../services/visualization-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { DropdownComponent } from '../../../../shared/dropdown/dropdown.component';
-import { RenameVisualComponent } from '../../../../shared/visual/rename-visual/rename-visual.component';
+import { DropdownComponent } from '../../../../../shared/dropdown/dropdown.component';
+import { RenameVisualComponent } from '../../../../../shared/visual/rename-visual/rename-visual.component';
 
 
 @Component({
-  selector: 'app-experiment-visual-card',
-  templateUrl: './experiment-visual-card.component.html',
-  styleUrls: ['./experiment-visual-card.component.css']
+  selector: 'app-experiment-visual-workspace-card',
+  templateUrl: './experiment-visual-workspace-card.component.html',
+  styleUrls: ['./experiment-visual-workspace-card.component.css']
 })
-export class ExperimentVisualCardComponent implements OnInit, OnDestroy {
-
+export class ExperimentVisualWorkspaceCardComponent implements OnInit, OnDestroy, AfterViewInit {
+  
   @Input() visual: Visual;
 
   @ViewChild('visualCmp', { static: false }) visualComponent: ElementRef<HTMLIFrameElement>;
