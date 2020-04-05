@@ -18,7 +18,8 @@ export class ExperimentVisualWorkspaceCardComponent implements OnInit, OnDestroy
   @ViewChild('visualCmp', { static: false }) visualComponent: ElementRef<HTMLIFrameElement>;
   @ViewChild('optionsDropdown', { static: false }) optionsDropdown: DropdownComponent;
   
-  @ViewChild('renameCmp', { static: false }) renameComponent: RenameVisualComponent;
+  @ViewChild('renameCmp', { static: false }) renameComponent: DropdownComponent;
+  @ViewChild('inputCmp', { static: false }) inputComponent: RenameVisualComponent;
 
   @Output() emitMove = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
   @Output() emitExpand = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
@@ -59,7 +60,7 @@ export class ExperimentVisualWorkspaceCardComponent implements OnInit, OnDestroy
 
   onRename(event: MouseEvent) {
     this.renameComponent.open(event, this.visualComponent);
-    this.renameComponent.focus();
+    this.inputComponent.focus();
   }
 
   onOpenContext(event: MouseEvent) {

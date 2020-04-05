@@ -22,6 +22,7 @@ import { ExperimentVisualsMenuComponent } from './experiment-visuals/experiment-
 import { ExperimentVisualsGridComponent } from './experiment-visuals/experiment-visuals-grid/experiment-visuals-grid.component';
 import { ExperimentVisualsWorkspaceComponent } from './experiment-visuals/experiment-visuals-workspace/experiment-visuals-workspace.component';
 import { ExperimentVisualWorkspaceCardComponent } from './experiment-visuals/experiment-visuals-workspace/experiment-visual-workspace-card/experiment-visual-workspace-card.component';
+import { ExperimentVisualGridCardComponent } from './experiment-visuals/experiment-visuals-grid/experiment-visual-grid-card/experiment-visual-grid-card.component';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import { ExperimentVisualWorkspaceCardComponent } from './experiment-visuals/exp
         ExperimentVisualsMenuComponent,
         ExperimentVisualsGridComponent,
         ExperimentVisualsWorkspaceComponent,
-        ExperimentVisualWorkspaceCardComponent
+        ExperimentVisualWorkspaceCardComponent,
+        ExperimentVisualGridCardComponent
     ],
     imports: [
         CommonModule,

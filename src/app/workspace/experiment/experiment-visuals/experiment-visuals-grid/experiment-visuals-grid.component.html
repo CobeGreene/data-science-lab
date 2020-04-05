@@ -1,3 +1,5 @@
-<div class="p-2">
-
-</div>
+<div class="p-2 container">
+    <ng-container *ngFor="let visual of visuals; let i = index">
+        <app-experiment-visual-grid-card class="card" [id]="visual.id" (click)="onShow($event, i)"></app-experiment-visual-grid-card>
+    </ng-container>
+</div>  

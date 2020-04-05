@@ -29,7 +29,9 @@
         </span>
     </div>
 </div>
-<app-rename-visual [id]="visual.id" #renameCmp></app-rename-visual>
+<app-dropdown #renameCmp>
+    <app-rename-visual [id]="visual.id" #inputCmp></app-rename-visual>
+</app-dropdown>
 <app-dropdown #optionsDropdown>
     <ul class="list-unstyled dropdown-list">
         <li (click)="onShow($event)">

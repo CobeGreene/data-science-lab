@@ -13,9 +13,8 @@ export class RenameVisualComponent extends DropdownComponent implements OnInit {
 
   @Input() id: number;
 
-
   name: string;
-  @ViewChild('inputCmp', { static: true }) inputComponent: ElementRef<HTMLInputElement>;
+  @ViewChild('inputCmp', { static: false }) inputComponent: ElementRef<HTMLInputElement>;
 
   constructor(overlay: Overlay, viewContainerRef: ViewContainerRef, overlayService: OverlayService,
     private visualService: VisualizationService) {

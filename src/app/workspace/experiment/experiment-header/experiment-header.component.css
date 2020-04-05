@@ -3,10 +3,11 @@
     display: grid;
     position: fixed;
     height: inherit;
+    box-shadow: 0 5px 2px var(--experiment-header-shadow);
     grid-template-columns: 1fr min-content 1fr;
     grid-template-rows: 1fr;
     grid-template-areas: 'title expander nav';
-    z-index: 100;
+    z-index: 50;
     transition: height 400ms ease-in-out;
 }
 
