@@ -29,9 +29,6 @@ export class AlgorithmTestReportCardComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.expanded') expanded: boolean = false;
 
-  @HostListener('click', ['$event']) onClick(_: MouseEvent) {
-    this.expanded = !this.expanded; 
-  }
 
   constructor(
     private routerService: RouterService,
@@ -74,6 +71,18 @@ export class AlgorithmTestReportCardComponent implements OnInit, OnDestroy {
 
   onDelete(event: MouseEvent) {
     this.deleteComponent.open(event);
+  }
+
+  onToggleExpand() {
+    this.expanded = !this.expanded;
+  }
+
+  onShowMore() {
+    this.testReportService.show(this.id);
+  }
+
+  onVisualize() {
+    
   }
 
 }

@@ -62,6 +62,7 @@ import { SidebarAlgorithmStopComponent } from './areas/sidebar/sidebar-algorithm
 import { SidebarAlgorithmStartComponent } from './areas/sidebar/sidebar-algorithm/sidebar-algorithm-start/sidebar-algorithm-start.component';
 import { SidebarAlgorithmCardComponent } from './areas/sidebar/sidebar-algorithm/sidebar-algorithm-card/sidebar-algorithm-card.component';
 import { SidebarAlgorithmComponent } from './areas/sidebar/sidebar-algorithm/sidebar-algorithm.component';
+import { TestReportVisualSessionService, AppTestReportVisualSessionService } from '../session-services/test-report-visual-session-service';
 
 @NgModule({
     declarations: [
@@ -122,6 +123,7 @@ import { SidebarAlgorithmComponent } from './areas/sidebar/sidebar-algorithm/sid
         { provide: TransformSessionService, useClass: AppTransformSessionService },
         { provide: DatasetVisualSessionService, useClass: AppDatasetVisualSessionService },
         { provide: AlgorithmVisualSessionService, useClass: AppAlgorithmVisualSessionService },
+        { provide: TestReportVisualSessionService, useClass: AppTestReportVisualSessionService },
         { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
         { provide: NotificationService, useClass: AppNotificationService },
         { provide: ErrorService, useClass: AppErrorService },
