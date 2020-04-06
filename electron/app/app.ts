@@ -45,6 +45,7 @@ import { AlgorithmVisualServiceModel } from './session-services/algorithm-visual
 import { ExperimentState } from '../../shared/models';
 import { ShortcutDataService, AppShortcutDataService } from './data-services/shortcut-data-service';
 import { ShortcutServiceModel } from './services/shortcut.sm';
+import { BrowserDataService, AppBrowserDataService } from './data-services/browser-data-service';
 
 export let win: BrowserWindow;
 
@@ -82,7 +83,8 @@ export class App {
         this.serviceContainer.addSingleton<TestReportSessionDataService>(
             AppTestReportSessionDataService, SERVICE_TYPES.TestReportSessionDataService);
         this.serviceContainer.addSingleton<ShortcutDataService>(AppShortcutDataService, SERVICE_TYPES.ShortcutDataService);
-
+        this.serviceContainer.addSingleton<BrowserDataService>(AppBrowserDataService, SERVICE_TYPES.BrowserDataService);
+            
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
         this.serviceContainer.addTransient<FileService>(AppFileCoreService, SERVICE_TYPES.FileService);
@@ -164,7 +166,8 @@ export class App {
             y: 0,
             width: size.width, height: size.height,
             webPreferences: {
-                preload: this.preload
+                preload: this.preload,
+                
             },
             title: 'Data Science Lab'
         });

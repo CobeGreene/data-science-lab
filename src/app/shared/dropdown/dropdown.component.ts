@@ -20,6 +20,13 @@ export class DropdownComponent extends OverlayComponent implements OnInit {
     return this.dropdownComponent;
   }
 
+  getWidth(_: MouseEvent, respectTo?: ElementRef<HTMLElement>) {
+    if (respectTo !== undefined) {
+      return respectTo.nativeElement.clientWidth;
+    }
+    return undefined;
+  }
+
   positionStrategy({ x, y }: MouseEvent, respectTo?: ElementRef) {
     if (respectTo !== undefined) {
       return this.overlay.position()

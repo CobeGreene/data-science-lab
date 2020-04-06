@@ -44,6 +44,7 @@ export const enum SERVICE_TYPES {
     VisualDataService,
     TestReportSessionDataService,
     ShortcutDataService,
+    BrowserDataService,
     // Core Services
     WebService,
     FileService,

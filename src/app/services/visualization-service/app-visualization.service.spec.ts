@@ -119,6 +119,15 @@ describe('Angular App Visualization Service', () => {
         service.delete(1);
     });
     
+    it('show should call messegner', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event, id) => {
+            expect(event).toBe(VisualEvents.Show);
+            expect(id).toBe(1);
+            done();
+        });
+        service.show(1);
+    });
+    
     it('resize should call messegner', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id, width, height) => {
             expect(event).toBe(VisualEvents.Resize);

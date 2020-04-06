@@ -1,0 +1,10 @@
+.card {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.frame {
+    background: var(--experiment-visualization-frame-background);
+    pointer-events: none;
+    width: 100%;
+}

@@ -31,9 +31,16 @@ export class ExperimentDatasetsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.routerService.data().id;
 
+    this.routerService.changed()
+      .pipe(untilComponentDestroyed(this))
+      .subscribe(() => {
+        this.id = this.routerService.data().id;
+        this.datasets = this.datasetService.all(this.id);
+      });
+
     this.datasetService.datasetsChanged
       .pipe(untilComponentDestroyed(this))
-      .subscribe((value) => {
+      .subscribe((_) => {
         this.datasets = this.datasetService.all(this.id);
       });
 

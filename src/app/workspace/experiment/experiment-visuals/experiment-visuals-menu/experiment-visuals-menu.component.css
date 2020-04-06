@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    z-index: 100;
+    background: #404040;
+}
+
+.visual-dropdown {
+    border: 1px solid #505050;
+    border-radius: 0.2rem;
+}
+
+.views {
+    display: flex;
+}
+
+.actions {
+    display: flex;
+}
