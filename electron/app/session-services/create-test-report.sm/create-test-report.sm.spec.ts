@@ -207,7 +207,7 @@ describe('Electron Create Test Report Service Model', () => {
         );
         (dataService.post as jasmine.Spy).and.returnValue({});
 
-        serviceModel.inputs(1, { output: [0], input: [0]});
+        serviceModel.inputs(1, { output: [0], input: [1]});
 
         expect(sessionService.delete).toHaveBeenCalledTimes(1);
         expect(sessionService.delete).toHaveBeenCalledWith(1);

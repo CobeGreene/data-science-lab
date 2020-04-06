@@ -103,8 +103,8 @@ export class CreateTestReportServiceModel extends ServiceModel {
                 examples: dataset.features[index].examples.slice()
             }));
         }));
-        const actualFeatures: FeatureObject[] = ([] as FeatureObject[]).concat(...input.map(value => {
-            return inputs[value.id].map(index => ({
+        const actualFeatures: FeatureObject[] = ([] as FeatureObject[]).concat(...output.map(value => {
+            return outputs[value.id].map(index => ({
                 name: `Actual ${dataset.features[index].name}`,
                 type: dataset.features[index].type,
                 examples: []

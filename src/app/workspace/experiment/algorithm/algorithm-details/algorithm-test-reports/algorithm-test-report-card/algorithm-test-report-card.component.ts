@@ -30,7 +30,7 @@ export class AlgorithmTestReportCardComponent implements OnInit, OnDestroy {
   @HostBinding('class.expanded') expanded: boolean = false;
 
   @HostListener('click', ['$event']) onClick(_: MouseEvent) {
-    this.expanded = !this.expanded;
+    this.expanded = !this.expanded; 
   }
 
   constructor(
