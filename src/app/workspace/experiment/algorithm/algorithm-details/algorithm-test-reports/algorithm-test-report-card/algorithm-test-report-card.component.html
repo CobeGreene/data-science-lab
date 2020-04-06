@@ -19,10 +19,16 @@
             <h4 class="m-0 p-0">
                 Got {{ report.correct }} correct out of {{ report.total }}
             </h4>
-            <p class="m-0 p-0">
-                Perform on {{ report.datasetName }} on iteration {{ report.iteration }}
+            <p class="m-0 p-0" *ngIf="dataset !== undefined">
+                Perform on {{ dataset.name }} on iteration {{ report.iteration }}
+            </p>
+            <p class="m-0 p-0 invalid-feedback" *ngIf="dataset === undefined">
+                Dataset no longer exists, test report occured on iteration {{ report.iteration }}
             </p>
         </div>
+    </div>
+    <div class="features" *ngIf="expanded">
+
     </div>
 </div>
 <app-dropdown #optionsDropdown>

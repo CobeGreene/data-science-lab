@@ -102,6 +102,17 @@ describe('Angular App Dataset Service', () => {
         }).toThrow();
     });
 
+    it('exists should return false for not found', () => {
+        expect(service.exists(404)).toBeFalsy();
+    });
+    
+    it('exists should return true for posted dataset', () => {
+        dict[DatasetEvents.Create](DatasetEvents.Create, 
+            { id: 1 }    
+        );
+        expect(service.exists(1)).toBeTruthy();
+    });
+
     it('get should return dataset', () => {
         dict[DatasetEvents.Create](DatasetEvents.Create, 
             { id: 1, experimentId: 1 }    

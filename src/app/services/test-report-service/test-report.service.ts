@@ -31,5 +31,6 @@ export abstract class TestReportService extends Service {
     abstract get(id: number): TestReport;
     abstract delete(id: number): void;
     abstract rename(id: number, name: string): void;
+    abstract show(id: number): void;
 }
 

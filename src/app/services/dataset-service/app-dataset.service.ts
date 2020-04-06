@@ -82,6 +82,10 @@ export class AppDatasetService extends DatasetService {
         return this.datasets.filter(value => value.experimentId === experimentId);
     }
 
+    exists(id: number): boolean {
+        return this.datasets.findIndex(value => value.id === id) >= 0;
+    }
+
     get(id: number): Dataset {
         const find = this.datasets.find(value => value.id === id);
         if (find === undefined) {

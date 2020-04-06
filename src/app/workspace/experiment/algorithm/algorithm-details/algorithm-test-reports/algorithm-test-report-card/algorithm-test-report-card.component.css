@@ -8,6 +8,16 @@
     cursor: pointer;
 }
 
+:host(.expanded) {
+    transform: scaleX(1);
+    grid-column: span 3;
+}
+
+:host(.expanded):hover {
+    transform: scaleX(1);
+    grid-column: span 3;
+}
+
 :host:hover {
     transform: scaleX(1);
     transition: all 200ms ease-in-out;
