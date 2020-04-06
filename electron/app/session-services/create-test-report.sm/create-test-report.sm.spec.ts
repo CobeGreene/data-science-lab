@@ -220,7 +220,6 @@ describe('Electron Create Test Report Service Model', () => {
             iteration: 1,
             datasetId: 1,
             name: 'Test Report',
-            selectedFeatures: [0,1],
             features: [
                 {
                     name: 'Expected output',
@@ -321,7 +320,6 @@ describe('Electron Create Test Report Service Model', () => {
             iteration: 1,
             datasetId: 1,
             name: 'Test Report',
-            selectedFeatures: [0,1],
             features: [
                 {
                     name: 'Expected output',

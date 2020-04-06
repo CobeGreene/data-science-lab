@@ -10,6 +10,7 @@ import * as zlib from 'zlib';
 import { TestReportObject } from '../../models';
 import { UserSettingDataService } from '../user-setting-data-service';
 import { Settings } from '../../../../shared/settings';
+import { PluginData } from 'data-science-lab-core';
 
 export class AppTestReportDataService extends Service implements TestReportDataService {
 
@@ -175,6 +176,42 @@ export class AppTestReportDataService extends Service implements TestReportDataS
         const ids = this.reports.filter(value => value.algorithmId === algorithmId).map(value => value.id);
         this.reports = this.reports.filter(value => value.algorithmId !== algorithmId);
         return ids;
+    }
+
+    extract(id: number, inputs: { [id: string]: number[] }, selectedFeatures: number[]): { [id: string]: PluginData } {
+        const data: { [id: string]: PluginData } = {};
+
+        const report = this.get(id);
+
+        for (const key in inputs) {
+            if (inputs[key] === undefined) {
+                continue;
+            }
+
+            const features: string[] = [];
+            const examples: any[][] = [];
+
+            for (let i = 0; i < report.total; ++i) {
+                examples.push([]);
+                for (const _ of inputs[key]) {
+                    examples[i].push(undefined);
+                }
+            }
+
+            for (let j = 0; j < inputs[key].length; ++j) {
+                features.push(report.features[selectedFeatures[inputs[key][j]]].name);
+                for (let i = 0; i < report.features[selectedFeatures[inputs[key][j]]].examples.length; ++i) {
+                    examples[i][j] = report.features[selectedFeatures[inputs[key][j]]].examples[i];
+                }
+            }
+
+            data[key] = new PluginData({
+                features,
+                examples
+            });
+        }
+
+        return data;
     }
 
     notFound(id: number): SystemError {

@@ -10,7 +10,6 @@ export interface TestReportObject {
     correct: number;
     total: number;
     features: FeatureObject[];
-    selectedFeatures: number[];
     previewExamples?: number;
 }
 

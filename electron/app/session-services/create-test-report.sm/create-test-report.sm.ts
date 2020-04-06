@@ -159,7 +159,6 @@ export class CreateTestReportServiceModel extends ServiceModel {
             iteration: obj.iteration,
             datasetId: dataset.id,
             features: [...expectedFeatures, ...actualFeatures, correctFeature],
-            selectedFeatures: session.selectedFeatures,
             name: 'Test Report',
         };
 

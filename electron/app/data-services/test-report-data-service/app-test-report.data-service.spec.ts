@@ -74,11 +74,11 @@ describe('Electron Test Report Data Service', () => {
 
     it('all should return length of 0', () => {
         expect(dataService.all().length).toBe(0);
-    }); 
+    });
 
     it('all view should return length of 0', () => {
         expect(dataService.allView().length).toBe(0);
-    }); 
+    });
 
     it('load should increase all by 1', () => {
         dataService.load(1);
@@ -136,7 +136,6 @@ describe('Electron Test Report Data Service', () => {
             datasetId: 1,
             id: 0,
             features: [],
-            selectedFeatures: [],
             iteration: 0,
             name: 'name',
             total: 1
@@ -166,7 +165,6 @@ describe('Electron Test Report Data Service', () => {
             correct: 3,
             datasetId: 1,
             features: [],
-            selectedFeatures: [],
             id: 0,
             iteration: 0,
             name: 'name',
@@ -194,9 +192,9 @@ describe('Electron Test Report Data Service', () => {
         dataService.load(1);
         dataService.show(1);
         const report = dataService.get(1);
-        expect(report.previewExamples).toBe(2);        
+        expect(report.previewExamples).toBe(2);
     });
-    
+
     it('show multiple times should increase to length', () => {
         dataService.load(1);
         dataService.show(1);
@@ -205,7 +203,49 @@ describe('Electron Test Report Data Service', () => {
         dataService.show(1);
         dataService.show(1);
         const report = dataService.get(1);
-        expect(report.previewExamples).toBe(3);        
+        expect(report.previewExamples).toBe(3);
+    });
+
+    it('extract should return two plugin data', () => {
+        const id = dataService.post({
+            id: 0,
+            algorithmId: 2,
+            correct: 2,
+            datasetId: 1,
+            iteration: 1,
+            name: 'Test Report',
+            total: 2,
+            features: [
+                { name: 'F1', type: 'number', examples: [1, 2] },
+                { name: 'F2', type: 'number', examples: [3, 4] },
+                { name: 'F3', type: 'number', examples: [5, 6] },
+            ]
+        }).id;
+
+        const data = dataService.extract(id, {
+            input: [0, 1],
+            output: [2]
+        }, [0, 1, 2]);
+
+
+        expect(data.input.features.length).toBe(2);
+        expect(data.input.features[0]).toBe('F1');
+        expect(data.input.features[1]).toBe('F2');
+        expect(data.input.examples.length).toBe(2);
+        expect(data.input.examples[0].length).toBe(2);
+        expect(data.input.examples[0][0]).toBe(1);
+        expect(data.input.examples[0][1]).toBe(3);
+        expect(data.input.examples[1][0]).toBe(2);
+        expect(data.input.examples[1][1]).toBe(4);
+        expect(data.input.examples[1].length).toBe(2);
+        expect(data.output.features.length).toBe(1);
+        expect(data.output.examples.length).toBe(2);
+        expect(data.output.features[0]).toBe('F3');
+        expect(data.output.examples.length).toBe(2);
+        expect(data.output.examples[0].length).toBe(1);
+        expect(data.output.examples[0][0]).toBe(5);
+        expect(data.output.examples[1][0]).toBe(6);
+
     });
 
 });
