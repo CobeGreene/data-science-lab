@@ -5,12 +5,9 @@ import { TestReportSessionDataService } from "../../data-services/test-report-se
 import { DatasetDataService } from "../../data-services/dataset-data-service";
 import { ServiceContainer, SERVICE_TYPES } from "../../service-container";
 import { Producer } from "../../pipeline";
-import { SessionOptions } from "http2";
 import { SessionState } from "../../../../shared/models";
 import { TestReportCreateEvents } from "../../../../shared/events";
 import { PluginData, PluginDataInput } from "data-science-lab-core";
-
-
 
 describe('Electron Create Test Report Service Model', () => {
     let serviceModel: CreateTestReportServiceModel;
@@ -39,7 +36,7 @@ describe('Electron Create Test Report Service Model', () => {
         datasetService = jasmine.createSpyObj('DatasetService', ['extract', 'get']);
         algorithmService = jasmine.createSpyObj('AlgorithmDataService', ['get', 'start', 'stop']);
         sessionService = jasmine.createSpyObj('TestReportSessionDataService', ['post', 'delete', 'get', 'update']);
-        dataService = jasmine.createSpyObj('TestReportDataService', ['post']);
+        dataService = jasmine.createSpyObj('TestReportDataService', ['post', 'view']);
 
         serviceModel = new CreateTestReportServiceModel(serviceContainer, producer);
     });
@@ -150,6 +147,7 @@ describe('Electron Create Test Report Service Model', () => {
             inputDict: undefined,
             algorithmId: 1,
             id: 1,
+            selectedFeatures: [0,1]
         });
         (algorithmService.get as jasmine.Spy).and.callFake(() => {
             const plugin = jasmine.createSpyObj('AlgorithmPlugins', ['getTestingInputs', 'test']);
@@ -183,7 +181,14 @@ describe('Electron Create Test Report Service Model', () => {
         (datasetService.get as jasmine.Spy).and.returnValue({
             examples: 4,
             id: 1,
-            name: 'Dataset'
+            name: 'Dataset',
+            features: [
+                {
+                    name: 'output',
+                    type: 'number',
+                    examples: [1, 0, 1, 1]
+                },
+            ]
         });
 
         (datasetService.extract as jasmine.Spy).and.returnValues(
@@ -202,7 +207,7 @@ describe('Electron Create Test Report Service Model', () => {
         );
         (dataService.post as jasmine.Spy).and.returnValue({});
 
-        serviceModel.inputs(1, {});
+        serviceModel.inputs(1, { output: [0], input: [0]});
 
         expect(sessionService.delete).toHaveBeenCalledTimes(1);
         expect(sessionService.delete).toHaveBeenCalledWith(1);
@@ -214,8 +219,25 @@ describe('Electron Create Test Report Service Model', () => {
             total: 4,
             iteration: 1,
             datasetId: 1,
-            datasetName: 'Dataset',
             name: 'Test Report',
+            selectedFeatures: [0,1],
+            features: [
+                {
+                    name: 'Expected output',
+                    type: 'number',
+                    examples: [1, 0, 1, 1]
+                },
+                {
+                    name: 'Actual output',
+                    type: 'number',
+                    examples: [1, 1, 1, 1]
+                },
+                {
+                    name: 'Correct',
+                    type: 'number',
+                    examples: [1, 0, 1, 1]
+                }
+            ]
         });
 
     });
@@ -225,6 +247,7 @@ describe('Electron Create Test Report Service Model', () => {
             inputDict: undefined,
             algorithmId: 1,
             id: 1,
+            selectedFeatures: [0,1]
         });
         (algorithmService.get as jasmine.Spy).and.callFake(() => {
             const plugin = jasmine.createSpyObj('AlgorithmPlugins', ['getTestingInputs', 'test']);
@@ -258,7 +281,14 @@ describe('Electron Create Test Report Service Model', () => {
         (datasetService.get as jasmine.Spy).and.returnValue({
             examples: 4,
             id: 1,
-            name: 'Dataset'
+            name: 'Dataset',
+            features: [
+                {
+                    name: 'output',
+                    type: 'number',
+                    examples: [1, 0, 1, 1]
+                },
+            ]
         });
 
         (datasetService.extract as jasmine.Spy).and.returnValues(
@@ -277,11 +307,12 @@ describe('Electron Create Test Report Service Model', () => {
         );
         (dataService.post as jasmine.Spy).and.returnValue({});
 
-        serviceModel.inputs(1, {});
+        serviceModel.inputs(1, { output: [0], input: [0]});
 
         expect(sessionService.delete).toHaveBeenCalledTimes(1);
         expect(sessionService.delete).toHaveBeenCalledWith(1);
         expect(dataService.post).toHaveBeenCalledTimes(1);
+        expect(dataService.view).toHaveBeenCalledTimes(1);
         expect(dataService.post).toHaveBeenCalledWith({
             id: 0,
             algorithmId: 1,
@@ -289,8 +320,25 @@ describe('Electron Create Test Report Service Model', () => {
             total: 4,
             iteration: 1,
             datasetId: 1,
-            datasetName: 'Dataset',
             name: 'Test Report',
+            selectedFeatures: [0,1],
+            features: [
+                {
+                    name: 'Expected output',
+                    type: 'number',
+                    examples: [1, 0, 1, 1]
+                },
+                {
+                    name: 'Actual output',
+                    type: 'number',
+                    examples: [1, 1, 1, 1]
+                },
+                {
+                    name: 'Correct',
+                    type: 'number',
+                    examples: [1, 0, 1, 1]
+                }
+            ]
         });
         expect(algorithmService.stop).toHaveBeenCalledTimes(1);
         expect(algorithmService.stop).toHaveBeenCalledBefore(algorithmService.start as jasmine.Spy);

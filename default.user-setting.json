@@ -19,6 +19,14 @@
         "min": 0
     },
     {
+        "key": "test-report.default.preview",
+        "title": "Test Report Default Preview Examples",
+        "description": "The default number of examples to preview.",
+        "value": 10,
+        "default": 10,
+        "min": 0
+    },
+    {
         "key": "algorithm.default.time",
         "title": "Algorithm Default Interval Between Iterations",
         "description": "Sets the rate at which a step occurs in an algorithm (in milliseconds).",

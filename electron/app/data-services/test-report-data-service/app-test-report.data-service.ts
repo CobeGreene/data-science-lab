@@ -7,17 +7,24 @@ import { SystemError, ErrorTypes } from '../../../../shared/errors';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as zlib from 'zlib';
+import { TestReportObject } from '../../models';
+import { UserSettingDataService } from '../user-setting-data-service';
+import { Settings } from '../../../../shared/settings';
 
 export class AppTestReportDataService extends Service implements TestReportDataService {
 
     private readonly key = 'test-reports';
     private readonly path = 'test-reports-path';
 
-    private reports: TestReport[];
+    private reports: TestReportObject[];
     private idGenerator: IdGenerator;
 
     get settings(): SettingsContext {
         return this.serviceContainer.resolve<SettingsContext>(SERVICE_TYPES.SettingsContext);
+    }
+
+    get user(): UserSettingDataService {
+        return this.serviceContainer.resolve<UserSettingDataService>(SERVICE_TYPES.UserSettingDataService);
     }
 
     constructor(serviceContainer: ServiceContainer) {
@@ -32,8 +39,65 @@ export class AppTestReportDataService extends Service implements TestReportDataS
         this.idGenerator = new IdGenerator(id);
     }
 
-    all() {
-        return this.reports;
+    all();
+    all(algorithmId: number);
+    all(algorithmId?: number) {
+        if (algorithmId === undefined) {
+            return this.reports;
+        }
+        return this.reports.filter(value => value.algorithmId === algorithmId);
+    }
+
+    allView(): TestReport[] {
+        return this.reports.map(value => this.toView(value));
+    }
+
+    view(id: number): TestReport {
+        const obj = this.get(id);
+        return this.toView(obj);
+    }
+
+    show(id: number): void {
+        const report = this.get(id);
+
+        const setting = this.user.find(Settings.TestReportDefaultPreview);
+        const defaultPreview = (setting === undefined) ? 10 : setting.value;
+
+        if (report.previewExamples + defaultPreview > report.total) {
+            report.previewExamples = report.total;
+        } else {
+            report.previewExamples = report.previewExamples + defaultPreview;
+        }
+
+        this.update(report);
+    }
+
+    toView(report: TestReportObject): TestReport {
+        const features = report.features.map(value => ({
+            name: value.name,
+            type: value.type
+        }));
+
+        const previewExamples: any[][] = [];
+
+        for (let example = 0; example < report.previewExamples; ++example) {
+            previewExamples.push([]);
+            for (const feature of report.features) {
+                previewExamples[example].push(feature.examples[example]);
+            }
+        }
+
+        return {
+            id: report.id,
+            algorithmId: report.algorithmId,
+            name: report.name,
+            correct: report.correct,
+            datasetId: report.datasetId,
+            iteration: report.iteration,
+            total: report.total,
+            features,
+            previewExamples
+        }
     }
 
     delete(id: number) {
@@ -53,7 +117,7 @@ export class AppTestReportDataService extends Service implements TestReportDataS
         return find;
     }
 
-    update(report: TestReport) {
+    update(report: TestReportObject) {
         const find = this.reports.findIndex(value => value.id === report.id);
         if (find >= 0) {
             this.reports.splice(find, 1, report);
@@ -67,7 +131,10 @@ export class AppTestReportDataService extends Service implements TestReportDataS
         const reportPath = path.join(dirPath, `reports${algorithmId}.gzip`);
         if (fs.existsSync(reportPath)) {
             const buffer = fs.readFileSync(reportPath);
-            const reports = JSON.parse(`${zlib.unzipSync(buffer)}`);
+            const reports = JSON.parse(`${zlib.unzipSync(buffer)}`) as TestReportObject[];
+            reports.forEach((value) => {
+                value.previewExamples = this.initialPreview(value.total);
+            })
             this.reports.push(...reports);
         }
     }
@@ -88,11 +155,20 @@ export class AppTestReportDataService extends Service implements TestReportDataS
         this.settings.set(this.key, this.idGenerator.at());
     }
 
-    post(report: TestReport) {
+    post(report: TestReportObject) {
         report.id = this.idGenerator.next();
+
+        report.previewExamples = this.initialPreview(report.total);
+
         this.reports.push(report);
         this.saveGenerator();
         return report;
+    }
+
+    initialPreview(examples: number) {
+        const setting = this.user.find(Settings.TestReportDefaultPreview);
+        const defaultPreview = (setting === undefined) ? 10 : setting.value;
+        return (defaultPreview < examples) ? defaultPreview : examples;
     }
 
     deleteByAlgorithm(algorithmId: number): number[] {
