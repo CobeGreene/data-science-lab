@@ -26,6 +26,7 @@ const routes: Routes = [
             { path: ':algorithmId/visualize/:sessionId/select', component: AlgorithmSelectVisualizeComponent },
             { path: ':algorithmId/visualize/:sessionId/input', component: AlgorithmInputsVisualizeComponent },
             { path: ':algorithmId/visualize/:sessionId/setup', component: AlgorithmSetupVisualizeComponent },
+            { path: ':algorithmId/test-report', loadChildren: './test-report/test-report.module#TestReportModule' }
         ]
     }
 ];

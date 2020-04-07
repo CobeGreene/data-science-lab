@@ -3,6 +3,7 @@ import { TestReport, Dataset } from '../../../../../../../../shared/models';
 import { DropdownComponent } from '../../../../../../shared/dropdown/dropdown.component';
 import { RouterService } from '../../../../../../services/router-service';
 import { TestReportService } from '../../../../../../services/test-report-service';
+import { TestReportVisualSessionService } from '../../../../../../session-services/test-report-visual-session-service';
 import { DatasetService } from '../../../../../../services/dataset-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { EditTestReportComponent } from '../../../../../../shared/test-report/edit-test-report/edit-test-report.component';
@@ -33,7 +34,8 @@ export class AlgorithmTestReportCardComponent implements OnInit, OnDestroy {
   constructor(
     private routerService: RouterService,
     private testReportService: TestReportService,
-    private datasetService: DatasetService
+    private datasetService: DatasetService,
+    private testReportVisualService: TestReportVisualSessionService
   ) { }
 
   ngOnInit() {
@@ -82,7 +84,10 @@ export class AlgorithmTestReportCardComponent implements OnInit, OnDestroy {
   }
 
   onVisualize() {
-    
+    this.testReportVisualService.create(this.report.id, {
+      currentRoute: this.routerService.current(),
+      newTab: true,
+    }, this.report.features.map((_, index) => index), this.routerService.current());
   }
 
 }

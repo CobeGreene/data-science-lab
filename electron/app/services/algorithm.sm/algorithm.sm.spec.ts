@@ -36,7 +36,7 @@ describe('Electron Algorithm Service Model', () => {
         algorithmService = jasmine.createSpyObj('AlgorithmDataService', 
             ['allView', 'view', 'delete', 'start', 'stop', 'update', 'load', 'save', 'all', 'deleteByExperiment', 'get']);
         trackerService = jasmine.createSpyObj('TrackerDataService', ['has', 'delete', 'load', 'save', 'allView']);
-        reportService = jasmine.createSpyObj('ReportDataService', ['save', 'load', 'deleteByAlgorithm', 'all']);
+        reportService = jasmine.createSpyObj('ReportDataService', ['save', 'load', 'deleteByAlgorithm', 'all', 'allView']);
         serviceModel = new AlgorithmServiceModel(serviceContainer, producer);
     });
 
@@ -81,7 +81,7 @@ describe('Electron Algorithm Service Model', () => {
         expect(algorithmService.deleteByExperiment).toHaveBeenCalledTimes(1);
         expect(algorithmService.allView).toHaveBeenCalledTimes(1);
         expect(trackerService.allView).toHaveBeenCalledTimes(1);
-        expect(reportService.all).toHaveBeenCalledTimes(1);
+        expect(reportService.allView).toHaveBeenCalledTimes(1);
     });
 
     it('delete by experiment should not delete tracker', async () => {
@@ -97,7 +97,7 @@ describe('Electron Algorithm Service Model', () => {
         expect(algorithmService.deleteByExperiment).toHaveBeenCalledTimes(1);
         expect(algorithmService.allView).toHaveBeenCalledTimes(1);
         expect(trackerService.allView).toHaveBeenCalledTimes(1);
-        expect(reportService.all).toHaveBeenCalledTimes(1);
+        expect(reportService.allView).toHaveBeenCalledTimes(1);
     });
 
     it('start should call algorithm service', () => {

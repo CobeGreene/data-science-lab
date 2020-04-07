@@ -4,4 +4,5 @@ export interface ExperimentRoute {
     datasetId?: number;
     algorithmId?: number;
     sessionId?: number;
+    testReportId?: number;
 }
