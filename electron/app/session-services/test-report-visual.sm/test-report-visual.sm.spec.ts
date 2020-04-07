@@ -1,101 +1,55 @@
-import { SessionService } from "../session-service";
-import { ServiceModelRoutes, Producer } from "../../pipeline";
-import { VisualEvents, TestReportVisualsEvents } from '../../../../shared/events';
-import { Session, Visual } from '../../../../shared/models';
-import { VisualizationPlugin } from 'data-science-lab-core';
-import { SERVICE_TYPES, ServiceContainer } from "../../service-container";
-import { TestReportDataService } from "../../data-services/test-report-data-service";
+import { TestReportVisualServiceModel } from "./test-report-visual.sm";
+import { ServiceContainer, SERVICE_TYPES } from "../../service-container";
+import { Producer } from "../../pipeline";
 import { VisualDataService } from "../../data-services/visual-data-service";
 import { AlgorithmDataService } from "../../data-services/algorithm-data-service";
+import { Session } from "../../../../shared/models";
+import { TestReportDataService } from "../../data-services/test-report-data-service";
 
-export class AlgorithmVisualServiceModel extends SessionService {
-    static routes: ServiceModelRoutes = {
-        service: SERVICE_TYPES.AlgorithmVisualServiceModel,
-        routes: [
-            { path: TestReportVisualsEvents.Create, method: 'create' },
-            { path: TestReportVisualsEvents.Delete, method: 'delete' },
-            { path: TestReportVisualsEvents.Select, method: 'select' },
-            { path: TestReportVisualsEvents.Options, method: 'options' },
-            { path: TestReportVisualsEvents.Command, method: 'command' },
-            { path: TestReportVisualsEvents.Inputs, method: 'inputs' },
-            { path: TestReportVisualsEvents.Previous, method: 'previous' },
-        ]
-    };
 
-    private testReportService: TestReportDataService;
-    private visualService: VisualDataService;
-    private algorithmService: AlgorithmDataService;
+describe('Electron Test Report Visual Service Model', () => {
+    let serviceModel: TestReportVisualServiceModel;
+    let serviceContainer: ServiceContainer;
+    let producer: Producer;
+    let visualService: VisualDataService;
+    let testReportService: TestReportDataService;
+    let algorithmService: AlgorithmDataService;
 
-    constructor(serviceContainer: ServiceContainer, producer: Producer) {
-        super(serviceContainer, producer);
+    beforeEach(() => {
+        serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
+        (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
+            if (type === SERVICE_TYPES.VisualDataService) {
+                return visualService;
+            } else if (type === SERVICE_TYPES.TestReportDataService) {
+                return testReportService;
+            } else if (type === SERVICE_TYPES.AlgorithmDataService) {
+                return algorithmService;
+            }
+            return undefined;
+        });
+        producer = jasmine.createSpyObj('Producer', ['send']);
 
-        this.testReportService = serviceContainer.resolve<TestReportDataService>(SERVICE_TYPES.TestReportDataService);
-        this.visualService = serviceContainer.resolve<VisualDataService>(SERVICE_TYPES.VisualDataService);
-        this.algorithmService = serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService);
-    }
+        testReportService = jasmine.createSpyObj('TestReportDataService', ['get', 'extract']);
+        algorithmService = jasmine.createSpyObj('AlgorithmDataService', ['get']);
+        visualService = jasmine.createSpyObj('VisualService', ['post']);
 
-    get eventCreate(): string {
-        return TestReportVisualsEvents.Create;
-    }
+        serviceModel = new TestReportVisualServiceModel(serviceContainer, producer);
+    });
 
-    get eventUpdate(): string {
-        return TestReportVisualsEvents.Update;
-    }
+    it('session finish should submit options and post visuals', async () => {
+        const plugin = jasmine.createSpyObj('VisualizationPlugion', ['getInputs', 'visualization']);
+        (plugin.getInputs as jasmine.Spy).and.callFake(() => {
+            return jasmine.createSpyObj('Options', ['submit']);
+        });
+        (testReportService.get as jasmine.Spy).and.returnValue({ algorithmId: 1 });
+        (algorithmService.get as jasmine.Spy).and.returnValue({ experimentId: 1 });
+        (visualService.post as jasmine.Spy).and.callFake((value) => value);
+        await serviceModel.sessionFinish({} as Session, plugin);
 
-    get eventDelete(): string {
-        return TestReportVisualsEvents.Delete;
-    }
+        expect(producer.send).toHaveBeenCalledTimes(1);
+        expect(plugin.visualization).toHaveBeenCalledTimes(1);
+    });
 
-    get eventFinish(): string {
-        return TestReportVisualsEvents.Finish;
-    }
 
-    get eventSelect(): string {
-        return TestReportVisualsEvents.Select;
-    }
+});
 
-    get eventOptions(): string {
-        return TestReportVisualsEvents.Options;
-    }
-
-    get eventCommand(): string {
-        return TestReportVisualsEvents.Command;
-    }
-
-    get eventInputs(): string {
-        return TestReportVisualsEvents.Inputs;
-    }
-
-    get eventPrevious(): string {
-        return TestReportVisualsEvents.Previous;
-    }
-
-    async pluginActivate(plugin: VisualizationPlugin) {
-
-    }
-
-    async sessionFinish(session: Session, plugin: VisualizationPlugin) {
-        const report = this.testReportService.get(session.keyId);
-        const algorithm = this.algorithmService.get(report.algorithmId);
-        plugin.getInputs().submit(this.testReportService.extract(report.id, session.inputDict, session.selectedFeatures));        
-
-        const srcdoc = plugin.visualization();
-
-        let visual: Visual = {
-            id: 0,
-            experimentId: algorithm.experimentId,
-            height: 3,
-            width: 3,
-            left: 0,
-            top: 0,
-            name: 'New Visual',
-            srcdoc,
-            zindex: 1
-        }
-
-        
-        visual = this.visualService.post(visual);
-        this.producer.send(VisualEvents.Create, visual);
-    }
-
-}
