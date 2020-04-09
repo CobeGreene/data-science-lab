@@ -20,6 +20,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   isExpanded: boolean;
   inFocus: boolean;
 
+
   @ViewChild('settingsCmp', { static: false }) settingsComponent: DropdownComponent;
 
   constructor(
@@ -40,7 +41,9 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.inFocus = this.focusService.current() === FocusAreas.Sidebar;
     this.isExpanded = true;
+
   }
+
 
   ngAfterViewInit() {
     this.shortcutService.subscribe(Shortcuts.ToggleSidebarExperiments, this.onPickExperiments);

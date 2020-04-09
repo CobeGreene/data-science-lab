@@ -79,6 +79,11 @@ export class ShortcutsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onRestore(i: number) {
     const shortcut = this.shortcuts[i];
+    const find = this.shortcuts.find((value) => value.value === shortcut.default);
+    if (find !== undefined) {
+      find.value = undefined;
+      this.shortcutService.update(find);
+    }
     shortcut.value = shortcut.default;
     this.shortcutService.update(shortcut);
   }

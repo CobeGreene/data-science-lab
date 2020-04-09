@@ -18,7 +18,8 @@
     --sidebar-list-background: #353535;
     --sidebar-list-background-hover: #ffffff40;
     --sidebar-list-header-selected: #3655B5;
-    --sidebar-list-card-hover: #555555;
+    --sidebar-list-card-hover: #656565;
+    --sidebar-list-card-faded: #505050;
     --sidebar-list-card-selected: #606060;
     --sidebar-plugin-badge: #6089B4;
     --tabs-background: #404040;

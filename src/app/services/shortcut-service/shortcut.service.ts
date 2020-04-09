@@ -14,6 +14,7 @@ export abstract class ShortcutService extends Service {
         
         this.shortcutWatcher = new Subject<string>();
         this.shortcutChanged = new Subject<void>();
+
     }
 
     destorySubjects() {
@@ -23,6 +24,7 @@ export abstract class ShortcutService extends Service {
 
     abstract all(): Shortcut[];
     abstract get(key: string): Shortcut;
+    abstract find(key: string): Shortcut | undefined;
     abstract subscribe(shortcut: string, action: () => void);
     abstract unsubscribe(shortcut: string, action: () => void);
 

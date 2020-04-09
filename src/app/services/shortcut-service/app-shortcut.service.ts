@@ -17,6 +17,7 @@ export class AppShortcutService extends ShortcutService {
 
         this.observers = { };
         this.isWatchMode = false;
+        this.shortcuts = [];    
         
         this.registerEvents();
         this.messenger.publish(ShortcutEvents.All);
@@ -46,6 +47,11 @@ export class AppShortcutService extends ShortcutService {
         if (find === undefined) {
             throw new Error(`Couldn't find shortcut with name ${name}`);
         }
+        return find;
+    }
+
+    find(key: string): Shortcut {
+        const find = this.shortcuts.find((value) => value.key === key);
         return find;
     }
 

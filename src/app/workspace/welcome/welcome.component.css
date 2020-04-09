@@ -44,3 +44,76 @@
 .faded {
     color: var(--welcome-options-faded);
 }
+
+#linkGrad-3-5 .start {
+    stop-color: transparent;
+}
+
+#linkGrad-3-5 .stop {
+    stop-color: transparent;
+}
+
+#linkGrad-0-1 .start {
+    stop-color: var(--accent6);
+}
+
+#linkGrad-0-1 .stop {
+    stop-color: var(--accent4);
+}
+
+#linkGrad-0-2 .start {
+    stop-color: var(--accent6);
+}
+
+#linkGrad-0-2 .stop {
+    stop-color: var(--accent1);
+}
+
+#linkGrad-0-4 .start {
+    stop-color: var(--accent6);
+}
+
+#linkGrad-0-4 .stop {
+    stop-color: var(--accent5);
+}
+
+#linkGrad-1-2 .start {
+    stop-color: var(--accent4);
+}
+
+#linkGrad-1-2 .stop {
+    stop-color: var(--accent1);
+}
+
+#linkGrad-1-4 .start {
+    stop-color: var(--accent4);
+}
+
+#linkGrad-1-4 .stop {
+    stop-color: var(--accent5);
+}
+
+#linkGrad-2-4 .start {
+    stop-color: var(--accent1);
+}
+
+#linkGrad-2-4 .stop {
+    stop-color: var(--accent5);
+}
+
+.dataset.group path, .dataset.group text  {
+    fill: var(--accent6);
+}
+
+.visuals.group path, .visuals.group text {
+    fill: var(--accent4);
+}
+
+.algorithms.group path, .algorithms.group text {
+    fill: var(--accent1);
+}
+
+.science.group path, .science.group text {
+    fill: var(--accent5);
+}
+
