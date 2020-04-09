@@ -60,7 +60,7 @@ export class AlgorithmServiceModel extends ServiceModel {
         
         this.producer.send(AlgorithmEvents.All, this.algorithmService.allView());
         this.producer.send(TrackerEvents.All, this.trackerService.allView());
-        this.producer.send(TestReportEvents.All, this.reportService.all());
+        this.producer.send(TestReportEvents.All, this.reportService.allView());
     }
 
     start(id: number) {
@@ -98,7 +98,7 @@ export class AlgorithmServiceModel extends ServiceModel {
         
         this.producer.send(AlgorithmEvents.All, this.algorithmService.allView());
         this.producer.send(TrackerEvents.All, this.trackerService.allView());
-        this.producer.send(TestReportEvents.All, this.reportService.all());
+        this.producer.send(TestReportEvents.All, this.reportService.allView());
     }
 
     save(experimentId: number) {

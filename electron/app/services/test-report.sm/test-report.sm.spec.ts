@@ -23,14 +23,14 @@ describe('Electron Test Report Service Model', () => {
 
     beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
-        reportService = jasmine.createSpyObj('ReportDataService', ['get', 'update', 'delete', 'all']);
+        reportService = jasmine.createSpyObj('ReportDataService', ['get', 'update', 'delete', 'allView', 'show', 'view']);
         serviceModel = new TestReportServiceModel(serviceContainer, producer);
     });
 
-    describe('all', () => {
+    describe('all view', () => {
 
-        it('should call all', () => {
-            (reportService.all as jasmine.Spy).and.returnValue([]);
+        it('should call all view', () => {
+            (reportService.allView as jasmine.Spy).and.returnValue([]);
             serviceModel.all();
             expect(producer.send).toHaveBeenCalledWith(TestReportEvents.All, []);
         });
@@ -40,8 +40,9 @@ describe('Electron Test Report Service Model', () => {
 
         it('should call and get update', () => {
             (reportService.get as jasmine.Spy).and.returnValue({id: 1, name: 'Name'});
+            (reportService.view as jasmine.Spy).and.returnValue({id: 1, name: 'View'});
             serviceModel.rename(1, 'New Name');
-            expect(producer.send).toHaveBeenCalledWith(TestReportEvents.Update, { id: 1, name: 'New Name'});
+            expect(producer.send).toHaveBeenCalledWith(TestReportEvents.Update, { id: 1, name: 'View'});
             expect(reportService.get).toHaveBeenCalledWith(1);
             expect(reportService.update).toHaveBeenCalledWith({ id: 1, name: 'New Name'});
         });
@@ -55,5 +56,14 @@ describe('Electron Test Report Service Model', () => {
             expect(reportService.delete).toHaveBeenCalledTimes(1);
             expect(reportService.delete).toHaveBeenCalledWith(1);
         });
-    })
+    });
+
+    it('show should call dataset service', () => {
+        (reportService.view as jasmine.Spy).and.returnValue({});
+
+        serviceModel.show(1);
+        expect(reportService.show).toHaveBeenCalledTimes(1);
+        expect(producer.send).toHaveBeenCalledTimes(1);
+        expect(producer.send).toHaveBeenCalledWith(TestReportEvents.Update, {});
+    });
 });

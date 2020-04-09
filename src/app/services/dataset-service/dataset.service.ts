@@ -30,6 +30,7 @@ export abstract class DatasetService extends Service {
     // tslint:disable-next-line: unified-signatures
     abstract all(experimentId: number): Dataset[];
     abstract get(id: number): Dataset;
+    abstract exists(id: number): boolean;
     abstract delete(id: number): void;
     abstract rename(id: number, name: string): void;
     abstract split(id: number, split: number): void;

@@ -6,11 +6,14 @@ import * as zlib from 'zlib';
 import { ServiceContainer, SERVICE_TYPES } from "../../service-container";
 import { AppTestReportDataService } from "./app-test-report.data-service";
 import { TestReport } from "../../../../shared/models";
+import { TestReportObject } from "../../models";
+import { UserSettingDataService } from "../user-setting-data-service";
 
 describe('Electron Test Report Data Service', () => {
     let dataService: TestReportDataService;
     let serviceContainer: ServiceContainer;
     let context: SettingsContext;
+    let userSettings: UserSettingDataService;
     const maxId = 100;
     const experimentPath = path.join(__dirname, 'app-test-report-services-folder');
 
@@ -26,10 +29,15 @@ describe('Electron Test Report Data Service', () => {
                     name: 'test report',
                     algorithmId: 1,
                     datasetId: 1,
-                    datasetName: 'dataset',
-                    correct: 10,
-                    total: 100,
-                    iteration: 50
+                    iteration: 50,
+                    correct: 2,
+                    total: 3,
+                    features: [
+                        { name: 'Expected', type: 'number', examples: [1, 0, 1] },
+                        { name: 'Actual', type: 'number', examples: [1, 1, 1] },
+                        { name: 'Correct', type: 'number', examples: [1, 0, 1] },
+                    ],
+                    previewExamples: 3
                 }
             ])
         ));
@@ -43,10 +51,19 @@ describe('Electron Test Report Data Service', () => {
             }
         });
 
+        userSettings = jasmine.createSpyObj('UserSettingDataService', ['find']);
+        (userSettings.find as jasmine.Spy).and.callFake(() => {
+            return {
+                value: 1
+            };
+        });
+
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.SettingsContext) {
                 return context;
+            } else if (type === SERVICE_TYPES.UserSettingDataService) {
+                return userSettings;
             }
             throw new Error(`Couldn't resolve type ${type}.`);
         });
@@ -57,9 +74,18 @@ describe('Electron Test Report Data Service', () => {
 
     it('all should return length of 0', () => {
         expect(dataService.all().length).toBe(0);
-    }); 
+    });
+
+    it('all view should return length of 0', () => {
+        expect(dataService.allView().length).toBe(0);
+    });
 
     it('load should increase all by 1', () => {
+        dataService.load(1);
+        expect(dataService.all().length).toBe(1);
+    });
+
+    it('load should increase allView by 1', () => {
         dataService.load(1);
         expect(dataService.all().length).toBe(1);
     });
@@ -91,7 +117,7 @@ describe('Electron Test Report Data Service', () => {
         expect(() => {
             dataService.update({
                 id: 404
-            } as TestReport);
+            } as TestReportObject);
         }).toThrow();
     });
 
@@ -108,8 +134,8 @@ describe('Electron Test Report Data Service', () => {
             algorithmId: 2,
             correct: 3,
             datasetId: 1,
-            datasetName: 'name',
             id: 0,
+            features: [],
             iteration: 0,
             name: 'name',
             total: 1
@@ -138,7 +164,7 @@ describe('Electron Test Report Data Service', () => {
             algorithmId: 2,
             correct: 3,
             datasetId: 1,
-            datasetName: 'name',
+            features: [],
             id: 0,
             iteration: 0,
             name: 'name',
@@ -146,6 +172,80 @@ describe('Electron Test Report Data Service', () => {
         });
         dataService.save(2);
         expect(fs.existsSync(path.join(experimentPath, `reports2.gzip`))).toBeTruthy();
+    });
+
+    it('view should only show a preview of dataset', () => {
+        dataService.load(1);
+        const view = dataService.view(1);
+        expect(view.id).toBe(1);
+        expect(view.algorithmId).toBe(1);
+        expect(view.name).toBe('test report');
+        expect(view.total).toBe(3);
+        expect(view.correct).toBe(2);
+        expect(view.iteration).toBe(50);
+        expect(view.features.length).toBe(3);
+        expect(view.previewExamples.length).toBe(1);
+        expect(view.previewExamples[0].length).toBe(3);
+    });
+
+    it('show should increase the preview of report', () => {
+        dataService.load(1);
+        dataService.show(1);
+        const report = dataService.get(1);
+        expect(report.previewExamples).toBe(2);
+    });
+
+    it('show multiple times should increase to length', () => {
+        dataService.load(1);
+        dataService.show(1);
+        dataService.show(1);
+        dataService.show(1);
+        dataService.show(1);
+        dataService.show(1);
+        const report = dataService.get(1);
+        expect(report.previewExamples).toBe(3);
+    });
+
+    it('extract should return two plugin data', () => {
+        const id = dataService.post({
+            id: 0,
+            algorithmId: 2,
+            correct: 2,
+            datasetId: 1,
+            iteration: 1,
+            name: 'Test Report',
+            total: 2,
+            features: [
+                { name: 'F1', type: 'number', examples: [1, 2] },
+                { name: 'F2', type: 'number', examples: [3, 4] },
+                { name: 'F3', type: 'number', examples: [5, 6] },
+            ]
+        }).id;
+
+        const data = dataService.extract(id, {
+            input: [0, 1],
+            output: [2]
+        }, [0, 1, 2]);
+
+
+        expect(data.input.features.length).toBe(2);
+        expect(data.input.features[0]).toBe('F1');
+        expect(data.input.features[1]).toBe('F2');
+        expect(data.input.examples.length).toBe(2);
+        expect(data.input.examples[0].length).toBe(2);
+        expect(data.input.examples[0][0]).toBe(1);
+        expect(data.input.examples[0][1]).toBe(3);
+        expect(data.input.examples[1][0]).toBe(2);
+        expect(data.input.examples[1][1]).toBe(4);
+        expect(data.input.examples[1].length).toBe(2);
+        expect(data.output.features.length).toBe(1);
+        expect(data.output.examples.length).toBe(2);
+        expect(data.output.features[0]).toBe('F3');
+        expect(data.output.examples.length).toBe(2);
+        expect(data.output.examples[0].length).toBe(1);
+        expect(data.output.examples[0][0]).toBe(5);
+        expect(data.output.examples[1][0]).toBe(6);
+
     });
 
 });

@@ -127,4 +127,13 @@ describe('Angular App Test Report Service', () => {
         });
         service.rename(1, 'name');
     });
+    
+    it('show should call messegner', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event, id) => {
+            expect(event).toBe(TestReportEvents.Show);
+            expect(id).toBe(1);
+            done();
+        });
+        service.show(1);
+    });
 });

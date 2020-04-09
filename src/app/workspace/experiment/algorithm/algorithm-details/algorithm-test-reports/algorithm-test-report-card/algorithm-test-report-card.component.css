@@ -8,6 +8,16 @@
     cursor: pointer;
 }
 
+:host(.expanded) {
+    transform: scaleX(1);
+    grid-column: span 3;
+}
+
+:host(.expanded):hover {
+    transform: scaleX(1);
+    grid-column: span 3;
+}
+
 :host:hover {
     transform: scaleX(1);
     transition: all 200ms ease-in-out;
@@ -39,4 +49,43 @@
 
 .edit:hover {
     opacity: 1.0;
+}
+
+.table {
+    border-collapse: collapse;
+}
+
+.show:hover {
+    background-color: var(--dataset-show-more-hover);
+}
+
+.table th {
+    white-space: nowrap;
+    background: var(--dataset-table-th);
+}
+
+.table td {
+    white-space: nowrap;
+    text-align: center;
+}
+
+.table tr:nth-child(even) {
+    background-color: var(--dataset-table-tr-even);
+}
+
+.examples::-webkit-scrollbar {
+    height: 2px;
+}
+
+.examples::-webkit-scrollbar-track {
+    background: var(--dataset-table-scroll-background);
+}
+
+.examples::-webkit-scrollbar-thumb {
+    background: var(--dataset-table-scroll-background);
+    border-radius: 10%;
+}
+
+.examples:hover::-webkit-scrollbar-thumb {
+    background: var(--dataset-table-scroll-foreground);
 }
