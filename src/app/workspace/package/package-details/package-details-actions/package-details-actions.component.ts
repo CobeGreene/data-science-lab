@@ -5,7 +5,8 @@ import { PackageService } from '../../../../services/package-service';
 
 @Component({
   selector: 'app-package-details-actions',
-  templateUrl: './package-details-actions.component.html'
+  templateUrl: './package-details-actions.component.html',
+  styleUrls: ['./package-details-actions.component.css']
 })
 export class PackageDetailsActionsComponent implements OnInit {
 

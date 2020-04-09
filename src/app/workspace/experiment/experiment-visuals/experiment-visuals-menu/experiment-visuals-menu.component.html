@@ -1,6 +1,6 @@
-<div class="container" [style.width.px]="area.width - 2">
+<div class="container py-1" [style.width.px]="area.width - 2">
     <div class="actions">
-        <div class="visual-dropdown p-1 px-2" (click)="onOpenDropdown($event)" #visualsCmp>
+        <div class="visual-dropdown mx-2 p-1 px-2" (click)="onOpenDropdown($event)" #visualsCmp>
             Open in new Window <fa name="caret-down"></fa>
         </div>
         <app-dropdown #dropdownCmp>
@@ -11,17 +11,17 @@
             </ul>
         </app-dropdown>
         <ng-container *ngIf="view === 'workspace'">
-            <button type="button" class="btn btn-accent1 p-1 px-2" (click)="onArrange()">
+            <button type="button" class="mx-2 btn btn-accent1 p-1 px-2" (click)="onArrange()">
                 Arrange Visualizations
             </button>
         </ng-container>
     </div>
     <div class="views">
-        <button type="button" class="btn btn-accent1 p-1 px-2" (click)="onChange('grid')">
+        <button type="button" class="mx-2 btn btn-default p-1 px-2" (click)="onChange('grid')">
             <fa name="border-all" title="grid"></fa>
             Grid View
         </button>
-        <button type="button" class="btn btn-accent3 p-1 px-2" (click)="onChange('workspace')">
+        <button type="button" class="mx-2 btn btn-default p-1 px-2" (click)="onChange('workspace')">
             <fa name="border-none" title="workspace"></fa>
             Workspace View
         </button>

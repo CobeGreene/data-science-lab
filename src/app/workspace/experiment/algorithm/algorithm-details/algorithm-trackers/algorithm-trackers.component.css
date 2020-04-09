@@ -60,7 +60,7 @@
 }
 
 .icon {
-    color: var(--accent3);
+    color: var(--algorithm-tracker-icon-desc);
     cursor: pointer;
     opacity: 0.3;   
     transition: all 200ms ease-in-out;

@@ -3,11 +3,11 @@
     justify-content: space-between;
     position: fixed;
     z-index: 100;
-    background: #404040;
+    background: var(--experiment-visual-menu-background);
 }
 
 .visual-dropdown {
-    border: 1px solid #505050;
+    border: 1px solid var(--experiment-visual-menu-dropdown-border);
     border-radius: 0.2rem;
 }
 

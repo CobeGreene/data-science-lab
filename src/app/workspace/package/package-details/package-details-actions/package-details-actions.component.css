@@ -1,0 +1,24 @@
+.btn-install, .btn-install:focus {
+    transition: all 400ms linear;
+    color: var(--package-install);
+    border-color: var(--package-install);
+}
+
+.btn-install:hover, .btn-install:active {
+    color: var(--word);
+    background: var(--package-install);
+    border-color: var(--package-install);
+}
+
+
+.btn-uninstall, .btn-uninstall:focus {
+    transition: all 400ms linear;
+    color: var(--package-uninstall);
+    border-color: var(--package-uninstall);
+}
+
+.btn-uninstall:hover, .btn-uninstall:active {
+    color: var(--word);
+    background: var(--package-uninstall);
+    border-color: var(--package-uninstall);
+}

@@ -1,9 +1,9 @@
 :host {
-    background: var(--experiment-algorithm-card-background);
+    background: var(--experiment-test-report-card-background);
     height: min-content;
     border-radius: 0.5em;
-    border: 2px solid var(--experiment-algorithm-card-border);
-    box-shadow: 0px 5px 2px 3px var(--experiment-algorithm-card-shadow);
+    border: 2px solid var(--experiment-test-report-card-border);
+    box-shadow: 0px 5px 2px 3px var(--experiment-test-report-card-shadow);
     transform: scaleX(0.95);
     cursor: pointer;
 }
@@ -56,12 +56,12 @@
 }
 
 .show:hover {
-    background-color: var(--dataset-show-more-hover);
+    background-color: var(--test-report-show-more-hover);
 }
 
 .table th {
     white-space: nowrap;
-    background: var(--dataset-table-th);
+    background: var(--test-report-table-th);
 }
 
 .table td {
@@ -70,7 +70,7 @@
 }
 
 .table tr:nth-child(even) {
-    background-color: var(--dataset-table-tr-even);
+    background-color: var(--test-report-table-tr-even);
 }
 
 .examples::-webkit-scrollbar {
@@ -78,14 +78,14 @@
 }
 
 .examples::-webkit-scrollbar-track {
-    background: var(--dataset-table-scroll-background);
+    background: var(--test-report-table-scroll-background);
 }
 
 .examples::-webkit-scrollbar-thumb {
-    background: var(--dataset-table-scroll-background);
+    background: var(--test-report-table-scroll-background);
     border-radius: 10%;
 }
 
 .examples:hover::-webkit-scrollbar-thumb {
-    background: var(--dataset-table-scroll-foreground);
+    background: var(--test-report-table-scroll-foreground);
 }

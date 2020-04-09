@@ -63,6 +63,7 @@
     --package-icon: #6089B4;
     --package-desc: #DDD;
     --package-install: #219186;
+    --package-uninstall: #C7444A;
     --package-card-background: #323232;
     --package-card-border: #404040;
     --package-card-shadow: rgba(0, 0, 0, .1);
@@ -128,6 +129,20 @@
     --preview-expand-hover: #606060;
     --preview-scroll: #3655B5;
     --btn-default: #808080;
+    --experiment-test-report-card-background: #323232;
+    --experiment-test-report-card-border: #404040;
+    --experiment-test-report-card-shadow: rgba(0, 0, 0, .1);
+    --test-report-show-more-hover: #404040;
+    --test-report-table-th: #323232;
+    --test-report-table-tr-even: #353535;
+    --test-report-table-scroll-background: #303030;
+    --test-report-table-scroll-foreground: #3655B5;
+    --algorithm-tracker-icon-desc: #6089B4;
+    --experiment-visual-card-background: #323232;
+    --experiment-visual-card-border: #404040;
+    --experiment-visual-card-shadow: rgba(0, 0, 0, .1);
+    --experiment-visual-menu-background: #373737;
+    --experiment-visual-menu-dropdown-border: #505050;
 
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;
