@@ -88,6 +88,15 @@ export class ShortcutsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.shortcutService.update(shortcut);
   }
 
+  onRestoreAll() {
+    this.shortcuts.slice().forEach((value) => {
+      if (value.value !== value.default) {
+        value.value = value.default;
+        this.shortcutService.update(value);
+      }
+    });
+  }
+
   onEdit(event: MouseEvent, key: string) {
     this.editComponent.open(event, key);
   }

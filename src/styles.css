@@ -121,11 +121,13 @@
     --shortcut-table-th: #323232;
     --shortcut-table-tr-even: #353535;
     --shortcut-table-tr-selected: #606060;
-    --shortcut-table-tr-faded: #606060;
+    --shortcut-table-tr-faded: #505050;
+    --shortcut-table-hover: #656565;
     --shortcut-edit-background: #404040;
     --shortcut-edit-border: #3655B5;
     --preview-expand-hover: #606060;
     --preview-scroll: #3655B5;
+    --btn-default: #808080;
 
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;
@@ -312,6 +314,18 @@ input.accent4:focus, textarea.accent4:focus {
     border: 1px solid;
     background: transparent;
     color: var(--word);
+}
+
+.btn-default, .btn-default:focus {
+    transition: all 400ms linear;
+    color: var(--btn-default);
+    border-color: var(--btn-default);
+}
+
+.btn-default:hover, .btn-default:active {
+    color: var(--word);
+    background: var(--btn-default);
+    border-color: var(--btn-default);
 }
 
 .btn-accent1, .btn-accent1:focus {
