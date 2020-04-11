@@ -10,7 +10,7 @@ console.log('start');
 settings.setPath(path.join(__dirname, '../app.settings.json'));
 
 // Set electron color theme path
-settings.set('color-theme', path.join(__dirname, '../app.color-theme.json'));
+settings.set('color-themes', path.join(__dirname, '../app-themes'));
 
 // Set electron user setting path
 settings.set('user-setting', path.join(__dirname, '../app.user-setting.json'));

@@ -12,22 +12,22 @@
     </h2>
     <h2 class="option"
         (click)="onLoadExperiment($event)"
-        [ngClass]="{ 'selected': selected === 1 && inFocus, 'faded': selected === 0 && !inFocus }">Load
+        [ngClass]="{ 'selected': selected === 1 && inFocus, 'faded': selected === 1 && !inFocus }">Load
         Experiment
     </h2>
     <h2 class="option" (click)="onGoToPackages()"
-        [ngClass]="{ 'selected': selected === 2 && inFocus, 'faded': selected === 0 && !inFocus }">
+        [ngClass]="{ 'selected': selected === 2 && inFocus, 'faded': selected === 2 && !inFocus }">
         Package Explorer
     </h2>
     <h2 class="option" (click)="onGoToShortcuts()"
-        [ngClass]="{ 'selected': selected === 3 && inFocus, 'faded': selected === 0 && !inFocus }">
+        [ngClass]="{ 'selected': selected === 3 && inFocus, 'faded': selected === 3 && !inFocus }">
         Shortcuts
     </h2>
     <h2 class="option" (click)="onGoToSettings()"
-        [ngClass]="{ 'selected': selected === 4 && inFocus, 'faded': selected === 0 && !inFocus }">
+        [ngClass]="{ 'selected': selected === 4 && inFocus, 'faded': selected === 4 && !inFocus }">
         Settings
     </h2>
-    <h2 class="option" [ngClass]="{ 'selected': selected === 5 && inFocus, 'faded': selected === 0 && !inFocus }">
+    <h2 class="option" [ngClass]="{ 'selected': selected === 5 && inFocus, 'faded': selected === 5 && !inFocus }">
         Quit
     </h2>
 </div>

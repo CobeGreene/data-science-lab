@@ -31,5 +31,5 @@
 }
 
 .table tr:hover {
-    background-color: var(--shortcut-table-hover);
+    background-color: var(--shortcut-table-tr-hover);
 }
