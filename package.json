@@ -24,7 +24,7 @@
     "build:user": "copy default.user-setting.json dist\\app.user-setting.json",
     "build:shortcuts": "copy default.shortcuts.json dist\\app.shortcuts.json",
     "build:jsons": "npm run build:settings && npm run build:theme && npm run build:user && npm run build:shortcuts",
-    "start": "electron .",
+    "start": "electron . --dev",
     "clean:test": "rmdir /q /s test || exit 0",
     "clean:dist": "rmdir /s dist || exit 0",
     "clean:plugins": "rmdir /s dist\\plugins_packages || exit 0",

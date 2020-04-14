@@ -50,11 +50,19 @@ import { TestReportVisualServiceModel } from './session-services/test-report-vis
 
 export let win: BrowserWindow;
 
+export interface AppData {
+    preload: string;
+    index: string;
+    options: {
+        dev: boolean;
+    }
+};
+
 export class App {
     private serviceContainer: ServiceContainer;
     private pipeline: RoutingPipeline;
 
-    constructor(private preload: string, private indexPage: string) {
+    constructor(private data: AppData) {
         this.serviceContainer = new AppServiceContainer();
     }
 
@@ -169,17 +177,18 @@ export class App {
             y: 0,
             width: size.width, height: size.height,
             webPreferences: {
-                preload: this.preload,
+                preload: this.data.preload,
                 
             },
             title: 'Data Science Lab'
         });
 
-        // win.setMenu(null); // to allow some of the shortcuts.
+        if (!this.data.options.dev) {
+            win.setMenu(null); // to allow some of the shortcuts.
+        }
 
         this.configure();
-        win.loadURL(this.indexPage);
-
+        win.loadURL(this.data.index);
 
         win.on('close', (event: Event) => {
             event.preventDefault();
