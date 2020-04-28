@@ -220,10 +220,10 @@ export class AppTrackerDataService extends Service implements TrackerDataService
 
             }
 
-            data[key] = new PluginData({
+            data[key] = {
                 features,
                 examples
-            });
+            };
             
         }
 

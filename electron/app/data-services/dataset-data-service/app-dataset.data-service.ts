@@ -39,7 +39,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         this.idGenerator = new IdGenerator();
     }
 
-    configure() {
+    configure() {   
         const id = this.context.get<number>(this.key, 1);
         this.idGenerator = new IdGenerator(id);
     }
@@ -330,10 +330,10 @@ export class AppDatasetDataService extends Service implements DatasetDataService
                 }
             }
 
-            data[key] = new PluginData({
+            data[key] = {
                 features,
                 examples
-            });
+            };
         }
 
         return data;

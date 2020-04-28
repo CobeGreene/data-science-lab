@@ -157,7 +157,7 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
             const data: AlgorithmData[] = JSON.parse(`${zlib.unzipSync(buffer)}`);
             for (const datum of data) {
                 const algorithmPlugin = await this.context.activate<AlgorithmPlugin>(this.dataService.find(datum.plugin), datum.plugin);
-                const algorithm = algorithmPlugin.import(datum.algorithm);
+                const algorithm = await algorithmPlugin.import(datum.algorithm, false);
                 const obj: AlgorithmObject = {
                     id: datum.id,
                     name: datum.name,
@@ -175,14 +175,15 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
         }
     }
 
-    save(experimentId: number) {
+    async save(experimentId: number): Promise<void> {
         const algorithms = this.all(experimentId);
         const algorithmPath = this.settings.get<string>(this.path);
         const experimentPath = path.join(algorithmPath, `algorithms${experimentId}.gzip`);
 
         if (algorithms.length > 0) {
-            const data: AlgorithmData[] = algorithms.map((value): AlgorithmData => {
-                return {
+            const data: AlgorithmData[] = [];
+            for (var value of algorithms) {
+                data.push({
                     id: value.id,
                     name: value.name,
                     experimentId: value.experimentId,
@@ -190,9 +191,9 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
                     iteration: value.iteration,
                     iterationTime: value.iterationTime,
                     plugin: value.plugin,
-                    algorithm: value.algorithm.export()
-                };
-            });
+                    algorithm: await value.algorithm.export(false)
+                })
+            }
             const buffer = zlib.gzipSync(JSON.stringify(data));
             fs.writeFileSync(experimentPath, buffer);
         } else if (fs.existsSync(experimentPath)) {

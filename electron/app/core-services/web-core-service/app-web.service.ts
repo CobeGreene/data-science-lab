@@ -26,10 +26,10 @@ export class AppWebService implements WebService {
                     });
                     
                     response.on('end', () => {
-                        const retResponse = new Response({
+                        const retResponse = {
                             statusCode: response.statusCode,
                             body: total
-                        });
+                        };
                         resolve(retResponse);
                     });
                     

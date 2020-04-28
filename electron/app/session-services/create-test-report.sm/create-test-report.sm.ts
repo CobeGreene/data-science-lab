@@ -39,7 +39,7 @@ export class CreateTestReportServiceModel extends ServiceModel {
     }
 
     create(algorithmId: number, options: SessionOptions, returnPath?: string) {
-        const obj = this.algorithmService.get(algorithmId); 
+        const obj = this.algorithmService.get(algorithmId);
         const { input, output } = obj.algorithm.getTestingInputs();
         let session: TestReportSession = {
             id: 0,
@@ -121,21 +121,19 @@ export class CreateTestReportServiceModel extends ServiceModel {
         }
 
         for (let i = 0; i < total; ++i) {
-            let testInputs = [];
+            let testInputs: { [id: string]: any[] } = {};
             input.forEach((value) => {
-                const thisInput = inputData[value.id].examples[i];
-                testInputs = testInputs.concat(thisInput);
+                testInputs[value.id] = inputData[value.id].examples[i];
             });
 
-            let expected = [];
+            let expected: { [id: string]: any[] } = {};
             output.forEach((value) => {
-                const thisOutput = outputData[value.id].examples[i];
-                expected = expected.concat(thisOutput);
+                expected[value.id] = outputData[value.id].examples[i];
             });
 
             const actual = obj.algorithm.test(testInputs);
 
-            const isCorrect = JSON.stringify(actual) === JSON.stringify(expected); 
+            const isCorrect = JSON.stringify(actual) === JSON.stringify(expected);
 
             correctFeature.examples.push(+isCorrect);
             actualFeatures.forEach((value, index) => {
@@ -152,7 +150,7 @@ export class CreateTestReportServiceModel extends ServiceModel {
         }
 
         let report: TestReportObject = {
-            id: 0, 
+            id: 0,
             algorithmId: session.algorithmId,
             correct,
             total: examples,
@@ -164,7 +162,7 @@ export class CreateTestReportServiceModel extends ServiceModel {
 
         this.sessionService.delete(session.id);
         report = this.dataService.post(report);
-        
+
         this.producer.send(TestReportEvents.Create, this.dataService.view(report.id));
         this.producer.send(TestReportCreateEvents.Finish, id);
     }
