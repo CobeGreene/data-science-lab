@@ -5,15 +5,10 @@ import { SettingsContext } from '../../contexts/settings-context';
 import { PluginContext } from '../../contexts/plugin-context';
 import { SystemError, ErrorTypes } from '../../../../shared/errors';
 import { Producer } from '../../pipeline';
-import { WebService } from 'data-science-lab-core';
-import { ApiSettings } from '../../models';
-import { PackageEvents, ErrorEvent } from '../../../../shared/events';
 
 export class AppPackageDataService extends Service implements PackageDataService {
     private readonly key = 'packages';
-    private readonly api = 'api-settings';
     private packages: Package[];
-    private retrieve: boolean;
 
     get settings(): SettingsContext {
         return this.serviceContainer.resolve<SettingsContext>(SERVICE_TYPES.SettingsContext);
@@ -21,10 +16,6 @@ export class AppPackageDataService extends Service implements PackageDataService
 
     get producer(): Producer {
         return this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
-    }
-
-    get web(): WebService {
-        return this.serviceContainer.resolve<WebService>(SERVICE_TYPES.WebService);
     }
 
     get context(): PluginContext {
@@ -35,7 +26,6 @@ export class AppPackageDataService extends Service implements PackageDataService
         super(serviceContainer);
 
         this.packages = [];
-        this.retrieve = false;
     }
 
     configure() {
@@ -44,32 +34,34 @@ export class AppPackageDataService extends Service implements PackageDataService
     }
 
     private save() {
-        const installed = this.packages.filter(value => value.install);
-        this.settings.set(this.key, installed);
+        this.settings.set(this.key, this.packages);
     }
 
     all() {
-        if (!this.retrieve) {
-            this.retrieve = true;
-            this.getPackagesFromApi();
-        }
         return this.packages;
     }
 
     async install(pluginPackage: Package): Promise<Package> {
-        const find = this.read(pluginPackage.name);
+        if (this.has(pluginPackage.name)) {
+            throw this.alreadyInstall(pluginPackage.name);
+        }
         await this.context.install(pluginPackage);
-        find.install = true;
+        pluginPackage.install = true;
+        this.packages.push(pluginPackage);
         this.save();
-        return find;
+        return pluginPackage;
     }
 
     async uninstall(pluginPackage: Package): Promise<Package> {
-        const find = this.read(pluginPackage.name);
-        await this.context.uninstall(pluginPackage);
-        find.install = false;
-        this.save();
-        return find;
+        const index = this.packages.findIndex((value) => value.name === pluginPackage.name);
+        if (index >= 0) {
+            await this.context.uninstall(pluginPackage);
+            this.packages.splice(index, 1);
+            this.save();
+            return pluginPackage;
+        } else {
+            throw this.notInstalled(pluginPackage.name);
+        }
     }
 
     find(plugin: Plugin): Package {
@@ -89,6 +81,13 @@ export class AppPackageDataService extends Service implements PackageDataService
         throw this.notFound(name);
     }
 
+    has(name: string): boolean {
+        const find = this.packages.find((value) => {
+            return value.name === name;
+        });
+        return !!find;
+    }
+
     notFound(name: string): SystemError {
         return {
             header: 'Package Error',
@@ -97,60 +96,20 @@ export class AppPackageDataService extends Service implements PackageDataService
         };
     }
 
-    unableConnect(): SystemError {
+    alreadyInstall(name: string): SystemError {
         return {
-            header: 'API Connection',
-            description: 'Unable to get packages from api will only used the ones install.',
-            type: ErrorTypes.Warning
+            header: 'Package Error',
+            description: `Package ${name} is already installed.`,
+            type: ErrorTypes.Error
         };
     }
 
-    async getPackagesFromApi() {
-        const api = this.settings.get<ApiSettings>(this.api);
-        try {
-            const response = await this.web.send({
-                method: 'GET',
-                protocol: api.protocol,
-                hostname: api.hostname,
-                port: api.port,
-                path: api.pathPackages
-            });
-    
-            if (response.statusCode === 200) {
-                const obj = JSON.parse(response.body.toString()) as any[];
-    
-                obj.forEach(element => {
-                    const find = this.packages.find((value: Package) => {
-                        return value.name === element.name;
-                    });
-                    if (find == null) {
-                        const pluginPackage = {
-                            name: element.name,
-                            owner: element.owner,
-                            repositoryName: element.repositoryName,
-                            username: element.username,
-                            install: false,
-                            plugins: element.plugins.map(value => ({
-                                name: value.name,
-                                className: value.className,
-                                description: value.description,
-                                type: value.type,
-                                packageName: element.name
-                            }))
-                        };
-                        this.packages.push(pluginPackage);
-                    }
-                });
-    
-                this.producer.send(PackageEvents.Change);
-            } else {
-                this.producer.send(ErrorEvent, this.unableConnect());
-            }
-        } catch (error) {
-            console.log(error);
-            this.producer.send(ErrorEvent, this.unableConnect());
-        }
-
+    notInstalled(name: string): SystemError {
+        return {
+            header: 'Package Error',
+            description: `Package ${name} isn't installed.`,
+            type: ErrorTypes.Error
+        };
     }
 }
 

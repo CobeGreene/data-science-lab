@@ -5,5 +5,7 @@ export namespace PackageEvents {
     export const Uninstall = 'package-uninstall';
     export const SessionAll = 'session-all';
     export const SessionChange = 'session-change';
+    export const Feature = 'package-feature';
+    export const Search = 'package-search';
 }
 
