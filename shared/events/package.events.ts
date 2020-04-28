@@ -7,5 +7,6 @@ export namespace PackageEvents {
     export const SessionChange = 'session-change';
     export const Feature = 'package-feature';
     export const Search = 'package-search';
+    export const Get = 'package-get';
 }
 

@@ -17,7 +17,8 @@ export class ApiPackageServiceModel extends ServiceModel {
         service: SERVICE_TYPES.ApiPackageServiceModel,
         routes: [
             { path: PackageEvents.Feature, method: 'feature' },
-            { path: PackageEvents.Search, method: 'search' }
+            { path: PackageEvents.Search, method: 'search' },
+            { path: PackageEvents.Get, method: 'get' }
         ]
     };
 
@@ -43,26 +44,51 @@ export class ApiPackageServiceModel extends ServiceModel {
         });
 
         if (response.statusCode === 200) {
-            this.producer.send(PackageEvents.Feature, this.convert(response));
+            this.producer.send(PackageEvents.Feature, this.convertResponse(response));
         } else {
             this.producer.send(ErrorEvent, this.unableConnect());
         }
     }
 
-    async search(search: string, type: string, currentPage: number) {
+    async search(search: string, type: string, currentPage: number = 0) {
+        const api = this.settings.get<ApiSettings>(this.api);
+        let query = ``;
+        if (!!search) {
+            query += `search=${encodeURIComponent(search)}&`;
+        }
+        if (!!type) {
+            query += `type=${encodeURIComponent(type)}&`;
+        }
+        query += `currentpage=${currentPage}`;
+        const response = await this.webService.send({
+            method: 'GET',
+            protocol: api.protocol,
+            hostname: api.hostname,
+            port: api.port,
+            path: `${api.pathPackages}/search?${query}`
+        });
+
+        if (response.statusCode === 200) {
+            this.producer.send(PackageEvents.Search, this.convertResponse(response));
+        } else {
+            this.producer.send(ErrorEvent, this.unableConnect());
+        }
+    }
+
+    async get(name: string) {
         const api = this.settings.get<ApiSettings>(this.api);
         const response = await this.webService.send({
             method: 'GET',
             protocol: api.protocol,
             hostname: api.hostname,
             port: api.port,
-            path: `${api.pathPackages}/search?search=${search}&type=${type}&currentpage=${currentPage}`
+            path: `${api.pathPackages}/${encodeURIComponent(name)}`
         });
-
+        
         if (response.statusCode === 200) {
-            this.producer.send(PackageEvents.Search, this.convert(response));
+            this.producer.send(PackageEvents.Get, this.convertObj(JSON.parse(response.body.toString())));
         } else {
-            this.producer.send(ErrorEvent, this.unableConnect());
+            throw this.unableToFetch(name);
         }
     }
 
@@ -74,28 +100,39 @@ export class ApiPackageServiceModel extends ServiceModel {
         };
     }
 
-    convert(response: Response): Package[] {
+    unableToFetch(name: string): SystemError {
+        return {
+            header: 'API Error',
+            description: `Unable to fetch ${name} from api.`,
+            type: ErrorTypes.Warning
+        };
+    }
+
+    convertResponse(response: Response): Package[] {
         const obj = JSON.parse(response.body.toString()) as any[];
         const pluginPackages: Package[] = [];
         obj.forEach(element => {
-            const find = this.packageService.has(element.name);
-
-            pluginPackages.push({
-                name: element.name,
-                owner: element.owner,
-                repositoryName: element.repositoryName,
-                username: element.username,
-                install: find,
-                plugins: element.plugins.map(value => ({
-                    name: value.name,
-                    className: value.className,
-                    description: value.description,
-                    type: value.type,
-                    packageName: element.name
-                }))
-            });
+            pluginPackages.push(this.convertObj(element));
         });
 
         return pluginPackages;
+    }
+
+    convertObj(obj: any): Package {
+        const find = this.packageService.has(obj.name);
+        return {
+            name: obj.name,
+            owner: obj.owner,
+            repositoryName: obj.repositoryName,
+            username: obj.username,
+            install: find,
+            plugins: obj.plugins.map(value => ({
+                name: value.name,
+                className: value.className,
+                description: value.description,
+                type: value.type,
+                packageName: obj.name
+            }))
+        }; 
     }
 }

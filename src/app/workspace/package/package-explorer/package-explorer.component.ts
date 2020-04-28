@@ -16,18 +16,17 @@ export class PackageExplorerComponent implements OnInit, OnDestroy {
   search: string;
   type: string;
 
-
   constructor(private packageService: PackageService) { }
 
   ngOnInit() {
 
-    this.packageService.packagesChanged
+    this.packageService.featureChanged
       .pipe(untilComponentDestroyed(this))
       .subscribe((value) => {
         this.packages = value;
       });
 
-    this.packages = this.packageService.all();
+    this.packages = this.packageService.featurePackages();
     this.type = 'All';
   }
 
@@ -41,6 +40,10 @@ export class PackageExplorerComponent implements OnInit, OnDestroy {
 
   onTypeChange(type: string) {
     this.type = type;
+  }
+
+  onSearch() {
+    this.packageService.search(this.search, this.type, 0);
   }
 
 }

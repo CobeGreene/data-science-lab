@@ -47,6 +47,7 @@ import { ShortcutDataService, AppShortcutDataService } from './data-services/sho
 import { ShortcutServiceModel } from './services/shortcut.sm';
 import { BrowserDataService, AppBrowserDataService } from './data-services/browser-data-service';
 import { TestReportVisualServiceModel } from './session-services/test-report-visual.sm';
+import { ApiPackageServiceModel } from './services/api-package.sm';
 
 export let win: BrowserWindow;
 
@@ -123,6 +124,7 @@ export class App {
         this.serviceContainer.addTransient<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
         this.serviceContainer.addTransient<ShortcutServiceModel>(ShortcutServiceModel, SERVICE_TYPES.ShortcutServiceModel);
         this.serviceContainer.addTransient<TestReportVisualServiceModel>(TestReportVisualServiceModel, SERVICE_TYPES.TestReportVisualServiceModel);
+        this.serviceContainer.addTransient<ApiPackageServiceModel>(ApiPackageServiceModel, SERVICE_TYPES.ApiPackageServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -143,7 +145,8 @@ export class App {
             DatasetVisualServiceModel.routes,
             AlgorithmVisualServiceModel.routes,
             TestReportVisualServiceModel.routes,
-            ShortcutServiceModel.routes
+            ShortcutServiceModel.routes,
+            ApiPackageServiceModel.routes
         ]);
     }
 
