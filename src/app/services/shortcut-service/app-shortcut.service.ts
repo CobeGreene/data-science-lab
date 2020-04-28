@@ -3,6 +3,7 @@ import { Messenger } from "../messenger";
 import { NgZone, Injectable } from "@angular/core";
 import { ShortcutEvents } from "../../../../shared/events";
 import { Shortcut } from "../../../../shared/models";
+import { Shortcuts } from "../../../../shared/shortcuts";
 
 @Injectable()
 export class AppShortcutService extends ShortcutService {
@@ -16,6 +17,7 @@ export class AppShortcutService extends ShortcutService {
 
         this.observers = { };
         this.isWatchMode = false;
+        this.shortcuts = [];    
         
         this.registerEvents();
         this.messenger.publish(ShortcutEvents.All);
@@ -48,6 +50,11 @@ export class AppShortcutService extends ShortcutService {
         return find;
     }
 
+    find(key: string): Shortcut {
+        const find = this.shortcuts.find((value) => value.key === key);
+        return find;
+    }
+
     subscribe(shortcut: string, action: () => void) {
         if (this.observers[shortcut] !== undefined) {
             this.observers[shortcut].push(action);
@@ -71,7 +78,7 @@ export class AppShortcutService extends ShortcutService {
         if (this.isWatchMode) {
             this.shortcutWatcher.next(shortcut);
         } else {
-            if (shortcut.startsWith('arrow') || shortcut === 'enter') {
+            if (shortcut.startsWith(Shortcuts.Arrow) || shortcut === Shortcuts.Enter || shortcut === Shortcuts.Escape) {
                 this.observers[shortcut].forEach(cmd => cmd());
             } else {
                 this.shortcuts

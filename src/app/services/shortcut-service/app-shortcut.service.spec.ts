@@ -65,7 +65,7 @@ describe('Angular App Shortcut Service', () => {
         }).toThrowError();
     });
     
-    it('get should return shortcut that match ey', () => {
+    it('get should return shortcut that match key', () => {
         dict[ShortcutEvents.All](ShortcutEvents.All, [
             {
                 key: 'my.shortcut',
@@ -75,6 +75,30 @@ describe('Angular App Shortcut Service', () => {
             }
         ]);
         expect(service.get('my.shortcut').value).toBe('ctrl + keya');
+    });
+    
+    it('find should return shortcut that match key', () => {
+        dict[ShortcutEvents.All](ShortcutEvents.All, [
+            {
+                key: 'my.shortcut',
+                label: 'My Shortcut',
+                value: 'ctrl + keya',
+                default: 'ctrl + keya'
+            }
+        ]);
+        expect(service.find('my.shortcut').value).toBe('ctrl + keya');
+    });
+    
+    it('find should return shortcut undefined', () => {
+        dict[ShortcutEvents.All](ShortcutEvents.All, [
+            {
+                key: 'my.shortcut',
+                label: 'My Shortcut',
+                value: 'ctrl + keya',
+                default: 'ctrl + keya'
+            }
+        ]);
+        expect(service.find('404')).toBeUndefined();
     });
 
     it('subscribe should called action when run', () => {

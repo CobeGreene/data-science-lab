@@ -10,7 +10,7 @@ console.log('start');
 settings.setPath(path.join(__dirname, '../app.settings.json'));
 
 // Set electron color theme path
-settings.set('color-theme', path.join(__dirname, '../app.color-theme.json'));
+settings.set('color-themes', path.join(__dirname, '../app-themes'));
 
 // Set electron user setting path
 settings.set('user-setting', path.join(__dirname, '../app.user-setting.json'));
@@ -60,7 +60,22 @@ const angularApp = url.format({
     slashes: true
 });
 
-const app = new App(preload, angularApp);
+const data = {
+    index: angularApp,
+    preload,
+    options: {
+        dev: false
+    }
+}
+
+const appArguments: string[] = process.argv.slice(2);
+for (var i = 0; i < appArguments.length; ++i) {
+    if (appArguments[i] === '--dev') {
+        data.options.dev = true;
+    }
+}
+
+const app = new App(data);
 
 app.initialize();
 

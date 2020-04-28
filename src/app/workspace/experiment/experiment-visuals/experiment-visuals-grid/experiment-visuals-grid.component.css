@@ -17,11 +17,11 @@
 }
 
 .card {
-    background: var(--experiment-dataset-card-background);
+    background: var(--experiment-visual-card-background);
     display: inline-block;
     border-radius: 0.5em;
-    border: 2px solid var(--experiment-dataset-card-border);
-    box-shadow: 0px 5px 2px 3px var(--experiment-dataset-card-shadow);
+    border: 2px solid var(--experiment-visual-card-border);
+    box-shadow: 0px 5px 2px 3px var(--experiment-visual-card-shadow);
     transform: scale(0.95);
     cursor: pointer;
 }
@@ -34,7 +34,6 @@
 .container ::ng-deep .card .image {
     height: 300px;
     display: flex;
-    color: var(--experiment-dataset);
 }
 
 

@@ -11,7 +11,9 @@
                         Keybinding
                     </th>
                     <th class="p-3">
-    
+                        <span class="btn btn-default pointer p-1" (click)="onRestoreAll()">
+                            Restore all
+                        </span> 
                     </th>
                 </tr>
             </thead>
@@ -24,7 +26,7 @@
                         "{{ shortcut.value }}"
                     </td>
                     <td class="p-3 px-5">
-                        <span class="btn btn-accent3 pointer p-1" (click)="onRestore(i)">
+                        <span class="btn btn-default pointer p-1" (click)="onRestore(i)">
                             Restore
                         </span>
                     </td>

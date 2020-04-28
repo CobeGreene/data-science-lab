@@ -7,12 +7,13 @@ export namespace Shortcuts {
     export const NextWorkspace = 'workspace.next';
     export const PreviousWorkspace = 'workspace.previous';
     export const CloseWorkspace = 'workspace.close';
-    export const ArrowUp = 'arrowup';
     export const Arrow = 'arrow';   
     export const Tab = 'tab';
+    export const ArrowUp = 'arrowup';
     export const ArrowDown = 'arrowdown';
     export const ArrowLeft = 'arrowleft';
     export const ArrowRight = 'arrowright';
     export const Enter = 'enter';
+    export const Escape = 'escape';
 }
 

@@ -63,7 +63,7 @@ export class EditShortcutComponent extends ModalComponent implements OnInit, OnD
     }
 
     invalidKeybinding(value: string): boolean {
-        return value === Shortcuts.Enter || value.startsWith(Shortcuts.Arrow) || value === Shortcuts.Tab;
+        return value === Shortcuts.Enter || value.startsWith(Shortcuts.Arrow) || value === Shortcuts.Tab || value === Shortcuts.Escape;
     }
 
     duplicateKeybinding(): boolean {

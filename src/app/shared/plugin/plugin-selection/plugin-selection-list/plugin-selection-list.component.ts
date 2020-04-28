@@ -23,11 +23,11 @@ export class PluginSelectionListComponent implements OnInit, AfterViewInit, OnDe
 
   constructor() {
     this.colors = [
-      '#C7444A',
-      '#6089B4',
-      '#9872A2',
-      '#D08442',
-      '#219186'
+      'plugin-accent1',
+      'plugin-accent3',
+      'plugin-accent4',
+      'plugin-accent5',
+      'plugin-accent6',
     ];
   }
 

@@ -18,7 +18,8 @@
     --sidebar-list-background: #353535;
     --sidebar-list-background-hover: #ffffff40;
     --sidebar-list-header-selected: #3655B5;
-    --sidebar-list-card-hover: #555555;
+    --sidebar-list-card-hover: #656565;
+    --sidebar-list-card-faded: #505050;
     --sidebar-list-card-selected: #606060;
     --sidebar-plugin-badge: #6089B4;
     --tabs-background: #404040;
@@ -62,6 +63,7 @@
     --package-icon: #6089B4;
     --package-desc: #DDD;
     --package-install: #219186;
+    --package-uninstall: #C7444A;
     --package-card-background: #323232;
     --package-card-border: #404040;
     --package-card-shadow: rgba(0, 0, 0, .1);
@@ -120,11 +122,27 @@
     --shortcut-table-th: #323232;
     --shortcut-table-tr-even: #353535;
     --shortcut-table-tr-selected: #606060;
-    --shortcut-table-tr-faded: #606060;
+    --shortcut-table-tr-faded: #505050;
+    --shortcut-table-tr-hover: #656565;
     --shortcut-edit-background: #404040;
     --shortcut-edit-border: #3655B5;
     --preview-expand-hover: #606060;
     --preview-scroll: #3655B5;
+    --btn-default: #808080;
+    --experiment-test-report-card-background: #323232;
+    --experiment-test-report-card-border: #404040;
+    --experiment-test-report-card-shadow: rgba(0, 0, 0, .1);
+    --test-report-show-more-hover: #404040;
+    --test-report-table-th: #323232;
+    --test-report-table-tr-even: #353535;
+    --test-report-table-scroll-background: #303030;
+    --test-report-table-scroll-foreground: #3655B5;
+    --algorithm-tracker-icon-desc: #6089B4;
+    --experiment-visual-card-background: #323232;
+    --experiment-visual-card-border: #404040;
+    --experiment-visual-card-shadow: rgba(0, 0, 0, .1);
+    --experiment-visual-menu-background: #373737;
+    --experiment-visual-menu-dropdown-border: #505050;
 
     --tabs-height: 40px;
     --tabs-scroll-height: 2px;
@@ -311,6 +329,18 @@ input.accent4:focus, textarea.accent4:focus {
     border: 1px solid;
     background: transparent;
     color: var(--word);
+}
+
+.btn-default, .btn-default:focus {
+    transition: all 400ms linear;
+    color: var(--btn-default);
+    border-color: var(--btn-default);
+}
+
+.btn-default:hover, .btn-default:active {
+    color: var(--word);
+    background: var(--btn-default);
+    border-color: var(--btn-default);
 }
 
 .btn-accent1, .btn-accent1:focus {

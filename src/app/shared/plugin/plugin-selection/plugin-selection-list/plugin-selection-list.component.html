@@ -6,5 +6,5 @@
     </div>
 </div>
 <ng-container *ngFor="let box of boxes; let i = index">
-    <app-plugin-selection-box [box]="box" [id]="i"></app-plugin-selection-box>
+    <app-plugin-selection-box [class]="box.color" [box]="box" [id]="i"></app-plugin-selection-box>
 </ng-container>

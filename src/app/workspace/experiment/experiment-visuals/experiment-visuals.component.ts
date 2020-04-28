@@ -7,8 +7,7 @@ import { ExperimentVisualsWorkspaceComponent } from './experiment-visuals-worksp
 
 @Component({
   selector: 'app-experiment-visuals',
-  templateUrl: './experiment-visuals.component.html',
-  styleUrls: ['./experiment-visuals.component.css']
+  templateUrl: './experiment-visuals.component.html'
 })
 export class ExperimentVisualsComponent implements OnInit, OnDestroy {
 
