@@ -39,7 +39,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         this.idGenerator = new IdGenerator();
     }
 
-    configure() {   
+    configure() {
         const id = this.context.get<number>(this.key, 1);
         this.idGenerator = new IdGenerator(id);
     }
@@ -53,7 +53,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         }
         return this.datasets.filter((value) => value.experimentId === experimentId);
     }
-    
+
     allView(): Dataset[];
     // tslint:disable-next-line: unified-signatures
     allView(experimentId: number): Dataset[];
@@ -342,10 +342,9 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     transform(id: number, pluginData: PluginData[] | PluginData, features: number[]): { updateId: number, createIds: number[] } {
         const current = this.get(id);
 
-        if (!(pluginData instanceof Array)) {
+        if (!Array.isArray(pluginData)) {
             pluginData = [pluginData];
         }
-
         const setting = this.user.find(Settings.DatasetDefaultPreview);
         const defaultPreview = (setting === undefined) ? 10 : setting.value;
         const datasets: DatasetObject[] = [].concat(...pluginData.map(value => this.converter.convert(value)));
@@ -416,6 +415,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
 
         this.saveGenerator();
         return { updateId: current.id, createIds };
+
     }
 
 
