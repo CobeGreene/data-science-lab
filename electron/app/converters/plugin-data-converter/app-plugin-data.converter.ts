@@ -64,7 +64,7 @@ export class AppPluginDataConverter implements PluginDataConverter {
     }
 
     getType(data: any): string {
-        if (data instanceof Array) {
+        if (Array.isArray(data)) {
             return `${this.getType(data[0])}[]`;
         }
         return typeof data;
