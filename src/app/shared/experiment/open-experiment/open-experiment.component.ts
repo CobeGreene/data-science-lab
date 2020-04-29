@@ -5,13 +5,15 @@ import { OverlayService } from '../../../services/overlay-service';
 import { ExperimentService } from '../../../services/experiment-service/experiment.service';
 import { Experiment, ExperimentState } from '../../../../../shared/models';
 import { ShortcutService } from '../../../services/shortcut-service';
+import { TabService } from '../../../services/tab-service';
+import { TabFactory } from '../../../factory/tab-factory';
 
 @Component({
-  selector: 'app-load-experiment',
-  templateUrl: './load-experiment.component.html',
-  styleUrls: ['./load-experiment.component.css']
+  selector: 'app-open-experiment',
+  templateUrl: './open-experiment.component.html',
+  styleUrls: ['./open-experiment.component.css']
 })
-export class LoadExperimentComponent extends ModalComponent implements OnInit, OnDestroy, AfterViewInit {
+export class OpenExperimentComponent extends ModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   experiments: Experiment[];
   selected: number;
@@ -21,18 +23,20 @@ export class LoadExperimentComponent extends ModalComponent implements OnInit, O
   constructor(
     overlay: Overlay, viewContainerRef: ViewContainerRef,
     overlayService: OverlayService,
+    private tabService: TabService,
+    private tabFactory: TabFactory,
     private experimentService: ExperimentService,
     private shortcutService: ShortcutService) {
     super(overlay, viewContainerRef, overlayService);
   }
 
   ngOnInit() {
-    this.experiments = this.experimentService.all().filter(x => x.state === ExperimentState.Unloaded);
+    this.experiments = this.experimentService.all();
     this.selected = 0;
   }
 
   onOpen() {
-    this.experiments = this.experimentService.all().filter(x => x.state === ExperimentState.Unloaded);
+    this.experiments = this.experimentService.all();
     this.selected = 0;
     this.shortcutService.subscribe('arrowup', this.onMoveUp);
     this.shortcutService.subscribe('arrowdown', this.onMoveDown);
@@ -52,9 +56,9 @@ export class LoadExperimentComponent extends ModalComponent implements OnInit, O
   }
 
   onMoveUp = () => {
-      if (this.selected > 0) {
-        this.selected -= 1;
-        this.scrollIntoViewExperimentSelected();
+    if (this.selected > 0) {
+      this.selected -= 1;
+      this.scrollIntoViewExperimentSelected();
     }
   }
 
@@ -71,19 +75,25 @@ export class LoadExperimentComponent extends ModalComponent implements OnInit, O
   }
 
   onSelected(selected: number) {
-    this.experimentService.load(this.experiments[selected].id);
+    const experiment = this.experiments[selected];
+    if (experiment.state === ExperimentState.Unloaded) {
+      this.experimentService.load(experiment.id);
+    } else {
+      const tab = this.tabFactory.create(['experiment', experiment.id]);
+      this.tabService.openTab(tab);
+    }
   }
 
   scrollIntoViewExperimentSelected() {
     this.scrollIntoViewSelected(this.selected);
-}
+  }
 
-scrollIntoViewSelected(select: number) {
+  scrollIntoViewSelected(select: number) {
     const element = this.experimentComponents.toArray()[select];
     if (element !== undefined) {
-        (element.nativeElement).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+      (element.nativeElement).scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
     }
-}
+  }
 
 
 }

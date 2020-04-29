@@ -137,8 +137,8 @@ export abstract class SessionService extends Service {
         this.messenger.publish(this.eventInput, id, inputDict);
     }
 
-    executeCommand(id: number, command: string) {
-        this.messenger.publish(this.eventCommand, id, command);
+    executeCommand(id: number, commandId: string) {
+        this.messenger.publish(this.eventCommand, id, commandId);
     }
 
     previous(id: number) {

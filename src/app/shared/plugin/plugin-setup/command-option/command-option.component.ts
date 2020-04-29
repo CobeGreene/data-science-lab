@@ -17,7 +17,7 @@ export class CommandOptionComponent implements OnInit {
   }
 
   onCommand() {
-    this.emitCommand.next(this.option.command);
+    this.emitCommand.next(this.option.id);
   }
 
 }
