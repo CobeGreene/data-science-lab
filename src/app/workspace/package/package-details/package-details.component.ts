@@ -30,6 +30,12 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
         }
       });
 
+    this.packageService.packagesChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.packageService.fetch(this.name);
+      })
+
       
       this.route.params
       .pipe(untilComponentDestroyed(this))

@@ -39,7 +39,15 @@ export class AppPackageService extends PackageService {
     private allEvent = (_event, packages: Package[]) => {
         this.zone.run(() => {
             this.packages = packages;
+            this.features.forEach((value) => {
+                if (this.packages.findIndex((pluginPackage) => pluginPackage.name === value.name) >= 0) {
+                    value.install = true;
+                } else {
+                    value.install = false;
+                }
+            })
             this.packagesChanged.next(this.packages);
+            this.featureChanged.next(this.features);
         });
     }
 
