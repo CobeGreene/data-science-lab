@@ -62,13 +62,17 @@ export class FetchServiceModel extends SessionService {
     get eventInputs(): string {
         throw new Error(`Fetch Event Input doesn't exists`);
     }
-
+    
     get eventPrevious(): string {
         return FetchEvents.Previous;
     }
-
+    
     async pluginActivate(plugin: FetchPlugin) {
         plugin.setFileService(this.fileService);
+    }
+    
+    async sessionInputs(session: Session, plugin: FetchPlugin) {
+        throw new Error(`Fetch Event Input doesn't exists`);
     }
 
     async sessionFinish(session: Session, plugin: FetchPlugin) {

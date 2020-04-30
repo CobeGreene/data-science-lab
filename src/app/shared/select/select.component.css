@@ -12,6 +12,25 @@
 .opt {
     background: var(--select-option-background);
     color: var(--select-word);
+    max-height: 30vh;
+    overflow-y: auto;
+}
+
+.opt::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+}
+
+.opt::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.opt::-webkit-scrollbar-thumb {
+    background-color: var(--preview-scroll);
+}
+
+.opt:hover::-webkit-scrollbar-thumb {
+    background-color: var(--preview-scroll);
 }
 
 .opt li {

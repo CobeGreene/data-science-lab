@@ -563,7 +563,7 @@ describe('Electron Dataset Data Service', () => {
 
         const id = datasetService.create(2, { examples: [], features: [] })[0];
 
-        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0, 1, 2]);
+        const { updateId, createIds } = datasetService.transform(id, [{ features: [], examples: [] }], [0, 1, 2]);
 
         expect(updateId).toBe(id);
         expect(createIds.length).toBe(0);
@@ -603,7 +603,7 @@ describe('Electron Dataset Data Service', () => {
 
         const id = datasetService.create(2, { examples: [], features: [] })[0];
 
-        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0, 1]);
+        const { updateId, createIds } = datasetService.transform(id, [{ features: [], examples: [] }], [0, 1]);
 
         expect(updateId).toBe(id);
         expect(createIds.length).toBe(0);
@@ -644,7 +644,7 @@ describe('Electron Dataset Data Service', () => {
 
         const id = datasetService.create(2, { examples: [], features: [] })[0];
 
-        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0]);
+        const { updateId, createIds } = datasetService.transform(id, [{ features: [], examples: [] }], [0]);
 
         expect(updateId).toBe(id);
         expect(createIds.length).toBe(1);
@@ -688,7 +688,7 @@ describe('Electron Dataset Data Service', () => {
 
         const id = datasetService.create(2, { examples: [], features: [] })[0];
 
-        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0]);
+        const { updateId, createIds } = datasetService.transform(id, [{ features: [], examples: [] }], [0]);
 
         expect(updateId).toBe(id);
         expect(createIds.length).toBe(1);

@@ -35,6 +35,7 @@ export abstract class SessionService extends ServiceModel {
 
     abstract pluginActivate(plugin: any): Promise<void>;
     abstract sessionFinish(session: Session, plugin: any): Promise<void>;
+    abstract sessionInputs(session: Session, plugin: any): Promise<void>;
 
     create(keyId: number, options: SessionOptions, features?: number[], returnPath?: string) {
         let session: Session = {
@@ -122,6 +123,7 @@ export abstract class SessionService extends ServiceModel {
             const sessionPlugin = this.dataService.reference<any>(id);
 
             session.inputDict = inputDict;
+            await this.sessionInputs(session, sessionPlugin);
 
             if (sessionPlugin.getOptions().noMore()) {
                 await this.sessionFinishWrapper(session, sessionPlugin);
@@ -173,10 +175,13 @@ export abstract class SessionService extends ServiceModel {
                 this.producer.send(this.eventUpdate, session);
             } else if (session.state === SessionState.Setup) {
                 session.optionList = undefined;
+                await this.deactivatePlugin(session.plugin);
                 if (session.plugin.hasOwnProperty('inputs')) {
                     session.state = SessionState.Input;
+                    const sessionPlugin = await this.context.activate<any>(this.packageService.find(session.plugin), session.plugin);
+                    await this.pluginActivate(sessionPlugin);
+                    this.dataService.reference(id, sessionPlugin);
                 } else {
-                    await this.deactivatePlugin(session.plugin);
                     session.state = SessionState.Select;
                     session.plugin = undefined;
                 }

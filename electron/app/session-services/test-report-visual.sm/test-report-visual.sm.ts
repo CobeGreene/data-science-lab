@@ -74,11 +74,15 @@ export class TestReportVisualServiceModel extends SessionService {
 
     }
 
+    async sessionInputs(session: Session, plugin: VisualizationPlugin) {
+        const report = this.testReportService.get(session.keyId);
+        plugin.getInputs().submit(this.testReportService.extract(report.id, session.inputDict, session.selectedFeatures));        
+    }
+
     async sessionFinish(session: Session, plugin: VisualizationPlugin) {
         const report = this.testReportService.get(session.keyId);
         const algorithm = this.algorithmService.get(report.algorithmId);
-        plugin.getInputs().submit(this.testReportService.extract(report.id, session.inputDict, session.selectedFeatures));        
-
+        
         const srcdoc = plugin.visualization();
 
         let visual: Visual = {

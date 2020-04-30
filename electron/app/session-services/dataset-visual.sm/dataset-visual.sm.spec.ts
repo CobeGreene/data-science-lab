@@ -49,6 +49,21 @@ describe('Electron Algorithm Visual Service Model', () => {
         expect(plugin.visualization).toHaveBeenCalledTimes(1);
     });
 
+    
+    it('session inputs should call extract', async () => {
+        const options = jasmine.createSpyObj('Options', ['submit']); 
+        const plugin = jasmine.createSpyObj('VisualizationPlugion', ['getInputs']);
+        (plugin.getInputs as jasmine.Spy).and.callFake(() => {
+            return options;
+        });
+        (datasetService.get as jasmine.Spy).and.returnValue({ id: 1 });
+        (datasetService.extract as jasmine.Spy).and.returnValue({});
+        await serviceModel.sessionInputs({} as Session, plugin);
+
+        expect(options.submit).toHaveBeenCalledTimes(1);
+        expect(datasetService.extract).toHaveBeenCalledTimes(1);
+    });
+
 
 });
 

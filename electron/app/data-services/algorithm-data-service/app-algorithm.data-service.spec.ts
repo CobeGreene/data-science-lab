@@ -394,12 +394,12 @@ describe('Electron App Algorithm Data Service', () => {
         expect(algorithmService.all().length).toBe(0);
     })
 
-    it('create and save should create new zip in folder', () => {
+    it('create and save should create new zip in folder', async () => {
         const algorithmPlugin: AlgorithmPlugin = jasmine.createSpyObj('Algorithm', ['finishTraining', 'export']);
         (algorithmPlugin.finishTraining as jasmine.Spy).and.returnValue(true);
 
         algorithmService.create(2, {} as any, algorithmPlugin);
-        algorithmService.save(2);
+        await algorithmService.save(2);
 
         expect(fs.existsSync(path.join(experimentPath, `algorithms2.gzip`))).toBeTruthy();
         expect(algorithmPlugin.export).toHaveBeenCalledTimes(1);

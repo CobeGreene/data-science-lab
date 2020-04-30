@@ -89,7 +89,6 @@ export class CreateTestReportServiceModel extends ServiceModel {
         const dataset = this.datasetService.get(session.datasetId);
         const inputData = this.datasetService.extract(session.datasetId, inputs, session.selectedFeatures);
         const outputData = this.datasetService.extract(session.datasetId, outputs, session.selectedFeatures);
-
         const examples = dataset.examples;
         let correct = 0;
         const total = examples || 0;
@@ -103,12 +102,18 @@ export class CreateTestReportServiceModel extends ServiceModel {
                 examples: dataset.features[index].examples.slice()
             }));
         }));
+        let travelMapIndex = 0;
+        const actualFeaturesMapping: { [id: string]: number[] } = {};
         const actualFeatures: FeatureObject[] = ([] as FeatureObject[]).concat(...output.map(value => {
-            return outputs[value.id].map(index => ({
-                name: `Actual ${dataset.features[index].name}`,
-                type: dataset.features[index].type,
-                examples: []
-            }));
+            actualFeaturesMapping[value.id] = [];
+            return outputs[value.id].map((index) => {
+                actualFeaturesMapping[value.id].push(travelMapIndex++);
+                return {
+                    name: `Actual ${dataset.features[index].name}`,
+                    type: dataset.features[index].type,
+                    examples: []
+                };
+            });
         }));;
         const correctFeature: FeatureObject = {
             name: 'Correct',
@@ -135,10 +140,16 @@ export class CreateTestReportServiceModel extends ServiceModel {
 
             const isCorrect = JSON.stringify(actual) === JSON.stringify(expected);
 
-            correctFeature.examples.push(+isCorrect);
-            actualFeatures.forEach((value, index) => {
-                value.examples.push(actual[index]);
-            });
+            correctFeature.examples.push((isCorrect ? 1.0 : 0.0));
+
+            for (let key in actualFeaturesMapping) {
+                if (actualFeaturesMapping[key]) {
+                    actualFeaturesMapping[key].forEach((index, mapIndex) => {
+                        actualFeatures[index].examples.push(actual[key][mapIndex]);
+                    });
+                }
+            }
+
 
             if (isCorrect) {
                 correct += 1;

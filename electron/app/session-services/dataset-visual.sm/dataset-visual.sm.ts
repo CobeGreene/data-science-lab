@@ -71,9 +71,13 @@ export class DatasetVisualServiceModel extends SessionService {
 
     }
 
-    async sessionFinish(session: Session, plugin: VisualizationPlugin) {
+    async sessionInputs(session: Session, plugin: VisualizationPlugin) {
         const dataset = this.datasetService.get(session.keyId);
         plugin.getInputs().submit(this.datasetService.extract(dataset.id, session.inputDict, session.selectedFeatures));        
+    }
+
+    async sessionFinish(session: Session, plugin: VisualizationPlugin) {
+        const dataset = this.datasetService.get(session.keyId);
 
         const srcdoc = plugin.visualization();
 

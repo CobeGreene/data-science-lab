@@ -172,10 +172,10 @@ describe('Electron App Tracker Data Service', () => {
     it('push should add new iteration', () => {
         trackerService.load(1);
         trackerService.push(1, 6, [
-            new VariableTracker({
+            {
                 label: 'Feature 1',
                 value: 6
-            })
+            }
         ]);
         const tracker = trackerService.get(1);
         expect(tracker.iterations.length).toBe(6);
@@ -184,11 +184,11 @@ describe('Electron App Tracker Data Service', () => {
     it('push should add description', () => {
         trackerService.load(1);
         trackerService.push(1, 6, [
-            new VariableTracker({
+            {
                 label: 'Feature 1',
                 description: 'desc',
                 value: 6
-            })
+            }
         ]);
         const tracker = trackerService.get(1);
         expect(tracker.variables[0].description).toBe('desc');
@@ -197,10 +197,10 @@ describe('Electron App Tracker Data Service', () => {
     it('push should add new variable', () => {
         trackerService.load(1);
         trackerService.push(1, 6, [
-            new VariableTracker({
+            {
                 label: 'Feature 2',
                 value: 6
-            })
+            }
         ]);
         const tracker = trackerService.get(1);
         expect(tracker.variables.length).toBe(2);
@@ -210,10 +210,10 @@ describe('Electron App Tracker Data Service', () => {
     it('push should add new variable to current iteration', () => {
         trackerService.load(1);
         trackerService.push(1, 5, [
-            new VariableTracker({
+            {
                 label: 'Feature 2',
                 value: 5
-            })
+            }
         ]);
         const tracker = trackerService.get(1);
         expect(tracker.iterations[4].values['Feature 2']).toBe(5);
