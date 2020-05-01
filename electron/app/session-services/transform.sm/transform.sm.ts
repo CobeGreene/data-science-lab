@@ -66,9 +66,13 @@ export class TransformServiceModel extends SessionService {
     async pluginActivate(plugin: TransformPlugin) {
     }
 
-    async sessionFinish(session: Session, plugin: TransformPlugin) {
+    async sessionInputs(session: Session, plugin: TransformPlugin) {
         const dataset = this.datasetService.get(session.keyId);
         plugin.getInputs().submit(this.datasetService.extract(dataset.id, session.inputDict, session.selectedFeatures));
+    }
+
+    async sessionFinish(session: Session, plugin: TransformPlugin) {
+        const dataset = this.datasetService.get(session.keyId);
         const pluginData = plugin.transform();
         const { updateId, createIds } = this.datasetService.transform(dataset.id, pluginData, session.selectedFeatures);
 

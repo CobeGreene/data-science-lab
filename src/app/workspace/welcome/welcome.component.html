@@ -11,9 +11,9 @@
         Create Experiment
     </h2>
     <h2 class="option"
-        (click)="onLoadExperiment($event)"
-        [ngClass]="{ 'selected': selected === 1 && inFocus, 'faded': selected === 1 && !inFocus }">Load
-        Experiment
+        (click)="onOpenExperiment($event)"
+        [ngClass]="{ 'selected': selected === 1 && inFocus, 'faded': selected === 1 && !inFocus }">
+        Open Experiment
     </h2>
     <h2 class="option" (click)="onGoToPackages()"
         [ngClass]="{ 'selected': selected === 2 && inFocus, 'faded': selected === 2 && !inFocus }">
@@ -138,4 +138,4 @@
     </svg>
 </div>
 <app-create-experiment #createCmp></app-create-experiment>
-<app-load-experiment #loadCmp></app-load-experiment>
+<app-open-experiment #openCmp></app-open-experiment>

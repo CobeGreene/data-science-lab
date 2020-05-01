@@ -11,6 +11,7 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 })
 export class PackageDetailsComponent implements OnInit, OnDestroy {
 
+  name: string;
   pluginPackage: Package;
 
   constructor(
@@ -19,19 +20,30 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.name = this.route.snapshot.paramMap.get('name');
+    
+    this.packageService.packageGet
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        if (value.name === this.name) {
+          this.pluginPackage = value;
+        }
+      });
+
     this.packageService.packagesChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.packageService.fetch(this.name);
+      })
+
+      
+      this.route.params
       .pipe(untilComponentDestroyed(this))
       .subscribe(() => {
         this.getPluginPackage();
       });
 
-    this.getPluginPackage();
-
-    this.route.params
-      .pipe(untilComponentDestroyed(this))
-      .subscribe(() => {
-        this.getPluginPackage();
-      })
+      this.getPluginPackage();
   }
 
   ngOnDestroy() {
@@ -40,7 +52,7 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
 
   getPluginPackage() {
     const name = this.route.snapshot.paramMap.get('name');
-    this.pluginPackage = this.packageService.get(name);
+    this.packageService.fetch(name);
   }
 
 }

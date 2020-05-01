@@ -101,12 +101,12 @@ export class AlgorithmServiceModel extends ServiceModel {
         this.producer.send(TestReportEvents.All, this.reportService.allView());
     }
 
-    save(experimentId: number) {
+    async save(experimentId: number) {
         const algorithms = this.algorithmService.all(experimentId);
         algorithms.forEach((value) => {
             this.trackerService.save(value.id);
             this.reportService.save(value.id);
         });
-        this.algorithmService.save(experimentId);
+        await this.algorithmService.save(experimentId);
     }
 }

@@ -147,28 +147,28 @@ describe('Electron Create Test Report Service Model', () => {
             inputDict: undefined,
             algorithmId: 1,
             id: 1,
-            selectedFeatures: [0,1]
+            selectedFeatures: [0, 1]
         });
         (algorithmService.get as jasmine.Spy).and.callFake(() => {
             const plugin = jasmine.createSpyObj('AlgorithmPlugins', ['getTestingInputs', 'test']);
             (plugin.getTestingInputs as jasmine.Spy).and.callFake(() => {
                 const input: PluginDataInput[] = [
-                    new PluginDataInput({
+                    {
                         id: 'input',
                         label: 'input',
                         type: 'number',
                         min: 2, max: 2
-                    })
+                    }
                 ];
                 const output: PluginDataInput[] = [
-                    new PluginDataInput({
+                    {
                         id: 'output',
                         label: 'output',
                         type: 'number',
                         min: 1, max: 1
-                    })
+                    }
                 ];
-                (plugin.test as jasmine.Spy).and.returnValues([1], [1], [1], [1]);
+                (plugin.test as jasmine.Spy).and.returnValues({ 'output': [1] }, { 'output': [1] }, { 'output': [1] }, { 'output': [1] });
                 return { input, output };
             });
             return {
@@ -193,21 +193,21 @@ describe('Electron Create Test Report Service Model', () => {
 
         (datasetService.extract as jasmine.Spy).and.returnValues(
             {
-                input: new PluginData({
+                input: {
                     features: ['feature 1', 'feature 2'],
                     examples: [[1, 1], [2, 2], [3, 3], [4, 4]]
-                })
+                }
             },
             {
-                output: new PluginData({
+                output: {
                     features: ['output'],
                     examples: [[1], [0], [1], [1]]
-                })
+                }
             }
         );
         (dataService.post as jasmine.Spy).and.returnValue({});
 
-        serviceModel.inputs(1, { output: [0], input: [1]});
+        serviceModel.inputs(1, { output: [0], input: [1] });
 
         expect(sessionService.delete).toHaveBeenCalledTimes(1);
         expect(sessionService.delete).toHaveBeenCalledWith(1);
@@ -240,34 +240,34 @@ describe('Electron Create Test Report Service Model', () => {
         });
 
     });
-    
+
     it('input should stop and start algorithm', () => {
         (sessionService.get as jasmine.Spy).and.returnValue({
             inputDict: undefined,
             algorithmId: 1,
             id: 1,
-            selectedFeatures: [0,1]
+            selectedFeatures: [0, 1]
         });
         (algorithmService.get as jasmine.Spy).and.callFake(() => {
             const plugin = jasmine.createSpyObj('AlgorithmPlugins', ['getTestingInputs', 'test']);
             (plugin.getTestingInputs as jasmine.Spy).and.callFake(() => {
                 const input: PluginDataInput[] = [
-                    new PluginDataInput({
+                    {
                         id: 'input',
                         label: 'input',
                         type: 'number',
                         min: 2, max: 2
-                    })
+                    }
                 ];
                 const output: PluginDataInput[] = [
-                    new PluginDataInput({
+                    {
                         id: 'output',
                         label: 'output',
                         type: 'number',
                         min: 1, max: 1
-                    })
+                    }
                 ];
-                (plugin.test as jasmine.Spy).and.returnValues([1], [1], [1], [1]);
+                (plugin.test as jasmine.Spy).and.returnValues({ 'output': [1] }, { 'output': [1] }, { 'output': [1] }, { 'output': [1] });
                 return { input, output };
             });
             return {
@@ -292,21 +292,21 @@ describe('Electron Create Test Report Service Model', () => {
 
         (datasetService.extract as jasmine.Spy).and.returnValues(
             {
-                input: new PluginData({
+                input: {
                     features: ['feature 1', 'feature 2'],
                     examples: [[1, 1], [2, 2], [3, 3], [4, 4]]
-                })
+                }
             },
             {
-                output: new PluginData({
+                output: {
                     features: ['output'],
                     examples: [[1], [0], [1], [1]]
-                })
+                }
             }
         );
         (dataService.post as jasmine.Spy).and.returnValue({});
 
-        serviceModel.inputs(1, { output: [0], input: [0]});
+        serviceModel.inputs(1, { output: [0], input: [0] });
 
         expect(sessionService.delete).toHaveBeenCalledTimes(1);
         expect(sessionService.delete).toHaveBeenCalledWith(1);
@@ -335,6 +335,150 @@ describe('Electron Create Test Report Service Model', () => {
                     name: 'Correct',
                     type: 'number',
                     examples: [1, 0, 1, 1]
+                }
+            ]
+        });
+        expect(algorithmService.stop).toHaveBeenCalledTimes(1);
+        expect(algorithmService.stop).toHaveBeenCalledBefore(algorithmService.start as jasmine.Spy);
+        expect(algorithmService.start).toHaveBeenCalledTimes(1);
+    });
+    it('input should map one to ones', () => {
+        (sessionService.get as jasmine.Spy).and.returnValue({
+            inputDict: undefined,
+            algorithmId: 1,
+            id: 1,
+            selectedFeatures: [0, 1, 2, 3, 4]
+        });
+        (algorithmService.get as jasmine.Spy).and.callFake(() => {
+            const plugin = jasmine.createSpyObj('AlgorithmPlugins', ['getTestingInputs', 'test']);
+            (plugin.getTestingInputs as jasmine.Spy).and.callFake(() => {
+                const input: PluginDataInput[] = [
+                    {
+                        id: 'input',
+                        label: 'input',
+                        type: 'number',
+                        min: 2, max: 2
+                    }
+                ];
+                const output: PluginDataInput[] = [
+                    {
+                        id: 'output',
+                        label: 'output',
+                        type: 'number',
+                        min: 2, max: 2
+                    },
+                    {
+                        id: 'output 2',
+                        label: 'output 2',
+                        type: 'number',
+                        min: 1, max: 1
+                    },
+                ];
+                (plugin.test as jasmine.Spy).and.returnValues({ 'output': [1, 2], 'output 2': [1] },
+                    { 'output': [1, 2], 'output 2': [1] }, 
+                    { 'output': [1, 2], 'output 2': [1] }, 
+                    { 'output': [1, 2], 'output 2': [1] });
+                return { input, output };
+            });
+            return {
+                algorithm: plugin,
+                isTraining: true,
+                iteration: 1
+            }
+        });
+
+        (datasetService.get as jasmine.Spy).and.returnValue({
+            examples: 4,
+            id: 1,
+            name: 'Dataset',
+            features: [
+                {
+                    name: 'output',
+                    type: 'number',
+                    examples: [1, 1, 1, 1]
+                },
+                {
+                    name: 'output 1.2',
+                    type: 'number',
+                    examples: [2, 2, 2, 2]
+                },
+                {
+                    name: 'output 2',
+                    type: 'number',
+                    examples: [1, 1, 0, 1]
+                },
+            ]
+        });
+
+        (datasetService.extract as jasmine.Spy).and.returnValues(
+            {
+                input: {
+                    features: ['feature 1', 'feature 2'],
+                    examples: [[1, 1], [2, 2], [3, 3], [4, 4]]
+                }
+            },
+            {
+                output: {
+                    features: ['output', 'output 1.2'],
+                    examples: [[1, 2], [1, 2], [1, 2], [1, 2]]
+                },
+                'output 2': {
+                    features: ['output 2'],
+                    examples: [[1], [1], [0], [1]]
+                },
+            }
+        );
+        (dataService.post as jasmine.Spy).and.returnValue({});
+
+        serviceModel.inputs(1, { output: [0, 1], input: [0], 'output 2':  [2] });
+
+        expect(sessionService.delete).toHaveBeenCalledTimes(1);
+        expect(sessionService.delete).toHaveBeenCalledWith(1);
+        expect(dataService.post).toHaveBeenCalledTimes(1);
+        expect(dataService.view).toHaveBeenCalledTimes(1);
+        expect(dataService.post).toHaveBeenCalledWith({
+            id: 0,
+            algorithmId: 1,
+            correct: 3,
+            total: 4,
+            iteration: 1,
+            datasetId: 1,
+            name: 'Test Report',
+            features: [
+                {
+                    name: 'Expected output',
+                    type: 'number',
+                    examples: [1, 1, 1, 1]
+                },
+                {
+                    name: 'Expected output 1.2',
+                    type: 'number',
+                    examples: [2, 2, 2, 2]
+                },
+                {
+                    name: 'Expected output 2',
+                    type: 'number',
+                    examples: [1, 1, 0, 1]
+                },
+                {
+                    name: 'Actual output',
+                    type: 'number',
+                    examples: [1, 1, 1, 1]
+                },
+                {
+                    name: 'Actual output 1.2',
+                    type: 'number',
+                    examples: [2, 2, 2, 2]
+                },
+                {
+                    name: 'Actual output 2',
+                    type: 'number',
+                    examples: [1, 1, 1, 1]
+                },
+                {
+                    name: 'Correct',
+                    type: 'number',
+                    examples: [1, 1, 0, 1]
                 }
             ]
         });

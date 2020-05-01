@@ -1,6 +1,7 @@
 import { PluginDataConverter } from './plugin-data.converter';
 import { PluginData } from 'data-science-lab-core';
 import { DatasetObject, FeatureObject } from '../../models';
+import { getType } from '../../helpers';
 
 export class AppPluginDataConverter implements PluginDataConverter {
 
@@ -30,7 +31,7 @@ export class AppPluginDataConverter implements PluginDataConverter {
                     features.push({
                         name: (data.features.length > column) ? data.features[column] : nameGen.next(),
                         examples: [row[column]],
-                        type: this.getType(row[column])
+                        type: getType(row[column])
                     });
                 } else {
                     features[column].examples.push(row[column]);
@@ -40,7 +41,7 @@ export class AppPluginDataConverter implements PluginDataConverter {
         
         // Determine types of features.
         for (const feature of features) {
-            feature.type = this.getType(feature.examples[0]);
+            feature.type = getType(feature.examples[0]);
         }
         
         // Partition features into same sizes
@@ -61,13 +62,6 @@ export class AppPluginDataConverter implements PluginDataConverter {
         }
 
         return groups;
-    }
-
-    getType(data: any): string {
-        if (data instanceof Array) {
-            return `${this.getType(data[0])}[]`;
-        }
-        return typeof data;
     }
 
     partition(features: FeatureObject[]): FeatureObject[][] {

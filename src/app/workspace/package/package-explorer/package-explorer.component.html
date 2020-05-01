@@ -4,9 +4,20 @@
 </p>
 <input type="text" class="w-100 accent3" [(ngModel)]="search">
 <p class="mx-0 my-1 desc">
-    Show packages if they contain type.
+    Show packages if they contain a certain plugin type.
 </p>
 <app-select [value]="type" [options]="types()"  (emitChange)="onTypeChange($event)"></app-select>
-<ng-container *ngFor="let pluginPackage of packages | packageSearch:search:type">
-    <app-package-explorer-card [pluginPackage]="pluginPackage"></app-package-explorer-card>
+<button class="btn btn-default btn-lg mx-0 my-2 p-1" (click)="onSearch()">
+    Search
+</button>
+<ng-container *ngIf="packages.length === 0">
+    <hr>
+    <p>
+        Currently unable to find any more packages from api.
+    </p>
+</ng-container>
+<ng-container *ngIf="packages.length !== 0">
+    <ng-container *ngFor="let pluginPackage of packages">
+        <app-package-explorer-card [pluginPackage]="pluginPackage"></app-package-explorer-card>
+    </ng-container>
 </ng-container>

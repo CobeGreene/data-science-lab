@@ -1,7 +1,7 @@
 <p class="label m-0">
     {{ option.label }}
 </p>    
-<input type="text" class="w-100 accent3" [(ngModel)]="value" #text="ngModel" (ngModelChange)="onChange($event)" [maxlength]="option.maxLength" required>
-<div *ngIf="submitted && text.invalid">
-    <div class="invalid-feedback">Required</div>
+<input type="text" class="w-100 accent3" [(ngModel)]="value" #text="ngModel" (ngModelChange)="onChange($event)">
+<div *ngIf="submitted && !isValid()">
+    <div class="invalid-feedback">Invalid input</div>
 </div>

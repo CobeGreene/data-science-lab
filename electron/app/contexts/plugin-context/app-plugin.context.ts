@@ -25,7 +25,7 @@ export class AppPluginContext implements PluginContext {
 
     install(pluginPackage: Package): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            this.manager.installFromGithub(`${pluginPackage.owner}/${pluginPackage.repositoryName}`).then((_) => {
+            this.manager.installFromGithub(`${pluginPackage.owner}/${pluginPackage.repositoryName}`).then((value) => {
                 resolve();
             }).catch((value) => {
                 reject(value);
@@ -39,11 +39,11 @@ export class AppPluginContext implements PluginContext {
 
     activate<T>(pluginPackage: Package, plugin: Plugin): Promise<T> {
         return new Promise<T>(async (resolve, reject) => {
-            const find = this.manager.list().forEach(element => {
+            const find = this.manager.list().find(element => {
                 return element.name === pluginPackage.repositoryName;
             });
             try {
-                if (find == null) {
+                if (!find) {
                     await this.install(pluginPackage);
                     const main = this.manager.require(pluginPackage.repositoryName);
                     // tslint:disable-next-line: new-parens

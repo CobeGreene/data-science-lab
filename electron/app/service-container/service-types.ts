@@ -23,6 +23,7 @@ export const enum SERVICE_TYPES {
     VisualServiceModel,
     TestReportServiceModel,
     ShortcutServiceModel,
+    ApiPackageServiceModel,
     // Session Service Models
     FetchServiceModel,
     TransformServiceModel,

@@ -61,7 +61,7 @@
   },
   "private": true,
   "dependencies": {
-    "data-science-lab-core": "^0.0.23",
+    "data-science-lab-core": "^0.0.30",
     "electron-settings": "^3.2.0",
     "font-awesome": "^4.7.0",
     "live-plugin-manager": "^0.13.2",

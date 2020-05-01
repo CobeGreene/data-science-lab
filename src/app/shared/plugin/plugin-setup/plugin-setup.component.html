@@ -5,7 +5,7 @@
     </p>
 </app-plugin-header>
 <app-plugin-body>
-    <ng-container *ngFor="let option of optionList.options; let i = index">
+    <ng-container *ngFor="let option of optionList; let i = index">
         <div class="mt-3 mb-3">
             <ng-container [ngSwitch]="option.type">
                 <app-text-option *ngSwitchCase="optionTypes.Text" [option]="option"

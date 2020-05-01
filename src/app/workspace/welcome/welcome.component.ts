@@ -23,7 +23,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
   selected: number;
 
   @ViewChild('createCmp', { static: false }) createComponent: ModalComponent;
-  @ViewChild('loadCmp', { static: false }) loadComponent: ModalComponent;
+  @ViewChild('openCmp', { static: false }) openComponent: ModalComponent;
 
   constructor(
     private focusService: FocusService,
@@ -82,7 +82,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.selected === 0) {
         this.onCreateExperiment(new MouseEvent('click'));
       } else if (this.selected === 1) {
-        this.onLoadExperiment(new MouseEvent('click'));
+        this.onOpenExperiment(new MouseEvent('click'));
       } else if (this.selected === 2) {
         this.onGoToPackages();
       } else if (this.selected === 3) {
@@ -97,8 +97,8 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.createComponent.open(event);
   }
   
-  onLoadExperiment(event: MouseEvent) {
-    this.loadComponent.open(event);
+  onOpenExperiment(event: MouseEvent) {
+    this.openComponent.open(event);
   }
 
   onGoToSettings() {

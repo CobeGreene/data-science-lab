@@ -1,4 +1,4 @@
-<div (resized)="onResized()">
+<div class="p-1" (resized)="onResized()">
     <app-plugin-selection-search class="mb-3" (emitSearch)="onSearch($event)"></app-plugin-selection-search>
     <app-plugin-selection-list [plugins]="plugins | pluginSearch:search" (emitSelect)="onSelect($event)"  #selectionListCmp></app-plugin-selection-list>
 </div>

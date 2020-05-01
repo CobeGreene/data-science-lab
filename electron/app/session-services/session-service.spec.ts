@@ -4,12 +4,13 @@ import { ServiceContainer, SERVICE_TYPES } from '../service-container';
 import { SessionDataService } from '../data-services/session-data-service';
 import { Producer } from '../pipeline';
 import { PluginContext } from '../contexts/plugin-context';
-import { PluginOptions, PluginDataInput, OptionList, TextOption } from 'data-science-lab-core';
+import { PluginOptions, PluginDataInput, TextOption } from 'data-science-lab-core';
 import { PackageDataService } from '../data-services/package-data-service';
 import { ErrorEvent } from '../../../shared/events';
 
 let pluginActivate: () => Promise<void>;
 let sessionFinish: (session: Session, plugin: any) => Promise<void>;
+let sessionInput: (Session: Session, plugin: any) =>Promise<void>;
 
 class MockSessionService extends SessionService {
     get eventCreate(): string {
@@ -42,6 +43,10 @@ class MockSessionService extends SessionService {
 
     async pluginActivate() {
         await pluginActivate();
+    }
+
+    async sessionInputs(session: Session, plugin: any) {
+        await sessionInput(session, plugin);
     }
 
     async sessionFinish(session: Session, plugin: any) {
@@ -79,9 +84,9 @@ describe('Electron Session Service', () => {
             name: 'Name',
             type: 'Type',
             inputs: [
-                new PluginDataInput({
+                {
                     id: 'id', label: 'label', type: 'string', min: 0
-                })
+                }
             ]
         };
     });
@@ -114,6 +119,10 @@ describe('Electron Session Service', () => {
         });
 
         sessionFinish = jasmine.createSpy('sessionFinish', async () => {
+
+        });
+
+        sessionInput = jasmine.createSpy('sessionInput', async () => {
 
         });
 
@@ -182,13 +191,13 @@ describe('Electron Session Service', () => {
         await serviceModel.select(1, plugin);
     });
 
-    it('select plugin should update sessiont to setup in data service', async (done) => {
+    it('select plugin should update session to setup in data service', async (done) => {
         (getOptions.noMore as jasmine.Spy).and.callFake(() => {
             return false;
         });
-        (getOptions.options as jasmine.Spy).and.callFake(() => new OptionList([
+        (getOptions.options as jasmine.Spy).and.callFake(() => [
             new TextOption({ id: 'abc', label: 'abc' })
-        ]));
+        ]);
         (context.activate as jasmine.Spy).and.callFake((value) => {
             return new Promise((resolve, _) => resolve(userPlugin));
         });
@@ -199,7 +208,7 @@ describe('Electron Session Service', () => {
         });
         (dataService.update as jasmine.Spy).and.callFake((session) => {
             expect(session.id).toBe(1);
-            expect(session.optionList.options.length).toBe(1);
+            expect(session.optionList.length).toBe(1);
             expect(session.state).toBe(SessionState.Setup);
             expect(session.isWaiting).toBe(false);
             done();
@@ -212,9 +221,9 @@ describe('Electron Session Service', () => {
         (getOptions.noMore as jasmine.Spy).and.callFake(() => {
             return false;
         });
-        (getOptions.options as jasmine.Spy).and.callFake(() => new OptionList([
+        (getOptions.options as jasmine.Spy).and.callFake(() => [
             new TextOption({ id: 'abc', label: 'abc' })
-        ]));
+        ]);
         (context.activate as jasmine.Spy).and.callFake((value) => {
             return new Promise((resolve, _) => resolve(userPlugin));
         });
@@ -237,9 +246,9 @@ describe('Electron Session Service', () => {
         (getOptions.noMore as jasmine.Spy).and.callFake(() => {
             return false;
         });
-        (getOptions.options as jasmine.Spy).and.callFake(() => new OptionList([
+        (getOptions.options as jasmine.Spy).and.callFake(() => [
             new TextOption({ id: 'abc', label: 'abc' })
-        ]));
+        ]);
         (context.activate as jasmine.Spy).and.callFake((value) => {
             return new Promise((resolve, _) => resolve(userPlugin));
         });
@@ -477,6 +486,7 @@ describe('Electron Session Service', () => {
             expect(session.state).toBe(SessionState.Setup);
             expect(session.inputDict).toEqual({});
             expect(session.isWaiting).toBe(false);
+            expect(sessionInput).toHaveBeenCalledTimes(1);
             done();
         });
 
@@ -498,6 +508,7 @@ describe('Electron Session Service', () => {
         (producer.send as jasmine.Spy).and.callFake((event, session) => {
             expect(event).toBe('Update');
             expect(session.id).toBe(1);
+            expect(sessionInput).toHaveBeenCalledTimes(1);
             done();
         });
 
@@ -525,6 +536,7 @@ describe('Electron Session Service', () => {
         expect(sessionFinish).toHaveBeenCalledTimes(1);
         expect(context.deactivate).toHaveBeenCalledTimes(1);
         expect(dataService.delete).toHaveBeenCalledTimes(1);
+        expect(sessionInput).toHaveBeenCalledTimes(1);
     });
 
     it('previous should call data service delete', async () => {
@@ -619,6 +631,28 @@ describe('Electron Session Service', () => {
             expect(session.state).toBe(SessionState.Input);
             expect(session.isWaiting).toBe(false);
             expect(session.optionList).toBe(undefined);
+            done();
+        });
+
+        await serviceModel.previous(1);
+    });
+    
+    it('previous should deactivate and reactive when going back to previous', async (done) => {
+        (dataService.get as jasmine.Spy).and.callFake(() => {
+            return {
+                id: 1, 
+                state: SessionState.Setup,
+                plugin: sessionPlugin,
+            };
+        });
+        (dataService.update as jasmine.Spy).and.callFake((session) => {
+            expect(session.id).toBe(1);
+            expect(session.state).toBe(SessionState.Input);
+            expect(session.isWaiting).toBe(false);
+            expect(session.optionList).toBe(undefined);
+            expect(pluginActivate).toHaveBeenCalledTimes(1);
+            expect(dataService.reference).toHaveBeenCalledTimes(1);
+            expect(context.activate).toHaveBeenCalledTimes(1);
             done();
         });
 

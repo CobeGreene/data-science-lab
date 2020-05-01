@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Plugin } from '../../../../../shared/models';
-import { OptionTypes, OptionList } from 'data-science-lab-core';
+import { OptionTypes, Option } from 'data-science-lab-core';
 
 
 @Component({
@@ -18,22 +18,22 @@ export class PluginSetupComponent implements OnInit {
 
   @Output() emitQuit = new EventEmitter<void>();
 
-  private _optionList: OptionList;
+  private _optionList: Option[];
 
-  @Input() set optionList(optionList: OptionList) {
+  @Input() set optionList(optionList: Option[]) {
     this._optionList = optionList;
     this.validInputs = [];
     this.valueInputs = [];
     this.submitted = false;
     this.isWaiting = false;
-    this.optionList.options.forEach(() => {
+    this.optionList.forEach(() => {
       this.validInputs.push(false);
       this.valueInputs.push(null);
     });
     this.valid = this.validInputs.length === 0;
   }
 
-  get optionList(): OptionList {
+  get optionList(): Option[] {
     return this._optionList;
   }
 
@@ -57,7 +57,7 @@ export class PluginSetupComponent implements OnInit {
   onOptionChange(index: number, event: { valid: boolean, value: any }) {
     this.validInputs[index] = event.valid;
     this.valueInputs[index] = event.value;
-    this.values[this.optionList.options[index].id] = event.value;
+    this.values[this.optionList[index].id] = event.value;
     const find = this.validInputs.findIndex((v) => {
       return !v;
     });

@@ -205,10 +205,10 @@ export class AppTestReportDataService extends Service implements TestReportDataS
                 }
             }
 
-            data[key] = new PluginData({
+            data[key] = {
                 features,
                 examples
-            });
+            };
         }
 
         return data;

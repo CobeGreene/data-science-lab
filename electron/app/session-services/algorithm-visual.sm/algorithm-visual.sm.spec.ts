@@ -8,8 +8,6 @@ import { Session } from "../../../../shared/models";
 import { VisualEvents } from "../../../../shared/events";
 
 
-
-
 describe('Electron Algorithm Visual Service Model', () => {
     let serviceModel: AlgorithmVisualServiceModel;
     let serviceContainer: ServiceContainer;
@@ -51,6 +49,20 @@ describe('Electron Algorithm Visual Service Model', () => {
 
         expect(producer.send).toHaveBeenCalledTimes(1);
         expect(plugin.visualization).toHaveBeenCalledTimes(1);
+    });
+
+    it('session input should call extract and submit', async () => {
+        const options = jasmine.createSpyObj('Options', ['submit']); 
+        const plugin = jasmine.createSpyObj('VisualizationPlugion', ['getInputs']);
+        (plugin.getInputs as jasmine.Spy).and.callFake(() => {
+            return options;
+        });
+        (trackerService.get as jasmine.Spy).and.returnValue({ algorithmId: 1 });
+        (trackerService.extract as jasmine.Spy).and.returnValue({});
+        await serviceModel.sessionInputs({} as Session, plugin);
+
+        expect(options.submit).toHaveBeenCalledTimes(1);
+        expect(trackerService.extract).toHaveBeenCalledTimes(1);
     });
 
 

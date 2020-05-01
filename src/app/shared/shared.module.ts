@@ -62,8 +62,8 @@ import { DeleteTestReportComponent } from './test-report/delete-test-report/dele
 import { EditTestReportComponent } from './test-report/edit-test-report/edit-test-report.component';
 import { DropdownFeatureComponent } from './dataset/dropdown-feature/dropdown-feature.component';
 import { RenameFeatureComponent } from './dataset/dropdown-feature/rename-feature/rename-feature.component';
-import { LoadExperimentComponent } from './experiment/load-experiment/load-experiment.component';
-import { LoadExperimentCardComponent } from './experiment/load-experiment/load-experiment-card/load-experiment-card.component';
+import { OpenExperimentComponent } from './experiment/open-experiment/open-experiment.component';
+import { OpenExperimentCardComponent } from './experiment/open-experiment/open-experiment-card/open-experiment-card.component';
 import { EditShortcutComponent } from './edit-shortcut/edit-shortcut.component';
 import { PreviewModalComponent } from './preview-card/preview-modal/preview-modal.component';
 import { PreviewModalBaseComponent } from './preview-card/preview-modal/preview-modal-base/preview-modal-base.component';
@@ -124,8 +124,8 @@ import { RenameVisualComponent } from './visual/rename-visual/rename-visual.comp
         EditTestReportComponent,
         DropdownFeatureComponent,
         RenameFeatureComponent,
-        LoadExperimentComponent,
-        LoadExperimentCardComponent,
+        OpenExperimentComponent,
+        OpenExperimentCardComponent,
         PreviewModalComponent,
         PreviewModalBaseComponent,
         RenameVisualComponent
@@ -150,7 +150,7 @@ import { RenameVisualComponent } from './visual/rename-visual/rename-visual.comp
         CreateExperimentComponent,
         UpdateExperimentComponent,
         DeleteExperimentComponent,
-        LoadExperimentComponent,
+        OpenExperimentComponent,
         EditDatasetComponent,
         DeleteDatasetComponent,
         SplitDatasetComponent,
