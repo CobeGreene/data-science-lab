@@ -21,34 +21,4 @@ export function isValidText(value: string, option: TextOption): boolean {
         return false;
     }
 
-    // if (!option.min || option.min === 0) {
-    //     if (!value && !option.max) {
-
-    //     }
-    //     if (!value && !option.max) {
-    //         return true;
-    //     } else if (option.max && value.length <= option.max) {
-    //         if (!option.pattern) {
-    //             return true;
-    //         }
-    //         return value.match(option.pattern).length > 0;
-    //     } else if (option.max && value.length > option.max) {
-    //         return false;
-    //     }
-    // } else if (!value && value.length >= option.min) {
-    //     if (option.max && value.length <= option.max) {
-    //         if (!option.pattern) {
-    //             return true;
-    //         }
-    //         return value.match(option.pattern).length > 0;
-    //     }
-    //     if (!option.pattern) {
-    //         return true;
-    //     }
-    //     return value.match(option.pattern).length > 0;
-    // }
-    // if (!option.pattern) {
-    //     return true;
-    // }
-    // return value.match(option.pattern).length > 0;
 }
