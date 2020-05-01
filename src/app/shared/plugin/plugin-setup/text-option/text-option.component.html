@@ -2,6 +2,6 @@
     {{ option.label }}
 </p>    
 <input type="text" class="w-100 accent3" [(ngModel)]="value" #text="ngModel" (ngModelChange)="onChange($event)">
-<div *ngIf="submitted && isValid()">
-    <div class="invalid-feedback">Required</div>
+<div *ngIf="submitted && !isValid()">
+    <div class="invalid-feedback">Invalid input</div>
 </div>
