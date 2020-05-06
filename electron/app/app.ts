@@ -150,13 +150,24 @@ export class App {
         ]);
     }
 
-    public destory() {
-        const dataService = this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
-        const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
+    public async destory() {
+        const experiments = this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
+        const datasets = this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService);
+        const visuals = this.serviceContainer.resolve<VisualDataService>(SERVICE_TYPES.VisualDataService);
+        const algorithms = this.serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService);
+        const testReport = this.serviceContainer.resolve<TestReportDataService>(SERVICE_TYPES.TestReportDataService);
+        const trackerReport = this.serviceContainer.resolve<TrackerDataService>(SERVICE_TYPES.TrackerDataService);
 
-        dataService.all().filter(value => value.state === ExperimentState.Loaded).forEach(experiment => {
-            producer.send(ExperimentEvents.Save, experiment.id);
-        });
+        for (let experiment of experiments.all().filter(value => value.state === ExperimentState.Loaded)) {
+            datasets.save(experiment.id);            
+            visuals.save(experiment.id);
+            for (let algorithm of algorithms.all(experiment.id)) {
+                testReport.save(algorithm.id);
+                trackerReport.save(algorithm.id);
+            }
+            await algorithms.save(experiment.id);
+        }
+
     }
 
     public configure() {
@@ -193,9 +204,9 @@ export class App {
         this.configure();
         win.loadURL(this.data.index);
 
-        win.on('close', (event: Event) => {
+        win.on('close', async (event: Event) => {
             event.preventDefault();
-            this.destory();
+            await this.destory();
             win.destroy();
 
         });

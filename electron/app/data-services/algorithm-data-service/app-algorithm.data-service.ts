@@ -7,8 +7,8 @@ import { SettingsContext } from '../../contexts/settings-context';
 import { UserSettingDataService } from '../../data-services/user-setting-data-service';
 import { PackageDataService } from '../../data-services/package-data-service';
 import { IdGenerator } from '../../data-structures';
-import { SystemError, ErrorTypes } from '../../../../shared/errors';
-import { AlgorithmEvents } from '../../../../shared/events';
+import { SystemError, ErrorTypes, PackageError } from '../../../../shared/errors';
+import { AlgorithmEvents, ErrorEvent } from '../../../../shared/events';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as zlib from 'zlib';
@@ -100,7 +100,7 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
         };
 
         this.algorithms.push(obj);
-        
+
         this.saveGenerator();
         return obj.id;
     }
@@ -154,23 +154,35 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
         const experimentPath = path.join(algorithmPath, `algorithms${experimentId}.gzip`);
         if (fs.existsSync(experimentPath)) {
             const buffer = fs.readFileSync(experimentPath);
-            const data: AlgorithmData[] = JSON.parse(`${zlib.unzipSync(buffer)}`);
+            const zip = zlib.unzipSync(buffer);
+            const data: AlgorithmData[] = JSON.parse(`${zip}`);
             for (const datum of data) {
-                const algorithmPlugin = await this.context.activate<AlgorithmPlugin>(this.dataService.find(datum.plugin), datum.plugin);
-                const algorithm = await algorithmPlugin.import(datum.algorithm, false);
-                const obj: AlgorithmObject = {
-                    id: datum.id,
-                    name: datum.name,
-                    experimentId: datum.experimentId,
-                    isTraining: false,
-                    isFinish: datum.isFinish,
-                    iteration: datum.iteration,
-                    plugin: datum.plugin,
-                    algorithm,
-                    iterationTime: datum.iterationTime,
-                    takingStep: false,
-                };
-                this.algorithms.push(obj);
+                const pluginPackage = this.dataService.find(datum.plugin);
+                const algorithmPlugin = await this.context.activate<AlgorithmPlugin>(pluginPackage, datum.plugin);
+                try {
+                    const algorithm = await algorithmPlugin.import(datum.algorithm, false);
+                    const obj: AlgorithmObject = {
+                        id: datum.id,
+                        name: datum.name,
+                        experimentId: datum.experimentId,
+                        isTraining: false,
+                        isFinish: datum.isFinish,
+                        iteration: datum.iteration,
+                        plugin: datum.plugin,
+                        algorithm,
+                        iterationTime: datum.iterationTime,
+                        takingStep: false,
+                    };
+                    this.algorithms.push(obj);
+                } catch (error) {
+                    let msg: PackageError = {
+                        header: `Algorithm Load Error`,
+                        description: `Algorithm ${datum.name} threw error when importing`,
+                        type: ErrorTypes.Error,
+                        issues: `https://github.com/${pluginPackage.owner}/${pluginPackage.repositoryName}/issues`
+                    }
+                    this.producer.send(ErrorEvent, msg);
+                }
             }
         }
     }
@@ -183,18 +195,23 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
         if (algorithms.length > 0) {
             const data: AlgorithmData[] = [];
             for (var value of algorithms) {
-                data.push({
-                    id: value.id,
-                    name: value.name,
-                    experimentId: value.experimentId,
-                    isFinish: value.isFinish,
-                    iteration: value.iteration,
-                    iterationTime: value.iterationTime,
-                    plugin: value.plugin,
-                    algorithm: await value.algorithm.export(false)
-                })
+                try {
+                    data.push({
+                        id: value.id,
+                        name: value.name,
+                        experimentId: value.experimentId,
+                        isFinish: value.isFinish,
+                        iteration: value.iteration,
+                        iterationTime: value.iterationTime,
+                        plugin: value.plugin,
+                        algorithm: await value.algorithm.export(false)
+                    });
+                } catch (error) {
+                    console.log('algorithm:', value.name, '\r\nerror:', error);
+                }
             }
-            const buffer = zlib.gzipSync(JSON.stringify(data));
+            const json = JSON.stringify(data);
+            const buffer = zlib.gzipSync(json);
             fs.writeFileSync(experimentPath, buffer);
         } else if (fs.existsSync(experimentPath)) {
             fs.unlinkSync(experimentPath);
@@ -223,26 +240,25 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
         algorithmObject.recorder = recorder;
         algorithmObject.isTraining = true;
         algorithmObject.algorithm.setRecorderService(recorder);
-        algorithmObject.trainer = setInterval(() => {
-            this.step(algorithmObject);
+        algorithmObject.trainer = setInterval(async () => {
+            await this.step(algorithmObject);
         }, algorithmObject.iterationTime);
 
         this.update(algorithmObject);
     }
 
-    step(obj: AlgorithmObject) {
+    async step(obj: AlgorithmObject): Promise<void> {
         if (!obj.takingStep) {
             obj.takingStep = true;
             ++obj.iteration;
             obj.recorder.current(obj.iteration);
-            obj.algorithm.step();
+            await obj.algorithm.step();
             if (obj.algorithm.finishTraining()) {
                 obj.isFinish = true;
                 obj.isTraining = false;
                 clearInterval(obj.trainer);
                 obj.trainer = undefined;
             }
-            
             this.update(obj);
             this.producer.send(AlgorithmEvents.Change, obj.id);
             obj.takingStep = false;

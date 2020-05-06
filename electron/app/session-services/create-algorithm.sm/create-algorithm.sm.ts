@@ -68,12 +68,12 @@ export class CreateAlgorithmServiceModel extends SessionService {
     }
 
     async pluginActivate(plugin: AlgorithmPlugin) {
-        
+
     }
-    
+
     async sessionInputs(session: Session, plugin: AlgorithmPlugin) {
         const dataset = this.datasetService.get(session.keyId);
-        plugin.getInputs().submit(this.datasetService.extract(dataset.id, session.inputDict, session.selectedFeatures));   
+        plugin.getInputs().submit(this.datasetService.extract(dataset.id, session.inputDict, session.selectedFeatures));
     }
 
     async sessionFinish(session: Session, plugin: AlgorithmPlugin) {
