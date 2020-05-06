@@ -7,4 +7,5 @@ export namespace AlgorithmEvents {
     export const Change = 'algorithm-change';
     export const Start = 'algorithm-start';
     export const Stop = 'algorithm-stop';
+    export const Export = 'algorithm-export';
 }

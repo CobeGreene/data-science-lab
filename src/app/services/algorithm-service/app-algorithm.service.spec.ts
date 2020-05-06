@@ -147,6 +147,16 @@ describe('Angular App Algorithm Service', () => {
         });
         service.stop(1);
     });
+    
+    it('export should call messegner', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event, id, language) => {
+            expect(event).toBe(AlgorithmEvents.Export);
+            expect(id).toBe(1);
+            expect(language).toBe('language');
+            done();
+        });
+        service.export(1, 'language');
+    });
 
 
     

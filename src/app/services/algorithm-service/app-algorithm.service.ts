@@ -107,5 +107,9 @@ export class AppAlgorithmService extends AlgorithmService {
         this.messenger.publish(AlgorithmEvents.Stop, id);
     }
 
+    export(id: number, language: string) {
+        this.messenger.publish(AlgorithmEvents.Export, id, language);
+    }
+
 }
 

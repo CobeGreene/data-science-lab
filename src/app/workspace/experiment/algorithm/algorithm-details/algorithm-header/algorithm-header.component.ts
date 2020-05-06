@@ -23,6 +23,9 @@ export class AlgorithmHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('editCmp', { static: false}) editComponent: EditAlgorithmComponent;
   @ViewChild('deleteCmp', { static: false }) deleteComponent: DeleteAlgorithmComponent;
 
+  @ViewChild('exportDropdown', { static: false }) exportDropdown: DropdownComponent;
+  @ViewChild('exportCmp', { static: false }) exportComponent: ElementRef;
+
   constructor(
     private routerService: RouterService,
     private algorithmService: AlgorithmService
@@ -72,6 +75,14 @@ export class AlgorithmHeaderComponent implements OnInit, OnDestroy {
 
   onDelete(event: MouseEvent) {
     this.deleteComponent.open(event);
+  }
+
+  onExportDropdown(event: MouseEvent) {
+    this.exportDropdown.open(event, this.exportComponent);
+  }
+
+  onExport(language: string) {
+    this.algorithmService.export(this.id, language);
   }
 
 }
