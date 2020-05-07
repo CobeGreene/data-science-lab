@@ -83,6 +83,7 @@ export class AlgorithmHeaderComponent implements OnInit, OnDestroy {
 
   onExport(language: string) {
     this.algorithmService.export(this.id, language);
+    this.exportDropdown.close();
   }
 
 }

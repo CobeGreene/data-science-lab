@@ -1,6 +1,6 @@
 import { FileService } from 'data-science-lab-core';
 import { dialog } from 'electron';
-import * as fs from 'fs';
+import * as fs from 'fs'; 
 
 export class AppFileCoreService implements FileService {
     openFile(filters?: { name: string; extensions: string[]; }[]): Promise<Buffer> {

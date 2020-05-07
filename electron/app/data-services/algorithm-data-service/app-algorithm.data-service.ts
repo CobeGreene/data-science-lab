@@ -149,6 +149,11 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
         return ids;
     }
 
+    async export(id: number): Promise<string> {
+        const algorithmObject = this.get(id);
+        return await algorithmObject.algorithm.export(true);
+    }
+
     async load(experimentId: number) {
         const algorithmPath = this.settings.get<string>(this.path);
         const experimentPath = path.join(algorithmPath, `algorithms${experimentId}.gzip`);
