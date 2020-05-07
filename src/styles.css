@@ -3,7 +3,7 @@
 
 :root {
     --workspace-background: #303030;
-    --workspace-word: #fff;
+    --workspace-word: #FFF;
     --workspace-scroll-background: #303030;
     --workspace-scroll-foreground: #3655B5;
     --welcome-title: #FFF;
@@ -84,10 +84,6 @@
     --experiment-description-icon: #6089B4;
     --experiment-dataset: #219186;
     --experiment-visualization: #9872A2;
-    --experiment-visualization-grid-lines: #505050;
-    --experiment-visualization-frame-background: white;
-    --experiment-visualization-card-icon-body: #40404081;
-    --experiment-visualization-card-icon-body-hover: #404040;
     --experiment-algorithm: #C7444A;
     --plugin-body-next: #FFF;
     --plugin-header-title: #FFF;
