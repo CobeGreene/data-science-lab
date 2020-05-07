@@ -71,7 +71,7 @@ export class ExportAlgorithmServiceModel extends ServiceModel {
                 { name: 'Javascript File', extensions: ['js'] }
             ]
         });
-        if (!!path) {
+        if (!!path && !path.canceled) {
             fs.writeFileSync(path.filePath,
                 `/*
     Data Science Lab
@@ -117,7 +117,7 @@ module.exports = predict;
                 { name: 'Typescript File', extensions: ['ts'] }
             ]
         });
-        if (!!path) {
+        if (!!path && !path.canceled) {
             fs.writeFileSync(path.filePath,
                 `/*
     Data Science Lab
