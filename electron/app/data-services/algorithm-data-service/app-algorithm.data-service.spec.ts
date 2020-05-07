@@ -408,7 +408,7 @@ describe('Electron App Algorithm Data Service', () => {
         });
 
         algorithmService.create(2, {} as any, algorithmPlugin);
-        const json = await algorithmService.export(101);
+        const json = await algorithmService.export(100);
         expect(json).toEqual('minimal');
     });
     
