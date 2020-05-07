@@ -23,7 +23,7 @@
     "build:themes": "xcopy /I default-theme dist\\app-themes",
     "build:user": "copy default.user-setting.json dist\\app.user-setting.json",
     "build:shortcuts": "copy default.shortcuts.json dist\\app.shortcuts.json",
-    "build:jsons": "npm run build:settings && npm run build:theme && npm run build:user && npm run build:shortcuts",
+    "build:jsons": "npm run build:settings && npm run build:themes && npm run build:user && npm run build:shortcuts",
     "start": "electron . --dev",
     "clean:test": "rmdir /q /s test || exit 0",
     "clean:dist": "rmdir /s dist || exit 0",
@@ -64,7 +64,7 @@
     "data-science-lab-core": "^0.0.30",
     "electron-settings": "^3.2.0",
     "font-awesome": "^4.7.0",
-    "live-plugin-manager": "^0.13.2",
+    "live-plugin-manager": "github:CobeGreene/live-plugin-manager",
     "tslib": "^1.10.0"
   },
   "devDependencies": {

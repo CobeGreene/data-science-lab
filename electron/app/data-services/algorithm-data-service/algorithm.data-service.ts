@@ -19,6 +19,7 @@ export interface AlgorithmDataService {
     update(algorithm: AlgorithmObject): void;
     start(id: number): void;
     stop(id: number): void;
+    export(id: number): Promise<string>;
 }
 
 

@@ -54,6 +54,7 @@ export class AppPluginContext implements PluginContext {
                     resolve(new main[`${plugin.className}`] as T);
                 }
             } catch (reason) {
+                console.log('unable to activate plugin', reason);
                 reject(this.pluginError(pluginPackage, plugin));
             }
         });

@@ -1,20 +1,14 @@
 import { AppAlgorithmDataService } from './app-algorithm.data-service';
-import { AlgorithmObject } from '../../models';
-import { Algorithm, Package, Plugin } from '../../../../shared/models';
-import { ServiceContainer, SERVICE_TYPES, Service } from '../../service-container';
-import { AlgorithmDataService } from './algorithm.data-service';
-import { PluginData, AlgorithmPlugin } from 'data-science-lab-core';
+import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
+import { AlgorithmPlugin } from 'data-science-lab-core';
 import { SettingsContext } from '../../contexts/settings-context';
 import { UserSettingDataService } from '../../data-services/user-setting-data-service';
 import { PackageDataService } from '../../data-services/package-data-service';
-import { IdGenerator } from '../../data-structures';
-import { SystemError, ErrorTypes } from '../../../../shared/errors';
 import { AlgorithmEvents } from '../../../../shared/events';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as zlib from 'zlib';
 import { PluginContext } from '../../contexts/plugin-context';
-import { Settings } from '../../../../shared/settings';
 import { AlgorithmRecorderService } from '../../core-services/recorder-service';
 import { Producer } from '../../pipeline';
 
@@ -318,7 +312,6 @@ describe('Electron App Algorithm Data Service', () => {
         (algorithmPlugin.finishTraining as jasmine.Spy).and.returnValues(false);
 
         const algorithmId = algorithmService.create(2, {} as any, algorithmPlugin);
-        const obj = algorithmService.get(algorithmId);
 
         expect(() => {
             algorithmService.stop(algorithmId);
@@ -405,6 +398,30 @@ describe('Electron App Algorithm Data Service', () => {
         expect(algorithmPlugin.export).toHaveBeenCalledTimes(1);
     });
 
+    it('export should return json', async () => {
+        const algorithmPlugin: AlgorithmPlugin = jasmine.createSpyObj('Algorithm', ['finishTraining', 'export']);
+        (algorithmPlugin.export as jasmine.Spy).and.callFake((minimal) => {
+            if (minimal) {
+                return "minimal"
+            }
+            return "not minimal";
+        });
+
+        algorithmService.create(2, {} as any, algorithmPlugin);
+        const json = await algorithmService.export(100);
+        expect(json).toEqual('minimal');
+    });
+    
+    it('export should throw for not found', async (done) => {
+        try {
+            await algorithmService.export(404);
+            done.fail();
+        } catch(error) {
+            expect().nothing();
+            done();
+        }
+    });
+
     it('delete by experiment and save should unlink zip', async () => {
         (context.activate as jasmine.Spy).and.callFake( () => {
             return new Promise((resolve) => {
@@ -420,6 +437,8 @@ describe('Electron App Algorithm Data Service', () => {
         expect(ids[0]).toBe(1);
         expect(fs.existsSync(path.join(experimentPath, `algorithms1.gzip`))).toBeFalsy();
     });
+
+
 
 
 });

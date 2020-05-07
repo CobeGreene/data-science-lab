@@ -1,8 +1,32 @@
+.header-title {
+    display: grid;
+    grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+    grid-template-rows: auto;
+    grid-template-areas: 'blank title export';
+}
+
+.title {
+    grid-area: title;
+}
+
+
 .header {
     display: flex;
     text-align: center;
     align-items: center;
     justify-content: center;
+}
+
+.export-dropdown {
+    grid-area: export;
+    display: flex;
+    align-self: flex-start;
+    justify-self: right;
+}
+
+.export-dropdown {
+    border: 1px solid var(--experiment-visual-menu-dropdown-border);
+    border-radius: 0.2rem;
 }
 
 .icon {
