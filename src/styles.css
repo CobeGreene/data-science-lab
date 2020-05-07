@@ -18,8 +18,8 @@
     --sidebar-list-background: #353535;
     --sidebar-list-background-hover: #ffffff40;
     --sidebar-list-header-selected: #3655B5;
-    --sidebar-list-card-hover: #656565;
     --sidebar-list-card-faded: #505050;
+    --sidebar-list-card-hover: #656565;
     --sidebar-list-card-selected: #606060;
     --sidebar-plugin-badge: #6089B4;
     --tabs-background: #404040;
@@ -54,6 +54,13 @@
     --dropdown-word: #fff;
     --create-experiment-desc-background: #505050;
     --update-experiment-desc-background: #505050;
+    --open-experiment-scroll: #3655B5;
+    --open-list-card-hover: #656565;
+    --open-list-card-selected: #606060;
+    --notification-word: #FFF;
+    --notification-warning: #D08442;
+    --notification-info: #219186;
+    --notification-error: #C7444A;
     --settings-title: #FFF;
     --settings-desc: #DDD;
     --settings-gear: #AAA;
@@ -70,6 +77,7 @@
     --select-background: #404040;
     --select-option-background: #505050;
     --select-word: #FFF;
+    --select-scroll: #3655B5;
     --select-option-hover: #404040;
     --experiment-header: #303030;
     --experiment-header-shadow: rgba(0, 0, 0, 0.1);
@@ -87,10 +95,12 @@
     --plugin-selection-background: #353535;
     --object-card-background: #323232;
     --object-card-selected: #6089B4;
+    --object-card-shadow: rgba(0,0,0,0.1);
     --plugin-input-card-background: #323232;
     --plugin-input-card-border: #219186;
     --plugin-input-card-shadow: rgba(0, 0, 0, .1);
     --plugin-input-card-valid: #219186;
+    --plugin-search: #6089B4;
     --popup-error: #C7444A;
     --popup-word: #FFF;
     --popup-info: #6089B4;
@@ -104,6 +114,8 @@
     --join-dataset-card: #353535;
     --join-dataset-background-selected: #2191862f;
     --join-dataset-border-selected: #219186;
+    --join-dataset-scroll-foreground: #219186;
+    --other-dataset-scroll-foreground: #D08442;
     --dataset-table-th: #323232;
     --dataset-table-tr-even: #353535;
     --dataset-table-scroll-background: #303030;

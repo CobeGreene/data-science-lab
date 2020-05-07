@@ -12,9 +12,9 @@
 }
 
 .container::-webkit-scrollbar-thumb {
-    background-color: var(--accent2);
+    background-color: var(--open-experiment-scroll);
 }
 
 .container:hover::-webkit-scrollbar-thumb {
-    background-color: var(--accent2);
+    background-color: var(--open-experiment-scroll);
 }
