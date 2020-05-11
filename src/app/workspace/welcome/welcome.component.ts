@@ -35,7 +35,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private tabService: TabService,
     private coreAreaService: CoreAreaService,
     private tabFactory: TabFactory,
-    // private closeService: CloseService
+    private closeService: CloseService
   ) { }
 
   ngOnInit() {
@@ -129,7 +129,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onQuit() {
-    // this.closeService.close();
+    this.closeService.close();
   } 
   
   private goToTab(tab: Tab) {

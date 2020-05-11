@@ -36,6 +36,7 @@ import { AppCloseService } from '../services/close-service/app-close.service';
     ],
     providers: [
         { provide: WorkspaceService, useClass: AppWorkspaceService },
+        { provide: CloseService, useClass: AppCloseService },
     ]
 })
 export class WorkspaceModule {

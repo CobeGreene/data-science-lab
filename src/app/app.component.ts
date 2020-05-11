@@ -22,6 +22,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('workspaceCmp', { static: false }) workspaceComponent: ElementRef<HTMLElement>;
 
   constructor(
+    private themeService: ThemeService,
+    private errorService: ErrorService,
+    private creationService: CreationService,
     private focusService: FocusService,
     private userSettingService: UserSettingService,
     private coreAreaService: CoreAreaService

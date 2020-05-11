@@ -3,7 +3,7 @@ import { ServiceContainer, AppServiceContainer, SERVICE_TYPES, Service } from '.
 import { RoutingPipeline, Producer } from './pipeline';
 import { AppIpcService } from './ipc-services';
 import { IpcService } from '../../shared/services';
-import { ErrorEvent } from '../../shared/events';
+import { ErrorEvent, AppCloseEvent, Deliminator, Event } from '../../shared/events';
 import { SettingsContext, AppSettingsContext } from './contexts/settings-context';
 import { ThemeDataService, AppThemeDataService } from './data-services/theme-data-service';
 import { ThemeServiceModel } from './services/theme.sm/theme.sm';
@@ -227,13 +227,8 @@ export class App {
                 this.createWindow();
             }
 
-            // const producer = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
-            // producer.on(`${CloseEvent}${Deliminator}${Event}`, async () => {
-            //     await this.destory();
-            //     win.destroy();
-            // });
         });
-
+        
         process.on('uncaughtException', (error) => {
             if (error instanceof Error) {
                 console.log('uncaught error', error.message, error.name);
@@ -242,6 +237,11 @@ export class App {
                 producer.send(ErrorEvent, error);
             }
         });
-
+        
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.on(`${AppCloseEvent}${Deliminator}${Event}`, async () => {
+            await this.destory();
+            win.destroy();
+        });
     }
 }
