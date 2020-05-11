@@ -4,9 +4,11 @@ import { Area } from '../../models';
 export class AppCoreAreaService extends CoreAreaService {
 
     workspace: HTMLElement;
-
+    sidebar: boolean;
+    
     constructor() {
         super();
+        this.sidebar = false;
     }
 
     registerWorkspace(element: HTMLElement) {
@@ -24,5 +26,14 @@ export class AppCoreAreaService extends CoreAreaService {
 
     resizeEvent() {
         this.sizeChanged.next();
+    }
+
+    sidebarExpanded(expanded: boolean) {
+        this.sidebar = expanded;
+        this.sidebarChanged.next(expanded);
+    }
+
+    isSidebarExpanded() {
+        return this.sidebar;
     }
 }

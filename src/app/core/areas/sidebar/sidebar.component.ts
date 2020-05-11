@@ -7,6 +7,7 @@ import { FocusAreas } from '../../../constants';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DropdownComponent } from '../../../shared/dropdown/dropdown.component';
 import { Shortcuts } from '../../../../../shared/shortcuts';
+import { CoreAreaService } from '../../../services/core-area-service/core-area.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,11 +21,11 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   isExpanded: boolean;
   inFocus: boolean;
 
-
   @ViewChild('settingsCmp', { static: false }) settingsComponent: DropdownComponent;
 
   constructor(
     private shortcutService: ShortcutService,
+    private coreService: CoreAreaService,
     private tabFactory: TabFactory,
     private tabService: TabService,
     private focusService: FocusService) { }
@@ -36,11 +37,13 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.inFocus = value === FocusAreas.Sidebar;
         if (this.inFocus) {
           this.isExpanded = true;
+          this.coreService.sidebarExpanded(this.isExpanded);
         }
       });
 
     this.inFocus = this.focusService.current() === FocusAreas.Sidebar;
     this.isExpanded = true;
+    this.coreService.sidebarExpanded(this.isExpanded);
 
   }
 
@@ -101,6 +104,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.lastSelected = this.choice;
       this.choice = 'none';
       this.isExpanded = false;
+      this.coreService.sidebarExpanded(this.isExpanded);
       this.focusService.pop();
     }
   }
