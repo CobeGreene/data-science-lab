@@ -1,17 +1,81 @@
 :host {
     position: absolute;
-    bottom: 0px;
     top: 0px;
+    bottom: 0px;
     left: 0px;
     right: 0px;
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 1fr 2fr;
-    grid-template-areas: 'header logo' 'options logo';
-    text-align: right;
-    overflow: hidden;
+    text-align: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 'header' 'logo' 'options';
+    min-width: 600px !important;
 }
 
+
+@media (min-width: 576px) {
+    :host() {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }
+    
+    :host(.sidebar-expanded) {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }    
+}
+
+@media (min-width: 768px) {
+    :host() {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }
+    
+    :host(.sidebar-expanded) {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }
+}
+
+@media (min-width: 992px) {
+    :host() {
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: 1fr 2fr;
+        grid-template-areas: 'header logo' 'options logo';
+        text-align: right;
+    }
+    
+    :host(.sidebar-expanded) {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }
+}
+
+@media(min-width: 1200px) {
+    :host() {
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: 1fr 2fr;
+        grid-template-areas: 'header logo' 'options logo';
+        text-align: right;
+    }
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: 1fr 2fr;
+        grid-template-areas: 'header logo' 'options logo';
+        text-align: right;
+    }
+}
 
 .header {
     grid-area: header;
@@ -28,6 +92,7 @@
 
 .logo {
     grid-area: logo;
+    overflow: hidden;
 }
 
 .logo svg {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, HostBinding } from '@angular/core';
 import { FocusService } from '../../services/focus-service';
 import { WorkspaceService } from '../../services/workspace-service';
 import { ShortcutService } from '../../services/shortcut-service';
@@ -11,6 +11,7 @@ import { TabFactory } from '../../factory/tab-factory';
 import { Tab } from '../../models';
 import { ShortcutEvents } from '../../../../shared/events';
 import { Shortcuts } from '../../../../shared/shortcuts';
+import { CoreAreaService } from '../../services/core-area-service/core-area.service';
 
 @Component({
   selector: 'app-welcome',
@@ -24,6 +25,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('createCmp', { static: false }) createComponent: ModalComponent;
   @ViewChild('openCmp', { static: false }) openComponent: ModalComponent;
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
 
   constructor(
     private focusService: FocusService,
@@ -31,6 +33,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private shortcutService: ShortcutService,
     private routerService: RouterService,
     private tabService: TabService,
+    private coreAreaService: CoreAreaService,
     private tabFactory: TabFactory,
   ) { }
 
@@ -40,8 +43,16 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((value) => {
         this.inFocus = value === FocusAreas.Workspace;
       });
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+
     this.inFocus = this.focusService.current() === FocusAreas.Workspace;
     this.selected = this.workspaceService.get('/welcome', { selected: 0 }).selected;
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
   }
 
   ngAfterViewInit() {
