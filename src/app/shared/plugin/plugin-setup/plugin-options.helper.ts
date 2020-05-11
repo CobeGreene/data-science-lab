@@ -14,7 +14,7 @@ export function isValidText(value: string, option: TextOption): boolean {
     } else if (!option.min && option.max && !option.pattern) {
         return !value || value.length <= option.max;
     } else if (!option.min && option.max && option.pattern) {
-        return !value || (value.length <= option.min && !!value.match(option.pattern)); 
+        return !value || (value.length <= option.max && !!value.match(option.pattern)); 
     } else if (!option.min && !option.max && option.pattern) {
         return !value || !!(value.match(option.pattern));
     } else {
