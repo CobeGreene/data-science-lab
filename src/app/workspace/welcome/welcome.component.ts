@@ -9,7 +9,6 @@ import { TabService } from '../../services/tab-service';
 import { RouterService } from '../../services/router-service';
 import { TabFactory } from '../../factory/tab-factory';
 import { Tab } from '../../models';
-import { ShortcutEvents } from '../../../../shared/events';
 import { Shortcuts } from '../../../../shared/shortcuts';
 import { CoreAreaService } from '../../services/core-area-service/core-area.service';
 

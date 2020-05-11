@@ -1,6 +1,11 @@
 :host() {
     display: flex;
     justify-content: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    min-width: 600px !important;
 }
 
 
@@ -9,12 +14,11 @@
 }
 
 .table th {
-    white-space: nowrap;
+    text-align: center;
     background: var(--shortcut-table-th);
 }
 
 .table td {
-    white-space: nowrap;
     text-align: center;
 }
 
