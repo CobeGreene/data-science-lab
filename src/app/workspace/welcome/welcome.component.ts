@@ -11,6 +11,7 @@ import { TabFactory } from '../../factory/tab-factory';
 import { Tab } from '../../models';
 import { Shortcuts } from '../../../../shared/shortcuts';
 import { CoreAreaService } from '../../services/core-area-service/core-area.service';
+import { CloseService } from '../../services/close-service/close.service';
 
 @Component({
   selector: 'app-welcome',
@@ -34,6 +35,7 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private tabService: TabService,
     private coreAreaService: CoreAreaService,
     private tabFactory: TabFactory,
+    // private closeService: CloseService
   ) { }
 
   ngOnInit() {
@@ -125,6 +127,10 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const tab = this.tabFactory.create(['shortcuts']);
     this.goToTab(tab);
   }
+
+  onQuit() {
+    // this.closeService.close();
+  } 
   
   private goToTab(tab: Tab) {
     if (this.routerService.current() === '/') {

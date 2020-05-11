@@ -1,9 +1,9 @@
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
+import { app, BrowserWindow, screen } from 'electron';
 import { ServiceContainer, AppServiceContainer, SERVICE_TYPES, Service } from './service-container';
 import { RoutingPipeline, Producer } from './pipeline';
 import { AppIpcService } from './ipc-services';
 import { IpcService } from '../../shared/services';
-import { ErrorEvent, ExperimentEvents } from '../../shared/events';
+import { ErrorEvent } from '../../shared/events';
 import { SettingsContext, AppSettingsContext } from './contexts/settings-context';
 import { ThemeDataService, AppThemeDataService } from './data-services/theme-data-service';
 import { ThemeServiceModel } from './services/theme.sm/theme.sm';
@@ -95,7 +95,7 @@ export class App {
             AppTestReportSessionDataService, SERVICE_TYPES.TestReportSessionDataService);
         this.serviceContainer.addSingleton<ShortcutDataService>(AppShortcutDataService, SERVICE_TYPES.ShortcutDataService);
         this.serviceContainer.addSingleton<BrowserDataService>(AppBrowserDataService, SERVICE_TYPES.BrowserDataService);
-            
+
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
         this.serviceContainer.addTransient<FileService>(AppFileCoreService, SERVICE_TYPES.FileService);
@@ -162,7 +162,7 @@ export class App {
         const trackerReport = this.serviceContainer.resolve<TrackerDataService>(SERVICE_TYPES.TrackerDataService);
 
         for (let experiment of experiments.all().filter(value => value.state === ExperimentState.Loaded)) {
-            datasets.save(experiment.id);            
+            datasets.save(experiment.id);
             visuals.save(experiment.id);
             for (let algorithm of algorithms.all(experiment.id)) {
                 testReport.save(algorithm.id);
@@ -195,7 +195,7 @@ export class App {
             width: size.width, height: size.height,
             webPreferences: {
                 preload: this.data.preload,
-                
+
             },
             title: 'Data Science Lab'
         });
@@ -211,7 +211,6 @@ export class App {
             event.preventDefault();
             await this.destory();
             win.destroy();
-
         });
 
         win.on('closed', () => {
@@ -227,6 +226,12 @@ export class App {
             if (win == null) {
                 this.createWindow();
             }
+
+            // const producer = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+            // producer.on(`${CloseEvent}${Deliminator}${Event}`, async () => {
+            //     await this.destory();
+            //     win.destroy();
+            // });
         });
 
         process.on('uncaughtException', (error) => {
@@ -237,5 +242,6 @@ export class App {
                 producer.send(ErrorEvent, error);
             }
         });
+
     }
 }

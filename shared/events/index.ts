@@ -18,6 +18,7 @@ export { TestReportVisualsEvents } from './test-report-visual.events';
 
 export const OpenLinkEvent = 'open-link-event';
 export const ErrorEvent = 'error-event';
+export const AppCloseEvent = 'close-event';
 
 export const Listener = 'listener';
 export const Event = 'event';

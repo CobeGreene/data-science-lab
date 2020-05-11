@@ -13,6 +13,8 @@ import { SettingStringCardComponent } from './settings/setting-card/setting-stri
 import { SettingNumberCardComponent } from './settings/setting-card/setting-number-card/setting-number-card.component';
 import { ShortcutsComponent } from './shortcuts/shortcuts.component';
 import { ShortcutsHeaderComponent } from './shortcuts/shortcuts-header/shortcuts-header.component';
+import { CloseService } from '../services/close-service/close.service';
+import { AppCloseService } from '../services/close-service/app-close.service';
 
 @NgModule({
     declarations: [
@@ -33,7 +35,7 @@ import { ShortcutsHeaderComponent } from './shortcuts/shortcuts-header/shortcuts
         WorkspaceRoutingModule
     ],
     providers: [
-        { provide: WorkspaceService, useClass: AppWorkspaceService }
+        { provide: WorkspaceService, useClass: AppWorkspaceService },
     ]
 })
 export class WorkspaceModule {
