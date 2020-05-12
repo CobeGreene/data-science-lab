@@ -19,18 +19,21 @@
             <h3 class="mb-0 pb-0">
                 Compatible Features
             </h3>
-            <div>
+            <div *ngIf="compatibleFeatures.length !== 0">
                 <ng-container *ngFor="let feature of compatibleFeatures">
                     <app-object-card [object]="feature.value" (click)="onSelect($event, feature.index)">
                     </app-object-card>
                 </ng-container>
             </div>
+            <div *ngIf="compatibleFeatures.length === 0">
+                <p>No more features for this input.</p>
+            </div>
         </div>
         <div class="remaining">
-            <h3 class="mb-0 pb-0">
+            <h3 class="mb-0 pb-0" *ngIf="remainingFeatures.length !== 0">
                 Remaining Features
             </h3>
-            <div>
+            <div *ngIf="remainingFeatures.length !== 0">
                 <ng-container *ngFor="let feature of remainingFeatures">
                     <app-object-card [object]="feature.value">
                     </app-object-card>
