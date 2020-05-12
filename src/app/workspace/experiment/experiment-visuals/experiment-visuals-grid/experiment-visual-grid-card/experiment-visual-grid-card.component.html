@@ -24,6 +24,5 @@
         </li>
     </ul>
 </app-dropdown>
-<app-dropdown #renameCmp>
-    <app-rename-visual [id]="visual.id" #inputCmp></app-rename-visual>
-</app-dropdown>         
+<app-rename-visual [id]="visual.id" #renameCmp></app-rename-visual>
+<app-delete-visual [id]="visual.id" #deleteCmp></app-delete-visual>

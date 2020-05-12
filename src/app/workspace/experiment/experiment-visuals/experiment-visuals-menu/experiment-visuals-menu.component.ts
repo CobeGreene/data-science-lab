@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy, EventEmitter, Output, HostBinding } from '@angular/core';
 import { VisualizationService } from '../../../../services/visualization-service';
 import { RouterService } from '../../../../services/router-service';
 import { DropdownComponent } from '../../../../shared/dropdown/dropdown.component';
@@ -26,6 +26,8 @@ export class ExperimentVisualsMenuComponent implements OnInit, OnDestroy {
   @Output() emitView: EventEmitter<string> = new EventEmitter<string>();
   @Output() emitArrange: EventEmitter<void> = new EventEmitter<void>();
 
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
+
   constructor(
     private routerService: RouterService,
     private coreAreaService: CoreAreaService,
@@ -39,7 +41,7 @@ export class ExperimentVisualsMenuComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.area = this.coreAreaService.getWorkspace();
       });
-      
+
     this.id = this.routerService.data().id;
     this.area = this.coreAreaService.getWorkspace();
 
@@ -56,6 +58,16 @@ export class ExperimentVisualsMenuComponent implements OnInit, OnDestroy {
         this.visuals = this.visualService.all(this.id);
       });
 
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
+
+
   }
 
   ngOnDestroy() {
@@ -68,7 +80,11 @@ export class ExperimentVisualsMenuComponent implements OnInit, OnDestroy {
   }
 
   onOpenDropdown(event: MouseEvent) {
-    this.dropdownComponent.open(event, this.visualsComponent);
+    if (this.dropdownComponent.isOpen) {
+      this.dropdownComponent.close();
+    } else {
+      this.dropdownComponent.open(event, this.visualsComponent);
+    }
   }
 
   onChange(value: string) {

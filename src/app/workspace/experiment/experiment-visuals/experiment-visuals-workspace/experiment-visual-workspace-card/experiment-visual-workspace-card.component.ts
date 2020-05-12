@@ -4,6 +4,7 @@ import { VisualizationService } from '../../../../../services/visualization-serv
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DropdownComponent } from '../../../../../shared/dropdown/dropdown.component';
 import { RenameVisualComponent } from '../../../../../shared/visual/rename-visual/rename-visual.component';
+import { DeleteVisualComponent } from '../../../../../shared/visual/delete-visual/delete-visual.component';
 
 
 @Component({
@@ -18,8 +19,8 @@ export class ExperimentVisualWorkspaceCardComponent implements OnInit, OnDestroy
   @ViewChild('visualCmp', { static: false }) visualComponent: ElementRef<HTMLIFrameElement>;
   @ViewChild('optionsDropdown', { static: false }) optionsDropdown: DropdownComponent;
   
-  @ViewChild('renameCmp', { static: false }) renameComponent: DropdownComponent;
-  @ViewChild('inputCmp', { static: false }) inputComponent: RenameVisualComponent;
+  @ViewChild('renameCmp', { static: false }) renameComponent: RenameVisualComponent;
+  @ViewChild('deleteCmp', { static: false }) deleteComponent: DeleteVisualComponent;
 
   @Output() emitMove = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
   @Output() emitExpand = new EventEmitter<{ event: MouseEvent, visual: Visual }>();
@@ -54,13 +55,12 @@ export class ExperimentVisualWorkspaceCardComponent implements OnInit, OnDestroy
     this.emitExpand.emit({ event, visual: this.visual });
   }
 
-  onDelete() {
-    this.visualService.delete(this.visual.id);
+  onDelete(event: MouseEvent) {
+    this.deleteComponent.open(event);
   }
 
   onRename(event: MouseEvent) {
-    this.renameComponent.open(event, this.visualComponent);
-    this.inputComponent.focus();
+    this.renameComponent.open(event);
   }
 
   onOpenContext(event: MouseEvent) {

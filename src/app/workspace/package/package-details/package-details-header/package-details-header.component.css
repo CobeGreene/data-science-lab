@@ -26,15 +26,3 @@
     color: var(--package-title);
     text-align: center;
 }
-
-/* :host(){
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--package-border);
-    color: var(--package-title);
-}
-
-.icon {
-    color: var(--package-icon);
-    display: inline-block;
-} */

@@ -1,9 +1,10 @@
 :host {
     display: grid;
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: auto;
-    grid-template-areas: 'options reports';
-    gap: 1.5rem 1rem;
+    padding: 0px 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'options' 'reports';
+    gap: 1rem 0rem;
     width: 100%;
 }
 
@@ -20,9 +21,108 @@
 .reports {
     grid-area: reports;
     display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
 }
+
+
+
+@media (min-width: 576px) {
+    :host() {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'options' 'reports';
+        gap: 1rem 0rem;
+    }
+
+    .reports {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+    :host(.sidebar-expanded) .reports {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'options' 'reports';
+        gap: 1rem 0rem;
+    }    
+}
+
+@media (min-width: 768px) {
+    :host() {
+        grid-template-columns: 250px 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'options reports' 'blank reports';
+        gap: 0rem 1rem;
+    }
+
+    .reports {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+    :host(.sidebar-expanded) .reports {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'options' 'reports';
+        gap: 1rem 0rem;
+    }
+}
+
+@media (min-width: 992px) {
+    :host() {
+        grid-template-columns: 250px 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'options reports' 'blank reports';
+        gap: 0rem 1rem;
+    }
+
+    .reports {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    :host(.sidebar-expanded) .reports {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: 250px 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'options reports' 'blank reports';
+        gap: 0rem 1rem;
+    }
+}
+
+@media(min-width: 1200px) {
+    :host() {
+        grid-template-columns: 250px 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'options reports' 'blank reports';
+        gap: 0rem 1rem;
+    }
+
+    .reports {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    :host(.sidebar-expanded) .reports {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: 250px 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'options reports' 'blank reports';
+        gap: 0rem 1rem;
+    }
+}
+
+
 
 
 

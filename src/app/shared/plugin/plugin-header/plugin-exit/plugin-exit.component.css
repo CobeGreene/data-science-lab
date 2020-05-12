@@ -2,7 +2,7 @@
     display: flex;
     align-self: flex-start;
     justify-self: right;
-    color: var(--accent1);
+    color: var(--plugin-exit);
 }
 
 .icon {

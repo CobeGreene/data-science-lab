@@ -3,6 +3,7 @@ import { Visual } from '../../../../../../../shared/models';
 import { VisualizationService } from '../../../../../services/visualization-service';
 import { DropdownComponent } from '../../../../../shared/dropdown/dropdown.component';
 import { RenameVisualComponent } from '../../../../../shared/visual/rename-visual/rename-visual.component';
+import { DeleteVisualComponent } from '../../../../../shared/visual/delete-visual/delete-visual.component';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
@@ -17,8 +18,8 @@ export class ExperimentVisualGridCardComponent implements OnInit, OnDestroy, Aft
   @ViewChild('visualCmp', { static: false }) visualComponent: ElementRef<HTMLIFrameElement>;
 
   @ViewChild('optionsCmp', { static: false }) optionsComponent: DropdownComponent;
-  @ViewChild('renameCmp', { static: false }) renameComponent: DropdownComponent;
-  @ViewChild('inputCmp', { static: false }) inputComponent: RenameVisualComponent;
+  @ViewChild('renameCmp', { static: false }) renameComponent: RenameVisualComponent;
+  @ViewChild('deleteCmp', { static: false }) deleteComponent: DeleteVisualComponent;
 
   constructor(private visualService: VisualizationService) { }
 
@@ -47,13 +48,11 @@ export class ExperimentVisualGridCardComponent implements OnInit, OnDestroy, Aft
   }
 
   onDelete(event: MouseEvent) {
-    this.visualService.delete(this.id);
-    this.optionsComponent.close();
+    this.deleteComponent.open(event);
   }
 
   onRename(event: MouseEvent) {
-    this.renameComponent.open(event, this.visualComponent);
-    this.inputComponent.focus();
+    this.renameComponent.open(event);
   }
 
 

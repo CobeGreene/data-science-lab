@@ -26,11 +26,11 @@
 }
 
 .opt::-webkit-scrollbar-thumb {
-    background-color: var(--preview-scroll);
+    background-color: var(--select-scroll);
 }
 
 .opt:hover::-webkit-scrollbar-thumb {
-    background-color: var(--preview-scroll);
+    background-color: var(--select-scroll);
 }
 
 .opt li {

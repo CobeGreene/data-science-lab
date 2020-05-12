@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { RouterService } from '../../../services/router-service';
 import { TabService } from '../../../services/tab-service';
 import { TabFactory } from '../../../factory/tab-factory';
 import { AlgorithmService } from '../../../services/algorithm-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Algorithm } from '../../../../../shared/models';
+import { CoreAreaService } from '../../../services/core-area-service/core-area.service';
 
 @Component({
   selector: 'app-experiment-algorithms',
@@ -16,11 +17,15 @@ export class ExperimentAlgorithmsComponent implements OnInit, OnDestroy {
   id: number;
   algorithms: Algorithm[];
 
+
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
+
   constructor(
     private algorithmService: AlgorithmService,
     private routerService: RouterService,
     private tabFactory: TabFactory,
-    private tabService: TabService
+    private tabService: TabService,
+    private coreAreaService: CoreAreaService,
   ) { }
 
   ngOnInit() {
@@ -39,6 +44,15 @@ export class ExperimentAlgorithmsComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.algorithms = this.algorithmService.all(this.id);
       });
+
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
 
   }
 

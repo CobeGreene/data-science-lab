@@ -27,7 +27,9 @@
         [ngClass]="{ 'selected': selected === 4 && inFocus, 'faded': selected === 4 && !inFocus }">
         Settings
     </h2>
-    <h2 class="option" [ngClass]="{ 'selected': selected === 5 && inFocus, 'faded': selected === 5 && !inFocus }">
+    <h2 class="option" 
+        (click)="onQuit()"
+        [ngClass]="{ 'selected': selected === 5 && inFocus, 'faded': selected === 5 && !inFocus }">
         Quit
     </h2>
 </div>

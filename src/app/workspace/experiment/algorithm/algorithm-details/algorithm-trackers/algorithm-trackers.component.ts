@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, HostBinding } from '@angular/core';
 import { PopupComponent } from '../../../../../shared/popup/popup.component';
 import { RouterService } from '../../../../../services/router-service';
 import { TrackerService } from '../../../../../services/tracker-service';
 import { AlgorithmTracker } from '../../../../../../../shared/models';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { AlgorithmVisualSessionService } from '../../../../../session-services/algorithm-visual-session-service';
+import { CoreAreaService } from '../../../../../services/core-area-service/core-area.service';
 
 @Component({
   selector: 'app-algorithm-trackers',
@@ -18,9 +19,12 @@ export class AlgorithmTrackersComponent implements OnInit, OnDestroy {
   id: number;
   tracker: AlgorithmTracker | undefined;
 
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
+
   constructor(
     private routerService: RouterService,
     private trackerService: TrackerService,
+    private coreAreaService: CoreAreaService,
     private sessionService: AlgorithmVisualSessionService
   ) { }
 
@@ -28,7 +32,7 @@ export class AlgorithmTrackersComponent implements OnInit, OnDestroy {
     this.id = this.routerService.data().algorithmId;
     if (this.trackerService.has(this.id)) {
       this.tracker = this.trackerService.get(this.id);
-    }    
+    }
 
     this.routerService.changed()
       .pipe(untilComponentDestroyed(this))
@@ -52,6 +56,14 @@ export class AlgorithmTrackersComponent implements OnInit, OnDestroy {
           this.tracker = value;
         }
       });
+
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
 
   }
 

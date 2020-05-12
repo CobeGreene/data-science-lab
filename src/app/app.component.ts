@@ -16,7 +16,7 @@ import { CreationService } from './services/creation-service/creation.service';
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   title = 'data-science-lab-app';
-
+  
   rightSidebar: boolean;
 
   @ViewChild('workspaceCmp', { static: false }) workspaceComponent: ElementRef<HTMLElement>;

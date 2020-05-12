@@ -5,10 +5,10 @@
 
 .nav-item {
     display: inline-flex;
-    margin: 0px 2px;
-    padding: 10px;
+    margin: 0px 0px;
+    padding: 2px;
     border-radius: 0.5em;
-    border: 3px solid transparent;
+    border: 2px solid transparent;
 }
 
 .nav-item.dataset .icon {
@@ -16,7 +16,7 @@
 }
 
 .nav-item.dataset.active {
-    border-bottom: 3px solid var(--experiment-dataset);
+    border-bottom: 2px solid var(--experiment-dataset);
 }
 
 .nav-item.dataset:hover .icon {
@@ -24,7 +24,7 @@
 }
 
 .nav-item.nav-item.dataset:hover {
-    border-bottom: 3px solid var(--experiment-dataset);
+    border-bottom: 2px solid var(--experiment-dataset);
 }
 
 .nav-item.visualization .icon {
@@ -32,7 +32,7 @@
 }
 
 .nav-item.visualization.active {
-    border-bottom: 3px solid var(--experiment-visualization);
+    border-bottom: 2px solid var(--experiment-visualization);
 }
 
 .nav-item.visualization:hover .icon {
@@ -40,7 +40,7 @@
 }
 
 .nav-item.visualization:hover {
-    border-bottom: 3px solid var(--experiment-visualization);
+    border-bottom: 2px solid var(--experiment-visualization);
 }
 
 .nav-item.algorithm .icon {
@@ -48,7 +48,7 @@
 }
 
 .nav-item.algorithm.active {
-    border-bottom: 3px solid var(--experiment-algorithm);
+    border-bottom: 2px solid var(--experiment-algorithm);
 }
 
 .nav-item.algorithm:hover .icon {
@@ -56,5 +56,71 @@
 }
 
 .nav-item.algorithm:hover {
-    border-bottom: 3px solid var(--experiment-algorithm);
+    border-bottom: 2px solid var(--experiment-algorithm);
 }
+
+.nav-link {
+    display: none;
+}
+
+@media (min-width: 576px) {
+    .nav-link {
+        display: none;
+    }
+    .nav-item {
+        padding: 2px;
+    }
+    :host(.sidebar-expanded) .nav-link {
+        display: none;
+    }
+    :host(.sidebar-expanded) .nav-item {
+        padding: 2px;
+    }
+}
+
+@media (min-width: 768px) {
+    .nav-link {
+        display: contents;
+    }
+    .nav-item {
+        padding: 2px;
+    }
+    :host(.sidebar-expanded) .nav-link {
+        display: none;
+    }
+    :host(.sidebar-expanded) .nav-item {
+        padding: 2px;
+    }
+}
+
+@media (min-width: 992px) {
+    .nav-link {
+        display: contents;
+    }
+    .nav-item {
+        padding: 5px;
+    }
+    :host(.sidebar-expanded) .nav-link {
+        display: none;
+    }
+    :host(.sidebar-expanded) .nav-item {
+        padding: 2px;
+    }
+}
+@media (min-width: 1200px) {
+    .nav-link {
+        display: contents;
+    }
+    .nav-item {
+        padding: 10px;
+    }
+
+    :host(.sidebar-expanded) .nav-link {
+        display: contents;
+    }
+    
+    :host(.sidebar-expanded) .nav-item {
+        padding: 5px;
+    }
+}
+

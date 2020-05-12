@@ -68,6 +68,7 @@ import { EditShortcutComponent } from './edit-shortcut/edit-shortcut.component';
 import { PreviewModalComponent } from './preview-card/preview-modal/preview-modal.component';
 import { PreviewModalBaseComponent } from './preview-card/preview-modal/preview-modal-base/preview-modal-base.component';
 import { RenameVisualComponent } from './visual/rename-visual/rename-visual.component';
+import { DeleteVisualComponent } from './visual/delete-visual/delete-visual.component';
 
 @NgModule({
     declarations: [
@@ -128,7 +129,8 @@ import { RenameVisualComponent } from './visual/rename-visual/rename-visual.comp
         OpenExperimentCardComponent,
         PreviewModalComponent,
         PreviewModalBaseComponent,
-        RenameVisualComponent
+        RenameVisualComponent,
+        DeleteVisualComponent,
     ],
     imports: [
         CommonModule,
@@ -178,6 +180,7 @@ import { RenameVisualComponent } from './visual/rename-visual/rename-visual.comp
         PopupComponent,
         PackageExplorerLinkComponent,
         RenameVisualComponent,
+        DeleteVisualComponent,
         CommonModule,
         AngularFontAwesomeModule,
         FormsModule,

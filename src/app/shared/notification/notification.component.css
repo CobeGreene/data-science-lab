@@ -5,19 +5,19 @@
     word-wrap: break-word;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     border-radius: 0.5rem;
-    color: var(--word);
+    color: var(--notification-word);
 }
 
 .notification.warning {
-    background: var(--accent5);
+    background: var(--notification-warning);
 }
 
 .notification.info {
-    background: var(--accent6);
+    background: var(--notification-info);
 }
 
 .notification.error {
-    background: var(--invalid);
+    background: var(--notification-error);
 }
 
 .header {
@@ -28,5 +28,5 @@
 
 .exit {
     font-size: xx-large;
-    color: var(--word);
+    color: var(--notification-word);
 }
