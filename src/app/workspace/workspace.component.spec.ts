@@ -17,7 +17,10 @@ describe('WorkspaceComponent', () => {
       getWorkspace() { return {...area}; },
       resizeEvent() { },
       registerWorkspace() { },
-      sizeChanged: new Subject<void>()
+      sizeChanged: new Subject<void>(),
+      isSidebarExpanded() { return true; },
+      sidebarChanged: new Subject<boolean>(),
+      sidebarExpanded(expanded) { }
     };
 
     TestBed.configureTestingModule({

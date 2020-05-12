@@ -46,11 +46,11 @@ describe('Angular App Core Area Service', () => {
 
     it('sidebar expand should true for isSidebarExpanded', () => {
         service.sidebarExpanded(true);
-        expect(service.isSidebarExpanded).toBeTruthy();
+        expect(service.isSidebarExpanded()).toBeTruthy();
     });
     
     it('sidebar expand should false for isSidebarExpanded', () => {
         service.sidebarExpanded(false);
-        expect(service.isSidebarExpanded).toBeFalsy();
+        expect(service.isSidebarExpanded()).toBeFalsy();
     });
 });
