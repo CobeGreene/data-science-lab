@@ -8,14 +8,103 @@
     cursor: pointer;
 }
 
+
 :host(.expanded) {
     transform: scaleX(1);
-    grid-column: span 3;
+    grid-column: span 1;
 }
 
 :host(.expanded):hover {
     transform: scaleX(1);
-    grid-column: span 3;
+    grid-column: span 1;
+}
+
+@media (min-width: 576px) {
+    :host(.expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+
+    :host(.expanded.sidebar-expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded.sidebar-expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+}
+
+@media (min-width: 768px) {
+    :host(.expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+
+    :host(.expanded.sidebar-expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded.sidebar-expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+}
+
+@media (min-width: 992px) {
+    :host(.expanded) {
+        transform: scaleX(1);
+        grid-column: span 2;
+    }
+    
+    :host(.expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 2;
+    }
+
+    :host(.expanded.sidebar-expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded.sidebar-expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+}
+
+@media (min-width: 1200px) {
+    :host(.expanded) {
+        transform: scaleX(1);
+        grid-column: span 3;
+    }
+    
+    :host(.expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 3;
+    }
+    
+    :host(.expanded.sidebar-expanded) {
+        transform: scaleX(1);
+        grid-column: span 2;
+    }
+    
+    :host(.expanded.sidebar-expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 2;
+    }
 }
 
 :host:hover {
