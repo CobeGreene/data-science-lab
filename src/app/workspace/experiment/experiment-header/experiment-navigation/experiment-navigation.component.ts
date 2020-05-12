@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { RouterService } from '../../../../services/router-service';
 import { TabService } from '../../../../services/tab-service';
 import { TabFactory } from '../../../../factory/tab-factory';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { CoreAreaService } from '../../../../services/core-area-service/core-area.service';
 
 @Component({
   selector: 'app-experiment-navigation',
@@ -13,10 +14,12 @@ export class ExperimentNavigationComponent implements OnInit, OnDestroy {
 
   id: number;
   state: string;
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
 
   constructor(
     private tabService: TabService, 
     private tabFactory: TabFactory, 
+    private coreAreaService: CoreAreaService,
     private routerService: RouterService) { }
 
   ngOnInit() {
@@ -30,6 +33,14 @@ export class ExperimentNavigationComponent implements OnInit, OnDestroy {
       });
 
     this.getState();
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
 
   }
 
