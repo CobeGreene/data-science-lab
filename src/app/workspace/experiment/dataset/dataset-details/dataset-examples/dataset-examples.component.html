@@ -28,7 +28,7 @@
                     {{ i + 1 }}
                 </td>
                 <td class="p-2" *ngFor="let data of example; let featureIndex = index">
-                    <app-preview-card class="pointer" [value]="data" [feature]="dataset.features[featureIndex]"></app-preview-card>
+                    <app-preview-card [value]="data" [feature]="dataset.features[featureIndex]"></app-preview-card>
                 </td>
             </tr>
             <tr *ngIf="dataset.previewExamples.length !== dataset.examples">
