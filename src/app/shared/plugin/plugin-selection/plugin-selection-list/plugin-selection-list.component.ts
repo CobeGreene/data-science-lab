@@ -1,9 +1,11 @@
 import {
   Component, OnInit, AfterViewInit,
-  OnDestroy, Input, Output, EventEmitter, ViewChildren, ElementRef, QueryList
+  OnDestroy, Input, Output, EventEmitter, ViewChildren, ElementRef, QueryList, HostBinding
 } from '@angular/core';
 import { PluginSelectionBox } from './plugin-selection-box';
 import { Plugin } from '../../../../../../shared/models';
+import { CoreAreaService } from '../../../../services/core-area-service/core-area.service';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
   selector: 'app-plugin-selection-list',
@@ -21,7 +23,10 @@ export class PluginSelectionListComponent implements OnInit, AfterViewInit, OnDe
 
   @ViewChildren('pluginCmp', { read: ElementRef }) pluginComponents: QueryList<ElementRef<HTMLElement>>;
 
-  constructor() {
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
+
+
+  constructor(private coreAreaService: CoreAreaService) {
     this.colors = [
       'plugin-accent1',
       'plugin-accent3',
@@ -37,6 +42,15 @@ export class PluginSelectionListComponent implements OnInit, AfterViewInit, OnDe
 
   ngOnInit() {
     this.boxes = [];
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
+
+    
   }
 
   ngAfterViewInit() {
