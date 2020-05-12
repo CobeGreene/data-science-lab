@@ -1,47 +1,48 @@
-<div class="header-title pt-2">
-    <div class="title header">
+<div class="header pt-2">
+    <div class="center">
         <fa name="code" class="pr-2 icon" size="2x"></fa>
         <h2 class="m-0 p-0">{{ algorithm.name }}</h2>
         <span class="pl-1 edit pointer" (click)="onOptions($event)" #optionsCmp>
             <fa name="pencil"></fa>
         </span>
     </div>
-    <div class="export-dropdown mx-2 p-1 px-2" (click)="onExportDropdown($event)" #exportCmp>
-        Export <fa class="pl-1" name="caret-down"></fa>
+
+    <div class="center mb-1">
+        <div>
+            <h4 class="m-0 p-0">At Iteration {{ algorithm.iteration }}</h4>
+            <h4 class="m-0 p-0">
+                {{ algorithm.iterationTime }}ms Between Iteration
+                <ng-container *ngIf="algorithm.isTraining">
+                    - Training in Progress
+                </ng-container>
+                <ng-container *ngIf="algorithm.isFinish">
+                    - Training has Finish
+                </ng-container>
+            </h4>
+        </div>
     </div>
-    <app-dropdown #exportDropdown>
-        <ul class="list-unstyled dropdown-list nowrap">
-            <li (click)="onExport('javascript')">
-                Export as Javascript
-            </li>
-            <li (click)="onExport('typescript')">
-                Export as Typescript
-            </li>
-        </ul>
-    </app-dropdown>
-</div>
-<div class="header mb-1">
-    <div>
-        <h4 class="m-0 p-0">At Iteration {{ algorithm.iteration }}</h4>
-        <h4 class="m-0 p-0">
-            {{ algorithm.iterationTime }}ms Between Iteration
-            <ng-container *ngIf="algorithm.isTraining">
-                - Training in Progress
-            </ng-container>
-            <ng-container *ngIf="algorithm.isFinish">
-                - Training has Finish
-            </ng-container>
-        </h4>
+    <div class="center" *ngIf="!algorithm.isFinish">
+        <button class="btn btn-accent1" type="button" *ngIf="algorithm.isTraining" (click)="onStop($event)">
+            Stop Training
+        </button>
+        <button class="btn btn-accent3" type="button" *ngIf="!algorithm.isTraining" (click)="onStart($event)">
+            Start Training
+        </button>
     </div>
 </div>
-<div class="header" *ngIf="!algorithm.isFinish">
-    <button class="btn btn-accent1" type="button" *ngIf="algorithm.isTraining" (click)="onStop($event)">
-        Stop Training
-    </button>
-    <button class="btn btn-accent3" type="button" *ngIf="!algorithm.isTraining" (click)="onStart($event)">
-        Start Training
-    </button>
+<div class="export-dropdown m-2 p-1 px-2" (click)="onExportDropdown($event)" #exportCmp>
+    Export <fa class="pl-1" name="caret-down"></fa>
 </div>
+<app-dropdown #exportDropdown>
+    <ul class="list-unstyled dropdown-list nowrap">
+        <li (click)="onExport('javascript')">
+            Export as Javascript
+        </li>
+        <li (click)="onExport('typescript')">
+            Export as Typescript
+        </li>
+    </ul>
+</app-dropdown>
 <app-dropdown #optionsDropdown>
     <ul class="list-unstyled dropdown-list">
         <li (click)="onEdit($event)">
