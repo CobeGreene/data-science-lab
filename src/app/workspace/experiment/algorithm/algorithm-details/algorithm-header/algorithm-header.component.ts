@@ -78,7 +78,11 @@ export class AlgorithmHeaderComponent implements OnInit, OnDestroy {
   }
 
   onExportDropdown(event: MouseEvent) {
-    this.exportDropdown.open(event, this.exportComponent);
+    if (this.exportDropdown.isOpen) {
+      this.exportDropdown.close();
+    } else {
+      this.exportDropdown.open(event, this.exportComponent);
+    }
   }
 
   onExport(language: string) {
