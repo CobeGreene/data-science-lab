@@ -6,8 +6,10 @@
         </button>
     </div>
     <hr>
-    <div class="mx-2 mt-0">{{ notification.message }}</div>
-    <button class="float-right" type="button" *ngIf="notification.action !== undefined">
-        {{ notification.action.label }}
-    </button>
+    <div class="mx-2 mt-0 mb-1">
+        <div class="message">{{ notification.message }}</div>
+        <button class="float-right action p-1" type="button" (click)="onAction($event)" *ngIf="notification.action !== undefined">
+            {{ notification.action.label }}
+        </button>
+    </div>
 </div>
