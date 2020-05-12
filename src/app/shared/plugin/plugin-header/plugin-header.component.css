@@ -23,7 +23,7 @@
 
 @media(min-width: 768px) {
     :host() {
-        grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
         grid-template-rows: auto;
         grid-template-areas: 'return title exit';
     }
@@ -38,14 +38,14 @@
 
 @media(min-width: 992px) {
     :host() {
-        grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
         grid-template-rows: auto;
         grid-template-areas: 'return title exit';
     }
 
     
     :host(.sidebar-expanded) {
-        grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
         grid-template-rows: auto;
         grid-template-areas: 'return title exit';
     }    
@@ -54,14 +54,14 @@
 
 @media(min-width: 1200px) {
     :host() {
-        grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
         grid-template-rows: auto;
         grid-template-areas: 'return title exit';
     }
 
     
     :host(.sidebar-expanded) {
-        grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
         grid-template-rows: auto;
         grid-template-areas: 'return title exit';
     }    
