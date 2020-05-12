@@ -54,8 +54,8 @@ export class ExperimentDatasetsComponent implements OnInit, OnDestroy {
         this.sidebarExpanded = value;
       });
 
-    this.datasets = this.datasetService.all(this.id);
     this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
+    this.datasets = this.datasetService.all(this.id);
 
   }
 
