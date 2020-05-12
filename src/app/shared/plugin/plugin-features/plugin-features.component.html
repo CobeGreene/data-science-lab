@@ -5,11 +5,13 @@
     <button class="btn btn-accent1 p-1 m-1" (click)="onUnselectAll()">
         Unselect All 
     </button>
-    <p class="ml-3">
+</div>
+<div class="desc">
+    <p class="m-1">
         Select which <strong>features / variables</strong> you want to use on a plugin. 
     </p>
 </div>
-<div class="p-3" (mouseup)="onMouseUp()" (mouseover)="onMouseOver($event, i)" (mouseleave)="onMouseLeave()" (mousedown)="onMouseDown($event, -1)">
+<div class="features" (mouseup)="onMouseUp()" (mouseover)="onMouseOver($event, i)" (mouseleave)="onMouseLeave()" (mousedown)="onMouseDown($event, -1)">
     <ng-container *ngFor="let feature of features; let i = index">
         <app-object-card class="pointer" [object]="feature" (mouseover)="onMouseOver($event, i)" (mousedown)="onMouseDown($event, i)" #featureCmp></app-object-card>
     </ng-container>

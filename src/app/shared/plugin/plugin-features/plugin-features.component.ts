@@ -1,12 +1,14 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChildren, ElementRef, QueryList, HostBinding, OnDestroy } from '@angular/core';
 import { Feature } from '../../../../../shared/models';
+import { CoreAreaService } from '../../../services/core-area-service/core-area.service';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
   selector: 'app-plugin-features',
   templateUrl: './plugin-features.component.html',
   styleUrls: ['./plugin-features.component.css']
 })
-export class PluginFeaturesComponent implements OnInit, AfterViewInit {
+export class PluginFeaturesComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() features: Feature[];
   @Input() selected: number[];
@@ -18,11 +20,24 @@ export class PluginFeaturesComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('featureCmp', { read: ElementRef }) featureComponents: QueryList<ElementRef<HTMLElement>>;
 
-  constructor() { }
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
+
+  constructor(private coreAreaService: CoreAreaService) { }
 
   ngOnInit() {
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
+
     this.mouseDown = false;
     this.lastDown = -1;
+  }
+
+  ngOnDestroy() {
+
   }
 
   ngAfterViewInit() {
