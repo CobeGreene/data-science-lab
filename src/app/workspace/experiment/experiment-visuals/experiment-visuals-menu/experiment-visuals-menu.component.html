@@ -1,7 +1,7 @@
 <div class="container py-1" [style.width.px]="area.width - 2">
     <div class="actions">
         <div class="visual-dropdown mx-2 p-1 px-2" (click)="onOpenDropdown($event)" #visualsCmp>
-            Open in new Window <fa name="caret-down"></fa>
+            Open Visual <fa name="caret-down"></fa>
         </div>
         <app-dropdown #dropdownCmp>
             <ul class="list-unstyled dropdown-list">
@@ -12,18 +12,18 @@
         </app-dropdown>
         <ng-container *ngIf="view === 'workspace'">
             <button type="button" class="mx-2 btn btn-accent1 p-1 px-2" (click)="onArrange()">
-                Arrange Visualizations
+                Arrange <span class="view-item">Visualizations</span>
             </button>
         </ng-container>
     </div>
     <div class="views">
         <button type="button" class="mx-2 btn btn-default p-1 px-2" (click)="onChange('grid')">
             <fa name="th" title="grid"></fa>
-            Grid View
+            <span class="view-item"> Grid View</span>
         </button>
         <button type="button" class="mx-2 btn btn-default p-1 px-2" (click)="onChange('workspace')">
             <fa name="braille" title="workspace"></fa>
-            Workspace View
+            <span class="view-item"> Workspace View</span>
         </button>
     </div>
 </div>
