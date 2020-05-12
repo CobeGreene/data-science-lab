@@ -1,0 +1,16 @@
+<ng-template #overlayCmp>
+    <div class="modal">
+        <app-modal-header [header]="'Are you sure?'"></app-modal-header>
+        <p class="m-0 pt-2 pb-2">
+            This will delete {{ visual.name }}.
+        </p>
+        <div class="pt-2">
+            <button class="btn btn-accent3 btn-lg" type="button" (click)="onNo($event)">
+                No
+            </button>
+            <button class="btn btn-accent1 float-right btn-lg" type="button" (click)="onYes($event)">
+                Yes
+            </button>
+        </div>
+    </div>
+</ng-template>

@@ -1,1 +1,25 @@
-<input type="text" class="accent3 w-100" name="name" [(ngModel)]="name" (keyup.enter)="onEnter()" #inputCmp>
+<ng-template #overlayCmp>
+    <div class="modal">
+        <app-modal-header [header]="'Rename Visual'"></app-modal-header>
+        <form name="form" #renameForm="ngForm" (ngSubmit)="renameForm.valid && onSubmit($event, renameForm)">
+            <div class="m-0 mb-4">
+                <input class="w-100 accent3 input-xlg" placeholder="Enter name here" name="name"
+                    [(ngModel)]="visual.name" #name="ngModel" type="text" required minlength="1" maxlength="60">
+                <div *ngIf="name.invalid">
+                    <div *ngIf="name.errors.required" class="invalid-feedback">Name is required</div>
+                    <div *ngIf="name.errors.minlength || name.errors.maxlength" class="invalid-feedback">Name must be
+                        between 1 and 60 characters.</div>
+                </div>
+            </div>
+            <div class="pt-2">
+                <button type="button" class="btn btn-accent1 btn-lg" (click)="onCancel()">
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-accent3 float-right btn-lg"
+                    [ngClass]="{ 'disabled': !renameForm.form.valid }">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>
