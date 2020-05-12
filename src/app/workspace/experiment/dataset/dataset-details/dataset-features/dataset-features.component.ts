@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Dataset } from '../../../../../../../shared/models';
 import { RouterService } from '../../../../../services/router-service';
 import { DatasetService } from '../../../../../services/dataset-service';
 import { TransformSessionService } from '../../../../../session-services/transform-session-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DatasetVisualSessionService } from '../../../../../session-services/dataset-visual-session-service';
+import { CoreAreaService } from '../../../../../services/core-area-service/core-area.service';
 
 @Component({
   selector: 'app-dataset-features',
@@ -16,10 +17,13 @@ export class DatasetFeaturesComponent implements OnInit, OnDestroy {
   id: number;
   dataset: Dataset;
 
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
+
   constructor(
     private routerService: RouterService,
     private datasetService: DatasetService,
     private transformService: TransformSessionService,
+    private coreAreaService: CoreAreaService,
     private visualizeService: DatasetVisualSessionService
   ) { }
 
@@ -40,6 +44,14 @@ export class DatasetFeaturesComponent implements OnInit, OnDestroy {
         this.id = this.routerService.data().datasetId;
         this.dataset = this.datasetService.get(this.id);
       });
+
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
 
     this.dataset = this.datasetService.get(this.id);
 

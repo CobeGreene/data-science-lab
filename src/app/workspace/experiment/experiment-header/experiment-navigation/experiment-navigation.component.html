@@ -1,26 +1,17 @@
 <ul class="list-unstyled">
     <li class="nav-item dataset pointer" (click)="onDataset()" [ngClass]="{ 'active': state === 'dataset' }">
         <h4 class="m-0 p-0 pointer">
-            <fa name="table" class="pr-1 icon"></fa>
-            <span class="nav-link">
-                Datasets
-            </span>
+            <fa name="table" class="icon"></fa><span class="nav-link"> Datasets</span>
         </h4>
     </li>
     <li class="nav-item visualization" (click)="onVisuals()" [ngClass]="{ 'active': state === 'visual' }">
         <h4 class="m-0 p-0 pointer">
-            <fa name="bar-chart" class="pr-1 icon"></fa>
-            <span class="nav-link">
-                Visuals
-            </span>
+            <fa name="bar-chart" class="icon"></fa><span class="nav-link"> Visuals</span>
         </h4>
     </li>
     <li class="nav-item algorithm pointer" (click)="onAlgorithms()" [ngClass]="{ 'active': state === 'algorithm' }">
         <h4 class="m-0 p-0 pointer">
-            <fa name="code" class="pr-1 icon"></fa>
-            <span class="nav-link">
-                Algorithms
-            </span>
+            <fa name="code" class="icon"></fa><span class="nav-link"> Algorithms</span>
         </h4>
     </li>
 </ul>
