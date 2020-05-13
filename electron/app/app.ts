@@ -49,6 +49,7 @@ import { BrowserDataService, AppBrowserDataService } from './data-services/brows
 import { TestReportVisualServiceModel } from './session-services/test-report-visual.sm';
 import { ApiPackageServiceModel } from './services/api-package.sm';
 import { ExportAlgorithmServiceModel } from './services/export-algorithm.sm';
+import { ErrorTypes } from '../../shared/errors';
 
 export let win: BrowserWindow;
 
@@ -228,7 +229,7 @@ export class App {
             }
 
         });
-        
+
         process.on('uncaughtException', (error) => {
             if (error instanceof Error) {
                 console.log('uncaught error', error.message, error.name);
@@ -237,11 +238,12 @@ export class App {
                 producer.send(ErrorEvent, error);
             }
         });
-        
+
         const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
         ipc.on(`${AppCloseEvent}${Deliminator}${Event}`, async () => {
             await this.destory();
             win.destroy();
         });
+
     }
 }

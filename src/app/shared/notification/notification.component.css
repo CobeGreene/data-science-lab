@@ -8,6 +8,10 @@
     color: var(--notification-word);
 }
 
+.message {
+    display: inline-block;
+}
+
 .notification.warning {
     background: var(--notification-warning);
 }
@@ -24,6 +28,11 @@
     display: flex;
     justify-content: space-between;
     align-content: center;
+}
+.action {
+    color: var(--notification-word);
+    border: 1px solid var(--notification-word);
+    border-radius: 0.5rem;
 }
 
 .exit {
