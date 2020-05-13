@@ -19,6 +19,10 @@ describe('Angular App Package Service', () => {
         service = new AppPackageService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
     });
@@ -80,13 +84,12 @@ describe('Angular App Package Service', () => {
 
 
     it('all should update feature that are not install', () => {
-        dict[PackageEvents.Feature](PackageEvents.All, [
+        dict[PackageEvents.Feature](PackageEvents.Feature, [
             { name: 'Name 1', install: true },
             { name: 'Name 2', install: false },
             { name: 'Name 3', install: true },
         ]);
-        dict[PackageEvents.Feature](PackageEvents.All, [
-            { name: 'Name 1', install: false },
+        dict[PackageEvents.All](PackageEvents.Feature, [
             { name: 'Name 2', install: true },
             { name: 'Name 3', install: true },
         ]);
@@ -177,6 +180,19 @@ describe('Angular App Package Service', () => {
         service.fetch('Name 2');
     });
 
+    it('search should call package get for in features', (done) => {
+        service.featureChanged.subscribe((value) => {
+            expect(value.length).toEqual(3);
+            done();
+        });
+        dict[PackageEvents.Search](PackageEvents.Search, [
+            { name: 'Name 1', install: true },
+            { name: 'Name 2', install: false },
+            { name: 'Name 3', install: true },
+        ]);
+        service.search('Name', 'All', 0);
+    });
+
     it('package get event should update package get subject', (done) => {
         service.packageGet.subscribe((value) => {
             expect(value.name).toEqual('Name 2');
@@ -219,6 +235,11 @@ describe('Angular App Package Service', () => {
             done();
         });
         dict[PackageEvents.Change](PackageEvents.Change);
+    });
+
+    it('feature should call to publish featrue', () => {
+        service.feature();
+        expect(messenger.publish).toHaveBeenCalledWith(PackageEvents.Feature);
     });
 
 

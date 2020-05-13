@@ -2,6 +2,8 @@
 
 # electron test output
 /test
+coverage/
+
 
 # compiled output
 /dist

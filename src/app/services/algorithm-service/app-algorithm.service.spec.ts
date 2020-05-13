@@ -20,6 +20,10 @@ describe('Angular App Algorithm Service', () => {
         service = new AppAlgorithmService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
     });
@@ -55,45 +59,59 @@ describe('Angular App Algorithm Service', () => {
             expect(value.length).toBe(1);
             done();
         });
-        dict[AlgorithmEvents.Create](AlgorithmEvents.Create, 
-            { id: 1 }    
+        dict[AlgorithmEvents.Create](AlgorithmEvents.Create,
+            { id: 1 }
         );
     });
-    
+
+    it('create twice should call only once', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        service.algorithmsChanged.subscribe(myFunc);
+        dict[AlgorithmEvents.Create](AlgorithmEvents.Create,
+            { id: 1 }
+        );
+        dict[AlgorithmEvents.Create](AlgorithmEvents.Create,
+            { id: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
     it('create should call create subect', (done) => {
         service.algorithmCreated.subscribe((value) => {
             expect(value.id).toBe(1);
             done();
         });
-        dict[AlgorithmEvents.Create](AlgorithmEvents.Create, 
-            { id: 1 }    
+        dict[AlgorithmEvents.Create](AlgorithmEvents.Create,
+            { id: 1 }
         );
     });
 
-    it('delete event should call delete subject', (done) => {
-        dict[AlgorithmEvents.Create](AlgorithmEvents.Create, 
-            { id: 1 }    
+    it('delete event should call delete once subject', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        dict[AlgorithmEvents.Create](AlgorithmEvents.Create,
+            { id: 1 }
         );
-        service.algorithmDeleted.subscribe((value) => {
-            expect(value).toBe(1);
-            done();
-        });
-        dict[AlgorithmEvents.Delete](AlgorithmEvents.Delete, 
-            1    
+        service.algorithmDeleted.subscribe(myFunc);
+        dict[AlgorithmEvents.Delete](AlgorithmEvents.Delete,
+            1
         );
+        dict[AlgorithmEvents.Delete](AlgorithmEvents.Delete,
+            1
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
     });
 
-    
+
     it('delete event should call change subject', (done) => {
-        dict[AlgorithmEvents.Create](AlgorithmEvents.Create, 
-            { id: 1 }    
+        dict[AlgorithmEvents.Create](AlgorithmEvents.Create,
+            { id: 1 }
         );
         service.algorithmsChanged.subscribe((value) => {
             expect(value.length).toBe(0);
             done();
         });
-        dict[AlgorithmEvents.Delete](AlgorithmEvents.Delete, 
-            1    
+        dict[AlgorithmEvents.Delete](AlgorithmEvents.Delete,
+            1
         );
     });
 
@@ -104,8 +122,8 @@ describe('Angular App Algorithm Service', () => {
     });
 
     it('get should return algorithm', () => {
-        dict[AlgorithmEvents.Create](AlgorithmEvents.Create, 
-            { id: 1, experimentId: 1 }    
+        dict[AlgorithmEvents.Create](AlgorithmEvents.Create,
+            { id: 1, experimentId: 1 }
         );
         const algorithm = service.get(1);
         expect(algorithm.experimentId).toBe(1);
@@ -119,6 +137,30 @@ describe('Angular App Algorithm Service', () => {
         service.delete(1);
     });
 
+    it('update event should call algorithm changed when not found', (done) => {
+        service.algorithmsChanged.subscribe((value) => {
+            expect(value.length).toBe(1);
+            done();
+        });
+        dict[AlgorithmEvents.Update](AlgorithmEvents.Update,
+            { id: 1 }
+        );
+    });
+    
+    it('update event should call algorithm update when found', (done) => {
+        dict[AlgorithmEvents.Create](AlgorithmEvents.Create,
+            { id: 1 }
+        );
+        service.algorithmUpdated.subscribe((value) => {
+            expect(value.id).toBe(1);
+            expect(value.name).toBe('new name');
+            done();
+        });
+        dict[AlgorithmEvents.Update](AlgorithmEvents.Update,
+            { id: 1, name: 'new name' }
+        );
+    });
+
     it('update should call messegner', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id, name, time) => {
             expect(event).toBe(AlgorithmEvents.Update);
@@ -129,7 +171,7 @@ describe('Angular App Algorithm Service', () => {
         });
         service.update(1, 'name', 200);
     });
-    
+
     it('start should call messegner', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id) => {
             expect(event).toBe(AlgorithmEvents.Start);
@@ -138,7 +180,7 @@ describe('Angular App Algorithm Service', () => {
         });
         service.start(1);
     });
-    
+
     it('stop should call messegner', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id) => {
             expect(event).toBe(AlgorithmEvents.Stop);
@@ -147,7 +189,7 @@ describe('Angular App Algorithm Service', () => {
         });
         service.stop(1);
     });
-    
+
     it('export should call messegner', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id, language) => {
             expect(event).toBe(AlgorithmEvents.Export);
@@ -159,7 +201,7 @@ describe('Angular App Algorithm Service', () => {
     });
 
 
-    
+
 
 });
 

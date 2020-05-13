@@ -26,6 +26,8 @@
     "build:shortcuts": "copy default.shortcuts.json dist\\app.shortcuts.json",
     "build:jsons": "npm run build:settings && npm run build:themes && npm run build:user && npm run build:shortcuts",
     "build:prod": "npm run clean:dist && npm run build:elc && npm run build:ang:prod && npm run build:jsons",
+    "cov:ang": "ng test --code-coverage",
+    "cov:elc": "karma start electron-karma.conf.js",
     "start": "electron . --dev",
     "clean:test": "rmdir /q /s test || exit 0",
     "clean:dist": "rmdir /q /s dist || exit 0",
@@ -62,7 +64,7 @@
       "icon": "./src/data-science-lab-icon.png",
       "category": "Science",
       "target": [
-        "AppImage"
+        "deb"
       ]
     },
     "nsis": {
@@ -102,14 +104,18 @@
     "codelyzer": "^5.0.0",
     "electron": "^6.0.10",
     "electron-builder": "^22.3.2",
+    "jasmine": "^3.5.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "jasmine-ts-console-reporter": "^3.1.1",
     "karma": "~4.1.0",
+    "karma-cli": "^2.0.0",
+    "karma-coverage": "^2.0.2",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "karma-typescript": "^5.0.2",
     "ngx-md": "^8.1.6",
     "protractor": "~5.4.0",
     "rxjs": "~6.4.0",

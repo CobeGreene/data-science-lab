@@ -19,6 +19,10 @@ describe('Angular App Dataset Service', () => {
         service = new AppDatasetService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
     });
@@ -59,7 +63,7 @@ describe('Angular App Dataset Service', () => {
         );
     });
     
-    it('create should call create subect', (done) => {
+    it('create should call create subject', (done) => {
         service.datasetCreated.subscribe((value) => {
             expect(value.id).toBe(1);
             done();
@@ -68,6 +72,34 @@ describe('Angular App Dataset Service', () => {
             { id: 1 }    
         );
     });
+
+    it('create twice should call only once', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        service.datasetsChanged.subscribe(myFunc);
+        dict[DatasetEvents.Create](DatasetEvents.Create,
+            { id: 1 }
+        );
+        dict[DatasetEvents.Create](DatasetEvents.Create,
+            { id: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    it('delete event should call delete once subject', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        dict[DatasetEvents.Create](DatasetEvents.Create,
+            { id: 1 }
+        );
+        service.datasetDeleted.subscribe(myFunc);
+        dict[DatasetEvents.Delete](DatasetEvents.Delete,
+            1
+        );
+        dict[DatasetEvents.Delete](DatasetEvents.Delete,
+            1
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
 
     it('delete event should call delete subject', (done) => {
         dict[DatasetEvents.Create](DatasetEvents.Create, 
@@ -81,6 +113,31 @@ describe('Angular App Dataset Service', () => {
             1    
         );
     });
+
+    it('update event should call dataset changed when not found', (done) => {
+        service.datasetsChanged.subscribe((value) => {
+            expect(value.length).toBe(1);
+            done();
+        });
+        dict[DatasetEvents.Update](DatasetEvents.Update,
+            { id: 1 }
+        );
+    });
+    
+    it('update event should call dataset update when found', (done) => {
+        dict[DatasetEvents.Create](DatasetEvents.Create,
+            { id: 1 }
+        );
+        service.datasetUpdated.subscribe((value) => {
+            expect(value.id).toBe(1);
+            expect(value.name).toBe('new name');
+            done();
+        });
+        dict[DatasetEvents.Update](DatasetEvents.Update,
+            { id: 1, name: 'new name' }
+        );
+    });
+
 
     
     it('delete event should call change subject', (done) => {
@@ -156,6 +213,15 @@ describe('Angular App Dataset Service', () => {
             done();
         });
         service.join([]);
+    });
+    
+    it('show should call messegner', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event, id) => {
+            expect(event).toBe(DatasetEvents.Show);
+            expect(id).toBe(1);
+            done();
+        });
+        service.show(1);
     });
     
     it('rename feature should call messegner', (done) => {

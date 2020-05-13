@@ -6,7 +6,9 @@ import { AppCloseEvent } from '../../../../shared/events';
 @Injectable()
 export class AppCloseService extends CloseService {
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
+
+        this.registerEvents();
     }
     registerEvents() {
 

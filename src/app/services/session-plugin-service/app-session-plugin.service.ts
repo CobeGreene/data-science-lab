@@ -9,7 +9,7 @@ export class AppSessionPluginService extends SessionPluginService {
     private plugins: SessionPlugin[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.plugins = [];
         this.registerEvents();

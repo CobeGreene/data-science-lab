@@ -30,6 +30,21 @@ describe('Angular App Overlay Service', () => {
         };
         service.register(component);
     });
+
+    it('register should call close with a component already register', () => {
+        const component = jasmine.createSpyObj('OverlayComponent', ['close']);
+        service.register(component);
+        const component2 = jasmine.createSpyObj('OverlayComponent', ['close']);
+        service.register(component2);
+        expect(component.close).toHaveBeenCalledTimes(1);
+    });
+
+    it('focusChanged should not call close when focus is overlay', () => {
+        const component = jasmine.createSpyObj('OverlayComponent', ['close']);
+        service.register(component);
+        focusService.focusChanged.next(FocusAreas.Overlay);
+        expect(component.close).toHaveBeenCalledTimes(0);
+    });
     
     it('should close component when requested to close', () => {
         const component = jasmine.createSpyObj('OverlayComponent', ['close']);

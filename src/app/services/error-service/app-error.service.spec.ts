@@ -24,6 +24,10 @@ describe('Angular App Error Service', () => {
         service = new AppErrorService(messenger, new MockZone({}), notificationService);
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('error event should push error instance', () => {
         dict[ErrorEvent](ErrorEvent, 
             new Error('error')

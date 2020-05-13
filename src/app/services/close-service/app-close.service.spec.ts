@@ -13,6 +13,10 @@ describe('Angular App Close Service', () => {
         service = new AppCloseService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('close should call publish', () => {
         service.close();
         expect(messenger.publish).toHaveBeenCalledTimes(1);

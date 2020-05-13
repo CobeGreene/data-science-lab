@@ -18,6 +18,10 @@ describe('Angular App Shortcut Service', () => {
         service = new AppShortcutService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
         expect(messenger.publish).toHaveBeenCalledWith(ShortcutEvents.All);
@@ -231,6 +235,33 @@ describe('Angular App Shortcut Service', () => {
         service.subscribe('arrowup', spy);
         service.run('arrowup');
         expect(spy).toHaveBeenCalledTimes(1);
+    });
+    
+    it('unsubscribe should do nothing if there isnt an observer', () => {
+        const spy = jasmine.createSpy('func');
+        service.unsubscribe('arrowup', spy);
+        expect().nothing();
+    });
+    
+    it('unsubscribe should do nothing action wasnt present', () => {
+        const spy = jasmine.createSpy('func');
+        const spy2 = jasmine.createSpy('func2');
+        service.subscribe('arrowup', spy);
+        service.unsubscribe('arrowup', spy2);
+        expect().nothing();
+    });
+
+    it('expect nothing if no shortcut present', () => {
+        dict[ShortcutEvents.All](ShortcutEvents.All, [
+            {
+                key: 'my.shortcut',
+                label: 'My Shortcut',
+                value: 'ctrl + keya',
+                default: 'ctrl + keya'
+            }
+        ]);
+        service.run('ctrl + keya');
+        expect().nothing();
     });
 
 });

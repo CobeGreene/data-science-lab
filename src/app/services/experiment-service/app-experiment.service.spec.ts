@@ -19,6 +19,10 @@ describe('Angular App Experiment Service', () => {
         service = new AppExperimentService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
     });
@@ -41,6 +45,36 @@ describe('Angular App Experiment Service', () => {
         dict[ExperimentEvents.Create](ExperimentEvents.Create, { id: 1 });
     });
 
+
+    
+    it('create twice should call only once', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        service.experimentCreated.subscribe(myFunc);
+        dict[ExperimentEvents.Create](ExperimentEvents.Create,
+            { id: 1 }
+        );
+        dict[ExperimentEvents.Create](ExperimentEvents.Create,
+            { id: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    it('delete event should call delete once subject', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        dict[ExperimentEvents.Create](ExperimentEvents.Create,
+            { id: 1 }
+        );
+        service.experimentDeleted.subscribe(myFunc);
+        dict[ExperimentEvents.Delete](ExperimentEvents.Delete,
+            1
+        );
+        dict[ExperimentEvents.Delete](ExperimentEvents.Delete,
+            1
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+
     it('should call change subject when create', (done) => {
         service.experimentsChanged.subscribe((value) => {
             expect(value.length).toBe(1);
@@ -48,13 +82,23 @@ describe('Angular App Experiment Service', () => {
         });
         dict[ExperimentEvents.Create](ExperimentEvents.Create, { id: 1 });
     });
-    
+
     it('should call loaded subject when loaded', (done) => {
         service.experimentLoaded.subscribe((value) => {
             expect(value.id).toBe(1);
             done();
         });
         dict[ExperimentEvents.Load](ExperimentEvents.Load, { id: 1 });
+    });
+    
+    it('should call loaded when found', (done) => {
+        dict[ExperimentEvents.Load](ExperimentEvents.Load, { id: 1 });
+        service.experimentLoaded.subscribe((value) => {
+            expect(value.id).toBe(1);
+            done();
+        });
+        dict[ExperimentEvents.Load](ExperimentEvents.Load, { id: 1 });
+
     });
 
     it('should call change subject when loaded', (done) => {
@@ -82,7 +126,7 @@ describe('Angular App Experiment Service', () => {
         });
         dict[ExperimentEvents.Delete](ExperimentEvents.Delete, 1);
     });
-    
+
     it('should call change subject when update without existing', (done) => {
         service.experimentsChanged.subscribe((value) => {
             expect(value.length).toBe(1);
@@ -90,7 +134,7 @@ describe('Angular App Experiment Service', () => {
         });
         dict[ExperimentEvents.Update](ExperimentEvents.Update, { id: 1 });
     });
-    
+
     it('should call update subject when update', (done) => {
         dict[ExperimentEvents.Create](ExperimentEvents.Create, { id: 1, title: 'Title' });
         service.experimentUpdated.subscribe((value) => {
@@ -104,7 +148,7 @@ describe('Angular App Experiment Service', () => {
     it('should be empty when all', () => {
         expect(service.all().length).toBe(0);
     });
-    
+
     it('should have one when all', () => {
         dict[ExperimentEvents.Create](ExperimentEvents.Create, { id: 1 });
         expect(service.all().length).toBe(1);
@@ -140,8 +184,21 @@ describe('Angular App Experiment Service', () => {
         });
         service.delete(1);
     });
+
     
-    
+    it('should call publish when creating', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event, name, desc) => {
+            expect(event).toBe(ExperimentEvents.Create);
+            expect(name).toBe('Name');
+            expect(desc).toBe('Desc');
+            done();
+        });
+        service.create('Name', 'Desc');
+    });
+
+
+
+
     it('should call publish when loading', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id) => {
             expect(event).toBe(ExperimentEvents.Load);
@@ -151,8 +208,4 @@ describe('Angular App Experiment Service', () => {
         service.load(1);
     });
 
-    afterEach(() => {
-        service.unregisterEvents();
-        service.destorySubjects();
-    });
 });

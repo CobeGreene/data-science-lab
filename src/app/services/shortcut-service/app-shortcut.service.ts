@@ -13,7 +13,7 @@ export class AppShortcutService extends ShortcutService {
     private isWatchMode: boolean;
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.observers = { };
         this.isWatchMode = false;

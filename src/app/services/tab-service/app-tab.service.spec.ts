@@ -679,6 +679,26 @@ describe('Angular App Tab Service', () => {
         expect(sub.unsubscribe).toHaveBeenCalledTimes(1);
     });
 
+    it('close should call unsubscribe on a list of subs on tab', () => {
+        const sub = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+        const sub2 = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+
+        service.openTab({
+            route: '/route1',
+            name: 'Name'
+        });
+        service.openTab({
+            route: '/route2',
+            name: 'Name 2',
+            sub: [sub, sub2]
+        });
+
+        service.closeAll();
+
+        expect(sub.unsubscribe).toHaveBeenCalledTimes(1);
+        expect(sub2.unsubscribe).toHaveBeenCalledTimes(1);
+    });
+
 
 
 

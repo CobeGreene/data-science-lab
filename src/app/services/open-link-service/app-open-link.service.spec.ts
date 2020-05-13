@@ -13,6 +13,10 @@ describe('Angular App Open Link Service', () => {
         service = new AppOpenLinkService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('open should call publish', () => {
         service.open('link');
         expect(messenger.publish).toHaveBeenCalledTimes(1);

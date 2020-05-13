@@ -9,7 +9,7 @@ import { SystemError, PackageError } from '../../../../shared/errors';
 export class AppErrorService extends ErrorService {
 
     constructor(messenger: Messenger, zone: NgZone, private notificationService: NotificationService) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.registerEvents();
     }

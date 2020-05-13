@@ -11,7 +11,7 @@ export class AppPackageService extends PackageService {
     private features: Package[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.packages = [];
         this.features = [];

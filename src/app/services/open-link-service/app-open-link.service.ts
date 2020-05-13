@@ -7,7 +7,9 @@ import { Messenger } from '../messenger';
 export class AppOpenLinkService extends OpenLinkService {
     
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
+
+        this.registerEvents();
     }
 
     registerEvents() {

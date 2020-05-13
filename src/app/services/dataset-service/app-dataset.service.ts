@@ -9,7 +9,7 @@ export class AppDatasetService extends DatasetService {
     private datasets: Dataset[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.datasets = [];
         this.registerEvents();
