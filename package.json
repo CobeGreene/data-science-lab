@@ -59,10 +59,11 @@
       "icon": "./src/data-science-lab-icon.ico"
     },
     "linux": {
+      "icon": "./src/data-science-lab-icon.png",
+      "category": "Science",
       "target": [
         "AppImage"
-      ],
-      "icon": "./src/data-science-lab-icon.ico"
+      ]
     },
     "nsis": {
       "runAfterFinish": true,
