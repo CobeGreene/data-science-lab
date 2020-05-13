@@ -17,7 +17,7 @@
         </div>
         <div *ngIf="editMode">
             <app-modal-header [header]="'Update Experiment'"></app-modal-header>
-            <form name="form" #updateForm="ngForm" (ngSubmit)="updateForm.form.valid && onSubmit($event, updateForm)"
+            <form name="form" #updateForm="ngForm" (ngSubmit)="updateForm.form.valid && onSubmit($event)"
                 novalidate>
                 <div class="m-0 mb-4">
                     <input class="w-100 accent3 input-xlg" tabindex="1" placeholder="Enter title here" name="title"

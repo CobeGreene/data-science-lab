@@ -1,7 +1,7 @@
 <ng-template #overlayCmp>
     <div class="modal">
         <app-modal-header [header]="'Rename Visual'"></app-modal-header>
-        <form name="form" #renameForm="ngForm" (ngSubmit)="renameForm.valid && onSubmit($event, renameForm)">
+        <form name="form" #renameForm="ngForm" (ngSubmit)="renameForm.valid && onSubmit($event)">
             <div class="m-0 mb-4">
                 <input class="w-100 accent3 input-xlg" placeholder="Enter name here" name="name"
                     [(ngModel)]="visual.name" #name="ngModel" type="text" required minlength="1" maxlength="60">

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Session, AlgorithmTracker, TrackerVariable } from '../../../../../../shared/models';
+import { Session, AlgorithmTracker, TrackerVariable, SessionPlugin } from '../../../../../../shared/models';
 import { RouterService } from '../../../../services/router-service';
 import { TrackerService } from '../../../../services/tracker-service';
 import { AlgorithmVisualSessionService } from '../../../../session-services/algorithm-visual-session-service';
@@ -15,6 +15,7 @@ export class AlgorithmInputsVisualizeComponent implements OnInit, OnDestroy {
   tracker: AlgorithmTracker;
   features: TrackerVariable[];
   session: Session;
+  plugin: SessionPlugin;
 
   constructor(
     private routerService: RouterService,
@@ -25,6 +26,8 @@ export class AlgorithmInputsVisualizeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.routerService.data().sessionId;
     this.session = this.sessionService.get(this.id);
+    this.plugin = this.session.plugin as SessionPlugin;
+
     this.tracker = this.trackerService.get(this.session.keyId);
     this.features = this.session.selectedFeatures.filter(value => value > 0).map(value => this.tracker.variables[value - 1]);
     if (this.session.selectedFeatures.indexOf(0) >= 0) {
@@ -39,6 +42,7 @@ export class AlgorithmInputsVisualizeComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.id = this.routerService.data().sessionId;
         this.session = this.sessionService.get(this.id);
+        this.plugin = this.session.plugin as SessionPlugin;
         this.tracker = this.trackerService.get(this.session.keyId);
         this.features = this.session.selectedFeatures.filter(value => value > 0).map(value => this.tracker.variables[value - 1]);
         if (this.session.selectedFeatures.indexOf(0) >= 0) {

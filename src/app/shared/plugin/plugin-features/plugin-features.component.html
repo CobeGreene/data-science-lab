@@ -11,7 +11,7 @@
         Select which <strong>features / variables</strong> you want to use on a plugin. 
     </p>
 </div>
-<div class="features" (mouseup)="onMouseUp()" (mouseover)="onMouseOver($event, i)" (mouseleave)="onMouseLeave()" (mousedown)="onMouseDown($event, -1)">
+<div class="features" (mouseup)="onMouseUp()" (mouseover)="onMouseOver($event, -1)" (mouseleave)="onMouseLeave()" (mousedown)="onMouseDown($event, -1)">
     <ng-container *ngFor="let feature of features; let i = index">
         <app-object-card class="pointer" [object]="feature" (mouseover)="onMouseOver($event, i)" (mousedown)="onMouseDown($event, i)" #featureCmp></app-object-card>
     </ng-container>

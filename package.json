@@ -1,6 +1,6 @@
 {
   "name": "data-science-lab",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "dist/electron/main.js",
   "author": {
     "name": "Cobe Greene",
@@ -15,18 +15,21 @@
     "test:elc": "npm run build:elc:test && npm run jasmine:elc && npm run clean:test",
     "jasmine:elc": "jasmine --config=./electron/spec/support/jasmine.json || exit 0",
     "build:ang": "ng build --base-href ./",
+    "build:ang:prod": "ng build --prod",
     "build:elc:test": "tsc --p tsconfig.electron.spec.json",
     "build:elc": "tsc --p tsconfig.electron.json",
     "build:all": "npm run build:elc && npm run build:ang",
     "build:start": "npm run build:all && npm run start",
     "build:settings": "copy default.settings.json dist\\app.settings.json",
-    "build:themes": "xcopy /I default-theme dist\\app-themes",
+    "build:themes": "xcopy /I default-theme dist\\app-themes /Y",
     "build:user": "copy default.user-setting.json dist\\app.user-setting.json",
     "build:shortcuts": "copy default.shortcuts.json dist\\app.shortcuts.json",
     "build:jsons": "npm run build:settings && npm run build:themes && npm run build:user && npm run build:shortcuts",
+    "build:prod": "npm run clean:dist && npm run build:elc && npm run build:ang:prod && npm run build:jsons",
     "start": "electron . --dev",
     "clean:test": "rmdir /q /s test || exit 0",
-    "clean:dist": "rmdir /s dist || exit 0",
+    "clean:dist": "rmdir /q /s dist || exit 0",
+    "clean:release": "rmdir /q /s release || exit 0",
     "clean:plugins": "rmdir /s dist\\plugins_packages || exit 0",
     "clean:all": "npm run clean:test && npm run clean:dist",
     "clean": "npm run clean:all",
@@ -35,7 +38,8 @@
     "travis": "npm run travis:elc && npm run travis:ang",
     "travis:elc": "npm run build:elc:test && jasmine --config=./electron/spec/support/jasmine.json",
     "travis:ang": "ng test --watch=false --browsers=ChromeHeadless",
-    "builder": "electron-builder"
+    "release:win": "electron-builder --win",
+    "release:linux": "electron-builder --linux"
   },
   "build": {
     "appId": "com.data-science-lab.app",
@@ -51,6 +55,12 @@
     "win": {
       "target": [
         "nsis"
+      ],
+      "icon": "./src/data-science-lab-icon.ico"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
       ],
       "icon": "./src/data-science-lab-icon.ico"
     },

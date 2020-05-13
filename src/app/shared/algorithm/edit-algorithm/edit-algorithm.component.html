@@ -1,7 +1,7 @@
 <ng-template #overlayCmp>
     <div class="modal">
         <app-modal-header [header]="'Edit Algorithm'"></app-modal-header>
-        <form name="form" #editForm="ngForm" (ngSubmit)="editForm.form.valid && onSubmit($event, editForm)" novalidate>
+        <form name="form" #editForm="ngForm" (ngSubmit)="editForm.form.valid && onSubmit($event)" novalidate>
             <div class="m-0 mb-4">
                 <input class="w-100 accent3 input-xlg" placeholder="Enter name here" name="name"
                     [(ngModel)]="algorithm.name" #name="ngModel" type="text" required minlength="1" maxlength="60">

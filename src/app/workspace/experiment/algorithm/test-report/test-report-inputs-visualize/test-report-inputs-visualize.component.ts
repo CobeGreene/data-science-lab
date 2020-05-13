@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Feature, Session, TestReport, TestReportSession } from '../../../../../../../shared/models';
+import { Feature, Session, TestReport, TestReportSession, SessionPlugin } from '../../../../../../../shared/models';
 import { RouterService } from '../../../../../services/router-service';
 import { TestReportService } from '../../../../../services/test-report-service';
 import { TestReportVisualSessionService } from '../../../../../session-services/test-report-visual-session-service';
@@ -15,6 +15,7 @@ export class TestReportInputsVisualizeComponent implements OnInit, OnDestroy {
   report: TestReport;
   features: Feature[];
   session: Session;
+  plugin: SessionPlugin;
 
   constructor(
     private routerService: RouterService,
@@ -25,6 +26,7 @@ export class TestReportInputsVisualizeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.routerService.data().sessionId;
     this.session = this.sessionService.get(this.id);
+    this.plugin = this.session.plugin as SessionPlugin;
     this.report = this.reportService.get(this.session.keyId);
     this.features = this.session.selectedFeatures.map(value => this.report.features[value]);
 
@@ -33,6 +35,7 @@ export class TestReportInputsVisualizeComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.id = this.routerService.data().sessionId;
         this.session = this.sessionService.get(this.id);
+        this.plugin = this.session.plugin as SessionPlugin;
         this.report = this.reportService.get(this.session.keyId);
         this.features = this.session.selectedFeatures.map(value => this.report.features[value]);
       });

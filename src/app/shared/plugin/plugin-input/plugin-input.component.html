@@ -58,8 +58,8 @@
                         {{ inputs[current].max }}</ng-container>
                 </p>
                 <div>
-                    <ng-container *ngFor="let i of inputDict[inputs[current].id];">
-                        <app-object-card [object]="features[i]" (click)="onUnselect($event, $index)">
+                    <ng-container *ngFor="let i of inputDict[inputs[current].id]; let tempIndex = index">
+                        <app-object-card [object]="features[i]" (click)="onUnselect($event, tempIndex)">
                         </app-object-card>
                     </ng-container>
                 </div>

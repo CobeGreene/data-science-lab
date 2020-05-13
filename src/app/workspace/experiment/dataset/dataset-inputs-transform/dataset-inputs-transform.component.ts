@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Dataset, Feature, Session } from '../../../../../../shared/models';
+import { Dataset, Feature, Session, SessionPlugin } from '../../../../../../shared/models';
 import { RouterService } from '../../../../services/router-service';
 import { DatasetService } from '../../../../services/dataset-service';
 import { TransformSessionService } from '../../../../session-services/transform-session-service';
@@ -15,6 +15,7 @@ export class DatasetInputsTransformComponent implements OnInit, OnDestroy {
   dataset: Dataset;
   features: Feature[];
   session: Session;
+  plugin: SessionPlugin;
 
   constructor(
     private routerService: RouterService,
@@ -25,6 +26,7 @@ export class DatasetInputsTransformComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.routerService.data().sessionId;
     this.session = this.transformSessionService.get(this.id);
+    this.plugin = this.session.plugin as SessionPlugin;
     this.dataset = this.datasetService.get(this.session.keyId);
     this.features = this.session.selectedFeatures.map(value => this.dataset.features[value]);
 
@@ -33,6 +35,7 @@ export class DatasetInputsTransformComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.id = this.routerService.data().sessionId;
         this.session = this.transformSessionService.get(this.id);
+        this.plugin = this.session.plugin as SessionPlugin;
         this.dataset = this.datasetService.get(this.session.keyId);
         this.features = this.session.selectedFeatures.map(value => this.dataset.features[value]);
       });
