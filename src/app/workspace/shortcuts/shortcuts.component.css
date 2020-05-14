@@ -1,0 +1,39 @@
+:host() {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    min-width: 600px !important;
+}
+
+
+.table {
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: center;
+    background: var(--shortcut-table-th);
+}
+
+.table td {
+    text-align: center;
+}
+
+.table tr:nth-child(even) {
+    background-color: var(--shortcut-table-tr-even);
+}
+
+.table tr.selected {
+    background-color: var(--shortcut-table-tr-selected);
+}
+
+.table tr.faded {
+    background-color: var(--shortcut-table-tr-faded);
+}
+
+.table tr:hover {
+    background-color: var(--shortcut-table-tr-hover);
+}

@@ -11,7 +11,7 @@ export class AppUserSettingService extends UserSettingService {
     private settings: Setting[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone) /* istanbul ignore next */;
         this.settings = [];
 
         this.registerEvents();

@@ -3,6 +3,7 @@ import { ThemeDataService } from '../../data-services/theme-data-service';
 import { Producer } from '../../pipeline';
 import { ThemeServiceModel } from './theme.sm';
 import { ThemeEvents } from '../../../../shared/events';
+import { Settings } from '../../../../shared/settings';
 
 
 describe('Electron Theme Service Model', () => {
@@ -11,7 +12,8 @@ describe('Electron Theme Service Model', () => {
     let dataService: ThemeDataService;
     let producer: Producer;
 
-    beforeAll(() => {
+    
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.ThemeDataService) {
@@ -19,11 +21,8 @@ describe('Electron Theme Service Model', () => {
             } 
             throw new Error(`Couldn't resolve type ${type}.`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
-        dataService = jasmine.createSpyObj('ThemeDataService', ['current']);
+        dataService = jasmine.createSpyObj('ThemeDataService', ['current', 'switch']);
         serviceModel = new ThemeServiceModel(serviceContainer, producer);
     });
 
@@ -44,6 +43,34 @@ describe('Electron Theme Service Model', () => {
         });
         
         serviceModel.current();
+    });
+
+    it('update should set value in data service', () => {
+        (dataService.switch as jasmine.Spy).and.returnValue({});
+        serviceModel.update({
+            key: Settings.ColorTheme,
+            default: '',
+            value: 'value',
+            description: '',
+            title: '',
+        });
+        expect(dataService.switch).toHaveBeenCalledTimes(1);
+        expect(dataService.switch).toHaveBeenCalledWith('value');
+        expect(producer.send).toHaveBeenCalledTimes(1);
+        expect(producer.send).toHaveBeenCalledWith(ThemeEvents.Current, {});
+    });
+    
+    it('update should do nothing', () => {
+        (dataService.switch as jasmine.Spy).and.returnValue({});
+        serviceModel.update({
+            key: 'nothing',
+            default: '',
+            value: 'value',
+            description: '',
+            title: '',
+        });
+        expect(dataService.switch).toHaveBeenCalledTimes(0);
+        expect(producer.send).toHaveBeenCalledTimes(0);
     });
 
 

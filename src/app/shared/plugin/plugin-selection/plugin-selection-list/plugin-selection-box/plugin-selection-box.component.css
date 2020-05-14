@@ -3,3 +3,15 @@
     z-index: 1;
     background-color: transparent;
 }
+
+:host(.plugin-accent1) text { fill: var(--accent1); }
+:host(.plugin-accent3) text { fill: var(--accent3); }
+:host(.plugin-accent4) text { fill: var(--accent4); }
+:host(.plugin-accent5) text { fill: var(--accent5); }
+:host(.plugin-accent6) text { fill: var(--accent6); }
+
+:host(.plugin-accent1) path { fill: var(--accent1); stroke: var(--accent1); }
+:host(.plugin-accent3) path { fill: var(--accent3); stroke: var(--accent3); }
+:host(.plugin-accent4) path { fill: var(--accent4); stroke: var(--accent4); }
+:host(.plugin-accent5) path { fill: var(--accent5); stroke: var(--accent5); }
+:host(.plugin-accent6) path { fill: var(--accent6); stroke: var(--accent6); }

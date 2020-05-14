@@ -27,8 +27,7 @@
               "node_modules/font-awesome/css/font-awesome.min.css",
               "src/styles.css"
             ],
-            "scripts": [
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -86,6 +85,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
+            "codeCoverageExclude": ["src/app/services/notification-service/**/*", "src/app/shared/notification/**/*"],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -123,6 +123,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "data-science-lab-app"
 }

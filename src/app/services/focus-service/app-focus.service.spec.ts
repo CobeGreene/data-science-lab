@@ -26,6 +26,14 @@ describe('Angular App Focus Service', () => {
         service.set(FocusAreas.Sidebar);
     });
 
+    it('set should not call focus changed when equal', () => {
+        service.set(FocusAreas.Sidebar);
+        const myFunc = jasmine.createSpy('MyFunc');
+        service.focusChanged.subscribe(myFunc);
+        service.set(FocusAreas.Sidebar);
+        expect(myFunc).toHaveBeenCalledTimes(0);
+    });
+
     it('pop should reset to workspace', () => {
         service.set(FocusAreas.Sidebar);
         service.pop();

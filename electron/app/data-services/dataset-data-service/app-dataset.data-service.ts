@@ -54,6 +54,17 @@ export class AppDatasetDataService extends Service implements DatasetDataService
         return this.datasets.filter((value) => value.experimentId === experimentId);
     }
 
+    allView(): Dataset[];
+    // tslint:disable-next-line: unified-signatures
+    allView(experimentId: number): Dataset[];
+    allView(experimentId?: number): Dataset[] {
+        if (experimentId === undefined) {
+            return this.datasets.map((value) => this.toView(value));
+        }
+        return this.datasets.filter((value) => value.experimentId === experimentId).map((value) => this.toView(value));
+    }
+
+
     create(experimentId: number, data: PluginData): number[] {
         const datasets = this.converter.convert(data);
 
@@ -87,7 +98,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
                     name: value.name,
                     examples: value.examples,
                     experimentId: value.experimentId,
-                    previewExamples: defaultPreview,
+                    previewExamples: (defaultPreview < value.examples) ? defaultPreview : value.examples,
                     features: (value.features as Array<any>).map((feature) => ({
                         name: feature.name,
                         type: feature.type,
@@ -138,25 +149,29 @@ export class AppDatasetDataService extends Service implements DatasetDataService
 
     view(id: number): Dataset {
         const obj = this.get(id);
-        const features = obj.features.map(value => ({
+        return this.toView(obj);
+    }
+
+    toView(dataset: DatasetObject) {
+        const features = dataset.features.map(value => ({
             name: value.name,
             type: value.type
         }));
 
         const previewExamples: any[][] = [];
 
-        for (let example = 0; example < obj.previewExamples; ++example) {
+        for (let example = 0; example < dataset.previewExamples; ++example) {
             previewExamples.push([]);
-            for (const feature of obj.features) {
+            for (const feature of dataset.features) {
                 previewExamples[example].push(feature.examples[example]);
             }
         }
 
         return {
-            id,
-            experimentId: obj.experimentId,
-            name: obj.name,
-            examples: obj.examples,
+            id: dataset.id,
+            experimentId: dataset.experimentId,
+            name: dataset.name,
+            examples: dataset.examples,
             features,
             previewExamples
         };
@@ -315,10 +330,10 @@ export class AppDatasetDataService extends Service implements DatasetDataService
                 }
             }
 
-            data[key] = new PluginData({
+            data[key] = {
                 features,
                 examples
-            });
+            };
         }
 
         return data;
@@ -327,10 +342,9 @@ export class AppDatasetDataService extends Service implements DatasetDataService
     transform(id: number, pluginData: PluginData[] | PluginData, features: number[]): { updateId: number, createIds: number[] } {
         const current = this.get(id);
 
-        if (!(pluginData instanceof Array)) {
+        if (!Array.isArray(pluginData)) {
             pluginData = [pluginData];
         }
-
         const setting = this.user.find(Settings.DatasetDefaultPreview);
         const defaultPreview = (setting === undefined) ? 10 : setting.value;
         const datasets: DatasetObject[] = [].concat(...pluginData.map(value => this.converter.convert(value)));
@@ -401,6 +415,7 @@ export class AppDatasetDataService extends Service implements DatasetDataService
 
         this.saveGenerator();
         return { updateId: current.id, createIds };
+
     }
 
 

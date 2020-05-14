@@ -34,5 +34,6 @@ export abstract class AlgorithmService extends Service {
     abstract update(id: number, name: string, time: number): void;
     abstract start(id: number): void;
     abstract stop(id: number): void;
+    abstract export(id: number, language: string): void;
 }
 

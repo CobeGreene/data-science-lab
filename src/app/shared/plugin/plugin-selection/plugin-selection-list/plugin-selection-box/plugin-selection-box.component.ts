@@ -51,9 +51,6 @@ export class PluginSelectionBoxComponent implements OnInit {
     return `#${this.getPathId()}`;
   }
 
-  getPathColor() {
-    return `${this.box.color}2F`;
-  }
 
 
   createPath(coords: { x: number, y: number }[], dim: { left: number, top: number }): string {

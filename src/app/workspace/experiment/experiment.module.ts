@@ -18,7 +18,11 @@ import {
     ExperimentCreateAlgorithmCardComponent
 } from './experiment-algorithms/experiment-create-algorithm-card/experiment-create-algorithm-card.component';
 import { ExperimentVisualsComponent } from './experiment-visuals/experiment-visuals.component';
-import { ExperimentVisualCardComponent } from './experiment-visuals/experiment-visual-card/experiment-visual-card.component';
+import { ExperimentVisualsMenuComponent } from './experiment-visuals/experiment-visuals-menu/experiment-visuals-menu.component';
+import { ExperimentVisualsGridComponent } from './experiment-visuals/experiment-visuals-grid/experiment-visuals-grid.component';
+import { ExperimentVisualsWorkspaceComponent } from './experiment-visuals/experiment-visuals-workspace/experiment-visuals-workspace.component';
+import { ExperimentVisualWorkspaceCardComponent } from './experiment-visuals/experiment-visuals-workspace/experiment-visual-workspace-card/experiment-visual-workspace-card.component';
+import { ExperimentVisualGridCardComponent } from './experiment-visuals/experiment-visuals-grid/experiment-visual-grid-card/experiment-visual-grid-card.component';
 
 @NgModule({
     declarations: [
@@ -34,7 +38,11 @@ import { ExperimentVisualCardComponent } from './experiment-visuals/experiment-v
         ExperimentAlgorithmCardComponent,
         ExperimentCreateAlgorithmCardComponent,
         ExperimentVisualsComponent,
-        ExperimentVisualCardComponent,
+        ExperimentVisualsMenuComponent,
+        ExperimentVisualsGridComponent,
+        ExperimentVisualsWorkspaceComponent,
+        ExperimentVisualWorkspaceCardComponent,
+        ExperimentVisualGridCardComponent
     ],
     imports: [
         CommonModule,

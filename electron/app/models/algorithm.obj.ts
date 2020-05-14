@@ -14,4 +14,5 @@ export interface AlgorithmObject {
     iteration: number;
     recorder?: AlgorithmRecorderService;
     trainer?: NodeJS.Timer;
+    takingStep: boolean;
 }

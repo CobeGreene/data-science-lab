@@ -1,6 +1,7 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy,  } from '@angular/core';
 import { OverlayService } from '../../../services/overlay-service';
 import { ShortcutService } from '../../../services/shortcut-service';
+import { Shortcuts } from '../../../../../shared/shortcuts';
 
 @Component({
   selector: 'app-modal-close',
@@ -17,11 +18,12 @@ export class ModalCloseComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.shortcutService.subscribe('escape', this.onClose);
+    this.shortcutService.subscribe(Shortcuts.Escape, this.onClose);
   }
 
+
   ngOnDestroy() {
-    this.shortcutService.unsubscribe('escape', this.onClose);
+    this.shortcutService.unsubscribe(Shortcuts.Escape, this.onClose);
   }
 
   onClose = () => {

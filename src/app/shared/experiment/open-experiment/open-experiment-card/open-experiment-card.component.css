@@ -1,0 +1,29 @@
+.container {
+    display: grid;
+    cursor: pointer;
+    grid-template-columns: auto min-content;
+    grid-template-rows: 1fr auto;
+    grid-template-areas: 'title date' 'desc desc';
+}
+
+.list-item-title {
+    grid-area: title;
+}
+
+.list-item-date {
+    grid-area: date;
+    text-align: right;
+}
+
+.list-item-desc {
+    grid-area: desc;
+}
+
+
+.container:hover {
+    background-color: var(--open-list-card-hover);
+}
+
+:host(.selected) > .container {
+    background-color: var(--open-list-card-selected);
+}

@@ -22,6 +22,10 @@ describe('Angular App Session Plugin Service', () => {
         service = new AppSessionPluginService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
     });

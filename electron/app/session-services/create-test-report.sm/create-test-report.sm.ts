@@ -8,6 +8,7 @@ import { TestReportDataService } from '../../data-services/test-report-data-serv
 import { SessionOptions, SessionState, TestReportSession, TestReport } from '../../../../shared/models';
 import { TestReportCreateEvents, TestReportEvents } from '../../../../shared/events';
 import { ErrorTypes } from '../../../../shared/errors';
+import { TestReportObject, FeatureObject } from '../../models';
 
 
 export class CreateTestReportServiceModel extends ServiceModel {
@@ -38,7 +39,7 @@ export class CreateTestReportServiceModel extends ServiceModel {
     }
 
     create(algorithmId: number, options: SessionOptions, returnPath?: string) {
-        const obj = this.algorithmService.get(algorithmId); 
+        const obj = this.algorithmService.get(algorithmId);
         const { input, output } = obj.algorithm.getTestingInputs();
         let session: TestReportSession = {
             id: 0,
@@ -81,40 +82,76 @@ export class CreateTestReportServiceModel extends ServiceModel {
         for (const pluginInput of input) {
             inputs[pluginInput.id] = inputDict[pluginInput.id];
         }
-        for (const pluginInput of output) {
-            outputs[pluginInput.id] = inputDict[pluginInput.id];
+        for (const pluginOutput of output) {
+            outputs[pluginOutput.id] = inputDict[pluginOutput.id];
         }
 
         const dataset = this.datasetService.get(session.datasetId);
         const inputData = this.datasetService.extract(session.datasetId, inputs, session.selectedFeatures);
         const outputData = this.datasetService.extract(session.datasetId, outputs, session.selectedFeatures);
-
         const examples = dataset.examples;
         let correct = 0;
         const total = examples || 0;
 
         const isTraining = obj.isTraining;
 
+        const expectedFeatures: FeatureObject[] = ([] as FeatureObject[]).concat(...output.map(value => {
+            return outputs[value.id].map(index => ({
+                name: `Expected ${dataset.features[index].name}`,
+                type: dataset.features[index].type,
+                examples: dataset.features[index].examples.slice()
+            }));
+        }));
+        let travelMapIndex = 0;
+        const actualFeaturesMapping: { [id: string]: number[] } = {};
+        const actualFeatures: FeatureObject[] = ([] as FeatureObject[]).concat(...output.map(value => {
+            actualFeaturesMapping[value.id] = [];
+            return outputs[value.id].map((index) => {
+                actualFeaturesMapping[value.id].push(travelMapIndex++);
+                return {
+                    name: `Actual ${dataset.features[index].name}`,
+                    type: dataset.features[index].type,
+                    examples: []
+                };
+            });
+        }));;
+        const correctFeature: FeatureObject = {
+            name: 'Correct',
+            type: 'number',
+            examples: []
+        };
+
         if (isTraining) {
             this.algorithmService.stop(session.algorithmId);
         }
 
         for (let i = 0; i < total; ++i) {
-            let testInputs = [];
+            let testInputs: { [id: string]: any[] } = {};
             input.forEach((value) => {
-                const thisInput = inputData[value.id].examples[i];
-                testInputs = testInputs.concat(thisInput);
+                testInputs[value.id] = inputData[value.id].examples[i];
             });
 
-            let expected = [];
+            let expected: { [id: string]: any[] } = {};
             output.forEach((value) => {
-                const thisOutput = outputData[value.id].examples[i];
-                expected = expected.concat(thisOutput);
+                expected[value.id] = outputData[value.id].examples[i];
             });
 
             const actual = obj.algorithm.test(testInputs);
 
-            if (JSON.stringify(actual) === JSON.stringify(expected)) {
+            const isCorrect = JSON.stringify(actual) === JSON.stringify(expected);
+
+            correctFeature.examples.push((isCorrect ? 1.0 : 0.0));
+
+            for (let key in actualFeaturesMapping) {
+                if (actualFeaturesMapping[key]) {
+                    actualFeaturesMapping[key].forEach((index, mapIndex) => {
+                        actualFeatures[index].examples.push(actual[key][mapIndex]);
+                    });
+                }
+            }
+
+
+            if (isCorrect) {
                 correct += 1;
             }
         }
@@ -123,21 +160,21 @@ export class CreateTestReportServiceModel extends ServiceModel {
             this.algorithmService.start(session.algorithmId);
         }
 
-        let report: TestReport = {
-            id: 0, 
+        let report: TestReportObject = {
+            id: 0,
             algorithmId: session.algorithmId,
             correct,
             total: examples,
             iteration: obj.iteration,
             datasetId: dataset.id,
-            datasetName: dataset.name,
+            features: [...expectedFeatures, ...actualFeatures, correctFeature],
             name: 'Test Report',
         };
 
         this.sessionService.delete(session.id);
         report = this.dataService.post(report);
-        
-        this.producer.send(TestReportEvents.Create, report);
+
+        this.producer.send(TestReportEvents.Create, this.dataService.view(report.id));
         this.producer.send(TestReportCreateEvents.Finish, id);
     }
 

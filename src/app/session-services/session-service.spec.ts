@@ -48,6 +48,10 @@ describe('Angular Session Service', () => {
         service = new MockSessionService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish create when creating', (done) => {
         (messenger.publish as jasmine.Spy).and.callFake((event, id, options) => {
             expect(event).toBe('Create');
@@ -89,6 +93,66 @@ describe('Angular Session Service', () => {
         });
         
         service.delete(1);
+    });
+
+    it('create twice should call only once', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        service.sessionCreated.subscribe(myFunc);
+        dict['Create']('Create',
+            { id: 1 }
+        );
+        dict['Create']('Create',
+            { id: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    
+    it('delete event should call delete once subject', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        dict['Create']('Create',
+            { id: 1 }
+        );
+        service.sessionDeleted.subscribe(myFunc);
+        dict['Delete']('Delete',
+            1
+        );
+        dict['Delete']('Delete',
+            1
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    it('update event should call session changed when not found', (done) => {
+        service.sessionUpdated.subscribe((value) => {
+            expect(value.id).toBe(1);
+            done();
+        });
+        dict['Update']('Update',
+            { id: 1 }
+        );
+    });
+    
+    it('update event should call session update when found', (done) => {
+        dict['Create']('Create',
+            { id: 1 }
+        );
+        service.sessionUpdated.subscribe((value) => {
+            expect(value.id).toBe(1);
+            done();
+        });
+        dict['Update']('Update',
+            { id: 1, name: 'new name' }
+        );
+    });
+
+    it('finish should not call if already finish', () => {
+        const myFunc = jasmine.createSpy('Func');
+        service.sessionFinished.subscribe(myFunc);
+        dict['Finish']('Finish',
+            { id: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(0);
     });
 
     it('delete should call subject deleted', (done) => {

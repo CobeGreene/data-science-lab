@@ -19,6 +19,10 @@ describe('Angular App Theme Service', () => {
         service = new AppThemeService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
     });

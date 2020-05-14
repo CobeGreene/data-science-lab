@@ -8,6 +8,6 @@ export interface PackageDataService {
     uninstall(pluginPackage: Package): Promise<Package>;
     find(plugin: Plugin): Package;
     read(name: string): Package;
-
+    has(name: string): boolean;
 }
 

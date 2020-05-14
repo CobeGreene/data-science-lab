@@ -1,12 +1,12 @@
-<button type="button" class="btn btn-accent6 m-1 p-1" (click)="onInstall()" *ngIf="!pluginPackage.install">
+<button type="button" class="btn btn-install m-1 p-1 ml-0" (click)="onInstall()" *ngIf="!pluginPackage.install">
     Install
 </button>
-<button type="button" class="btn btn-accent1 m-1 p-1" (click)="onUninstall()" *ngIf="pluginPackage.install">
+<button type="button" class="btn btn-uninstall m-1 p-1 ml-0" (click)="onUninstall()" *ngIf="pluginPackage.install">
     Uninstall
 </button>
-<button type="button" class="btn btn-accent3 m-1 p-1" (click)="onView()">
+<button type="button" class="btn btn-default m-1 p-1" (click)="onView()">
     View on Github
 </button>
-<button type="button" class="btn btn-accent1 m-1 p-1" (click)="onReport()">
+<button type="button" class="btn btn-default m-1 p-1" (click)="onReport()">
     Report Issues
 </button>

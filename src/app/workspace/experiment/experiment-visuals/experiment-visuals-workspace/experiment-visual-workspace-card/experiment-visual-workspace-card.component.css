@@ -1,0 +1,65 @@
+:host {
+    user-select: none;
+}
+
+.frame {
+    background: var(--experiment-visualization-frame-background);
+    pointer-events: none;
+}
+
+.container {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+}
+
+
+:host:hover .icon, :host:hover .name {
+    display: block;
+}
+
+.icon {
+    display: none;
+    position: absolute;
+    width: 0px;
+    z-index: 11;
+}
+
+.name {
+    display: none;
+    position: absolute;
+    width: 0px;
+    z-index: 11;
+}
+
+.name-body {
+    display: flex;
+    align-items: center;
+    background: var(--experiment-visualization-card-icon-body);
+}
+
+.icon-body {
+    border-radius: 50%;
+    background: var(--experiment-visualization-card-icon-body);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-body:hover {
+    background: var(--experiment-visualization-card-icon-body-hover);
+}
+
+.name-body:hover {
+    background: var(--experiment-visualization-card-icon-body-hover);
+}
+
+.edit {
+    align-self: flex-start;
+    opacity: 0.2;
+    transition: all 200ms ease-in-out;
+}
+
+.edit:hover {
+    opacity: 1.0;
+}

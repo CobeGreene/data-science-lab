@@ -3,16 +3,18 @@ import { Producer } from '../../pipeline';
 import { DatasetServiceModel } from './dataset.sm';
 import { DatasetDataService } from '../../data-services/dataset-data-service';
 import { DatasetEvents } from '../../../../shared/events';
+import { DatasetObject } from '../../models';
 
 
 
-describe('Elecron Dataset Service Model', () => {
+describe('Electron Dataset Service Model', () => {
     let serviceModel: DatasetServiceModel;
     let serviceContainer: ServiceContainer;
     let datasetService: DatasetDataService;
     let producer: Producer;
 
-    beforeAll(() => {
+    
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.DatasetDataService) {
@@ -20,21 +22,18 @@ describe('Elecron Dataset Service Model', () => {
             }
             throw new Error(`Couldn't resolve type ${type}.`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         datasetService = jasmine.createSpyObj('DatasetDataService',
-            ['delete', 'load', 'save', 'update', 'all', 'get', 'view', 'split', 'join']);
+            ['delete', 'load', 'save', 'update', 'all', 'get', 'view', 'allView', 'split', 'join', 'deleteByExperiment', 'show']);
         serviceModel = new DatasetServiceModel(serviceContainer, producer);
     });
 
     it('all should call producer and data service', () => {
-        (datasetService.all as jasmine.Spy).and.returnValue([]);
+        (datasetService.allView as jasmine.Spy).and.returnValue([]);
         serviceModel.all();
 
         expect(producer.send).toHaveBeenCalled();
-        expect(datasetService.all).toHaveBeenCalled();
+        expect(datasetService.allView).toHaveBeenCalled();
     });
 
     it('delete should call producer and data service', () => {
@@ -137,6 +136,84 @@ describe('Elecron Dataset Service Model', () => {
         });
         serviceModel.join([1, 2, 3, 4]);
         expect(producer.send).toHaveBeenCalledTimes(4);
+    });
+
+    it('delete by experiment should call dataset service', () => {
+        (datasetService.allView as jasmine.Spy).and.returnValue([]);
+        serviceModel.deleteByExperiment(1);
+
+        expect(datasetService.deleteByExperiment).toHaveBeenCalledTimes(1);
+        expect(datasetService.deleteByExperiment).toHaveBeenCalledWith(1);
+        expect(producer.send).toHaveBeenCalledWith(DatasetEvents.All, []);
+    });
+
+    it('show should call dataset service', () => {
+        (datasetService.view as jasmine.Spy).and.returnValue({});
+
+        serviceModel.show(1);
+        expect(datasetService.show).toHaveBeenCalledTimes(1);
+        expect(producer.send).toHaveBeenCalledTimes(1);
+        expect(producer.send).toHaveBeenCalledWith(DatasetEvents.Update, {});
+    });
+
+    it('rename feature should change feature name', () => {
+        (datasetService.get as jasmine.Spy).and.returnValue({
+            id: 1,
+            name: 'Dataset',
+            examples: 50,
+            experimentId: 1,
+            previewExamples: 5,
+            features: [
+                {
+                    name: 'Feature 1',
+                    type: 'number',
+                    examples: []
+                },
+                {
+                    name: 'Feature 2',
+                    type: 'number',
+                    examples: []
+                },
+                {
+                    name: 'Feature 3',
+                    type: 'number',
+                    examples: []
+                },
+            ]
+        } as DatasetObject);
+        (datasetService.view as jasmine.Spy).and.returnValue({});
+
+        serviceModel.renameFeature(1, 1, 'New Name');
+        expect(datasetService.get).toHaveBeenCalledTimes(1);
+        expect(datasetService.get).toHaveBeenCalledWith(1);
+        expect(datasetService.update).toHaveBeenCalledTimes(1);
+        expect(datasetService.update).toHaveBeenCalledWith({
+            id: 1,
+            name: 'Dataset',
+            examples: 50,
+            experimentId: 1,
+            previewExamples: 5,
+            features: [
+                {
+                    name: 'Feature 1',
+                    type: 'number',
+                    examples: []
+                },
+                {
+                    name: 'New Name',
+                    type: 'number',
+                    examples: []
+                },
+                {
+                    name: 'Feature 3',
+                    type: 'number',
+                    examples: []
+                },
+            ]
+        });
+        expect(datasetService.view).toHaveBeenCalledTimes(1);
+        expect(datasetService.view).toHaveBeenCalledWith(1);
+        expect(producer.send).toHaveBeenCalledWith(DatasetEvents.Update, {});
     });
 
 

@@ -1,0 +1,15 @@
+<app-sidebar-header class="header" [header]="'ALGORITHMS'"></app-sidebar-header>
+<app-sidebar-algorithm-start class="start py-1"></app-sidebar-algorithm-start>
+<app-sidebar-algorithm-stop class="stop py-1"></app-sidebar-algorithm-stop>
+<app-sidebar-list-header class="open-algorithm-header" [header]="'LOADED-ALGORITHMS'" [isHidden]="true"></app-sidebar-list-header>
+<app-sidebar-list-body class="open-algorithm-list">
+    <ng-container *ngFor="let algorithm of algorithms; let i = index">
+        <app-sidebar-list-card #algorithmCmp (click)="onAlgorithmSelected(i)" (touch)="onAlgorithmSelected(i)" class="pointer"
+            [ngClass]="{ 'selected': data.inFocus && data.selected === i, 'faded': !data.inFocus && data.selected === i }">
+            <app-sidebar-algorithm-card [algorithm]="algorithm"></app-sidebar-algorithm-card>
+        </app-sidebar-list-card>
+    </ng-container>
+</app-sidebar-list-body>
+<div class="bottom">
+
+</div>

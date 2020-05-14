@@ -15,10 +15,11 @@ export interface AlgorithmDataService {
     deleteByExperiment(experimentId: number): Promise<number[]>;
     view(id: number): Algorithm;
     load(experimentId: number): Promise<void>;
-    save(experimentId: number): void;
+    save(experimentId: number): Promise<void>;
     update(algorithm: AlgorithmObject): void;
     start(id: number): void;
     stop(id: number): void;
+    export(id: number): Promise<string>;
 }
 
 

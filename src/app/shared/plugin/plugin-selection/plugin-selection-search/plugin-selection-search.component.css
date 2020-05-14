@@ -14,5 +14,5 @@
     grid-area: icon;
     display: flex;
     align-items: center;
-    background-color: var(--accent3);
+    background-color: var(--plugin-search);
 }

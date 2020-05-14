@@ -7,8 +7,8 @@
         <u><i>Create Test</i></u>
     </h4>
 </div>
-<div class="reports">
+<div class="reports p-3">
     <ng-container *ngFor="let report of reports">
-        <app-algorithm-test-report-card [id]="report.id"></app-algorithm-test-report-card>
+        <app-algorithm-test-report-card class="m-1" [ngClass]="{ 'sidebar-expanded': sidebarExpanded }" [id]="report.id"></app-algorithm-test-report-card>
     </ng-container>
 </div>

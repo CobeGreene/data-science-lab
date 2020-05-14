@@ -11,6 +11,7 @@ export class TestReportServiceModel extends ServiceModel {
             { path: TestReportEvents.All, method: 'all' },  
             { path: TestReportEvents.Rename, method: 'rename' },
             { path: TestReportEvents.Delete, method: 'delete' },
+            { path: TestReportEvents.Show, method: 'show' },
         ]
     };
 
@@ -23,19 +24,24 @@ export class TestReportServiceModel extends ServiceModel {
     }
 
     all() {
-        this.producer.send(TestReportEvents.All, this.dataService.all());
+        this.producer.send(TestReportEvents.All, this.dataService.allView());
     }
 
     rename(id: number, name: string) {
         const report = this.dataService.get(id);
         report.name = name;
         this.dataService.update(report);
-        this.producer.send(TestReportEvents.Update, report);
+        this.producer.send(TestReportEvents.Update, this.dataService.view(id));
     }
 
     delete(id: number) {
         this.dataService.delete(id);
         this.producer.send(TestReportEvents.Delete, id);
+    }
+
+    show(id: number) {
+        this.dataService.show(id);
+        this.producer.send(TestReportEvents.Update, this.dataService.view(id));
     }
     
 }

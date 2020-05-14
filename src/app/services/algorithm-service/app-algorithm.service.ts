@@ -10,7 +10,7 @@ export class AppAlgorithmService extends AlgorithmService {
     private algorithms: Algorithm[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.algorithms = [];
         this.registerEvents();
@@ -98,13 +98,17 @@ export class AppAlgorithmService extends AlgorithmService {
     update(id: number, name: string, time: number): void {
         this.messenger.publish(AlgorithmEvents.Update, id, name, time);
     }
-    
+
     start(id: number) {
         this.messenger.publish(AlgorithmEvents.Start, id);
     }
-    
+
     stop(id: number) {
         this.messenger.publish(AlgorithmEvents.Stop, id);
+    }
+
+    export(id: number, language: string) {
+        this.messenger.publish(AlgorithmEvents.Export, id, language);
     }
 
 }

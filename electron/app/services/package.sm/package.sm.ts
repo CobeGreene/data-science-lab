@@ -28,24 +28,24 @@ export class PackageServiceModel extends ServiceModel {
         this.producer.send(PackageEvents.All, this.dataService.all());
     }
 
-    install(pluginPackage: Package) {
-        this.dataService.install(pluginPackage)
-            .then(() => {
-                this.producer.send(PackageEvents.All, this.dataService.all());
-                this.producer.send(PackageEvents.Install, pluginPackage);
-            }).catch((value) => {
-                this.producer.send(ErrorEvent, value);
-            });
+    async install(pluginPackage: Package) {
+        try {
+            pluginPackage = await this.dataService.install(pluginPackage);
+            this.producer.send(PackageEvents.All, this.dataService.all());
+            this.producer.send(PackageEvents.Install, pluginPackage);
+        } catch (error) {
+            this.producer.send(ErrorEvent, error);
+        }
     }
 
-    uninstall(pluginPackage: Package) {
-        this.dataService.uninstall(pluginPackage)
-            .then(() => {
-                this.producer.send(PackageEvents.All, this.dataService.all());
-                this.producer.send(PackageEvents.Uninstall, pluginPackage);
-            }).catch((value) => {
-                this.producer.send(ErrorEvent, value);
-            });
+    async uninstall(pluginPackage: Package) {
+        try {
+            pluginPackage = await this.dataService.uninstall(pluginPackage);
+            this.producer.send(PackageEvents.All, this.dataService.all());
+            this.producer.send(PackageEvents.Uninstall, pluginPackage);
+        } catch (error) {
+            this.producer.send(ErrorEvent, error);
+        }
     }
 }
 

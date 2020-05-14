@@ -28,10 +28,10 @@
                     {{ i + 1 }}
                 </td>
                 <td class="p-2" *ngFor="let data of example; let featureIndex = index">
-                    <app-preview-card class="pointer" [value]="data" [feature]="dataset.features[featureIndex]"></app-preview-card>
+                    <app-preview-card [value]="data" [feature]="dataset.features[featureIndex]"></app-preview-card>
                 </td>
             </tr>
-            <tr *ngIf="dataset.previewExamples.length !== examples">
+            <tr *ngIf="dataset.previewExamples.length !== dataset.examples">
                 <td [attr.colspan]="dataset.features.length + 1" class="pointer p-3 show" (click)="onShowMore()" >
                     Click to show more
                 </td>

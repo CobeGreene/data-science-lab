@@ -12,6 +12,8 @@ import { AlgorithmSessionService } from '../../session-services/algorithm-sessio
 import { TestReportSessionService } from '../../session-services/test-report-session-service';
 import { DatasetVisualSessionService } from '../../session-services/dataset-visual-session-service';
 import { AlgorithmVisualSessionService } from '../../session-services/algorithm-visual-session-service';
+import { TestReportVisualSessionService } from '../../session-services/test-report-visual-session-service';
+import { TestReportService } from '../test-report-service';
 
 @Injectable()
 export class AppCreationService extends CreationService implements OnDestroy {
@@ -26,8 +28,10 @@ export class AppCreationService extends CreationService implements OnDestroy {
         private transformSessionService: TransformSessionService,
         private algorithmSessionService: AlgorithmSessionService,
         private testReportSessionService: TestReportSessionService,
+        private testReportService: TestReportService,
         private datasetVisualSessionService: DatasetVisualSessionService,
-        private algorithmVisualSessionService: AlgorithmVisualSessionService) {
+        private algorithmVisualSessionService: AlgorithmVisualSessionService,
+        private testReportVisualSessionService: TestReportVisualSessionService) {
         super();
         this.subscribe();
     }
@@ -91,6 +95,20 @@ export class AppCreationService extends CreationService implements OnDestroy {
                 const session = this.algorithmVisualSessionService.get(id);
                 const experimentId = this.algorithmService.get(session.keyId).experimentId;
                 const tab = this.tabFactory.create(['experiment', experimentId, 'algorithm', session.keyId, 'visualize', id, session.state]);
+                if (session.sessionOptions.newTab) {
+                    this.tabService.openTab(tab);
+                } else {
+                    this.tabService.replaceTab(session.sessionOptions.currentRoute, tab);
+                }
+            });
+
+        this.testReportVisualSessionService.sessionCreated
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((id) => {
+                const session = this.testReportVisualSessionService.get(id);
+                const report = this.testReportService.get(session.keyId);
+                const experimentId = this.algorithmService.get(report.algorithmId).experimentId;
+                const tab = this.tabFactory.create(['experiment', experimentId, 'algorithm', report.algorithmId, 'test-report', report.id, 'visualize', id, session.state]);
                 if (session.sessionOptions.newTab) {
                     this.tabService.openTab(tab);
                 } else {

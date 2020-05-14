@@ -1,0 +1,13 @@
+<div class="container py-1 pr-4 pl-1"> 
+    <div class="list-item-title">
+        <h3 class="m-0">
+            {{ experiment.title }}
+        </h3>
+    </div>
+    <div class="list-item-date">
+        {{ experiment.created | date:"MM/dd/yyyy" }}
+    </div>
+    <div class="list-item-desc">
+        {{ experiment.description | incomplete:120 }}
+    </div>
+</div>

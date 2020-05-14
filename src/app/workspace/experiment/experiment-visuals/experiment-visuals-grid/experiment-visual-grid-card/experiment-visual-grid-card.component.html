@@ -1,0 +1,28 @@
+<div class="image p-2">
+    <iframe class="frame" frameborder="0" scrolling="no" #visualCmp>
+    </iframe>
+</div>
+<div class="p-2 py-0">
+    <div class="body">
+        <div>
+            <h3 class="m-0 p-0">
+                {{ visual.name }}
+            </h3>
+        </div>
+        <div class="action p-3">
+            <fa name="image" size="3x" (click)="onOptions($event)"></fa>
+        </div>
+    </div>
+</div>
+<app-dropdown #optionsCmp>
+    <ul class="list-unstyled dropdown-list">
+        <li (click)="onRename($event)">
+           Rename Visual 
+        </li>
+        <li (click)="onDelete($event)">
+            Delete Visual
+        </li>
+    </ul>
+</app-dropdown>
+<app-rename-visual [id]="visual.id" #renameCmp></app-rename-visual>
+<app-delete-visual [id]="visual.id" #deleteCmp></app-delete-visual>

@@ -1,15 +1,80 @@
 :host {
     position: absolute;
-    bottom: 0px;
     top: 0px;
+    bottom: 0px;
     left: 0px;
     right: 0px;
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 1fr 2fr;
-    grid-template-areas: 'header logo' 'options logo';
-    text-align: right;
-    overflow: hidden;
+    text-align: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 'header' 'logo' 'options';
+    min-width: 600px !important;
+}
+
+
+@media (min-width: 576px) {
+    :host() {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }
+    
+    :host(.sidebar-expanded) {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }    
+}
+
+@media (min-width: 768px) {
+    :host() {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }
+    
+    :host(.sidebar-expanded) {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }
+}
+
+@media (min-width: 992px) {
+    :host() {
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: 1fr 2fr;
+        grid-template-areas: 'header logo' 'options logo';
+        text-align: right;
+    }
+    
+    :host(.sidebar-expanded) {
+        text-align: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas: 'header' 'logo' 'options';
+    }
+}
+
+@media(min-width: 1200px) {
+    :host() {
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: 1fr 2fr;
+        grid-template-areas: 'header logo' 'options logo';
+        text-align: right;
+    }
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: 1fr 2fr;
+        grid-template-areas: 'header logo' 'options logo';
+        text-align: right;
+    }
 }
 
 .header {
@@ -27,6 +92,7 @@
 
 .logo {
     grid-area: logo;
+    overflow: hidden;
 }
 
 .logo svg {
@@ -44,3 +110,76 @@
 .faded {
     color: var(--welcome-options-faded);
 }
+
+#linkGrad-3-5 .start {
+    stop-color: transparent;
+}
+
+#linkGrad-3-5 .stop {
+    stop-color: transparent;
+}
+
+#linkGrad-0-1 .start {
+    stop-color: var(--accent6);
+}
+
+#linkGrad-0-1 .stop {
+    stop-color: var(--accent4);
+}
+
+#linkGrad-0-2 .start {
+    stop-color: var(--accent6);
+}
+
+#linkGrad-0-2 .stop {
+    stop-color: var(--accent1);
+}
+
+#linkGrad-0-4 .start {
+    stop-color: var(--accent6);
+}
+
+#linkGrad-0-4 .stop {
+    stop-color: var(--accent5);
+}
+
+#linkGrad-1-2 .start {
+    stop-color: var(--accent4);
+}
+
+#linkGrad-1-2 .stop {
+    stop-color: var(--accent1);
+}
+
+#linkGrad-1-4 .start {
+    stop-color: var(--accent4);
+}
+
+#linkGrad-1-4 .stop {
+    stop-color: var(--accent5);
+}
+
+#linkGrad-2-4 .start {
+    stop-color: var(--accent1);
+}
+
+#linkGrad-2-4 .stop {
+    stop-color: var(--accent5);
+}
+
+.dataset.group path, .dataset.group text  {
+    fill: var(--accent6);
+}
+
+.visuals.group path, .visuals.group text {
+    fill: var(--accent4);
+}
+
+.algorithms.group path, .algorithms.group text {
+    fill: var(--accent1);
+}
+
+.science.group path, .science.group text {
+    fill: var(--accent5);
+}
+

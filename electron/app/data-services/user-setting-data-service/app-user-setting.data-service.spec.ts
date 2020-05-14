@@ -62,6 +62,13 @@ describe('Electron App User Setting Data Service', () => {
             dataService.all();
         }).toThrow();
     });
+    
+    it('find should throw error for changing the file to have json error', () => {
+        fs.appendFileSync(jsonPath, '}');
+        expect(() => {
+            dataService.find('404');
+        }).toThrow();
+    });
 
     
     it('update should throw error for file not found', () => {

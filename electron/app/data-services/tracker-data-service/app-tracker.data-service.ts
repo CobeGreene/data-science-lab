@@ -10,6 +10,7 @@ import { SystemError, ErrorTypes } from '../../../../shared/errors';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as zlib from 'zlib';
+import { getType } from '../../helpers';
 
 export class AppTrackerDataService extends Service implements TrackerDataService {
     private readonly key = 'trackers-path';
@@ -96,7 +97,7 @@ export class AppTrackerDataService extends Service implements TrackerDataService
 
     load(algorithmId: number): void {
         const trackerPath = this.context.get<string>(this.key);
-        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}`);
+        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}.gzip`);
         if (fs.existsSync(algorithmPath)) {
             const buffer = fs.readFileSync(algorithmPath);
             const tracker = JSON.parse(`${zlib.unzipSync(buffer)}`);
@@ -106,7 +107,7 @@ export class AppTrackerDataService extends Service implements TrackerDataService
 
     save(algorithmId: number): void {
         const trackerPath = this.context.get<string>(this.key);
-        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}`);
+        const algorithmPath = path.join(trackerPath, `tracker${algorithmId}.gzip`);
 
         if (this.has(algorithmId)) {
             const tracker = this.get(algorithmId);
@@ -160,13 +161,13 @@ export class AppTrackerDataService extends Service implements TrackerDataService
                     {
                         name: variable.label,
                         description: variable.description,
-                        type: this.getType(variable.value)
+                        type: getType(variable.value)
                     });
             } else {
                 obj.variables.push({
                     name: variable.label,
                     description: variable.description,
-                    type: this.getType(variable.value)
+                    type: getType(variable.value)
                 });
             }
         });
@@ -178,12 +179,6 @@ export class AppTrackerDataService extends Service implements TrackerDataService
         this.update(obj);
     }
 
-    getType(data: any): string {
-        if (data instanceof Array) {
-            return `${this.getType(data[0])}[]`;
-        }
-        return typeof data;
-    }
 
     extract(id: number, inputs: { [id: string]: number[] }, selectedFeatures: number[]): { [id: string]: PluginData } {
         const data: { [id: string]: PluginData } = {};
@@ -220,10 +215,10 @@ export class AppTrackerDataService extends Service implements TrackerDataService
 
             }
 
-            data[key] = new PluginData({
+            data[key] = {
                 features,
                 examples
-            });
+            };
             
         }
 

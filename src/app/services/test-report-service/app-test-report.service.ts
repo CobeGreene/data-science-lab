@@ -10,7 +10,7 @@ export class AppTestReportService extends TestReportService {
     reports: TestReport[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.reports = [];
         this.registerEvents();
@@ -95,6 +95,10 @@ export class AppTestReportService extends TestReportService {
 
     rename(id: number, name: string): void {
         this.messenger.publish(TestReportEvents.Rename, id, name);
+    }
+
+    show(id: number): void {
+        this.messenger.publish(TestReportEvents.Show, id);
     }
 }
 

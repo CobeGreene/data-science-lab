@@ -1,0 +1,85 @@
+.container {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(1, 1fr);
+    min-width: 600px !important;
+}
+
+@media (min-width: 576px) {
+    :host() .container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    :host(.sidebar-expanded) .container {
+        grid-template-columns: repeat(1, 1fr);
+    }    
+}
+
+@media (min-width: 768px) {
+    :host() .container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    :host(.sidebar-expanded) .container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    :host() .container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    :host(.sidebar-expanded) .container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(min-width: 1200px) {
+    :host() .container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    :host(.sidebar-expanded) .container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.card {
+    background: var(--experiment-visual-card-background);
+    display: inline-block;
+    border-radius: 0.5em;
+    border: 2px solid var(--experiment-visual-card-border);
+    box-shadow: 0px 5px 2px 3px var(--experiment-visual-card-shadow);
+    transform: scale(0.95);
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1);
+    transition: all 200ms ease-in-out;
+}
+
+.container ::ng-deep .card .image {
+    height: 300px;
+    display: flex;
+}
+
+
+.container ::ng-deep .card .body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container ::ng-deep .card .action {
+    transform: scale(0.8);
+    transition: all 100ms ease-in-out;
+    align-self: center;
+}
+
+.container ::ng-deep .card .action:hover {
+    transform: scale(1);
+}
+
+

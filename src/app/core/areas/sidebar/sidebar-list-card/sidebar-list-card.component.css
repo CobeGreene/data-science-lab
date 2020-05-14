@@ -1,3 +1,4 @@
+
 .card:hover {
     background-color: var(--sidebar-list-card-hover);
 }
@@ -7,5 +8,5 @@
 }
 
 :host(.faded)> .card {
-    background-color: var(--sidebar-list-card-hover);
+    background-color: var(--sidebar-list-card-faded);
 }

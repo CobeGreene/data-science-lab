@@ -8,6 +8,7 @@ import { FocusAreas } from '../../../../constants';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { PackageService } from '../../../../services/package-service';
 import { ShortcutService } from '../../../../services/shortcut-service';
+import { Shortcuts } from '../../../../../../shared/shortcuts';
 
 interface SidebarPackageData {
   installSelected: number;
@@ -66,18 +67,26 @@ export class SidebarPackageComponent implements OnInit, OnDestroy, AfterViewInit
   initializePackages() {
     const packages = this.packageService.all();
     this.installPackages = packages.filter((value) => value.install);
+    if (this.data.installSelected >= this.installPackages.length && this.installPackages.length !== 0) {
+      this.data.installSelected = this.installPackages.length - 1;
+    } else if (this.installPackages.length === 0) {
+      this.data.installSelected = 0;
+    }
+    setTimeout(() => {
+      this.scrollIntoViewInstalledSelected();
+    })
   }
 
   ngAfterViewInit() {
-    this.shortcutService.subscribe('arrowup', this.onMoveUp);
-    this.shortcutService.subscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.subscribe('enter', this.onEnter);
+    this.shortcutService.subscribe(Shortcuts.ArrowUp, this.onMoveUp);
+    this.shortcutService.subscribe(Shortcuts.ArrowDown, this.onMoveDown);
+    this.shortcutService.subscribe(Shortcuts.Enter, this.onEnter);
   }
 
   ngOnDestroy() {
-    this.shortcutService.unsubscribe('arrowup', this.onMoveUp);
-    this.shortcutService.unsubscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.unsubscribe('enter', this.onEnter);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowUp, this.onMoveUp);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowDown, this.onMoveDown);
+    this.shortcutService.unsubscribe(Shortcuts.Enter, this.onEnter);
     this.sidebarService.set('sidebar-package-data', this.data);
   }
 
@@ -110,6 +119,8 @@ export class SidebarPackageComponent implements OnInit, OnDestroy, AfterViewInit
   onInstallSelected(selected: number) {
     this.data.installSelected = selected;
     this.scrollIntoViewInstalledSelected();
+    const tab = this.tabFactory.create(['package', this.installPackages[selected].name]);
+    this.tabService.openTab(tab);
   }
 
 

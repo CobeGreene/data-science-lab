@@ -1,5 +1,15 @@
 [
     {
+        "key": "color.theme",
+        "title": "Color Choices",
+        "description": "Select a theme from the choices below",
+        "value": "dark-theme",
+        "default": "dark-theme",
+        "choices": [
+            "dark-theme"
+        ]
+    },
+    {
         "key": "sidebar.location",
         "title": "Sidebar's Location",
         "description": "Controls the location of the sidebar. It can either be on the left or right side of the workspace.",
@@ -13,6 +23,14 @@
     {
         "key": "dataset.default.preview",
         "title": "Dataset Default Preview Examples",
+        "description": "The default number of examples to preview.",
+        "value": 10,
+        "default": 10,
+        "min": 0
+    },
+    {
+        "key": "test-report.default.preview",
+        "title": "Test Report Default Preview Examples",
         "description": "The default number of examples to preview.",
         "value": 10,
         "default": 10,
@@ -35,5 +53,5 @@
         "default": 5,
         "min": 1,
         "max": 100
-    }
+    }    
 ]

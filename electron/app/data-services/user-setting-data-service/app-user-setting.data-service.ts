@@ -10,7 +10,6 @@ export class AppUserSettingDataService extends Service implements UserSettingDat
 
     private readonly key = 'user-setting';
 
-
     get context(): SettingsContext {
         return this.serviceContainer.resolve<SettingsContext>(SERVICE_TYPES.SettingsContext);
     }
@@ -35,13 +34,7 @@ export class AppUserSettingDataService extends Service implements UserSettingDat
     }
 
     find(key: string): Setting {
-        const path = this.context.get<string>(this.key);
-        if (fs.existsSync(path)) {
-            const file = fs.readFileSync(path);
-            const json = JSON.parse(`${file}`);
-            return (json as Setting[]).find(value => value.key === key);
-        }
-        return undefined;
+        return this.all().find(value => value.key === key);
     }
 
     update(setting: Setting) {

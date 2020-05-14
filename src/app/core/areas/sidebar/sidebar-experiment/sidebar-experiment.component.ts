@@ -8,6 +8,7 @@ import { ShortcutService } from '../../../../services/shortcut-service';
 import { SidebarService } from '../../../../services/sidebar-service';
 import { TabService } from '../../../../services/tab-service';
 import { TabFactory } from '../../../../factory/tab-factory';
+import { Shortcuts } from '../../../../../../shared/shortcuts';
 
 interface SidebarExperimentData {
   openExperiments: boolean;
@@ -80,19 +81,19 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngAfterViewInit() {
-    this.shortcutService.subscribe('arrowup', this.onMoveUp);
-    this.shortcutService.subscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.subscribe('arrowleft', this.onClose);
-    this.shortcutService.subscribe('arrowright', this.onOpen);
-    this.shortcutService.subscribe('enter', this.onEnter);
+    this.shortcutService.subscribe(Shortcuts.ArrowUp, this.onMoveUp);
+    this.shortcutService.subscribe(Shortcuts.ArrowDown, this.onMoveDown);
+    this.shortcutService.subscribe(Shortcuts.ArrowLeft, this.onClose);
+    this.shortcutService.subscribe(Shortcuts.ArrowRight, this.onOpen);
+    this.shortcutService.subscribe(Shortcuts.Enter, this.onEnter);
   }
 
   ngOnDestroy() {
-    this.shortcutService.unsubscribe('arrowup', this.onMoveUp);
-    this.shortcutService.unsubscribe('arrowdown', this.onMoveDown);
-    this.shortcutService.unsubscribe('arrowleft', this.onClose);
-    this.shortcutService.unsubscribe('arrowright', this.onOpen);
-    this.shortcutService.unsubscribe('enter', this.onEnter);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowUp, this.onMoveUp);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowDown, this.onMoveDown);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowLeft, this.onClose);
+    this.shortcutService.unsubscribe(Shortcuts.ArrowRight, this.onOpen);
+    this.shortcutService.unsubscribe(Shortcuts.Enter, this.onEnter);
     this.sidebarService.set('sidebar-experiment', this.data);
   }
 
@@ -100,6 +101,23 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
     const experiments = this.experimentService.all();
     this.savedExperiments = experiments.filter((value) => value.state === ExperimentState.Unloaded);
     this.openExperiments = experiments.filter((value) => value.state !== ExperimentState.Unloaded);
+
+    if (this.data.openSelected >= this.openExperiments.length && this.openExperiments.length !== 0) {
+      this.data.openSelected = this.openExperiments.length -1;
+    } else if (this.openExperiments.length === 0) {
+      this.data.openSelected = 0;
+    }
+    
+    if (this.data.savedSelected >= this.savedExperiments.length && this.savedExperiments.length !== 0) {
+      this.data.savedSelected = this.savedExperiments.length -1;
+    } else if (this.savedExperiments.length === 0) {
+      this.data.savedSelected = 0;
+    }
+
+    setTimeout(() => {
+      this.scrollIntoViewOpenSelected();
+      this.scrollIntoViewSaveSelected();
+    });
   }
 
   onToggleOpenExperiments(event: MouseEvent) {
@@ -214,7 +232,6 @@ export class SidebarExperimentComponent implements OnInit, AfterViewInit, OnDest
 
     if (this.data.savedSelected < this.savedExperiments.length) {
       this.scrollIntoViewSaveSelected();
-  
       this.experimentService.load(this.savedExperiments[selected].id);
     }
 

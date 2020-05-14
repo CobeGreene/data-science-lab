@@ -1,22 +1,27 @@
-<app-package-details-header class="mb-2" [name]="pluginPackage.name"></app-package-details-header>
-<app-package-details-actions [pluginPackage]="pluginPackage"></app-package-details-actions>
-<div class="header mt-1">
-    <div>
-        <img class="image" [src]="'https://github.com/' + pluginPackage.owner + '.png'">
+<app-package-details-header class="mb-2" [name]="name"></app-package-details-header>
+<ng-container *ngIf="pluginPackage !== undefined">
+    <app-package-details-actions [pluginPackage]="pluginPackage"></app-package-details-actions>
+    <div class="header mt-1">
+        <div>
+            <img class="image" [src]="'https://github.com/' + pluginPackage.owner + '.png'">
+        </div>
+        <div class="pl-1">
+            <h3 class="m-0">
+                {{ pluginPackage.name }}
+            </h3>
+            <p class="m-0">
+                <i>{{ pluginPackage.owner }}</i>
+            </p>
+        </div>
     </div>
-    <div class="pl-1">
-        <h3 class="m-0">
-            {{ pluginPackage.name }}
-        </h3>
-        <p class="m-0">
-            <i>{{ pluginPackage.owner }}</i>
-        </p>
+    <div class="desc">
+        Contains the plugins
+        <ng-container *ngFor="let plugin of pluginPackage.plugins">
+            {{ plugin.name }} ({{ plugin.type }})
+        </ng-container>
     </div>
-</div>
-<div class="desc">
-    Contains the plugins
-    <ng-container *ngFor="let plugin of pluginPackage.plugins">
-        {{ plugin.name }} ({{ plugin.type }})
-    </ng-container>
-</div>
-<app-package-details-readme [pluginPackage]="pluginPackage"></app-package-details-readme>
+    <app-package-details-readme [pluginPackage]="pluginPackage"></app-package-details-readme>
+</ng-container>
+<ng-container *ngIf="pluginPackage === undefined">
+    <p>Loading...</p>
+</ng-container>

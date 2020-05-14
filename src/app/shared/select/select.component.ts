@@ -31,6 +31,7 @@ export class SelectComponent extends OverlayComponent implements OnInit, OnDestr
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     overlayService: OverlayService,
+
     private ref: ChangeDetectorRef,
     private shortcutService: ShortcutService) {
     super(overlay, viewContainerRef, overlayService);

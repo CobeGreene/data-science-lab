@@ -16,7 +16,7 @@ export class PluginSelectionSearchComponent implements OnInit {
   ngOnInit() {
   }
 
-  onChange() {
+  onChange(_: Event) {
     this.emitSearch.emit(this.search);
   }
 

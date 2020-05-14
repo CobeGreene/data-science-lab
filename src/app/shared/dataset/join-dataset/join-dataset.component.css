@@ -40,19 +40,19 @@
 }
 
 .selected-dataset::-webkit-scrollbar-thumb {
-    background-color: var(--accent6);
+    background-color: var(--join-dataset-scroll-foreground);
 }
 
 .selected-dataset:hover::-webkit-scrollbar-thumb {
-    background-color: var(--accent6);
+    background-color: var(--join-dataset-scroll-foreground);
 }
 
 .others-dataset::-webkit-scrollbar-thumb {
-    background-color: var(--accent5);
+    background-color: var(--other-dataset-scroll-foreground);
 }
 
 .others-dataset:hover::-webkit-scrollbar-thumb {
-    background-color: var(--accent5);
+    background-color: var(--other-dataset-scroll-foreground);
 }
 
 .join-card {

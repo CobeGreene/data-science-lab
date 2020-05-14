@@ -1,0 +1,11 @@
+<ng-template #overlayCmp>
+    <div class="modal">
+        <app-modal-header [header]="'Preview'"></app-modal-header>
+        <p class="m-0 p-0 pb-2">
+            {{ feature.name }} ({{ feature.type }})
+        </p>
+        <div class="preview pb-2">
+            <app-preview-modal-base [value]="value" [depth]="0"></app-preview-modal-base>
+        </div>
+    </div>
+</ng-template>

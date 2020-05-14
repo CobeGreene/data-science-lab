@@ -60,6 +60,15 @@ import { EditAlgorithmComponent } from './algorithm/edit-algorithm/edit-algorith
 import { PackageExplorerLinkComponent } from './package-explorer-link/package-explorer-link.component';
 import { DeleteTestReportComponent } from './test-report/delete-test-report/delete-test-report.component';
 import { EditTestReportComponent } from './test-report/edit-test-report/edit-test-report.component';
+import { DropdownFeatureComponent } from './dataset/dropdown-feature/dropdown-feature.component';
+import { RenameFeatureComponent } from './dataset/dropdown-feature/rename-feature/rename-feature.component';
+import { OpenExperimentComponent } from './experiment/open-experiment/open-experiment.component';
+import { OpenExperimentCardComponent } from './experiment/open-experiment/open-experiment-card/open-experiment-card.component';
+import { EditShortcutComponent } from './edit-shortcut/edit-shortcut.component';
+import { PreviewModalComponent } from './preview-card/preview-modal/preview-modal.component';
+import { PreviewModalBaseComponent } from './preview-card/preview-modal/preview-modal-base/preview-modal-base.component';
+import { RenameVisualComponent } from './visual/rename-visual/rename-visual.component';
+import { DeleteVisualComponent } from './visual/delete-visual/delete-visual.component';
 
 @NgModule({
     declarations: [
@@ -96,6 +105,7 @@ import { EditTestReportComponent } from './test-report/edit-test-report/edit-tes
         PluginSelectionCardComponent,
         CheckboxOptionComponent,
         ChoicesOptionComponent,
+        EditShortcutComponent,
         CommandOptionComponent,
         NumberOptionComponent,
         TextOptionComponent,
@@ -113,6 +123,14 @@ import { EditTestReportComponent } from './test-report/edit-test-report/edit-tes
         PackageExplorerLinkComponent,
         DeleteTestReportComponent,
         EditTestReportComponent,
+        DropdownFeatureComponent,
+        RenameFeatureComponent,
+        OpenExperimentComponent,
+        OpenExperimentCardComponent,
+        PreviewModalComponent,
+        PreviewModalBaseComponent,
+        RenameVisualComponent,
+        DeleteVisualComponent,
     ],
     imports: [
         CommonModule,
@@ -134,6 +152,7 @@ import { EditTestReportComponent } from './test-report/edit-test-report/edit-tes
         CreateExperimentComponent,
         UpdateExperimentComponent,
         DeleteExperimentComponent,
+        OpenExperimentComponent,
         EditDatasetComponent,
         DeleteDatasetComponent,
         SplitDatasetComponent,
@@ -141,10 +160,12 @@ import { EditTestReportComponent } from './test-report/edit-test-report/edit-tes
         SelectDatasetComponent,
         DeleteAlgorithmComponent,
         EditAlgorithmComponent,
+        EditShortcutComponent,
         IncompletePipe,
         PackageBadgePipe,
         PackageSearchPipe,
         DropdownComponent,
+        DropdownFeatureComponent,
         DeleteTestReportComponent,
         EditTestReportComponent,
         PreviewCardComponent,
@@ -158,6 +179,8 @@ import { EditTestReportComponent } from './test-report/edit-test-report/edit-tes
         CheckboxComponent,
         PopupComponent,
         PackageExplorerLinkComponent,
+        RenameVisualComponent,
+        DeleteVisualComponent,
         CommonModule,
         AngularFontAwesomeModule,
         FormsModule,

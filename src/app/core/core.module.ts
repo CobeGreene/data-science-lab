@@ -58,6 +58,11 @@ import { TestReportSessionService, AppTestReportSessionService } from '../sessio
 import { DatasetVisualSessionService, AppDatasetVisualSessionService } from '../session-services/dataset-visual-session-service';
 import { VisualizationService, AppVisualizationService } from '../services/visualization-service';
 import { AppAlgorithmVisualSessionService, AlgorithmVisualSessionService } from '../session-services/algorithm-visual-session-service';
+import { SidebarAlgorithmStopComponent } from './areas/sidebar/sidebar-algorithm/sidebar-algorithm-stop/sidebar-algorithm-stop.component';
+import { SidebarAlgorithmStartComponent } from './areas/sidebar/sidebar-algorithm/sidebar-algorithm-start/sidebar-algorithm-start.component';
+import { SidebarAlgorithmCardComponent } from './areas/sidebar/sidebar-algorithm/sidebar-algorithm-card/sidebar-algorithm-card.component';
+import { SidebarAlgorithmComponent } from './areas/sidebar/sidebar-algorithm/sidebar-algorithm.component';
+import { TestReportVisualSessionService, AppTestReportVisualSessionService } from '../session-services/test-report-visual-session-service';
 
 @NgModule({
     declarations: [
@@ -78,6 +83,10 @@ import { AppAlgorithmVisualSessionService, AlgorithmVisualSessionService } from 
         SidebarPackageComponent,
         SidebarPackageCardComponent,
         SidebarPackageExplorerComponent,
+        SidebarAlgorithmComponent,
+        SidebarAlgorithmStopComponent,
+        SidebarAlgorithmStartComponent,
+        SidebarAlgorithmCardComponent,
     ],
     imports: [
         SharedModule,
@@ -114,6 +123,7 @@ import { AppAlgorithmVisualSessionService, AlgorithmVisualSessionService } from 
         { provide: TransformSessionService, useClass: AppTransformSessionService },
         { provide: DatasetVisualSessionService, useClass: AppDatasetVisualSessionService },
         { provide: AlgorithmVisualSessionService, useClass: AppAlgorithmVisualSessionService },
+        { provide: TestReportVisualSessionService, useClass: AppTestReportVisualSessionService },
         { provide: AlgorithmSessionService, useClass: AppAlgorithmSessionService },
         { provide: NotificationService, useClass: AppNotificationService },
         { provide: ErrorService, useClass: AppErrorService },

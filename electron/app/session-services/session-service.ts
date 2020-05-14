@@ -35,6 +35,7 @@ export abstract class SessionService extends ServiceModel {
 
     abstract pluginActivate(plugin: any): Promise<void>;
     abstract sessionFinish(session: Session, plugin: any): Promise<void>;
+    abstract sessionInputs(session: Session, plugin: any): Promise<void>;
 
     create(keyId: number, options: SessionOptions, features?: number[], returnPath?: string) {
         let session: Session = {
@@ -74,35 +75,35 @@ export abstract class SessionService extends ServiceModel {
             this.dataService.reference(id, sessionPlugin);
 
             if (plugin.hasOwnProperty('inputs')) {
-            
+
                 session.state = SessionState.Input;
                 this.dataService.update(session);
                 this.producer.send(this.eventUpdate, session);
-            
+
             } else if (sessionPlugin.getOptions().noMore()) {
 
                 await this.sessionFinishWrapper(session, sessionPlugin);
-            
+
             } else {
-            
+
                 session.optionList = sessionPlugin.getOptions().options();
                 session.state = SessionState.Setup;
                 this.dataService.update(session);
                 this.producer.send(this.eventUpdate, session);
-            
+
             }
         });
     }
 
-    async command(id: number, command: string) {
+    async command(id: number, commandId: string) {
         await this.eventWrapper(async () => {
             const session = this.dataService.get(id);
             const sessionPlugin = this.dataService.reference<any>(id);
 
-            await sessionPlugin.getOptions().executeCommand(command);
+            await sessionPlugin.getOptions().executeCommand(commandId);
 
             if (sessionPlugin.getOptions().noMore()) {
-                
+
                 await this.sessionFinishWrapper(session, sessionPlugin);
 
             } else {
@@ -122,7 +123,8 @@ export abstract class SessionService extends ServiceModel {
             const sessionPlugin = this.dataService.reference<any>(id);
 
             session.inputDict = inputDict;
-            
+            await this.sessionInputs(session, sessionPlugin);
+
             if (sessionPlugin.getOptions().noMore()) {
                 await this.sessionFinishWrapper(session, sessionPlugin);
             } else {
@@ -130,7 +132,7 @@ export abstract class SessionService extends ServiceModel {
                 session.state = SessionState.Setup;
                 session.isWaiting = false;
                 this.dataService.update(session);
-                this.producer.send(this.eventUpdate, session); 
+                this.producer.send(this.eventUpdate, session);
             }
         });
     }
@@ -140,10 +142,10 @@ export abstract class SessionService extends ServiceModel {
             const session = this.dataService.get(id);
             const sessionPlugin = this.dataService.reference<any>(id);
 
-            sessionPlugin.getOptions().submit(inputs);            
+            sessionPlugin.getOptions().submit(inputs);
 
             if (sessionPlugin.getOptions().noMore()) {
-                
+
                 await this.sessionFinishWrapper(session, sessionPlugin);
 
             } else {
@@ -173,10 +175,13 @@ export abstract class SessionService extends ServiceModel {
                 this.producer.send(this.eventUpdate, session);
             } else if (session.state === SessionState.Setup) {
                 session.optionList = undefined;
+                await this.deactivatePlugin(session.plugin);
                 if (session.plugin.hasOwnProperty('inputs')) {
                     session.state = SessionState.Input;
+                    const sessionPlugin = await this.context.activate<any>(this.packageService.find(session.plugin), session.plugin);
+                    await this.pluginActivate(sessionPlugin);
+                    this.dataService.reference(id, sessionPlugin);
                 } else {
-                    await this.deactivatePlugin(session.plugin);
                     session.state = SessionState.Select;
                     session.plugin = undefined;
                 }
@@ -215,7 +220,7 @@ export abstract class SessionService extends ServiceModel {
             this.dataService.delete(session.id);
             throw error;
         }
-    } 
+    }
 
 
 

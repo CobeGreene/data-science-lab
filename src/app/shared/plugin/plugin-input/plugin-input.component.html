@@ -4,7 +4,7 @@
         {{ plugin.name }}'s is asking for the following inputs. Click to either select or remove.
     </p>
 </app-plugin-header>
-<app-plugin-body class="pt-5 w-100">
+<app-plugin-body class="p-1 w-100">
     <button class="btn btn-accent3 mr-1" type="button" (click)="onMinAutofill()" [ngClass]="{ 'disabled': isWaiting }">
         Min Autofill
     </button>
@@ -19,18 +19,21 @@
             <h3 class="mb-0 pb-0">
                 Compatible Features
             </h3>
-            <div>
+            <div *ngIf="compatibleFeatures.length !== 0">
                 <ng-container *ngFor="let feature of compatibleFeatures">
                     <app-object-card [object]="feature.value" (click)="onSelect($event, feature.index)">
                     </app-object-card>
                 </ng-container>
             </div>
+            <div *ngIf="compatibleFeatures.length === 0">
+                <p>No more features for this input.</p>
+            </div>
         </div>
         <div class="remaining">
-            <h3 class="mb-0 pb-0">
+            <h3 class="mb-0 pb-0" *ngIf="remainingFeatures.length !== 0">
                 Remaining Features
             </h3>
-            <div>
+            <div *ngIf="remainingFeatures.length !== 0">
                 <ng-container *ngFor="let feature of remainingFeatures">
                     <app-object-card [object]="feature.value">
                     </app-object-card>
@@ -55,8 +58,8 @@
                         {{ inputs[current].max }}</ng-container>
                 </p>
                 <div>
-                    <ng-container *ngFor="let i of inputDict[inputs[current].id];">
-                        <app-object-card [object]="features[i]" (click)="onUnselect($event, $index)">
+                    <ng-container *ngFor="let i of inputDict[inputs[current].id]; let tempIndex = index">
+                        <app-object-card [object]="features[i]" (click)="onUnselect($event, tempIndex)">
                         </app-object-card>
                     </ng-container>
                 </div>

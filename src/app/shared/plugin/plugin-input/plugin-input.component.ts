@@ -1,15 +1,17 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, HostBinding, OnDestroy } from '@angular/core';
 import { PluginDataInput } from 'data-science-lab-core';
 import { Feature } from '../../../../../shared/models';
 import { IndexValue } from '../../../models';
 import { PopupComponent } from '../../popup/popup.component';
+import { CoreAreaService } from '../../../services/core-area-service/core-area.service';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
   selector: 'app-plugin-input',
   templateUrl: './plugin-input.component.html',
   styleUrls: ['./plugin-input.component.css']
 })
-export class PluginInputComponent implements OnInit {
+export class PluginInputComponent implements OnInit, OnDestroy {
 
   @ViewChild('popupCmp', { static: false }) popupComponent: PopupComponent;
   @Output() emitReturn = new EventEmitter<void>();
@@ -26,7 +28,9 @@ export class PluginInputComponent implements OnInit {
   valid = false;
   @Input() inputDict: { [id: string]: number[] };
 
-  constructor() { }
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
+
+  constructor(private coreAreaService: CoreAreaService) { }
 
   get inputLabels(): string[] {
     return this.inputs.map(v => v.label);
@@ -73,6 +77,19 @@ export class PluginInputComponent implements OnInit {
     } else {
       this.valid = this.isValid();
     }
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+      
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
+
+  }
+
+  ngOnDestroy() {
+    
   }
 
   onInputSelect(index: number) {

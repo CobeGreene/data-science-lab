@@ -1,20 +1,14 @@
 import { AppAlgorithmDataService } from './app-algorithm.data-service';
-import { AlgorithmObject } from '../../models';
-import { Algorithm, Package, Plugin } from '../../../../shared/models';
-import { ServiceContainer, SERVICE_TYPES, Service } from '../../service-container';
-import { AlgorithmDataService } from './algorithm.data-service';
-import { PluginData, AlgorithmPlugin } from 'data-science-lab-core';
+import { ServiceContainer, SERVICE_TYPES } from '../../service-container';
+import { AlgorithmPlugin } from 'data-science-lab-core';
 import { SettingsContext } from '../../contexts/settings-context';
 import { UserSettingDataService } from '../../data-services/user-setting-data-service';
 import { PackageDataService } from '../../data-services/package-data-service';
-import { IdGenerator } from '../../data-structures';
-import { SystemError, ErrorTypes } from '../../../../shared/errors';
 import { AlgorithmEvents } from '../../../../shared/events';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as zlib from 'zlib';
 import { PluginContext } from '../../contexts/plugin-context';
-import { Settings } from '../../../../shared/settings';
 import { AlgorithmRecorderService } from '../../core-services/recorder-service';
 import { Producer } from '../../pipeline';
 
@@ -35,6 +29,21 @@ describe('Electron App Algorithm Data Service', () => {
         if (!fs.existsSync(experimentPath)) {
             fs.mkdirSync(experimentPath);
         }
+
+        fs.writeFileSync(path.join(experimentPath, `algorithms${1}.gzip`), zlib.gzipSync(
+            JSON.stringify([
+                {
+                    id: 1,
+                    name: 'algorithm',
+                    experimentId: 1,
+                    isFinish: false,
+                    iteration: 10,
+                    iterationTime: 10,
+                    plugin: { export: function() {}},
+                    algorithm: ''
+                }
+            ])
+        ));
 
         settings = jasmine.createSpyObj('SettingsContext', ['get', 'set']);
         (settings.get as jasmine.Spy).and.callFake((key) => {
@@ -68,7 +77,7 @@ describe('Electron App Algorithm Data Service', () => {
                 value: 10
             };
         });
-        context = jasmine.createSpyObj('PluginContext', ['deactivate']);
+        context = jasmine.createSpyObj('PluginContext', ['deactivate', 'activate']);
         dataService = jasmine.createSpyObj('PackageDataService', ['find']);
         producer = jasmine.createSpyObj('Producer', ['send']);
         recorder = jasmine.createSpyObj('Recorder', ['current']);
@@ -79,6 +88,10 @@ describe('Electron App Algorithm Data Service', () => {
 
     it('all should return length of 0', () => {
         expect(algorithmService.all().length).toBe(0);
+    });
+
+    it('all view should return length of 0', () => {
+        expect(algorithmService.allView().length).toBe(0);
     });
 
     it('create should return id of new object', () => {
@@ -181,7 +194,7 @@ describe('Electron App Algorithm Data Service', () => {
 
         const id = algorithmService.create(2, {} as any, algorithmPlugin);
 
-        const temp = await algorithmService.delete(id);
+        await algorithmService.delete(id);
 
         expect(context.deactivate).toHaveBeenCalledTimes(1);
     });
@@ -250,6 +263,37 @@ describe('Electron App Algorithm Data Service', () => {
         });
     });
 
+    it('step with a long timer should not try to run twice', (done) => {
+        let called = 0;
+        const algorithmPlugin: AlgorithmPlugin = jasmine.createSpyObj('Algorithm', ['finishTraining', 'step', 'setRecorderService']);
+        (algorithmPlugin.finishTraining as jasmine.Spy).and.returnValues(false);
+
+        const algorithmId = algorithmService.create(2, {} as any, algorithmPlugin);
+        const obj = algorithmService.get(algorithmId);
+
+        (algorithmPlugin.step as jasmine.Spy).and.callFake(() => {
+            called++;
+            const current = new Date();
+            while (true) {
+                if (called >= 2) {
+                    done.fail('Should not have been called twice.');
+                    clearInterval(obj.trainer);
+                    return;
+                }
+
+                const next = new Date();
+                if (next.getTime() - current.getTime() >= 30) {
+                    expect().nothing();
+                    clearInterval(obj.trainer);
+                    done();
+                    return;
+                }
+            }
+        });
+
+        algorithmService.start(algorithmId);
+    });
+
 
     it('stop should throw for not found', () => {
         expect(() => {
@@ -268,7 +312,6 @@ describe('Electron App Algorithm Data Service', () => {
         (algorithmPlugin.finishTraining as jasmine.Spy).and.returnValues(false);
 
         const algorithmId = algorithmService.create(2, {} as any, algorithmPlugin);
-        const obj = algorithmService.get(algorithmId);
 
         expect(() => {
             algorithmService.stop(algorithmId);
@@ -280,12 +323,12 @@ describe('Electron App Algorithm Data Service', () => {
         (algorithmPlugin.finishTraining as jasmine.Spy).and.returnValues(false);
 
         const algorithmId = algorithmService.create(2, {} as any, algorithmPlugin);
-        
+
         algorithmService.start(algorithmId);
-        
+
         algorithmService.stop(algorithmId);
-        
-        
+
+
         const obj = algorithmService.get(algorithmId);
 
         expect(obj.isTraining).toBeFalsy();
@@ -321,6 +364,79 @@ describe('Electron App Algorithm Data Service', () => {
         algorithmService.start(algorithmId);
     });
 
+    it('load should import the algorithm', async (done) => {
+        (context.activate as jasmine.Spy).and.callFake( () => {
+            return new Promise((resolve) => {
+                const plugin = jasmine.createSpyObj('AlgorithmPlugin', ['import']);
+                (plugin.import as jasmine.Spy).and.callFake(() => {
+                    expect().nothing();
+                    done();
+                    return {};
+                });
+                resolve(plugin);
+            });
+        })
+        await algorithmService.load(1);
+
+        const alg = algorithmService.get(1);
+        expect(alg.name).toBe('algorithm');
+    });
+
+    it('load for not found should return 0 for experiments', async() => {
+        await algorithmService.load(404);
+        expect(algorithmService.all().length).toBe(0);
+    })
+
+    it('create and save should create new zip in folder', async () => {
+        const algorithmPlugin: AlgorithmPlugin = jasmine.createSpyObj('Algorithm', ['finishTraining', 'export']);
+        (algorithmPlugin.finishTraining as jasmine.Spy).and.returnValue(true);
+
+        algorithmService.create(2, {} as any, algorithmPlugin);
+        await algorithmService.save(2);
+
+        expect(fs.existsSync(path.join(experimentPath, `algorithms2.gzip`))).toBeTruthy();
+        expect(algorithmPlugin.export).toHaveBeenCalledTimes(1);
+    });
+
+    it('export should return json', async () => {
+        const algorithmPlugin: AlgorithmPlugin = jasmine.createSpyObj('Algorithm', ['finishTraining', 'export']);
+        (algorithmPlugin.export as jasmine.Spy).and.callFake((minimal) => {
+            if (minimal) {
+                return "minimal"
+            }
+            return "not minimal";
+        });
+
+        algorithmService.create(2, {} as any, algorithmPlugin);
+        const json = await algorithmService.export(100);
+        expect(json).toEqual('minimal');
+    });
+    
+    it('export should throw for not found', async (done) => {
+        try {
+            await algorithmService.export(404);
+            done.fail();
+        } catch(error) {
+            expect().nothing();
+            done();
+        }
+    });
+
+    it('delete by experiment and save should unlink zip', async () => {
+        (context.activate as jasmine.Spy).and.callFake( () => {
+            return new Promise((resolve) => {
+                const plugin = jasmine.createSpyObj('AlgorithmPlugin', ['import']);
+                resolve(plugin);
+            });
+        })
+        await algorithmService.load(1);
+        const ids = await algorithmService.deleteByExperiment(1);
+
+        algorithmService.save(1);
+        expect(ids.length).toBe(1);
+        expect(ids[0]).toBe(1);
+        expect(fs.existsSync(path.join(experimentPath, `algorithms1.gzip`))).toBeFalsy();
+    });
 
 
 

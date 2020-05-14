@@ -1,6 +1,13 @@
 <div class="extended" *ngIf="isExpanded">
-    <app-sidebar-experiment class="h-100v" *ngIf="choice === 'experiments'"></app-sidebar-experiment>
-    <app-sidebar-package class="h-100v" *ngIf="choice === 'packages'"></app-sidebar-package>
+    <ng-container *ngIf="choice === 'experiments'">
+        <app-sidebar-experiment class="h-100v"></app-sidebar-experiment>
+    </ng-container>
+    <ng-container *ngIf="choice === 'packages'">
+        <app-sidebar-package class="h-100v" *ngIf="choice === 'packages'"></app-sidebar-package>
+    </ng-container>
+    <ng-container *ngIf="choice === 'algorithms'">
+        <app-sidebar-algorithm class="h-100v" *ngIf="choice === 'algorithms'"></app-sidebar-algorithm>
+    </ng-container>
 </div>
 <div class="icons">
     <div class="space"></div>
@@ -10,14 +17,6 @@
             <fa name="flask" size="2x" title="experiments">
             </fa>
             <!-- Experiments -->
-        </li>
-        <li class="text-center pointer icon my-2 px-4" (click)='onPick("data", $event)' [ngClass]="{ 'active': choice === 'data' }">
-            <fa name="table" size="2x" title="datasets"></fa>
-            <!-- Data -->
-        </li>
-        <li class="text-center pointer icon my-2 px-4" (click)='onPick("visuals", $event)' [ngClass]="{ 'active': choice === 'visuals' }">
-            <fa name="bar-chart" title="visuals" size="2x"></fa>
-            <!-- Visuals -->
         </li>
         <li class="text-center pointer icon my-2 px-4" (click)='onPick("algorithms", $event)'
             [ngClass]="{ 'active': choice === 'algorithms' }">
@@ -40,6 +39,9 @@
         <ul class="list-unstyled dropdown-list">
             <li (click)="onWelcomeClick()">
                 Welcome
+            </li>
+            <li (click)="onShortcutsClick()">
+                Shortcuts
             </li>
             <li (click)="onSettingsClick()">
                 Settings

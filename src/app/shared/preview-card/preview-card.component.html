@@ -1,1 +1,2 @@
-{{ value | preview:feature.type:50 }}
+<span class="pointer">{{ value | preview:feature.type:50 }}</span>
+<app-preview-modal [value]="value" [feature]="feature" #modalCmp></app-preview-modal>

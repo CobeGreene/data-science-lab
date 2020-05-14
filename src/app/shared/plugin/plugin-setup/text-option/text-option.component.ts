@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { TextOption } from 'data-science-lab-core';
 import { NgModel } from '@angular/forms';
+import { isValidText } from '../plugin-options.helper';
 
 @Component({
   selector: 'app-text-option',
@@ -24,9 +25,13 @@ export class TextOptionComponent implements OnInit, AfterViewInit {
 
   }
 
+  isValid(): boolean {
+    return isValidText(this.value, this.option);
+  }
+
   onChange(_) {
     this.emitChange.emit({
-      valid: this.textComponent.valid,
+      valid: this.isValid(),
       value: this.value
     });
   }
@@ -34,7 +39,7 @@ export class TextOptionComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.emitChange.emit({
-        valid: this.textComponent.valid,
+        valid: this.isValid(),
         value: this.value
       });
     });

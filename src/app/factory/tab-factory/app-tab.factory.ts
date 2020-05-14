@@ -22,6 +22,10 @@ import { DatasetVisualSessionService } from '../../session-services/dataset-visu
 import { VisualizeDatasetTabBuilder } from './visualize-dataset-tab.builder';
 import { VisualizeAlgorithmTabBuilder } from './visualize-algorithm-tab.builder';
 import { AlgorithmVisualSessionService } from '../../session-services/algorithm-visual-session-service';
+import { VisualizeTestReportTabBuilder } from './visualize-test-report-tab-builder';
+import { TestReportService } from '../../services/test-report-service';
+import { TestReportVisualSessionService } from '../../session-services/test-report-visual-session-service';
+
 
 @Injectable()
 export class AppTabFactory extends TabFactory {
@@ -36,7 +40,9 @@ export class AppTabFactory extends TabFactory {
         private algorithmSessionService: AlgorithmSessionService,
         private testReportSessionService: TestReportSessionService,
         private datasetVisualSessionService: DatasetVisualSessionService,
-        private algorithmVisualSessionService: AlgorithmVisualSessionService
+        private algorithmVisualSessionService: AlgorithmVisualSessionService,
+        private testReportService: TestReportService,
+        private visualizeTestReportSessionService: TestReportVisualSessionService
     ) {
         super();
     }
@@ -52,6 +58,8 @@ export class AppTabFactory extends TabFactory {
             return { name: 'Settings', route: '/settings' };
         } else if (handler.get(0) === 'welcome') {
             return { name: 'Welcome', route: '/welcome' };
+        } else if (handler.get(0) === 'shortcuts') {
+            return { name: 'Shortcuts', route: '/shortcuts' };
         } else if (handler.get(0) === 'package' && !handler.has(1)) {
             return { name: 'Package Explorer', route: '/package' };
         } else if (handler.get(0) === 'package' && handler.has(1)) {
@@ -157,13 +165,24 @@ export class AppTabFactory extends TabFactory {
                                         .buildFinish(this.algorithmVisualSessionService.sessionFinished)
                                         .buildClose(this.algorithmVisualSessionService.attemptDelete);
                                     handler.skip(3);
+                                } else if (handler.get(0) === 'test-report') {
+                                    builder.buildRoute('test-report');
+                                    const testReportId = +handler.get(1);
+                                    const name = this.testReportService.get(testReportId).name;
+                                    builder = new VisualizeTestReportTabBuilder(+handler.get(1), +handler.get(3), handler.get(4), name, builder as AlgorithmTabBuilder);
+                                    builder.buildPrefix(`Visual for `)
+                                        .buildUpdate(this.visualizeTestReportSessionService.sessionUpdated)
+                                        .buildDelete(this.visualizeTestReportSessionService.sessionDeleted)
+                                        .buildFinish(this.visualizeTestReportSessionService.sessionFinished)
+                                        .buildClose(this.visualizeTestReportSessionService.attemptDelete);
+                                    handler.skip(5);
                                 }
                             }
                         }
                     }
                 } else if (handler.get(0) === 'visual') {
                     builder.buildRoute('visual');
-                    handler.skip(1);   
+                    handler.skip(1);
                 }
 
             }

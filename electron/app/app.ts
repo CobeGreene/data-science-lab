@@ -1,9 +1,9 @@
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
+import { app, BrowserWindow, screen } from 'electron';
 import { ServiceContainer, AppServiceContainer, SERVICE_TYPES, Service } from './service-container';
 import { RoutingPipeline, Producer } from './pipeline';
 import { AppIpcService } from './ipc-services';
 import { IpcService } from '../../shared/services';
-import { ErrorEvent, ExperimentEvents } from '../../shared/events';
+import { ErrorEvent, AppCloseEvent, Deliminator, Event } from '../../shared/events';
 import { SettingsContext, AppSettingsContext } from './contexts/settings-context';
 import { ThemeDataService, AppThemeDataService } from './data-services/theme-data-service';
 import { ThemeServiceModel } from './services/theme.sm/theme.sm';
@@ -43,14 +43,29 @@ import { VisualServiceModel } from './services/visual.sm';
 import { DatasetVisualServiceModel } from './session-services/dataset-visual.sm';
 import { AlgorithmVisualServiceModel } from './session-services/algorithm-visual.sm';
 import { ExperimentState } from '../../shared/models';
+import { ShortcutDataService, AppShortcutDataService } from './data-services/shortcut-data-service';
+import { ShortcutServiceModel } from './services/shortcut.sm';
+import { BrowserDataService, AppBrowserDataService } from './data-services/browser-data-service';
+import { TestReportVisualServiceModel } from './session-services/test-report-visual.sm';
+import { ApiPackageServiceModel } from './services/api-package.sm';
+import { ExportAlgorithmServiceModel } from './services/export-algorithm.sm';
+import { ErrorTypes } from '../../shared/errors';
 
 export let win: BrowserWindow;
+
+export interface AppData {
+    preload: string;
+    index: string;
+    options: {
+        dev: boolean;
+    }
+};
 
 export class App {
     private serviceContainer: ServiceContainer;
     private pipeline: RoutingPipeline;
 
-    constructor(private preload: string, private indexPage: string) {
+    constructor(private data: AppData) {
         this.serviceContainer = new AppServiceContainer();
     }
 
@@ -79,7 +94,8 @@ export class App {
         this.serviceContainer.addSingleton<VisualDataService>(AppVisualDataService, SERVICE_TYPES.VisualDataService);
         this.serviceContainer.addSingleton<TestReportSessionDataService>(
             AppTestReportSessionDataService, SERVICE_TYPES.TestReportSessionDataService);
-        this.serviceContainer.addSingleton<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
+        this.serviceContainer.addSingleton<ShortcutDataService>(AppShortcutDataService, SERVICE_TYPES.ShortcutDataService);
+        this.serviceContainer.addSingleton<BrowserDataService>(AppBrowserDataService, SERVICE_TYPES.BrowserDataService);
 
         // Core Services
         this.serviceContainer.addTransient<WebService>(AppWebService, SERVICE_TYPES.WebService);
@@ -103,10 +119,15 @@ export class App {
         this.serviceContainer.addTransient<TrackerServiceModel>(TrackerServiceModel, SERVICE_TYPES.TrackerServiceModel);
         this.serviceContainer.addTransient<TestReportServiceModel>(TestReportServiceModel, SERVICE_TYPES.TestReportServiceModel);
         this.serviceContainer
-        .addTransient<CreateTestReportServiceModel>(CreateTestReportServiceModel, SERVICE_TYPES.CreateTestReportServiceModel);
+            .addTransient<CreateTestReportServiceModel>(CreateTestReportServiceModel, SERVICE_TYPES.CreateTestReportServiceModel);
         this.serviceContainer.addTransient<VisualServiceModel>(VisualServiceModel, SERVICE_TYPES.VisualServiceModel);
         this.serviceContainer.addTransient<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
         this.serviceContainer.addTransient<AlgorithmVisualServiceModel>(AlgorithmVisualServiceModel, SERVICE_TYPES.AlgorithmVisualServiceModel);
+        this.serviceContainer.addTransient<DatasetVisualServiceModel>(DatasetVisualServiceModel, SERVICE_TYPES.DatasetVisualServiceModel);
+        this.serviceContainer.addTransient<ShortcutServiceModel>(ShortcutServiceModel, SERVICE_TYPES.ShortcutServiceModel);
+        this.serviceContainer.addTransient<TestReportVisualServiceModel>(TestReportVisualServiceModel, SERVICE_TYPES.TestReportVisualServiceModel);
+        this.serviceContainer.addTransient<ApiPackageServiceModel>(ApiPackageServiceModel, SERVICE_TYPES.ApiPackageServiceModel);
+        this.serviceContainer.addTransient<ExportAlgorithmServiceModel>(ExportAlgorithmServiceModel, SERVICE_TYPES.ExportAlgorithmServiceModel);
 
         this.pipeline = new RoutingPipeline(this.serviceContainer, [
             ThemeServiceModel.routes,
@@ -126,16 +147,31 @@ export class App {
             VisualServiceModel.routes,
             DatasetVisualServiceModel.routes,
             AlgorithmVisualServiceModel.routes,
+            TestReportVisualServiceModel.routes,
+            ShortcutServiceModel.routes,
+            ApiPackageServiceModel.routes,
+            ExportAlgorithmServiceModel.routes
         ]);
     }
 
-    public destory() {
-        const dataService = this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
-        const producer = this.serviceContainer.resolve<Producer>(SERVICE_TYPES.Producer);
+    public async destory() {
+        const experiments = this.serviceContainer.resolve<ExperimentDataService>(SERVICE_TYPES.ExperimentDataService);
+        const datasets = this.serviceContainer.resolve<DatasetDataService>(SERVICE_TYPES.DatasetDataService);
+        const visuals = this.serviceContainer.resolve<VisualDataService>(SERVICE_TYPES.VisualDataService);
+        const algorithms = this.serviceContainer.resolve<AlgorithmDataService>(SERVICE_TYPES.AlgorithmDataService);
+        const testReport = this.serviceContainer.resolve<TestReportDataService>(SERVICE_TYPES.TestReportDataService);
+        const trackerReport = this.serviceContainer.resolve<TrackerDataService>(SERVICE_TYPES.TrackerDataService);
 
-        dataService.all().filter(value => value.state === ExperimentState.Loaded).forEach(experiment => {
-            producer.send(ExperimentEvents.Save, experiment.id);
-        });
+        for (let experiment of experiments.all().filter(value => value.state === ExperimentState.Loaded)) {
+            datasets.save(experiment.id);
+            visuals.save(experiment.id);
+            for (let algorithm of algorithms.all(experiment.id)) {
+                testReport.save(algorithm.id);
+                trackerReport.save(algorithm.id);
+            }
+            await algorithms.save(experiment.id);
+        }
+
     }
 
     public configure() {
@@ -159,22 +195,23 @@ export class App {
             y: 0,
             width: size.width, height: size.height,
             webPreferences: {
-                preload: this.preload
+                preload: this.data.preload,
+
             },
             title: 'Data Science Lab'
         });
 
-        win.setMenu(null); // to allow some of the shortcuts.
+        if (!this.data.options.dev) {
+            win.setMenu(null); // to allow some of the shortcuts.
+        }
 
         this.configure();
-        win.loadURL(this.indexPage);
+        win.loadURL(this.data.index);
 
-
-        win.on('close', (event: Event) => {
+        win.on('close', async (event: Event) => {
             event.preventDefault();
-            this.destory();
+            await this.destory();
             win.destroy();
-
         });
 
         win.on('closed', () => {
@@ -190,6 +227,7 @@ export class App {
             if (win == null) {
                 this.createWindow();
             }
+
         });
 
         process.on('uncaughtException', (error) => {
@@ -200,5 +238,12 @@ export class App {
                 producer.send(ErrorEvent, error);
             }
         });
+
+        const ipc = this.serviceContainer.resolve<IpcService>(SERVICE_TYPES.IpcService);
+        ipc.on(`${AppCloseEvent}${Deliminator}${Event}`, async () => {
+            await this.destory();
+            win.destroy();
+        });
+
     }
 }

@@ -1,7 +1,7 @@
 import { SessionOptions } from './session-options';
 import { SessionPlugin } from './session-plugin';
 import { Plugin } from './plugin';
-import { OptionList } from 'data-science-lab-core';
+import { Option } from 'data-science-lab-core';
 
 export class Session {
     id: number;
@@ -12,7 +12,7 @@ export class Session {
     returnPath?: string;
     isWaiting: boolean;
     plugin?: SessionPlugin | Plugin;
-    optionList?: OptionList;
+    optionList?: Option[];
     search?: string;
     inputDict?: { [id: string]: number[] };
     inputValues?: {[name: string]: any};

@@ -9,7 +9,7 @@ export class AppThemeService extends ThemeService {
     theme: {};
 
     constructor(messeger: Messenger, zone: NgZone) {
-        super(messeger, zone);
+        super(messeger, zone) /* istanbul ignore next */;
 
         this.registerEvents();
         this.messenger.publish(ThemeEvents.Current);

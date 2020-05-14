@@ -594,8 +594,110 @@ describe('Angular App Tab Service', () => {
     });
 
 
+    it('close all for all routes should emit tabs changed', (done) => {
+        service.openTab({
+            route: '/route1',
+            name: 'Name'
+        });
+        service.openTab({
+            route: '/route2',
+            name: 'Name 2',
+        });
+        service.openTab({
+            route: '/route3',
+            name: 'Name',
+        });
 
+        service.tabsChanged.subscribe(tabs => {
+            expect(tabs.length).toBe(0);
+            done();
+        });
 
+        service.closeAll();
+    });
+
+    it('close all except two should emit tabs changed', (done) => {
+        service.openTab({
+            route: '/route1',
+            name: 'Name'
+        });
+        service.openTab({
+            route: '/route2',
+            name: 'Name 2',
+        });
+        service.openTab({
+            route: '/route3',
+            name: 'Name',
+        });
+        service.openTab({
+            route: '/route4',
+            name: 'Name',
+        });
+
+        service.tabsChanged.subscribe(tabs => {
+            expect(tabs.length).toBe(2);
+            expect(tabs[0].route).toBe('/route2');
+            expect(tabs[1].route).toBe('/route3');
+            done();
+        });
+
+        service.closeAll(['/route2', '/route3']);
+    });
+
+    it('close should call close on tab', (done) => {
+        service.openTab({
+            route: '/route1',
+            name: 'Name'
+        });
+        service.openTab({
+            route: '/route2',
+            name: 'Name 2',
+            close: () => {
+                expect().nothing();
+                done();
+            }
+        });
+
+        service.closeAll();
+    });
+    
+    it('close should call unsubscribe on tab', () => {
+        const sub = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+
+        service.openTab({
+            route: '/route1',
+            name: 'Name'
+        });
+        service.openTab({
+            route: '/route2',
+            name: 'Name 2',
+            sub
+        });
+
+        service.closeAll();
+
+        expect(sub.unsubscribe).toHaveBeenCalledTimes(1);
+    });
+
+    it('close should call unsubscribe on a list of subs on tab', () => {
+        const sub = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+        const sub2 = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+
+        service.openTab({
+            route: '/route1',
+            name: 'Name'
+        });
+        service.openTab({
+            route: '/route2',
+            name: 'Name 2',
+            sub: [sub, sub2]
+        });
+
+        service.closeAll();
+
+        expect(sub.unsubscribe).toHaveBeenCalledTimes(1);
+        expect(sub2.unsubscribe).toHaveBeenCalledTimes(1);
+    });
 
 
 

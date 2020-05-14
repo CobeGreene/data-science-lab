@@ -9,7 +9,7 @@ export class AppVisualizationService extends VisualizationService {
     private visuals: Visual[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.visuals = [];
         this.registerEvents();
@@ -100,6 +100,14 @@ export class AppVisualizationService extends VisualizationService {
     
     reposition(id: number, top: number, left: number): void {
         this.messenger.publish(VisualEvents.Reposition, id, top, left);
+    }
+
+    show(id: number): void {
+        this.messenger.publish(VisualEvents.Show, id);
+    }
+
+    rename(id: number, name: string) {
+        this.messenger.publish(VisualEvents.Rename, id, name);
     }
 
 }

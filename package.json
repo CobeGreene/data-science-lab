@@ -1,6 +1,6 @@
 {
-  "name": "data-science-lab-app",
-  "version": "0.1.0",
+  "name": "data-science-lab",
+  "version": "1.0.0",
   "main": "dist/electron/main.js",
   "author": {
     "name": "Cobe Greene",
@@ -15,17 +15,23 @@
     "test:elc": "npm run build:elc:test && npm run jasmine:elc && npm run clean:test",
     "jasmine:elc": "jasmine --config=./electron/spec/support/jasmine.json || exit 0",
     "build:ang": "ng build --base-href ./",
+    "build:ang:prod": "ng build --prod",
     "build:elc:test": "tsc --p tsconfig.electron.spec.json",
     "build:elc": "tsc --p tsconfig.electron.json",
     "build:all": "npm run build:elc && npm run build:ang",
     "build:start": "npm run build:all && npm run start",
     "build:settings": "copy default.settings.json dist\\app.settings.json",
-    "build:theme": "copy default.color-theme.json dist\\app.color-theme.json",
+    "build:themes": "xcopy /I default-theme dist\\app-themes /Y",
     "build:user": "copy default.user-setting.json dist\\app.user-setting.json",
-    "build:jsons": "npm run build:settings && npm run build:theme && npm run build:user",
-    "start": "electron .",
-    "clean:test": "rmdir /q /s test || exit 0",
-    "clean:dist": "rmdir /s dist || exit 0",
+    "build:shortcuts": "copy default.shortcuts.json dist\\app.shortcuts.json",
+    "build:jsons": "npm run build:settings && npm run build:themes && npm run build:user && npm run build:shortcuts",
+    "build:prod": "npm run clean:dist && npm run build:elc && npm run build:ang:prod && npm run build:jsons",
+    "cov:ang": "ng test --code-coverage",
+    "cov:elc": "istanbul cover -i \"test-elc/**/*.js\" -x \"test-elc/**/*.spec.js\" electron-coverage.js",
+    "start": "electron . --dev",
+    "clean:test": "rmdir /q /s test-elc || exit 0",
+    "clean:dist": "rmdir /q /s dist || exit 0",
+    "clean:release": "rmdir /q /s release || exit 0",
     "clean:plugins": "rmdir /s dist\\plugins_packages || exit 0",
     "clean:all": "npm run clean:test && npm run clean:dist",
     "clean": "npm run clean:all",
@@ -34,7 +40,8 @@
     "travis": "npm run travis:elc && npm run travis:ang",
     "travis:elc": "npm run build:elc:test && jasmine --config=./electron/spec/support/jasmine.json",
     "travis:ang": "ng test --watch=false --browsers=ChromeHeadless",
-    "builder": "electron-builder"
+    "release:win": "electron-builder --win",
+    "release:linux": "electron-builder --linux"
   },
   "build": {
     "appId": "com.data-science-lab.app",
@@ -53,6 +60,13 @@
       ],
       "icon": "./src/data-science-lab-icon.ico"
     },
+    "linux": {
+      "icon": "./src/data-science-lab-icon.png",
+      "category": "Science",
+      "target": [
+        "deb"
+      ]
+    },
     "nsis": {
       "runAfterFinish": true,
       "license": "LICENSE"
@@ -60,13 +74,15 @@
   },
   "private": true,
   "dependencies": {
-    "data-science-lab-core": "^0.0.23",
+    "data-science-lab-core": "^0.0.30",
     "electron-settings": "^3.2.0",
     "font-awesome": "^4.7.0",
-    "live-plugin-manager": "^0.13.2",
+    "live-plugin-manager": "github:CobeGreene/live-plugin-manager",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
+    "istanbul": "^0.4.5",
+    "jasmine-console-reporter": "^3.1.0",
     "@angular-devkit/build-angular": "~0.803.4",
     "@angular/animations": "~8.2.5",
     "@angular/cdk": "^8.2.3",
@@ -80,6 +96,7 @@
     "@angular/platform-browser": "~8.2.5",
     "@angular/platform-browser-dynamic": "~8.2.5",
     "@angular/router": "~8.2.5",
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/electron": "^1.6.10",
     "@types/jasmine": "2.8.6",
     "@types/jasminewd2": "2.0.3",
@@ -90,6 +107,7 @@
     "codelyzer": "^5.0.0",
     "electron": "^6.0.10",
     "electron-builder": "^22.3.2",
+    "jasmine": "^3.5.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "jasmine-ts-console-reporter": "^3.1.1",
@@ -98,9 +116,11 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "mocha": "^7.1.2",
     "ngx-md": "^8.1.6",
     "protractor": "~5.4.0",
     "rxjs": "~6.4.0",
+    "source-map-support": "^0.5.19",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",

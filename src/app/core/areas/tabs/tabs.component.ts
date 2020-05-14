@@ -6,6 +6,7 @@ import { ShortcutService } from '../../../services/shortcut-service';
 import { FocusService } from '../../../services/focus-service';
 import { RouterService } from '../../../services/router-service';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Shortcuts } from "../../../../../shared/shortcuts";
 
 @Component({
   selector: 'app-tabs',
@@ -80,15 +81,15 @@ export class TabsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.shortcutService.subscribe('ctrl + tab', this.onTabRight);
-    this.shortcutService.subscribe('ctrl + shift + tab', this.onTabLeft);
-    this.shortcutService.subscribe('ctrl + keyw', this.onCloseCmd);
+    this.shortcutService.subscribe(Shortcuts.NextWorkspace, this.onTabRight);
+    this.shortcutService.subscribe(Shortcuts.PreviousWorkspace, this.onTabLeft);
+    this.shortcutService.subscribe(Shortcuts.CloseWorkspace, this.onCloseCmd);
   }
 
   ngOnDestroy() {
-    this.shortcutService.unsubscribe('ctrl + tab', this.onTabRight);
-    this.shortcutService.unsubscribe('ctrl + shift + tab', this.onTabLeft);
-    this.shortcutService.unsubscribe('ctrl + keyw', this.onCloseCmd);
+    this.shortcutService.unsubscribe(Shortcuts.NextWorkspace, this.onTabRight);
+    this.shortcutService.unsubscribe(Shortcuts.PreviousWorkspace, this.onTabLeft);
+    this.shortcutService.unsubscribe(Shortcuts.CloseWorkspace, this.onCloseCmd);
   }
 
   onTabRight = () => {

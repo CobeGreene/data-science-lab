@@ -24,7 +24,7 @@ export class NumberOptionComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
-  onChange() {
+  onChange(_: Event) {
     this.emitChange.emit({
       valid: this.numberComponent.valid,
       value: this.value

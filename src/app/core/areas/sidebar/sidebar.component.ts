@@ -6,6 +6,8 @@ import { TabService } from '../../../services/tab-service';
 import { FocusAreas } from '../../../constants';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { DropdownComponent } from '../../../shared/dropdown/dropdown.component';
+import { Shortcuts } from '../../../../../shared/shortcuts';
+import { CoreAreaService } from '../../../services/core-area-service/core-area.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,6 +25,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private shortcutService: ShortcutService,
+    private coreService: CoreAreaService,
     private tabFactory: TabFactory,
     private tabService: TabService,
     private focusService: FocusService) { }
@@ -34,23 +37,29 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.inFocus = value === FocusAreas.Sidebar;
         if (this.inFocus) {
           this.isExpanded = true;
+          this.coreService.sidebarExpanded(this.isExpanded);
         }
       });
 
     this.inFocus = this.focusService.current() === FocusAreas.Sidebar;
     this.isExpanded = true;
+    this.coreService.sidebarExpanded(this.isExpanded);
+
   }
+
 
   ngAfterViewInit() {
-    this.shortcutService.subscribe('ctrl + shift + keye', this.onPickExperiments);
-    this.shortcutService.subscribe('ctrl + shift + keyp', this.onPickPackages);
-    this.shortcutService.subscribe('ctrl + keyb', this.onToggleSidebar);
+    this.shortcutService.subscribe(Shortcuts.ToggleSidebarExperiments, this.onPickExperiments);
+    this.shortcutService.subscribe(Shortcuts.ToggleSidebarPackages, this.onPickPackages);
+    this.shortcutService.subscribe(Shortcuts.ToggleSidebarAlgorithms, this.onPickAlgorithms);
+    this.shortcutService.subscribe(Shortcuts.ToggleSidebar, this.onToggleSidebar);
   }
-
+  
   ngOnDestroy() {
-    this.shortcutService.unsubscribe('ctrl + shift + keye', this.onPickExperiments);
-    this.shortcutService.unsubscribe('ctrl + shift + keyp', this.onPickPackages);
-    this.shortcutService.unsubscribe('ctrl + keyb', this.onToggleSidebar);
+    this.shortcutService.unsubscribe(Shortcuts.ToggleSidebarExperiments, this.onPickExperiments);
+    this.shortcutService.unsubscribe(Shortcuts.ToggleSidebarPackages, this.onPickPackages);
+    this.shortcutService.unsubscribe(Shortcuts.ToggleSidebarAlgorithms, this.onPickAlgorithms);
+    this.shortcutService.unsubscribe(Shortcuts.ToggleSidebar, this.onToggleSidebar);
   }
 
   onPickExperiments = () => {
@@ -60,6 +69,11 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   onPickPackages = () => {
     this.onPick('packages');
   }
+
+  onPickAlgorithms = () => {
+    this.onPick('algorithms');
+  }
+
 
   onPick(choice: string, event?: MouseEvent) {
     if (this.isExpanded) {
@@ -90,6 +104,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.lastSelected = this.choice;
       this.choice = 'none';
       this.isExpanded = false;
+      this.coreService.sidebarExpanded(this.isExpanded);
       this.focusService.pop();
     }
   }
@@ -101,6 +116,11 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onWelcomeClick() {
     const tab = this.tabFactory.create(['welcome']);
+    this.tabService.openTab(tab);
+  }
+
+  onShortcutsClick() {
+    const tab = this.tabFactory.create(['shortcuts']);
     this.tabService.openTab(tab);
   }
 

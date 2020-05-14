@@ -1,4 +1,4 @@
-:host(.rightSidebar) {
+:host(.right-sidebar) {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: 1fr 1fr min-content;
@@ -6,7 +6,7 @@
     height: 100%;
 }
 
-:host(.leftSidebar) {
+:host(.left-sidebar) {
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: 1fr 1fr min-content;
@@ -32,27 +32,27 @@
     grid-area: icons;
 }
 
-:host(.rightSidebar) .icon {
+:host(.right-sidebar) .icon {
     border-right: 2px solid transparent;
 }
 
-:host(.leftSidebar) .icon {
+:host(.left-sidebar) .icon {
     border-left: 2px solid transparent;
 }
 
-:host(.rightSidebar) .icon.active {
+:host(.right-sidebar) .icon.active {
     border-right: 2px solid var(--sidebar-icon-active);
 }
 
-:host(.rightSidebar) .icon:hover.active {
+:host(.right-sidebar) .icon:hover.active {
     border-right: 2px solid var(--sidebar-icon-active);
 }
 
-:host(.leftSidebar) .icon.active {
+:host(.left-sidebar) .icon.active {
     border-left: 2px solid var(--sidebar-icon-active);
 }
 
-:host(.leftSidebar) .icon:hover.active {
+:host(.left-sidebar) .icon:hover.active {
     border-left: 2px solid var(--sidebar-icon-active);
 }
 

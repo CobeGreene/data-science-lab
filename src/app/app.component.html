@@ -1,14 +1,14 @@
-<div class="container h-100v" [ngClass]="{ 'rightSidebar': rightSidebar, 'leftSidebar': !rightSidebar }">
+<div class="container h-100v" [ngClass]="{ 'right-sidebar': rightSidebar, 'left-sidebar': !rightSidebar }">
     <div class="tabs">
         <app-tabs></app-tabs>
     </div>
     <div class="workspace" (touch)="onFocusWorkspace($event)" (click)="onFocusWorkspace($event)" (resized)="onResized()" #workspaceCmp>
         <app-workspace-area>
-            <router-outlet></router-outlet>
+            <router-outlet ></router-outlet>
         </app-workspace-area>
     </div>
     <div class="sidebar">
-        <app-sidebar [ngClass]="{ 'rightSidebar': rightSidebar, 'leftSidebar': !rightSidebar }"></app-sidebar>
+        <app-sidebar [ngClass]="{ 'right-sidebar': rightSidebar, 'left-sidebar': !rightSidebar }"></app-sidebar>
     </div>
     <div class="report">
         <app-report></app-report>

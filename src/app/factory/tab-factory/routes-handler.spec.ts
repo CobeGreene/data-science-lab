@@ -83,6 +83,18 @@ describe('Angular Routes Handler', () => {
         expect(handler.get(0)).toBe('2');
     });
 
+    it('is a number should return true with no offset', () => {
+        handler = new RoutesHandler(['1']);
+        expect(handler.isNumber()).toBeTruthy();
+    });
+    
+    it('is a number should throw for offset out of range', () => {
+        handler = new RoutesHandler(['1']);
+        expect(() => {
+            handler.isNumber(2);
+        }).toThrowError();
+    });
+
 
 });
 

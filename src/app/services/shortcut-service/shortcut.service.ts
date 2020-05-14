@@ -1,16 +1,37 @@
-import { ShortcutInput } from '../../models';
+import { Service } from '../service';
+import { Subject } from 'rxjs';
+import { Messenger } from '../messenger';
+import { NgZone } from '@angular/core';
+import { Shortcut } from '../../../../shared/models';
 
-export abstract class ShortcutService {
+export abstract class ShortcutService extends Service {
 
-    public shortcuts: ShortcutInput[];
+    public shortcutWatcher: Subject<string>;
+    public shortcutChanged: Subject<void>;
+    
+    constructor(messenger: Messenger, zone: NgZone) {
+        super(messenger, zone);
+        
+        this.shortcutWatcher = new Subject<string>();
+        this.shortcutChanged = new Subject<void>();
 
-    constructor() {
-        this.shortcuts = [];
     }
 
-    abstract subscribe(shortcut: string, action: () => void);
+    destorySubjects() {
+        this.shortcutWatcher.complete();
+        this.shortcutChanged.complete();
+    }
 
+    abstract all(): Shortcut[];
+    abstract get(key: string): Shortcut;
+    abstract find(key: string): Shortcut | undefined;
+    abstract subscribe(shortcut: string, action: () => void);
     abstract unsubscribe(shortcut: string, action: () => void);
 
-    abstract runAction(shortcut: string);
+    abstract run(shortcut: string);
+    abstract turnOffWatcher();
+    abstract turnOnWatcher();
+    abstract update(shortcut: Shortcut);
+
+
 }

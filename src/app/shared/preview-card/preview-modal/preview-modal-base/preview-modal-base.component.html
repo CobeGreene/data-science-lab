@@ -1,0 +1,42 @@
+<ng-container [ngSwitch]="type">
+    <div *ngSwitchCase="'array'">
+        <div class="expandable p-1" (click)="onExpand()">
+            <div class="icon pointer pr-2">
+                <span [innerHTML]="'&#160;'.repeat(depth * 2)"></span>
+                <fa name="angle-down" *ngIf="isExpanded"></fa>
+                <fa name="angle-right" *ngIf="!isExpanded"></fa>
+            </div>
+            <div>
+                {{ prefix }} {{ value | preview:type:100 }}
+            </div>
+        </div>
+        <div *ngIf="isExpanded">
+            <ng-container *ngFor="let item of value; let i = index">
+                <app-preview-modal-base [value]="item" [depth]="depth + 1" [prefix]="i + ':'">
+                </app-preview-modal-base>
+            </ng-container>
+        </div>
+    </div>
+    <div *ngSwitchCase="'object'">
+        <div class="expandable p-1" (click)="onExpand()">
+            <div class="icon pointer pr-2">
+                <span [innerHTML]="'&#160;'.repeat(depth * 2)"></span>
+                <fa name="angle-down" *ngIf="isExpanded"></fa>
+                <fa name="angle-right" *ngIf="!isExpanded"></fa>
+            </div>
+            <div>
+                {{ prefix }} {{ value | preview:type:100 }}
+            </div>
+        </div>
+        <div *ngIf="isExpanded">
+            <ng-container *ngFor="let item of (value | keyvalue)">
+                <app-preview-modal-base [value]="item.value" [depth]="depth + 1" [prefix]="item.key + ':'">
+                </app-preview-modal-base>
+            </ng-container>
+        </div>
+    </div>
+    <div *ngSwitchDefault>
+        <span [innerHTML]="'&#160;'.repeat(depth * 2)"></span>
+        {{ prefix }} {{ value | json }}
+    </div>
+</ng-container>

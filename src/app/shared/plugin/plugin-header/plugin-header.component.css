@@ -1,8 +1,70 @@
 :host {
     display: grid;
-    grid-template-columns: minmax(min-content, 200px) 1fr minmax(min-content, 200px);
-    grid-template-rows: auto;
-    grid-template-areas: 'return title exit';
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'return exit' 'title title';
+}
+
+
+@media(min-width: 576px) {
+    :host() {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'return exit' 'title title';
+    }
+
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'return exit' 'title title';
+    }    
+}
+
+@media(min-width: 768px) {
+    :host() {
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
+        grid-template-rows: auto;
+        grid-template-areas: 'return title exit';
+    }
+
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 'return exit' 'title title';
+    }    
+}
+
+@media(min-width: 992px) {
+    :host() {
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
+        grid-template-rows: auto;
+        grid-template-areas: 'return title exit';
+    }
+
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
+        grid-template-rows: auto;
+        grid-template-areas: 'return title exit';
+    }    
+}
+
+
+@media(min-width: 1200px) {
+    :host() {
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
+        grid-template-rows: auto;
+        grid-template-areas: 'return title exit';
+    }
+
+    
+    :host(.sidebar-expanded) {
+        grid-template-columns: minmax(min-content, 150px) 1fr minmax(min-content, 150px);
+        grid-template-rows: auto;
+        grid-template-areas: 'return title exit';
+    }    
 }
 
 .return {

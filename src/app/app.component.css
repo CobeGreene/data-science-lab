@@ -1,4 +1,4 @@
-.container.rightSidebar {
+.container.right-sidebar {
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: min-content 1fr min-content;
@@ -13,7 +13,7 @@
     bottom: 0;
 }
 
-.container.leftSidebar {
+.container.left-sidebar {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: min-content 1fr min-content;

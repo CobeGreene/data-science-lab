@@ -11,7 +11,7 @@ export class AppExperimentService extends ExperimentService {
     private experiments: Experiment[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone) /* istanbul ignore next */;
 
         this.experiments = [];
         this.registerEvents();

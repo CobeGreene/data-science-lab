@@ -1,11 +1,109 @@
 :host {
-    background: var(--experiment-algorithm-card-background);
+    background: var(--experiment-test-report-card-background);
     height: min-content;
     border-radius: 0.5em;
-    border: 2px solid var(--experiment-algorithm-card-border);
-    box-shadow: 0px 5px 2px 3px var(--experiment-algorithm-card-shadow);
+    border: 2px solid var(--experiment-test-report-card-border);
+    box-shadow: 0px 5px 2px 3px var(--experiment-test-report-card-shadow);
     transform: scaleX(0.95);
-    cursor: pointer;
+}
+
+
+:host(.expanded) {
+    transform: scaleX(1);
+    grid-column: span 1;
+}
+
+:host(.expanded):hover {
+    transform: scaleX(1);
+    grid-column: span 1;
+}
+
+@media (min-width: 576px) {
+    :host(.expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+
+    :host(.expanded.sidebar-expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded.sidebar-expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+}
+
+@media (min-width: 768px) {
+    :host(.expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+
+    :host(.expanded.sidebar-expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded.sidebar-expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+}
+
+@media (min-width: 992px) {
+    :host(.expanded) {
+        transform: scaleX(1);
+        grid-column: span 2;
+    }
+    
+    :host(.expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 2;
+    }
+
+    :host(.expanded.sidebar-expanded) {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+    
+    :host(.expanded.sidebar-expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 1;
+    }
+}
+
+@media (min-width: 1200px) {
+    :host(.expanded) {
+        transform: scaleX(1);
+        grid-column: span 3;
+    }
+    
+    :host(.expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 3;
+    }
+    
+    :host(.expanded.sidebar-expanded) {
+        transform: scaleX(1);
+        grid-column: span 2;
+    }
+    
+    :host(.expanded.sidebar-expanded):hover {
+        transform: scaleX(1);
+        grid-column: span 2;
+    }
 }
 
 :host:hover {
@@ -39,4 +137,43 @@
 
 .edit:hover {
     opacity: 1.0;
+}
+
+.table {
+    border-collapse: collapse;
+}
+
+.show:hover {
+    background-color: var(--test-report-show-more-hover);
+}
+
+.table th {
+    white-space: nowrap;
+    background: var(--test-report-table-th);
+}
+
+.table td {
+    white-space: nowrap;
+    text-align: center;
+}
+
+.table tr:nth-child(even) {
+    background-color: var(--test-report-table-tr-even);
+}
+
+.examples::-webkit-scrollbar {
+    height: 2px;
+}
+
+.examples::-webkit-scrollbar-track {
+    background: var(--test-report-table-scroll-background);
+}
+
+.examples::-webkit-scrollbar-thumb {
+    background: var(--test-report-table-scroll-background);
+    border-radius: 10%;
+}
+
+.examples:hover::-webkit-scrollbar-thumb {
+    background: var(--test-report-table-scroll-foreground);
 }

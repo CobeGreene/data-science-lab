@@ -88,9 +88,18 @@ describe('Electron Dataset Data Service', () => {
         expect(datasetService.all().length).toBe(0);
     });
 
+    it('all view should return length of 0', () => {
+        expect(datasetService.allView().length).toBe(0);
+    })
+
     it('load should increase all by 2', () => {
         datasetService.load(1);
         expect(datasetService.all(1).length).toBe(2);
+    });
+    
+    it('load should increase allView by 2', () => {
+        datasetService.load(1);
+        expect(datasetService.allView(1).length).toBe(2);
     });
 
     it('create should return ids of new dataset', () => {
@@ -224,11 +233,13 @@ describe('Electron Dataset Data Service', () => {
             ];
         });
 
-        datasetService.create(2, { examples: [], features: [] });
+        const id = datasetService.create(2, { examples: [], features: [] })[0];
         datasetService.save(2);
 
-        datasetService.deleteByExperiment(2);
+        const ids = datasetService.deleteByExperiment(2);
         datasetService.save(2);
+        expect(ids.length).toBe(1);
+        expect(ids[0]).toBe(id);
         expect(fs.existsSync(path.join(experimentPath, `datasets${2}.gzip`))).toBeFalsy();
     });
 
@@ -552,7 +563,7 @@ describe('Electron Dataset Data Service', () => {
 
         const id = datasetService.create(2, { examples: [], features: [] })[0];
 
-        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0, 1, 2]);
+        const { updateId, createIds } = datasetService.transform(id, [{ features: [], examples: [] }], [0, 1, 2]);
 
         expect(updateId).toBe(id);
         expect(createIds.length).toBe(0);
@@ -592,7 +603,7 @@ describe('Electron Dataset Data Service', () => {
 
         const id = datasetService.create(2, { examples: [], features: [] })[0];
 
-        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0, 1]);
+        const { updateId, createIds } = datasetService.transform(id, [{ features: [], examples: [] }], [0, 1]);
 
         expect(updateId).toBe(id);
         expect(createIds.length).toBe(0);
@@ -633,7 +644,7 @@ describe('Electron Dataset Data Service', () => {
 
         const id = datasetService.create(2, { examples: [], features: [] })[0];
 
-        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0]);
+        const { updateId, createIds } = datasetService.transform(id, [{ features: [], examples: [] }], [0]);
 
         expect(updateId).toBe(id);
         expect(createIds.length).toBe(1);
@@ -677,7 +688,7 @@ describe('Electron Dataset Data Service', () => {
 
         const id = datasetService.create(2, { examples: [], features: [] })[0];
 
-        const { updateId, createIds } = datasetService.transform(id, [new PluginData({ features: [], examples: [] })], [0]);
+        const { updateId, createIds } = datasetService.transform(id, [{ features: [], examples: [] }], [0]);
 
         expect(updateId).toBe(id);
         expect(createIds.length).toBe(1);
@@ -696,7 +707,23 @@ describe('Electron Dataset Data Service', () => {
         datasetService.deleteByExperiment(2);
     });
 
-
+    it('show should increase the preview of experiment', () => {
+        datasetService.load(1);
+        datasetService.show(1);
+        const dataset = datasetService.get(1);
+        expect(dataset.previewExamples).toBe(2);        
+    });
+    
+    it('show multiple times should increase to length', () => {
+        datasetService.load(1);
+        datasetService.show(1);
+        datasetService.show(1);
+        datasetService.show(1);
+        datasetService.show(1);
+        datasetService.show(1);
+        const dataset = datasetService.get(1);
+        expect(dataset.previewExamples).toBe(3);        
+    });
 
 
 

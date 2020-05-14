@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, HostBinding } from '@angular/core';
 import { Dataset } from '../../../../../../../shared/models';
 import { RouterService } from '../../../../../services/router-service';
 import { DatasetService } from '../../../../../services/dataset-service';
 import { SplitDatasetComponent } from '../../../../../shared/dataset/split-dataset/split-dataset.component';
 import { JoinDatasetComponent } from '../../../../../shared/dataset/join-dataset/join-dataset.component';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { CoreAreaService } from '../../../../../services/core-area-service/core-area.service';
 
 @Component({
   selector: 'app-dataset-examples',
@@ -19,7 +20,12 @@ export class DatasetExamplesComponent implements OnInit, OnDestroy {
   @ViewChild('splitCmp', { static: false }) splitComponent: SplitDatasetComponent;
   @ViewChild('joinCmp', { static: false }) joinComponent: JoinDatasetComponent;
 
-  constructor(private routerService: RouterService, private datasetService: DatasetService) {
+  @HostBinding('class.sidebar-expanded') sidebarExpanded: boolean;
+
+  constructor(
+    private routerService: RouterService,
+    private coreAreaService: CoreAreaService,
+    private datasetService: DatasetService) {
 
   }
 
@@ -40,6 +46,13 @@ export class DatasetExamplesComponent implements OnInit, OnDestroy {
         this.id = this.routerService.data().datasetId;
         this.dataset = this.datasetService.get(this.id);
       });
+
+    this.coreAreaService.sidebarChanged
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value) => {
+        this.sidebarExpanded = value;
+      });
+    this.sidebarExpanded = this.coreAreaService.isSidebarExpanded();
 
     this.dataset = this.datasetService.get(this.id);
 
