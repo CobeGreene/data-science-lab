@@ -41,7 +41,11 @@
     "travis:elc": "npm run build:elc:test && jasmine --config=./electron/spec/support/jasmine.json",
     "travis:ang": "ng test --watch=false --browsers=ChromeHeadless",
     "release:win": "electron-builder --win",
-    "release:linux": "electron-builder --linux"
+    "release:win:64": "electron-builder --win --x64",
+    "release:win:32": "electron-builder --win --ia32",
+    "release:linux": "electron-builder --linux",
+    "release:linux:64": "electron-builder --linux --x64",
+    "release:linux:32": "electron-builder --linux --ia32"
   },
   "build": {
     "appId": "com.data-science-lab.app",
