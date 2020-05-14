@@ -19,6 +19,10 @@ describe('Angular App Test Report Service', () => {
         service = new AppTestReportService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
     });
@@ -69,6 +73,34 @@ describe('Angular App Test Report Service', () => {
         );
     });
 
+    it('create twice should call only once', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        service.testReportCreated.subscribe(myFunc);
+        dict[TestReportEvents.Create](TestReportEvents.Create,
+            { id: 1 }
+        );
+        dict[TestReportEvents.Create](TestReportEvents.Create,
+            { id: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    
+    it('delete event should call delete once subject', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        dict[TestReportEvents.Create](TestReportEvents.Create,
+            { id: 1 }
+        );
+        service.testReportDeleted.subscribe(myFunc);
+        dict[TestReportEvents.Delete](TestReportEvents.Delete,
+            1
+        );
+        dict[TestReportEvents.Delete](TestReportEvents.Delete,
+            1
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
     it('delete event should call delete subject', (done) => {
         dict[TestReportEvents.Create](TestReportEvents.Create, 
             { id: 1 }    
@@ -93,6 +125,31 @@ describe('Angular App Test Report Service', () => {
         });
         dict[TestReportEvents.Delete](TestReportEvents.Delete, 
             1    
+        );
+    });
+
+    
+    it('update event should call test report changed when not found', (done) => {
+        service.testReportsChanged.subscribe((value) => {
+            expect(value.length).toBe(1);
+            done();
+        });
+        dict[TestReportEvents.Update](TestReportEvents.Update,
+            { id: 1 }
+        );
+    });
+    
+    it('update event should call test report update when found', (done) => {
+        dict[TestReportEvents.Create](TestReportEvents.Create,
+            { id: 1 }
+        );
+        service.testReportUpdated.subscribe((value) => {
+            expect(value.id).toBe(1);
+            expect(value.name).toBe('new name');
+            done();
+        });
+        dict[TestReportEvents.Update](TestReportEvents.Update,
+            { id: 1, name: 'new name' }
         );
     });
 

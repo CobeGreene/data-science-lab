@@ -19,6 +19,10 @@ describe('Angular App User Setting Service', () => {
         service = new AppUserSettingService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('all should return empty', () => {
         expect(service.all().length).toBe(0);
     });

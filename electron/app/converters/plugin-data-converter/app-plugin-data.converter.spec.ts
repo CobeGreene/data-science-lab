@@ -6,7 +6,7 @@ describe('Electron App Plugin Data Converter', () => {
 
     let converter: AppPluginDataConverter;
 
-    beforeAll(() => {
+    beforeEach(() => {
         converter = new AppPluginDataConverter();
     });
 

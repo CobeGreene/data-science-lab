@@ -11,7 +11,8 @@ describe('Electron Visual Service Model', () => {
     let serviceContainer: ServiceContainer;
     let producer: Producer;
 
-    beforeAll(() => {
+    
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.VisualDataService) {
@@ -21,9 +22,6 @@ describe('Electron Visual Service Model', () => {
             }
             throw new Error(`Couldn't resolve type ${type}`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         visualService = jasmine.createSpyObj('VisualDataService', ['all', 'delete', 'load', 'save', 'get', 'update', 'deleteByExperiment']);
         serviceModel = new VisualServiceModel(serviceContainer, producer); 

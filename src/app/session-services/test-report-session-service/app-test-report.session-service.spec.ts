@@ -3,7 +3,6 @@ import { Messenger } from "../../services/messenger";
 import { Listener } from "../../../../shared/services";
 import { MockZone } from "../../services/mock-zone";
 import { TestReportCreateEvents } from "../../../../shared/events";
-import { Plugin } from "../../../../shared/models";
 
 
 
@@ -19,6 +18,10 @@ describe('Angular App Test Report Session Service', () => {
             dict[event] = listener;
         });
         service = new AppTestReportSessionService(messenger, new MockZone({}));
+    });
+
+    afterEach(() => {
+        service.ngOnDestroy();
     });
 
     
@@ -47,6 +50,58 @@ describe('Angular App Test Report Session Service', () => {
         expect(() => service.get(1)).toThrowError();
     });
 
+    it('create twice should call only once', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        service.sessionCreated.subscribe(myFunc);
+        dict[TestReportCreateEvents.Create](TestReportCreateEvents.Create,
+            { id: 1 }
+        );
+        dict[TestReportCreateEvents.Create](TestReportCreateEvents.Create,
+            { id: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    it('delete event should call delete once subject', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        dict[TestReportCreateEvents.Create](TestReportCreateEvents.Create,
+            { id: 1 }
+        );
+        service.sessionDeleted.subscribe(myFunc);
+        dict[TestReportCreateEvents.Delete](TestReportCreateEvents.Delete,
+            1
+        );
+        dict[TestReportCreateEvents.Delete](TestReportCreateEvents.Delete,
+            1
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    
+    it('update event should call session changed when not found', (done) => {
+        service.sessionUpdated.subscribe((value) => {
+            expect(value.id).toBe(1);
+            done();
+        });
+        dict[TestReportCreateEvents.Update](TestReportCreateEvents.Update,
+            { id: 1 }
+        );
+    });
+    
+    it('update event should call session update when found', (done) => {
+        dict[TestReportCreateEvents.Create](TestReportCreateEvents.Create,
+            { id: 1 }
+        );
+        service.sessionUpdated.subscribe((value) => {
+            expect(value.id).toBe(1);
+            done();
+        });
+        dict[TestReportCreateEvents.Update](TestReportCreateEvents.Update,
+            { id: 1 }
+        );
+    });
+
+
     it('get should return session that was created', () => {
         // tslint:disable-next-line: no-string-literal
         dict[TestReportCreateEvents.Create](TestReportCreateEvents.Create, { id: 1, algorithmId: 2 });
@@ -74,6 +129,13 @@ describe('Angular App Test Report Session Service', () => {
         });
         // tslint:disable-next-line: no-string-literal
         dict[TestReportCreateEvents.Delete](TestReportCreateEvents.Delete, 1);
+    });
+
+    it('finish should not call finish subject if not found', () => {
+        const func = jasmine.createSpy('myFunc');
+        service.sessionFinished.subscribe(func);
+        dict[TestReportCreateEvents.Finish](TestReportCreateEvents.Finish, 1, 'return');
+        expect(func).toHaveBeenCalledTimes(0);
     });
     
 

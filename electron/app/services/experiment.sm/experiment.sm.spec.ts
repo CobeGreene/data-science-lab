@@ -12,7 +12,8 @@ describe('Electron Experiment Service Model', () => {
     let dataService: ExperimentDataService;
     let producer: Producer;
 
-    beforeAll(() => {
+    
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.ExperimentDataService) {
@@ -20,9 +21,6 @@ describe('Electron Experiment Service Model', () => {
             } 
             throw new Error(`Couldn't resolve type ${type}.`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         dataService = jasmine.createSpyObj('ExperimentDataService', ['all', 'post', 'get', 'update', 'delete']);
         serviceModel = new ExperimentServiceModel(serviceContainer, producer);

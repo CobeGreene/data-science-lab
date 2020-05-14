@@ -10,7 +10,7 @@ export class AppTrackerService extends TrackerService {
     private trackers: AlgorithmTracker[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.trackers = [];
         this.registerEvents();

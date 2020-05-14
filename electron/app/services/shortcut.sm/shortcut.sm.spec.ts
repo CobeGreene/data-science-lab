@@ -9,7 +9,8 @@ describe('Electron Shortcut Service Model', () => {
     let dataService: ShortcutDataService;
     let producer: Producer;
 
-    beforeAll(() => {
+    
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.ShortcutDataService) {
@@ -17,9 +18,6 @@ describe('Electron Shortcut Service Model', () => {
             }
             throw new Error(`Couldn't resolve type ${type}.`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         dataService = jasmine.createSpyObj('ShortcutDataService', ['all', 'update']);
         serviceModel = new ShortcutServiceModel(serviceContainer, producer);

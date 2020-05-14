@@ -13,7 +13,8 @@ describe('Electron Dataset Service Model', () => {
     let datasetService: DatasetDataService;
     let producer: Producer;
 
-    beforeAll(() => {
+    
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.DatasetDataService) {
@@ -21,9 +22,6 @@ describe('Electron Dataset Service Model', () => {
             }
             throw new Error(`Couldn't resolve type ${type}.`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         datasetService = jasmine.createSpyObj('DatasetDataService',
             ['delete', 'load', 'save', 'update', 'all', 'get', 'view', 'allView', 'split', 'join', 'deleteByExperiment', 'show']);

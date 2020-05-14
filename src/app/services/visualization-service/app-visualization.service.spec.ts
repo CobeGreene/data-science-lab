@@ -19,6 +19,10 @@ describe('Angular App Visualization Service', () => {
         service = new AppVisualizationService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
@@ -97,6 +101,53 @@ describe('Angular App Visualization Service', () => {
         );
     });
 
+    
+    it('should call change subject when update without existing', (done) => {
+        service.visualsChanged.subscribe((value) => {
+            expect(value.length).toBe(1);
+            done();
+        });
+        dict[VisualEvents.Update](VisualEvents.Update, { id: 1 });
+    });
+
+    
+    it('create twice should call only once', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        service.visualCreated.subscribe(myFunc);
+        dict[VisualEvents.Create](VisualEvents.Create,
+            { id: 1 }
+        );
+        dict[VisualEvents.Create](VisualEvents.Create,
+            { id: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    it('delete event should call delete once subject', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        dict[VisualEvents.Create](VisualEvents.Create,
+            { id: 1 }
+        );
+        service.visualDeleted.subscribe(myFunc);
+        dict[VisualEvents.Delete](VisualEvents.Delete,
+            1
+        );
+        dict[VisualEvents.Delete](VisualEvents.Delete,
+            1
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call update subject when update', (done) => {
+        dict[VisualEvents.Create](VisualEvents.Create, { id: 1, name: 'Title' });
+        service.visualUpdated.subscribe((value) => {
+            expect(value.name).toBe('New Title');
+            done();
+        });
+
+        dict[VisualEvents.Update](VisualEvents.Update, { id: 1, name: 'New Title' });
+    });
+
     it('get should throw error for not found', () => {
         expect(() => {
             service.get(404);
@@ -137,6 +188,16 @@ describe('Angular App Visualization Service', () => {
             done();
         });
         service.resize(1, 20, 40);
+    });
+    
+    it('rename should call messegner', (done) => {
+        (messenger.publish as jasmine.Spy).and.callFake((event, id, name) => {
+            expect(event).toBe(VisualEvents.Rename);
+            expect(id).toBe(1);
+            expect(name).toBe('name');
+            done();
+        });
+        service.rename(1, 'name');
     });
     
     it('reposition should call messegner', (done) => {

@@ -10,7 +10,7 @@ export class AppTestReportSessionService extends TestReportSessionService {
     sessions: TestReportSession[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.sessions = [];
         this.registerEvents();

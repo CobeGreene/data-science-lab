@@ -9,7 +9,7 @@ export class AppVisualizationService extends VisualizationService {
     private visuals: Visual[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone)/* istanbul ignore next */;
 
         this.visuals = [];
         this.registerEvents();

@@ -13,7 +13,7 @@ export abstract class SessionService extends Service {
     sessions: Session[];
 
     constructor(messenger: Messenger, zone: NgZone) {
-        super(messenger, zone);
+        super(messenger, zone) /* istanbul ignore next */;
 
         this.sessionCreated = new Subject<number>();
         this.sessionUpdated = new Subject<Session>();

@@ -67,7 +67,8 @@ describe('Electron Session Service', () => {
     let sessionPlugin: SessionPlugin;
     let plugin: Plugin;
 
-    beforeAll(() => {
+    
+    beforeEach(() => {
         sessionOptions = {
             currentRoute: '',
             newTab: false
@@ -89,9 +90,6 @@ describe('Electron Session Service', () => {
                 }
             ]
         };
-    });
-
-    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.SessionDataService) {

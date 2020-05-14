@@ -5,7 +5,7 @@ describe('Electron Mock Ipc Service Tests', () => {
     const channel = 'channel';
     const message = 'message';
 
-    beforeAll(() => {
+    beforeEach(() => {
         ipcService = new MockIpcService();
     });
 

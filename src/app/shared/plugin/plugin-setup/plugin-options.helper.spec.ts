@@ -451,6 +451,42 @@ describe('Angular Plugin Options Helper Tests', () => {
         }))).toBeFalsy();
     });
 
+    it('isValid should return true for pattern and min', () => {
+        expect(isValidText('aaa', new TextOption({
+            id: 'text',
+            label: 'any',
+            min: 1,
+            pattern: 'aaa'
+        }))).toBeTruthy();
+    });
+
+    it('isValid should return false for pattern and min', () => {
+        expect(isValidText('aaa', new TextOption({
+            id: 'text',
+            label: 'any',
+            min: 5,
+            pattern: 'aaa'
+        }))).toBeFalsy();
+    });
+
+    it('isValid should return true for max and pattern', () => {
+        expect(isValidText('aaa', new TextOption({
+            id: 'text',
+            label: 'any',
+            max: 5,
+            pattern: 'aaa'
+        }))).toBeTruthy();
+    });
+
+    it('isValid should return true for max and pattern for empty', () => {
+        expect(isValidText('', new TextOption({
+            id: 'text',
+            label: 'any',
+            max: 5,
+            pattern: 'aaa'
+        }))).toBeTruthy();
+    });
+
 
 
 

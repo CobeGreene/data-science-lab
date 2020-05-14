@@ -20,6 +20,10 @@ describe('Angular App Tracker Service', () => {
         service = new AppTrackerService(messenger, new MockZone({}));
     });
 
+    afterEach(() => {
+        service.ngOnDestroy();
+    });
+
     it('should call publish', () => {
         expect(messenger.publish).toHaveBeenCalled();
     });
@@ -63,6 +67,34 @@ describe('Angular App Tracker Service', () => {
         );
     });
 
+    it('create twice should call only once', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        service.trackerCreated.subscribe(myFunc);
+        dict[TrackerEvents.Create](TrackerEvents.Create,
+            { algorithmId: 1 }
+        );
+        dict[TrackerEvents.Create](TrackerEvents.Create,
+            { algorithmId: 1 }
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+    it('delete event should call delete once subject', () => {
+        const myFunc = jasmine.createSpy("myFunc");
+        dict[TrackerEvents.Create](TrackerEvents.Create,
+            { algorithmId: 1 }
+        );
+        service.trackerDeleted.subscribe(myFunc);
+        dict[TrackerEvents.Delete](TrackerEvents.Delete,
+            1
+        );
+        dict[TrackerEvents.Delete](TrackerEvents.Delete,
+            1
+        );
+        expect(myFunc).toHaveBeenCalledTimes(1);
+    });
+
+
     it('delete event should call delete subject', (done) => {
         dict[TrackerEvents.Create](TrackerEvents.Create, 
             { algorithmId: 1 }    
@@ -90,10 +122,35 @@ describe('Angular App Tracker Service', () => {
         );
     });
 
+    
+    it('should call change subject when update without existing', (done) => {
+        service.trackersChanged.subscribe((value) => {
+            expect(value.length).toBe(1);
+            done();
+        });
+        dict[TrackerEvents.Update](TrackerEvents.Update, { algorithmId: 1 });
+    });
+
+    it('should call update subject when update', (done) => {
+        dict[TrackerEvents.Create](TrackerEvents.Create, { algorithmId: 1 });
+        service.trackerUpdated.subscribe((value) => {
+            expect(value.algorithmId).toBe(1);
+            done();
+        });
+
+        dict[TrackerEvents.Update](TrackerEvents.Update, { algorithmId: 1 });
+    });
+
     it('get should throw error for not found', () => {
         expect(() => {
             service.get(404);
         }).toThrow();
+    });
+    
+    it('get should return algorithm', () => {
+        dict[TrackerEvents.Create](TrackerEvents.Create, { algorithmId: 1, variables: undefined, recentIterations: undefined });
+        const algorithm = service.get(1);
+        expect(algorithm).toEqual({ algorithmId: 1, variables: undefined, recentIterations: undefined });
     });
     
     it('has should return false for no algorithms', () => {

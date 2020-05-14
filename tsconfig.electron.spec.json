@@ -1,7 +1,7 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "./test"
+        "outDir": "./test-elc"
     },
     "files": [
         "electron/main.ts",

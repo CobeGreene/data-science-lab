@@ -11,7 +11,8 @@ describe('Electron Tracker Service Model', () => {
     let serviceContainer: ServiceContainer;
     let producer: Producer;
 
-    beforeAll(() => {
+    
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.TrackerDataService) {
@@ -19,9 +20,6 @@ describe('Electron Tracker Service Model', () => {
             }
             throw new Error(`Couldn't resolve type ${type}`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         trackerService = jasmine.createSpyObj('TrackerDataService', ['allView', 'view']);
         serviceModel = new TrackerServiceModel(serviceContainer, producer); 

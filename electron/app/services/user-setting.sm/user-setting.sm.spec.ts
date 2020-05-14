@@ -10,8 +10,8 @@ describe('Electron User Setting Service Model', () => {
     let serviceContainer: ServiceContainer;
     let dataService: UserSettingDataService;
     let producer: Producer;
-
-    beforeAll(() => {
+    
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.UserSettingDataService) {
@@ -19,9 +19,6 @@ describe('Electron User Setting Service Model', () => {
             }
             throw new Error(`Couldn't resolve type ${type}.`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         dataService = jasmine.createSpyObj('UserSettingDataService', ['all', 'update']);
         serviceModel = new UserSettingServiceModel(serviceContainer, producer);

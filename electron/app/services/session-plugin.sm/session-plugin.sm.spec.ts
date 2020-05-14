@@ -11,7 +11,7 @@ describe('Electron Session Plugin Service Model', () => {
     let dataService: SessionPluginDataService;
     let producer: Producer;
 
-    beforeAll(() => {
+    beforeEach(() => {
         serviceContainer = jasmine.createSpyObj('ServiceContainer', ['resolve']);
         (serviceContainer.resolve as jasmine.Spy).and.callFake((type: SERVICE_TYPES) => {
             if (type === SERVICE_TYPES.SessionPluginDataService) {
@@ -19,9 +19,6 @@ describe('Electron Session Plugin Service Model', () => {
             } 
             throw new Error(`Couldn't resolve type ${type}.`);
         });
-    });
-
-    beforeEach(() => {
         producer = jasmine.createSpyObj('Producer', ['send']);
         dataService = jasmine.createSpyObj('PackageDataService', ['all', 'install', 'uninstall']);
         serviceModel = new SessionPluginServiceModel(serviceContainer, producer); 
