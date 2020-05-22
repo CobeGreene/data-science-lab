@@ -106,7 +106,9 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onCreateExperiment(event: MouseEvent) {
-    this.createComponent.open(event);
+    if (!this.createComponent.isOpen) {
+      this.createComponent.open(event);
+    }
   }
   
   onOpenExperiment(event: MouseEvent) {
