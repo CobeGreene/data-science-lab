@@ -59,26 +59,28 @@ export class AppSessionPluginDataService extends Service implements SessionPlugi
     }
 
     async addPlugins(pluginPackage: Package) {
-        for (const plugin of pluginPackage.plugins) {
-            try {
-                if (plugin.type !== PluginTypes.Fetch) {
-                    const pluginObj = await this.context.activate<{ getInputs(): PluginInputs }>(pluginPackage, plugin);
-
-                    const sessionPlugin: SessionPlugin = {
-                        name: plugin.name,
-                        className: plugin.className,
-                        description: plugin.description,
-                        inputs: pluginObj.getInputs().inputs(),
-                        type: plugin.type,
-                        packageName: pluginPackage.name
-                    };
-
-                    this.plugins.push(sessionPlugin);
-
-                    await this.context.deactivate(pluginPackage, plugin); 
+        if (!this.plugins.find((value) => value.packageName === pluginPackage.name)) {
+            for (const plugin of pluginPackage.plugins) {
+                try {
+                    if (plugin.type !== PluginTypes.Fetch) {
+                        const pluginObj = await this.context.activate<{ getInputs(): PluginInputs }>(pluginPackage, plugin);
+    
+                        const sessionPlugin: SessionPlugin = {
+                            name: plugin.name,
+                            className: plugin.className,
+                            description: plugin.description,
+                            inputs: pluginObj.getInputs().inputs(),
+                            type: plugin.type,
+                            packageName: pluginPackage.name
+                        };
+    
+                        this.plugins.push(sessionPlugin);
+    
+                        await this.context.deactivate(pluginPackage, plugin); 
+                    }
+                } catch (error) {
+                    this.producer.send(ErrorEvent, error);
                 }
-            } catch (error) {
-                this.producer.send(ErrorEvent, error);
             }
         }
     }

@@ -26,7 +26,7 @@ export class NumberOptionComponent implements OnInit, AfterViewInit {
 
   onChange(_: Event) {
     this.emitChange.emit({
-      valid: this.numberComponent.valid,
+      valid: this.isValid(this.value),
       value: this.value
     });
   }
@@ -34,10 +34,27 @@ export class NumberOptionComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.emitChange.emit({
-        valid: this.numberComponent.valid,
+        valid: this.isValid(this.value),
         value: this.value
       });
     });
+  }
+
+  isValid(num: number) {
+    if (this.option.min && num < this.option.min) {
+      return false;
+    }
+    if (this.option.max && num > this.option.max) {
+      return false;
+    }
+    return this.isInteger(num);
+  }
+
+  isInteger(num: number) {
+    if (num === undefined) {
+      return false;
+    }
+    return Number.isInteger(num);
   }
 
 }

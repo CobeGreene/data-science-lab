@@ -3,7 +3,7 @@ import { ErrorService } from './error.service';
 import { Messenger } from '../messenger';
 import { NotificationService } from '../notification-service';
 import { ErrorEvent, OpenLinkEvent } from '../../../../shared/events';
-import { SystemError, PackageError } from '../../../../shared/errors';
+import { SystemError, PackageError, ErrorTypes } from '../../../../shared/errors';
 
 @Injectable()
 export class AppErrorService extends ErrorService {
@@ -28,7 +28,7 @@ export class AppErrorService extends ErrorService {
                 this.notificationService.push({
                     header: error.name,
                     message: error.message,
-                    type: 'error',
+                    type: ErrorTypes.Error,
                 });
             } else if ((error as PackageError).issues !== undefined) {
                 this.notificationService.push({

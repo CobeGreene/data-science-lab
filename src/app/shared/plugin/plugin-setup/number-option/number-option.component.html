@@ -2,6 +2,19 @@
     {{ option.label }}
 </p>
 <input type="number" class="w-100 accent3" [(ngModel)]="value" #number="ngModel" (ngModelChange)="onChange($event)" [min]="option.min" [max]="option.max" [step]="option.step" required>
-<div *ngIf="submitted && number.invalid">
-    <div class="invalid-feedback">Required</div>
+<div *ngIf="submitted && !isValid(value)">
+    <div class="invalid-feedback">
+        <div *ngIf="option.min !== undefined && option.max === undefined">
+            Number must be greater or equal to {{ option.min }}
+        </div>
+        <div *ngIf="option.max !== undefined && option.min === undefined">
+            Number must be less than {{ option.max }}
+        </div>
+        <div *ngIf="option.max !== undefined && option.min !== undefined">
+            Number must be between {{ option.min }} and {{ option.max }}
+        </div>
+        <div *ngIf="!isInteger(value)">
+            Number must be an integer.
+        </div>
+    </div>
 </div>
