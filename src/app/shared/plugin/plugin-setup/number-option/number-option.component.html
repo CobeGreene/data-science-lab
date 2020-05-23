@@ -13,8 +13,8 @@
         <div *ngIf="option.max !== undefined && option.min !== undefined">
             Number must be between {{ option.min }} and {{ option.max }}
         </div>
-        <div *ngIf="!isInteger(value)">
-            Number must be an integer.
+        <div *ngIf="!isNumber(value)">
+            Input must be a number
         </div>
     </div>
 </div>
