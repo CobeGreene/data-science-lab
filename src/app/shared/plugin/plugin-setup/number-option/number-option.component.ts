@@ -47,14 +47,14 @@ export class NumberOptionComponent implements OnInit, AfterViewInit {
     if (this.option.max && num > this.option.max) {
       return false;
     }
-    return this.isInteger(num);
+    return this.isNumber(num);
   }
 
-  isInteger(num: number) {
-    if (num === undefined) {
+  isNumber(num: number) {
+    if (num === undefined || num === null) {
       return false;
     }
-    return Number.isInteger(num);
+    return !Number.isNaN(num);
   }
 
 }
