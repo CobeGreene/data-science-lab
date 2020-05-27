@@ -6,7 +6,9 @@
             <fa name="pencil"></fa>
         </span>
     </div>
-
+    <div class="center">
+        <h4 class="m-0 p-0 plugin-link" (click)="onLink()">{{ algorithm.pluginPackageName}} - {{ algorithm.pluginName }}</h4>
+    </div>
     <div class="center mb-1">
         <div>
             <h4 class="m-0 p-0">At Iteration {{ algorithm.iteration }}</h4>

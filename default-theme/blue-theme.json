@@ -148,5 +148,6 @@
     "experiment-visual-card-shadow": "rgba(0, 0, 0, .1)",
     "experiment-visual-menu-background": "#2b2e3b",
     "experiment-export-algorithm-dropdown-border": "#E5D3B7",
-    "experiment-visual-menu-dropdown-border": "#E5D3B7"
+    "experiment-visual-menu-dropdown-border": "#E5D3B7",
+    "algorithm-plugin-link": "#9feaf9"
 }
