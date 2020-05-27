@@ -14,6 +14,7 @@ import { DatasetVisualSessionService } from '../../session-services/dataset-visu
 import { AlgorithmVisualSessionService } from '../../session-services/algorithm-visual-session-service';
 import { TestReportVisualSessionService } from '../../session-services/test-report-visual-session-service';
 import { TestReportService } from '../test-report-service';
+import { VisualizationService } from '../visualization-service/visualization.service';
 
 @Injectable()
 export class AppCreationService extends CreationService implements OnDestroy {
@@ -29,6 +30,7 @@ export class AppCreationService extends CreationService implements OnDestroy {
         private algorithmSessionService: AlgorithmSessionService,
         private testReportSessionService: TestReportSessionService,
         private testReportService: TestReportService,
+        private visualizationService: VisualizationService,
         private datasetVisualSessionService: DatasetVisualSessionService,
         private algorithmVisualSessionService: AlgorithmVisualSessionService,
         private testReportVisualSessionService: TestReportVisualSessionService) {
@@ -42,6 +44,12 @@ export class AppCreationService extends CreationService implements OnDestroy {
             .subscribe((experiment) => {
                 const tab = this.tabFactory.create(['experiment', experiment.id]);
                 this.tabService.openTab(tab);
+            });
+
+        this.visualizationService.visualCreated
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((visual) => {
+                this.visualizationService.show(visual.id);
             });
 
         this.experimentService.experimentLoaded
