@@ -71,8 +71,9 @@
                     </div>
                 </div>
             </div>
+            <app-plugin-next class="mt-3" (emitNext)="onSubmit()" [valid]="valid" [isWaiting]="isWaiting">
+            </app-plugin-next>
         </div>
     </div>
-    <app-plugin-next class="mt-3" (emitNext)="onSubmit()" [valid]="valid" [isWaiting]="isWaiting"></app-plugin-next>
 </app-plugin-body>
 <app-popup #popupCmp></app-popup>

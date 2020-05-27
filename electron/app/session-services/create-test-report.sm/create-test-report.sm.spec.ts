@@ -7,7 +7,7 @@ import { ServiceContainer, SERVICE_TYPES } from "../../service-container";
 import { Producer } from "../../pipeline";
 import { SessionState } from "../../../../shared/models";
 import { TestReportCreateEvents } from "../../../../shared/events";
-import { PluginData, PluginDataInput } from "data-science-lab-core";
+import { PluginDataInput } from "data-science-lab-core";
 
 describe('Electron Create Test Report Service Model', () => {
     let serviceModel: CreateTestReportServiceModel;
@@ -227,7 +227,7 @@ describe('Electron Create Test Report Service Model', () => {
                     examples: [1, 0, 1, 1]
                 },
                 {
-                    name: 'Actual output',
+                    name: 'Predicted output',
                     type: 'number',
                     examples: [1, 1, 1, 1]
                 },
@@ -327,7 +327,7 @@ describe('Electron Create Test Report Service Model', () => {
                     examples: [1, 0, 1, 1]
                 },
                 {
-                    name: 'Actual output',
+                    name: 'Predicted output',
                     type: 'number',
                     examples: [1, 1, 1, 1]
                 },
@@ -461,17 +461,17 @@ describe('Electron Create Test Report Service Model', () => {
                     examples: [1, 1, 0, 1]
                 },
                 {
-                    name: 'Actual output',
+                    name: 'Predicted output',
                     type: 'number',
                     examples: [1, 1, 1, 1]
                 },
                 {
-                    name: 'Actual output 1.2',
+                    name: 'Predicted output 1.2',
                     type: 'number',
                     examples: [2, 2, 2, 2]
                 },
                 {
-                    name: 'Actual output 2',
+                    name: 'Predicted output 2',
                     type: 'number',
                     examples: [1, 1, 1, 1]
                 },
