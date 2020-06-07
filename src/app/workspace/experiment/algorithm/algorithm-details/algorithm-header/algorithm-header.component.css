@@ -5,6 +5,11 @@
         grid-template-areas: 'header' 'export';
 }
 
+.plugin-link {
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--algorithm-plugin-link);
+}
 
 .header {
     grid-area: header;

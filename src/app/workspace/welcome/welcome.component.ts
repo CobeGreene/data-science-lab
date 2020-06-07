@@ -101,6 +101,8 @@ export class WelcomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.onGoToShortcuts();
       } else if (this.selected === 4) {
         this.onGoToSettings();
+      } else if (this.selected === 5) {
+        this.onQuit();
       }
     }
   }

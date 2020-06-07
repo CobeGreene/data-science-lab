@@ -109,7 +109,7 @@ export class CreateTestReportServiceModel extends ServiceModel {
             return outputs[value.id].map((index) => {
                 actualFeaturesMapping[value.id].push(travelMapIndex++);
                 return {
-                    name: `Actual ${dataset.features[index].name}`,
+                    name: `Predicted ${dataset.features[index].name}`,
                     type: dataset.features[index].type,
                     examples: []
                 };

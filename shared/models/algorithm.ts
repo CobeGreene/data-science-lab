@@ -7,5 +7,7 @@ export interface Algorithm {
     isTraining: boolean;
     isFinish: boolean;
     iterationTime: number;
+    pluginPackageName: string;
+    pluginName: string;
 }
 

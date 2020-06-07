@@ -7,6 +7,8 @@ import { AlgorithmService } from '../../../../../services/algorithm-service';
 import { EditAlgorithmComponent } from '../../../../../shared/algorithm/edit-algorithm/edit-algorithm.component';
 import { DeleteAlgorithmComponent } from '../../../../../shared/algorithm/delete-algorithm/delete-algorithm.component';
 import { CoreAreaService } from '../../../../../services/core-area-service/core-area.service';
+import { TabFactory } from '../../../../../factory/tab-factory';
+import { TabService } from '../../../../../services/tab-service';
 
 @Component({
   selector: 'app-algorithm-header',
@@ -32,11 +34,12 @@ export class AlgorithmHeaderComponent implements OnInit, OnDestroy {
   constructor(
     private routerService: RouterService,
     private coreAreaService: CoreAreaService,
-    private algorithmService: AlgorithmService
+    private algorithmService: AlgorithmService,
+    private tabFactory: TabFactory,
+    private tabService: TabService
   ) { }
 
   ngOnInit() {
-
     this.id = this.routerService.data().algorithmId;
     this.algorithm = this.algorithmService.get(this.id);
 
@@ -99,6 +102,11 @@ export class AlgorithmHeaderComponent implements OnInit, OnDestroy {
   onExport(language: string) {
     this.algorithmService.export(this.id, language);
     this.exportDropdown.close();
+  }
+
+  onLink() {
+    const tab = this.tabFactory.create(['package', this.algorithm.pluginPackageName]);
+    this.tabService.openTab(tab);
   }
 
 }

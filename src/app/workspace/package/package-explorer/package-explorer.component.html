@@ -7,9 +7,12 @@
     Show packages if they contain a certain plugin type.
 </p>
 <app-select [value]="type" [options]="types()"  (emitChange)="onTypeChange($event)"></app-select>
-<button class="btn btn-default btn-lg mx-0 my-2 p-1" (click)="onSearch()">
-    Search
-</button>
+<div class="search">
+    <button class="btn btn-default btn-lg mx-0 my-2 p-1" (click)="onSearch()">
+        Search
+    </button>
+    <p class="pl-1" *ngIf="isSearching">Searching in progress...</p>
+</div>
 <ng-container *ngIf="packages.length === 0">
     <hr>
     <p>

@@ -122,7 +122,9 @@ export class AppAlgorithmDataService extends Service implements AlgorithmDataSer
             isTraining: algorithm.isTraining,
             iteration: algorithm.iteration,
             iterationTime: algorithm.iterationTime,
-            name: algorithm.name
+            name: algorithm.name,
+            pluginName: algorithm.plugin.name,
+            pluginPackageName: algorithm.plugin.packageName
         };
     }
 

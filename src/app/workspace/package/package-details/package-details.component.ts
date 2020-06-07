@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PackageService } from '../../../services/package-service';
 import { Package } from '../../../../../shared/models';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { RouterService } from '../../../services/router-service';
 
 @Component({
   selector: 'app-package-details',
@@ -16,12 +17,11 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private routerService: RouterService,
     private packageService: PackageService
   ) { }
 
   ngOnInit() {
-    this.name = this.route.snapshot.paramMap.get('name');
-    
     this.packageService.packageGet
       .pipe(untilComponentDestroyed(this))
       .subscribe((value) => {
@@ -37,11 +37,11 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
       })
 
       
-      this.route.params
-      .pipe(untilComponentDestroyed(this))
-      .subscribe(() => {
-        this.getPluginPackage();
-      });
+      this.routerService.changed()
+        .pipe(untilComponentDestroyed(this))
+        .subscribe(() => {
+          this.getPluginPackage();
+        })
 
       this.getPluginPackage();
   }
@@ -51,8 +51,8 @@ export class PackageDetailsComponent implements OnInit, OnDestroy {
   }
 
   getPluginPackage() {
-    const name = this.route.snapshot.paramMap.get('name');
-    this.packageService.fetch(name);
+    this.name = this.route.snapshot.paramMap.get('name');
+    this.packageService.fetch(this.name);
   }
 
 }
