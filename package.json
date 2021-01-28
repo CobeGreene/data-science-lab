@@ -109,7 +109,7 @@
     "angular-font-awesome": "^3.1.2",
     "angular-resize-event": "^1.2.1",
     "codelyzer": "^5.0.0",
-    "electron": "^6.0.10",
+    "electron": "^9.4.0",
     "electron-builder": "^22.3.2",
     "jasmine": "^3.5.0",
     "jasmine-core": "~3.4.0",
