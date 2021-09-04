@@ -1,2 +1,30 @@
 # data-science-lab
-The problem that this project is addressing is that there are many different types of algorithms out there and more is to come. The of this project is to make a plugin-based desktop application that allows users to create experiments: which consist of preparing data, using an algorithm, visualizing components of the algorithm, and testing their choice of algorithm. This project will have three types of users, contributors, experimenters, and administrator. The desktop application will provide a high-quality professional user interface, so the users can install, create, and use the plugins in their experiment. The second component of this project is a website that allows contributors to learn how to make and publish plugins, so the experimenters can use them. The admin will have the power to manage all users and plugins on the website.
+
+## Create an Experiment
+Any great hypothesis needs an experiment, so lets create one.
+
+![create-experiment](https://user-images.githubusercontent.com/32606730/132103443-293d5c63-1f60-4084-9b64-31c7912568b1.gif)
+
+## Fetch a Dataset
+
+Grab your datasets using the CSV Reader plugin, or choose one from the many fetch plugins.
+
+![fetch-dataset](https://user-images.githubusercontent.com/32606730/132103454-936c0e56-757d-430a-80e3-b69dc5734396.gif)
+
+## Transform a Dataset
+
+Transform the features in your dataset by using the Min-Max Normalization plugin, or choose one from the many transform plugins.
+
+![transform-dataset](https://user-images.githubusercontent.com/32606730/132103468-53e36f07-7714-4a63-904b-947ffcffb2b9.gif)
+
+## Visualize a Dataset
+
+Visualize the features of your dataset by using the Histogram plugin, or choose one from the many visualization plugins.
+
+![visualize-dataset](https://user-images.githubusercontent.com/32606730/132103480-473d535f-58fb-4830-bf1a-f4aabe5efcea.gif)
+
+## Train an Algorithm
+
+Train an algorithm by using the Binary Logistic Regression plugin, or choose one from the many algorithm plugins. After training, create a test report to determine its accuracy.
+
+![train-algorithm](https://user-images.githubusercontent.com/32606730/132103488-0a2538b6-cd47-4c9a-b15e-2d76b3e9017f.gif)
