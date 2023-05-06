@@ -120,7 +120,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
-    "mocha": "^7.1.2",
+    "mocha": "^10.2.0",
     "ngx-md": "^8.1.6",
     "protractor": "~5.4.0",
     "rxjs": "~6.4.0",
